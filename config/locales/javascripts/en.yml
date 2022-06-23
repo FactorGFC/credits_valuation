@@ -1,0 +1,37 @@
+en:
+  messages:
+    very_weak_password: Very weak
+    weak_password: Weak
+    okay_password: Okay
+    strong_password: Strong
+    very_strong_password: Very strong
+    processing_message: Please wait...
+    ok: Ok
+    confirm: Confirm
+    delete: Delete
+    cancel: Cancel
+    done: Done!
+    deleted: It was succesfully deleted
+    error: Error deleting
+    try_again: Please try again
+    profile_file_type: You must upload an image file format.
+    profile_file_size: The maximum allowable size of the image is 5MB.
+    seeds_success: Seeds created correctly
+    seeds_error: Error creating seeds
+    process_selected: Process selected!
+    validate: Validate
+    reject: Reject
+    no_validate: Unvalidated variable
+    validate_variables:
+      number: Number
+      description: Description
+      actions: Actions
+      validated: Validated variable!
+      validate: validate
+      rejected: Rejected variable!
+      reject: reject
+      modal_text: Reject
+      status: Status
+      motive_reject: Motive reject
+      unit: Unit
+      unit_pres: Budget unit

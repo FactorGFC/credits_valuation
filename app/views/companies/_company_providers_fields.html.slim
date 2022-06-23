@@ -1,0 +1,12 @@
+.form-group.m-form__group.row.nested-fields
+  .col-sm-4.d-flex.flex-column.justify-content-between
+    = f.label 'Nombre del Proveedor (Nombre / Apellido)', class: 'col-form-label text-bold'
+    = f.text_field :name, class: 'form-control m-input'
+  .col-sm-2.d-flex.flex-column.justify-content-between
+    = f.label '% Compras', class: 'col-form-label'
+    = f.number_field :purchase, class: 'form-control m-input', min: 0
+  .col-sm-4.d-flex.flex-column.justify-content-between
+    = f.label 'Plazo de crédito (dias)', class: 'col-form-label'
+    = f.number_field :credit, class: 'form-control m-input', min: 0
+  .col-sm-2
+    = link_to_remove_association "Remover", f, class: 'btn m-btn--pill btn-outline-danger mr-3', style:"margin-top:33px;"

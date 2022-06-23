@@ -1,0 +1,89 @@
+
+<section class="breadcrumb-area">
+  <div class="breadcrumb-widget  pt-145" style="background-image: asset_path('img/breadcrumb/bg-2.png');">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="breadcrumb-content pt-50 pb-95">
+            <h1><%= @company.info_company['hydra:member'].first['company']['legalName'] %></h1>
+            <h5><strong>RFC: </strong><%= @company.info_company['hydra:member'].first['rfc'] %></h5>
+            <div class="breadcrumb-job-info d-flex justify-content-center mt-20">
+              <div class="job-location me-3"> <i class="icon_pin_alt"></i>
+                <%= @company.info_company['hydra:member'].first['address']['locality'] %>,  <%= @company.info_company['hydra:member'].first['address']['state'] %>
+              </div>
+              <!--<div class="job-catagory"> <span>Administration</span> | Full-time
+              </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pt-50 pb-120 bg_white">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 order-2 order-lg-1">
+          <div class="single-description-para">
+            <h6>Resumen financiero</h6>
+          </div>
+          <div class="container mt-4">
+            <div class="flex-row mb-30 mt-20">
+              <div class="col-md-12">
+                <%= column_chart(@company_graph, prefix: "$", thousands: ",", height: "200px", colors: ["#4287f5", "#ab7d27", "#a14710", "#6b9c10"])%>
+              </div>
+            </div>
+            <table class="table table-responsive table-striped small-table">
+              <thead class="thead-dark text-center">
+                <tr>
+                  <th> </th>
+                  <% @company_graph.first[:data].keys.each do |year| %>
+                    <th><%= year %></th>
+                  <% end %>
+                </tr>
+              </thead>
+              <tbody>
+                <% @company_graph.each do |data| %>
+                  <tr class="">
+                    <td scope="row"><strong><%= data[:name] %></strong></td>
+                    <% data[:data].values.each do |val| %>
+                      <td class="text-center"><%= number_to_currency(val) %></td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+      </div>
+
+      <div class="col-lg-4 pl-lg-55 order-1 order-lg-2">
+        <div class="right-sidebar-widget sticky_sidebar_widget">
+          <div class="widget-news mt-10">
+            <% if @latest_blogs.present? %>
+              <h4 class="widget-title">Otros blogs</h4>
+
+              <ul class="recent-post">
+                <% @latest_blogs.each do |blog| %>
+                  <li style="display: inline-flex">
+                    <a href="/blog_details/<%= blog.id %>" style="display: inline-flex; align-items: center;">
+                      <img src="data:image/jpeg;base64,<%= blog.image %>" alt="recent-post" style="width: 60px; height: 61px; margin-right: 10px; border-radius: 10px;">
+                      <div class="news-content">
+                        <h6><%= blog.title %></h6>
+                        <div class="post-date">
+                          <img src="<%= asset_path('blog/calendar-outline.svg') %>" alt="icon">
+                          <span><%= blog.created_at.strftime("%d-%m-%Y") %></span>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

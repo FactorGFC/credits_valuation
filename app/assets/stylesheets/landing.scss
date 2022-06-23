@@ -1,0 +1,66 @@
+// Place all the styles related to the landing controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+//@import "landing/elegant";
+@import "css/bootstrap.min";
+@import 'font-awesome';
+//@import "css/elegant-icons.min";
+@import 'css/style';
+@import 'css/default';
+@import 'css/animate';
+@import 'css/nice-select';
+@import 'css/default';
+@import 'css/responsive';
+
+
+
+/*=*=* CUSTOM STYLES *=*=*/
+.border-grey {
+  border: 1px solid;
+  border-end-start-radius: 5px;
+  border-end-end-radius: 5px;
+  border-top: none;
+  border-color: #dee2e6
+}
+
+.active {
+  background-color: white
+}
+
+.text-center{
+  text-align: center;
+}
+
+.btn-section-disabled{
+  opacity:        0.5 !important;
+  pointer-events: none;
+}
+
+.invalid_value{
+  color:   red;
+  display: none;
+}
+
+.sec-date{
+  display:  inline-flex;
+  color:    slategray;
+}
+.md-image{
+  width:  75px;
+  height: 75px;
+}
+.centered-icon{
+  display:            flex;
+  justify-content:    center;
+  align-items:        center;
+  margin:             auto;
+  background-color:   lightgray;
+  width:              120px;
+  height:             120px;
+  border-radius:      50%;
+}
+
+.medium-btn{
+  width:  50%;
+  margin: auto;
+}

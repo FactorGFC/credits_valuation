@@ -1,0 +1,7 @@
+set :rails_env, 'staging'
+set :domain, '159.89.134.208'
+set :deploy_to, '/home/factor_global'
+set :repository, 'git@gitlab.com:victormponcem/credits_factor_global.git'
+set :branch, 'master'
+set :user, 'root'
+#set :port, '65535'

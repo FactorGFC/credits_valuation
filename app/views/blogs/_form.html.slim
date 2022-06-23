@@ -1,0 +1,29 @@
+= form_for @blog, validate: true, html: {class: 'm-form m-form--fit'} do |f|
+  .m-portlet__body
+    .form-group.m-form__group.row
+      = f.label :titulo, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = f.text_field :title, class: 'form-control m-input' 
+    .form-group.m-form__group.row
+      = f.label :descripcion, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = f.text_area :description, class: 'form-control m-input'
+    .form-group.m-form__group.row
+      = f.label :imagen, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        - if @blog.image.present?
+          img src="data:image/jpeg;base64,#{@blog.image}" style="width: 200px; height: 150px;"
+        = f.file_field :image, class: 'form-control m-input', required: true
+    .form-group.m-form__group.row
+      = f.label :posición, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = select("position", "id", Position.all.order(:order).collect { |p| [p.name, p.id] },
+                { include_blank: t('helpers.select.prompt'), selected: @blog.position.present? ? @blog.position.id : nil}, {class: "form-control m-input"})
+  .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit
+    .m-form__actions.m-form__actions--solid
+      .row
+        .col-lg-12
+          = f.submit t('helpers.submit.submit', model: t('.resource')), class: 'btn btn-primary'
+          - if has_policy(Blog, %w(index))
+            =< link_to blogs_path, class: 'btn btn-secondary'
+              = t('helpers.go_to', resource: t('.blogs'))

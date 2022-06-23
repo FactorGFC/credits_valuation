@@ -1,0 +1,104 @@
+.multisteps-container.container-fluid
+  .row
+    .steps-container.col-3
+      .steps-content
+        .align-items-center
+          .h5 Captura
+          .h6.mb-10 = @company.try(:name)
+        .step-progress
+          section.step-indicator
+            .step.completed#step1
+              .step-icon
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind1
+            .step.completed#step2 style="opacity: 1"
+              .step-icon
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind2
+            .step.completed#step3 style="opacity: 1"
+              .step-icon
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind3
+            - if !@company.has_clients
+              .step.completed#step4 style="opacity: 1"
+                .step-icon
+                  i.fa.fa-check aria-hidden='true'
+              .indicator-line.active#ind4 style="opacity: 1"
+            - if !@company.has_providers
+              .step.completed#step5 style="opacity: 1"
+                .step-icon
+                  i.fa.fa-check aria-hidden='true'
+              .indicator-line.active#ind5 style="opacity: 1"
+            .step#step6 class="active" style="opacity: 1"
+              .step-icon
+                i.fa.fa-chart-line
+            .indicator-line#ind6
+            .step#step7
+              .step-icon
+                i.fa.fa-file-alt
+
+          section.step-indicator.description
+            .step-desc#stepDesc1
+              span
+              .title Credenciales
+            .step-desc#stepDesc2
+              span
+              .title Actividad y producto
+            .step-desc#stepDesc3
+              span
+              .title Número de colaboradores
+            - if !@company.has_clients
+              .step-desc#stepDesc4
+                span
+                .title Principales Clientes
+            - if !@company.has_providers
+              .step-desc#stepDesc5
+                span
+                .title Principales Proveedores
+            .step-desc.active#stepDesc6
+              span
+              .title Instituciones financieras
+            .step-desc.inactive#stepDesc7
+              span
+              .title Archivos
+    .step-content.col-9
+      .nav-btns-container
+        - if !@company.has_providers
+          button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('4','5')"
+            i.fa.fa-chevron-left
+            | Regresar
+        - else
+          - if @company.has_providers && !@company.has_clients
+            button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('3','5')"
+              i.fa.fa-chevron-left
+              | Regresar
+          - else
+            button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('2','5')"
+              i.fa.fa-chevron-left
+              | Regresar
+        button.btn.btn-default.nav-step-btn.btn-next type="button" id="buttonFive" onclick="nextPageNew('6','5')"
+          | Siguiente
+          i.fa.fa-chevron-right
+      .step-page.m-animate-fade-in-up
+        .title
+          div style=("color: #602BFA; width: 500px;")
+            strong
+              span style=("color: #3c3e6a; width: 500px") > Instituciones financieras
+        .col-xl-12
+          = form_for @company, validate: true, html: {class: ''} do |f|
+            - if @company.has_providers
+              = f.hidden_field :step_six, value: true
+              = f.hidden_field :step_five, value: true
+            - else
+              = f.hidden_field :step_six, value: true
+              = f.hidden_field :step_five, value: true
+
+            .col-xl-12 style="margin-bottom: 20px"
+              .form-group.m-form__group
+                = f.fields_for :financial_institutions do |fi|
+                  = render 'financial_institutions_fields', {f: fi, e: fi}
+                .links.d-flex.justify-content-center.mb-20  style="background-color: white; position: relative; top: -2px;"
+                  = link_to_add_association 'Agregar Institución Financiera', f, :financial_institutions, partial: 'companies/financial_institutions_fields',
+                          class: 'btn m-btn--pill m-btn--air btn-success m-btn m-btn--custom m-btn--bolder m-btn--uppercase'
+            .col-xl-12
+              = f.submit 'Guardar', class: 'btn btn-primary col-xl-12'

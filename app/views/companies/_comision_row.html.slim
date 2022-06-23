@@ -1,0 +1,35 @@
+.tab-content.col-xl-12.mb-30
+  = f.hidden_field :step_three, value: true
+  = f.fields_for :number_collaborator do |c|
+    .row.mt-20
+      .col-xl-4
+        .form-group.m-form__group
+          label.text-bold
+            | Operativos
+          = c.number_field :operative, class: 'form-control m-input m-input--square price', min: 0
+      .col-xl-4
+        .form-group.m-form__group
+          label.text-bold
+            | Administrativos
+          = c.number_field :administrative, class: 'form-control m-input m-input--square price', min: 0
+      .col-xl-4
+        .form-group.m-form__group
+          label.text-bold
+            | Ventas
+          = c.number_field :sales, class: 'form-control m-input m-input--square price', min: 0
+    .row.mt-20
+      .col-xl-4
+        .form-group.m-form__group
+          label.text-bold
+            | Eventuales
+          = c.number_field :eventual, class: 'form-control m-input m-input--square price', min: 0
+      .col-xl-4
+        .form-group.m-form__group
+          label.text-bold
+            | Sindicalizados
+          = c.number_field :unionized, class: 'form-control m-input m-input--square price', min: 0
+      .col-xl-4
+        .form-group.m-form__group
+          label.text-bold
+            | Total
+          = c.number_field :total, class: 'form-control m-input m-input--square special-input price', id: 'totalId', readonly: true, min: 0

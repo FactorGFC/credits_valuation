@@ -1,0 +1,15 @@
+es:
+  calendars:
+    index:
+      others: Calendarios
+      title: Calendarios
+      period_type: Tipo de periodo
+      year: Año
+      period: Periodo
+      count_table:
+        one: 1 Periodo de calendario
+        other: '%{count} Periodos de calendario'
+    form:
+      title: Calendarios
+      resource: periodo de calendario
+      back_resource: periodos de calendario

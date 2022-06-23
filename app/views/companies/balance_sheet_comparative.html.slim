@@ -1,0 +1,338 @@
+.col-xl-12
+  .m-portlet
+    .m-portlet__body
+      .m-section.mb-0
+        .m-section__content.table-responsive.text-center
+          h1 = 'COMPARATIVA'
+          #wrapper
+            #checkbox_div
+              p Mostrar/Ocultar años
+              .d-flex style="justify-content: center; margin: 10px;"
+                - @calendar_periods.each do |y|
+                  .ck-button
+                    label
+                      input onchange="hide_show_table(this.id);" type="checkbox" value="hide" checked="true" id="col-#{y.id}"
+                      span = y.calendar.period_name
+
+
+        table.table.table-bordered.input-focusable-table
+          tr
+            th
+            - @calendar_periods.each do |y|
+              th id="col-#{y.id}_head"
+                = y.calendar.period_name
+          tr
+            td style="font-weight: 800"
+              span.text-left = 'Activo circulante'
+            - @calendar_periods.each do |y|
+              td
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Caja / Inversiones'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 1)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 1)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Clientes'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 2)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 2)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Inventarios'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 3)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 3)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Otros activos circulantes'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 4)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 4)
+
+          tr
+            td style="font-weight: 800"
+              span.text-left = 'Activo fijo'
+            - @calendar_periods.each do |y|
+              td
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Terrenos y Construcciones'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 5)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 5)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Maquinaria y equipo'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 6)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 6)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Depreciación acumulada'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 7)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 7)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Otros activos fijos'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 8)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 8)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Cargos y gastos diferidos'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 9)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 9)
+
+          tr
+            td style="font-weight: 800"
+              span.text-left = 'Pasivo total'
+            - @calendar_periods.each do |y|
+              td
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Proveedores'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 10)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 10)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Contribuciones por pagar'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 11)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 11)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Anticipo de clientes'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 12)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 12)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Otros pasivos'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 13)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 13)
+
+          tr
+            td style="font-weight: 800"
+              span.text-left = 'Capital Total'
+            - @calendar_periods.each do |y|
+              td
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Capital social'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 14)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 14)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Utilidad/Perdida acumulada'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 15)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 15)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Utilidad/Perdida ejercicio'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 16)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 16)
+          tr
+            td style="font-weight: 600"
+              span.text-left = 'Otras cuentas de capital'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_balance_sheet_value(@company.id, y.calendar, 17)
+                br
+                span = balance_calendar_detail_value(@company.id, y.calendar, 17)
+
+
+//*===========================TABLA EN BASE A BALANCE SHEET DE COMPANY ==============================
+        .m-section__content.table-responsive.text-center
+          h1 = 'SATWS'
+          #wrapper
+            #checkbox_div
+              p Mostrar/Ocultar años
+              .d-flex style="justify-content: center; margin: 10px;"
+                - @company.balance_sheet.first.keys.excluding('category','children').each do |y|
+                  .ck-button
+                    label
+                      input onchange="hide_show_table(this.id);" type="checkbox" value="hide" checked="true" id="col-#{y}"
+                      span = y
+
+          table.table.table-bordered.input-focusable-table
+            tr
+              th
+              - @company.balance_sheet.first.keys.excluding('category','children').each do |y|
+                th id="col-#{y}_head"
+                  = y
+            - @company.balance_sheet.each_with_index do |bc, bc_index|
+              tr
+                td style="font-weight: 800"
+                  span.text-left = (bc_index+1).to_s + '.  ' + bc['category']
+                - @company.balance_sheet.first.keys.excluding('category','children').each do |y|
+                  td class="full-input col-#{y}"
+                    span.text-danger = @bc_details.find_by(balance_concept_id: BalanceConcept.find_by(active: true, key: bc["category"]).try(:id), calendar_id: Calendar.find_by(period_type: 'anual', year: y).try(:id)).try(:value)
+                    br
+                    span = bc["#{y}"]
+              - bc['children'].each_with_index do |second_level, sl_index|
+                tr
+                  td style="font-weight: 700"
+                    span.text-left = (bc_index+1).to_s + '.  ' +(sl_index+1).to_s + '.  ' + second_level['category']
+                  - @company.balance_sheet.first.keys.excluding('category','children').each do |y|
+                    td class="full-input col-#{y}"
+                      span.text-danger = @bc_details.find_by(balance_concept_id: BalanceConcept.find_by(active: true, key: second_level["category"]).try(:id), calendar_id: Calendar.find_by(period_type: 'anual', year: y).try(:id)).try(:value)
+                      br
+                      span = second_level["#{y}"]
+                  - second_level['children'].each_with_index do |third_level, tl_index|
+                    tr
+                      td style="font-weight: 600"
+                        span.text-left = (bc_index + 1).to_s + '.  ' + (sl_index + 1).to_s + '.  ' + (tl_index + 1).to_s + '.  ' +third_level['category']
+                      - @company.balance_sheet.first.keys.excluding('category','children').each do |y|
+                        td class="full-input col-#{y}"
+                          span.text-danger = @bc_details.find_by(balance_concept_id: BalanceConcept.find_by(active: true, key: third_level["category"]).try(:id), calendar_id: Calendar.find_by(period_type: 'anual', year: y).try(:id)).try(:value)
+                          br
+                          span = third_level["#{y}"]
+                    - if third_level['children'].present?
+                      - third_level['children'].each_with_index do |fourth_level, fol_index|
+                        tr
+                          td style="font-weight: 600"
+                            span.text-left = (bc_index + 1).to_s + '.  ' + (sl_index + 1).to_s + '.  ' + (tl_index + 1).to_s + '.  ' + (fol_index + 1).to_s + '.  ' + fourth_level['category']
+                          - @company.balance_sheet.first.keys.excluding('category','children').each do |y|
+                            td class="full-input col-#{y}"
+                              span.text-danger = @bc_details.find_by(balance_concept_id: BalanceConcept.find_by(active: true, key: fourth_level["category"]).try(:id), calendar_id: Calendar.find_by(period_type: 'anual', year: y).try(:id)).try(:value)
+                              br
+                              span = fourth_level["#{y}"]
+                        - if fourth_level['children']
+                          - fourth_level['children'].each_with_index do |fifth_level, fil_index|
+                            tr
+                              td style="font-weight: 400"
+                                span.text-left = (bc_index + 1).to_s + '.  ' + (sl_index + 1).to_s + '.  ' + (tl_index + 1).to_s + '.  ' + (fol_index + 1).to_s + '.  ' + (fil_index + 1).to_s + '.  ' + fifth_level['category']
+                              - @company.balance_sheet.first.keys.excluding('category','children').each do |y|
+                                td class="full-input col-#{y}"
+                                  span.text-danger = @bc_details.find_by(balance_concept_id: BalanceConcept.find_by(active: true, key: fifth_level["category"]).try(:id), calendar_id: Calendar.find_by(period_type: 'anual', year: y).try(:id)).try(:value)
+                                  br
+                                  span = fourth_level["#{y}"]
+
+
+
+//===========================TABLA EN BASE A BALANCE CONCEPTS ==============================
+        .m-section__content.table-responsive.text-center
+          h1 = 'FACTOR'
+          #wrapper
+            #checkbox_div
+              p Mostrar/Ocultar años
+              .d-flex style="justify-content: center; margin: 10px;"
+                - @calendar_periods.each do |y|
+                  .ck-button
+                    label
+                      input onchange="hide_show_table(this.id);" type="checkbox" value="hide" checked="true" id="col-#{y.id}"
+                      span = y.calendar.period_name
+          table.table.table-bordered.input-focusable-table
+            tr
+              th
+              - @calendar_periods.each do |y|
+                th id="col-#{y.id}_head"
+                  = y.calendar.period_name
+            - @balance_concepts.order('id').each_with_index do |bc, bc_index|
+              tr
+                td style="font-weight: 800"
+                  span.text-left = (bc_index+1).to_s + '.  ' + bc.name
+                - @calendar_periods.each do |y|
+                  - if bc.capturable
+                    td class="full-input col-#{y.id}"
+                      span = @bc_details.find_by(balance_concept_id: bc.id, calendar_id: y.calendar_id).value
+                  - else
+                    td class="full-input col-#{y.id}"
+              - bc.children.where(active: true).order('id').each_with_index do |second_level, sl_index|
+                tr
+                  td style="font-weight: 700"
+                    span.text-left = (bc_index+1).to_s + '.  ' +(sl_index+1).to_s + '.  ' + second_level.name
+                  - @calendar_periods.each do |y|
+                    - if second_level.capturable
+                      td class="full-input col-#{y.id}"
+                        span = @bc_details.find_by(balance_concept_id: second_level.id, calendar_id: y.calendar_id).value
+                    - else
+                      td class="full-input col-#{y.id}"
+                - second_level.children.where(active: true).order('id').each_with_index do |third_level, tl_index|
+                  tr
+                    td style="font-weight: 600"
+                      span.text-left = (bc_index + 1).to_s + '.  ' + (sl_index + 1).to_s + '.  ' + (tl_index + 1).to_s + '.  ' +third_level.name
+                    - @calendar_periods.each do |y|
+                      - if third_level.capturable
+                        td class="full-input col-#{y.id}"
+                          span = @bc_details.find_by(balance_concept_id: third_level.id, calendar_id: y.calendar_id).value
+                      - else
+                        td class="full-input col-#{y.id}"
+                  - third_level.children.where(active: true).order('id').each_with_index do |fourth_level, fol_index|
+                    tr
+                      td style="font-weight: 500"
+                        span.text-left = (bc_index + 1).to_s + '.  ' + (sl_index + 1).to_s + '.  ' + (tl_index + 1).to_s + '.  ' + (fol_index + 1).to_s + '.  ' + fourth_level.name
+                      - @calendar_periods.each do |y|
+                        - if fourth_level.capturable
+                          td class="full-input col-#{y.id}"
+                            span = @bc_details.find_by(balance_concept_id: fourth_level.id, calendar_id: y.calendar_id).value
+                        - else
+                          td class="full-input col-#{y.id}"
+                    - fourth_level.children.where(active: true).order('id').each_with_index do |fifth_level, fil_index|
+                      tr
+                        td style="font-weight: 400"
+                          span.text-left = (bc_index + 1).to_s + '.  ' + (sl_index + 1).to_s + '.  ' + (tl_index + 1).to_s + '.  ' + (fol_index + 1).to_s + '.  ' + (fil_index + 1).to_s + '.  ' + fifth_level.name
+                        - @calendar_periods.each do |y|
+                          - if fifth_level.capturable
+                            td class="full-input col-#{y.id}"
+                              span = @bc_details.find_by(balance_concept_id: fifth_level.id, calendar_id: y.calendar_id).value
+                          - else
+                            td class="full-input col-#{y.id}"

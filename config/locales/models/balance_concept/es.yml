@@ -1,0 +1,12 @@
+es:
+  activerecord:
+    attributes:
+      balance_concept:
+        name: Nombre
+        description: Descripción
+        active: Activo
+        key: Llave
+        scope: Scope
+  scope:
+    total: Total
+    owner: Propietario

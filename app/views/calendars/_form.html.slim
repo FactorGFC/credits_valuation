@@ -1,0 +1,22 @@
+= form_for calendar, validate: true, html: {class: 'm-form m-form--fit'} do |f|
+  .m-portlet__body
+    .form-group.m-form__group.row
+      = f.label :año, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = f.select :year, @years, {include_blank: t('helpers.select.prompt')}, class: 'form-control m-input selectpicker'
+    .form-group.m-form__group.row
+      = f.label :tipo_de_periodo, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = f.select :period_type, @period_types, {include_blank: t('helpers.select.prompt')}, class: 'form-control m-input selectpicker', id: 'calendar_period'
+    .form-group.m-form__group.row
+      = f.label :periodo, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = f.select(:period, options_for_select([]), {prompt: 'Selecciona un periodo'}, {class: 'form-control', id: 'period_selector'})
+  .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit
+    .m-form__actions.m-form__actions--solid
+      .row
+        .col-lg-12
+          = f.submit t('helpers.submit.submit', model: t('.resource')), class: 'btn btn-primary'
+          - if has_policy(Calendar, %w(index))
+            =< link_to calendars_path, class: 'btn btn-secondary'
+              = t('helpers.go_to', resource: t('.back_resource'))

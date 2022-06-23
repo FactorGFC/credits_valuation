@@ -1,0 +1,167 @@
+Rails.application.routes.draw do
+
+  resources :factor_credits
+  #resources :request_comments
+  resources :requests
+  resources :process_statuses
+  resources :income_statement_concepts
+  resources :credit_bureaus
+  resources :calendars
+  resources :company_files
+  resources :financial_institutions
+  resources :credit_types
+  resources :calendar_years
+  resources :company_providers
+  resources :company_clients
+  resources :number_collaborators
+  resources :balance_concepts
+  resources :status_companies
+  resources :blogs
+  resources :blog_types
+  resources :positions
+  resources :companies
+  resources :events
+  #get 'landing/index'
+
+
+  devise_for :users,
+             controllers: {sessions: 'users/sessions',
+                           confirmations: 'users/confirmations',
+                           passwords: 'users/passwords'},
+             path: '/',
+             skip: [:registrations]
+
+  devise_scope :user do
+    #authenticated :user do
+    #  root 'home#index', as: :authenticated_root
+    #end
+
+    #unauthenticated do
+    #  root 'users/sessions#new', as: :unauthenticated_root
+    #end
+
+    get '/login' => 'home#index', as: :authenticated_root
+    get '/home_company' => 'home#home_company'
+
+    get 'get_events',         to: "events#get_events",     :as=>"get_events"
+    get 'get_event_info/:id', to: "events#get_event_info", :as=>"get_event_info"
+    post    '/save_event'     => 'events#save_event'
+    delete  'delete_event/:id'=> 'events#delete'
+
+    get '/complete_user' => 'home#complete_user', as: :complete_user
+    put 'create_sat_user' => 'home#create_sat_user', as: :create_sat_user
+
+    get 'request_steps'  => 'companies#request_steps', as: :request_steps
+    get 'balance_sheet_request'  => 'companies#balance_sheet_request', as: :balance_sheet_request
+    post 'create_balance_sheet_request'  => 'companies#create_balance_sheet_request', as: :create_balance_sheet_request
+    get 'income_statement_capture'  => 'companies#income_statement_capture', as: :income_statement_capture
+    post 'create_income_statement_cap'  => 'companies#create_income_statement_cap', as: :create_income_statement_cap
+
+    get 'balance_sheet_comparative/:id'  => 'companies#balance_sheet_comparative', as: :balance_sheet_comparative
+    get 'income_statement_comparative/:id'  => 'companies#income_statement_comparative', as: :income_statement
+    post 'end_capture/:capture_type'  => 'companies#end_capture', as: :end_capture
+
+    get 'company_balance_sheet/:id'  => 'companies#company_balance_sheet', as: :company_balance_sheet
+    get 'company_income_statement/:id'  => 'companies#company_income_statement', as: :company_income_statement
+    get 'company_details/:id'  => 'companies#company_details', as: :company_details
+    get 'open_pdf/:id/:file'  => 'companies#open_pdf', as: :open_pdf
+
+    get 'request_comments/:company_id' => 'request_comments#index'
+
+    authenticate :user do
+      # Shows all users.
+      get '/users', to: 'users/registrations#index', as: :user_registrations
+
+      #Report routes
+      get 'letter_authorization_pdf/:id' => 'reports#letter_authorization', :defaults => {:format => 'pdf'}
+
+      # Create new users.
+      get '/users/new', to: 'users/registrations#new_user', as: :new_user
+      post '/users', to: 'users/registrations#create_user', as: :create_user
+
+      # Edit page for a user profile.
+      get '/users/edit', to: 'users/registrations#edit', as: :edit_profile
+      match '/users', to: 'users/registrations#update', as: :update_profile, via: [:patch, :put]
+
+      # Edit users.
+      get '/users/:id/edit', to: 'users/registrations#edit_user', as: :edit_user
+      match '/users/:id', to: 'users/registrations#update_user', as: :update_user, via: [:patch, :put]
+
+      # Change password to a user
+      get '/users/:id/change_user_password', to: 'users/registrations#change_user_password', as: :change_user_password
+      match '/users/:id/save_user_password', to: 'users/registrations#save_user_password', as: :save_user_password, via: [:patch, :put]
+
+      # Change own password
+      get '/users/change_password', to: 'users/registrations#change_password', as: :change_password
+      match '/save_password', to: 'users/registrations#save_password', as: :save_password, via: [:patch, :put]
+
+      # Profile page for user.
+      get '/users/:id', to: 'users/registrations#show', as: :user
+
+      # Destroys a user
+      delete '/users/:id', to: 'users/registrations#destroy', as: :destroy_user_registration
+
+      #validate companies
+      put 'validate_company' => 'companies#validate_company', as: :validate_company
+
+      #Asign Calendar to companies
+      put 'asign_calendar' => 'companies#asign_calendar', as: :asign_calendar
+
+      #Asign Analyst to request
+      put 'asign_details_to_request' => 'companies#asign_details_to_request', as: :asign_details_to_request
+
+      #refuse companies
+      put 'refuse_company' => 'companies#refuse_company', as: :refuse_company
+
+      #complete data company
+      get 'data_company' => 'companies#data_company'
+
+      #Add Comment to request
+      put 'add_comment_to_request' => 'request_comments#add_comment_to_request', as: :add_comment_to_request
+
+    end
+
+    # Sets the language to spanish.
+    get '/set_language/spanish', to: 'set_language#spanish'
+
+    # Sets the language to english.
+    get '/set_language/english', to: 'set_language#english'
+
+  end
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  # Sets the language to spanish.
+  get '/set_language/spanish', to: 'set_language#spanish'
+
+  # Sets the language to english.
+  get '/set_language/english', to: 'set_language#english'
+
+  get '/permissions/generate_seeds', to: 'permissions#generate_seeds', as: :start_generate_seeds
+  get '/permissions/get_controller_actions', to: 'permissions#get_controller_actions', as: :get_controller_actions
+  resources :permissions, except: [:show]
+  resources :roles, except: [:show]
+  get '/roles/:id/permissions', to: 'roles#permissions', as: :role_permissions
+  put '/roles/:id/permission/:permission_id', to: 'roles#permission', as: :role_permission
+
+  get '/logbook', to: 'audits#logbook_timeline', as: :logbook_timeline
+  get '/logbook/details', to: 'audits#logbook_detail_table', as: :logbook_detail_table
+  # Get logbooks for timeline
+  get '/logbooks/', to: 'audits#get_more_logbooks', as: :get_more_logbooks
+
+  namespace :api do
+    namespace :v1 do
+    end
+  end
+
+
+  root 'landing#index', as: 'landing'
+
+  get  'loan', to: 'landing#loan', as: :loan
+  post  'credit_request', to: 'landing#credit_request'
+
+  get 'blog_details/:id', to: 'landing#blog_details', as: :blog_details
+  get 'company_blog/:id', to: 'landing#company_blog', as: :company_blog
+
+
+
+end

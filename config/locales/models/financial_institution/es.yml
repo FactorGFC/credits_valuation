@@ -1,0 +1,59 @@
+es:
+  activerecord:
+    attributes:
+      financial_institution:
+        text_field:
+          type_contract:
+            AF: 'Aparatos /Muebles'
+            AG: 'Agropecuario (PFAE)'
+            AL: 'Arrendamiento Automotriz'
+            AP: 'Aviación'
+            BD: 'Fianza'
+            BT: 'Bote / Lancha'
+            CE: 'Cartas de Crédito (PFAE)'
+            CF: 'Crédito fiscal'
+            CL: 'Línea de Crédito'
+            CO: 'Consolidación'
+            CS: 'Crédito Simple (PFAE)'
+            CT: 'Con Colateral (PFAE)'
+            DE: 'Descuentos (PFAE)'
+            EQ: 'Equipo'
+            FI: 'Fideicomiso (PFAE)'
+            FT: 'Factoraje'
+            HA: 'Habilitación o Avío (PFAE)'
+            HE: 'Préstamo tipo Home Equity'
+            HI: 'Mejoras a la casa'
+            LR: 'Línea de Crédito Reinstalable'
+            LS: 'Arrendamiento'
+            MI: 'Otros'
+            OA: 'Otros adeudos vencidos (PFAE)'
+            PA: 'Préstamo para Personas Físicas con Actividad Empresarial (PFAE)'
+            PB: 'Editorial'
+            PG: 'PGUE - Préstamo como garantía de unidades industriales para PFAE'
+            PL: 'Préstamo personal'
+            PN: 'Préstamo de nómina'
+            PR: 'Prendario (PFAE)'
+            PS: 'Pago de Servicios'
+            PQ: 'Quirografario (PFAE)'
+            RC: 'Reestructurado (PFAE)'
+            RD: 'Redescuento (PFAE)'
+            RE: 'Bienes Raíces'
+            RF: 'Refaccionario (PFAE)'
+            RN: 'Renovado (PFAE)'
+            RV: 'Vehículo Recreativo'
+            SC: 'Tarjeta garantizada'
+            SE: 'Préstamo garantizado'
+            SG: 'Seguros'
+            SM: 'Segunda hipoteca'
+            ST: 'Préstamo para estudiante'
+            TE: 'Tarjeta de Crédito Empresarial'
+            UK: 'Desconocido'
+            AU: 'Compra de Automóvil'
+            CC: 'Tarjeta de Crédito'
+
+    errors:
+      models:
+        financial_institution:
+          attributes:
+            email:
+              username_doesnt_exist: No existe usuario en base de datos

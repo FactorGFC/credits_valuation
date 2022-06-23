@@ -1,0 +1,2 @@
+module BlogTypesHelper
+end

@@ -1,0 +1,97 @@
+/ - flash.each do |type, msg|
+/   - if type == 'error'
+/   .toast-top-right id="toast-container"
+/     .toast.toast-error
+/       .toast-message
+/         button.toast-close-button role="button" type="button"
+/         = msg
+
+input type="hidden" id="idStepOne" value="#{@step_one_value}"
+input type="hidden" id="idStepTwo" value="#{@step_two_value}"
+input type="hidden" id="idStepThree" value="#{@step_three_value}"
+input type="hidden" id="idStepFour" value="#{@step_four_value}"
+input type="hidden" id="idStepFive" value="#{@step_five_value}"
+input type="hidden" id="idStepSix" value="#{@step_six_value}"
+
+div.loading-screen
+
+/ div.step-container#step-0 style="display: none"
+/  = render 'credentials'
+/ div.step-container#step-1 style="display: none"
+/   = render 'inputs'
+/ div.step-container#step-2 style="display: none"
+/   = render 'number_collaborators'
+/ div.step-container#step-3 style="display: none"
+/   = render 'financial_institutions'
+/ div.step-container#step-4 style="display: none"
+/   = render 'company_files'
+
+div.step-container#step-0 style="display: none"
+  = render 'credentials'
+div.step-container#step-1 style="display: none"
+  = render 'inputs'
+div.step-container#step-2 style="display: none"
+  = render 'number_collaborators'
+div.step-container#step-3 style="display: none"
+  = render 'company_clients'
+div.step-container#step-4 style="display: none"
+  = render 'company_providers'
+div.step-container#step-5 style="display: none"
+  = render 'financial_institutions'
+div.step-container#step-6 style="display: none"
+  = render 'company_files'
+
+/ - if @company.step_one.nil?
+/   = render 'credentials'
+/ - elsif @company.step_one && @company.step_two.nil? && @company.step_three.nil? && @company.step_four.nil?
+/   div#step-2
+/     | adsf
+/     = render 'inputs'
+/ - elsif @company.step_two && @company.step_three.nil? && @company.step_four.nil?
+/   div#step-3
+/     = render 'number_collaborators'
+/
+/ - elsif @company.step_three && @company.step_four.nil?
+/   = render 'company_clients'
+/ - elsif @company.step_four && @company.step_five.nil?
+/   = render 'company_providers'
+/ -elsif @company.step_six.nil?
+/   = render 'financial_institutions'
+/ -elsif @company.complete.nil?
+/   = render 'company_files'
+
+scss:
+
+  .m-aside-left--fixed .m-aside-left {
+    display: none !important;
+  }
+
+  .m-aside-left--fixed .m-body {
+    padding-left: 0 !important;
+  }
+
+  .m-header--fixed .m-body {
+    padding-top: 0 !important;
+  }
+
+  .m-footer--push.m-aside-left--enabled:not(.m-footer--fixed) .m-footer {
+    margin-left: 0 !important;
+  }
+
+  .btn-section-disabled {
+    opacity: 0.5 !important;
+    pointer-events: none;
+  }
+
+  .m-body .m-content {
+    padding: 85px 30px 10px;
+  }
+
+  .m-brand {
+    display: none !important;
+  }
+
+  .m-nav .m-nav__item#profile{
+    display: none;
+  }
+

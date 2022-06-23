@@ -1,0 +1,38 @@
+es:
+  blogs:
+    index:
+      title: Blogs
+      title_blog: Título
+      resource: el blog
+      position: Posición
+      image: Imagen
+      name: Nombre
+      description: Descripción
+      key: Llave
+      one: Blog
+      other: Blogs
+      count_table:
+        one: 1 Blog
+        other: '%{count} Blogs'
+    form:
+      title: Blogs
+      resource: blog
+      name: Nombre
+      description: Descripción
+      key: Llave
+      back: Ir a blogs
+      back_resource: blogs
+    permissions:
+      title: Permisos
+      name: Nombre
+      description: Descripción
+      controller: Controlador
+      action: Acción
+      back_resource: blogs
+    new:
+      title: Nuevo blog
+    edit:
+      title: Editar blog
+  breadcrumbs:
+    roles: Blogs
+    permissions_for: Permisos para %{permission_name}

@@ -1,0 +1,13 @@
+es:
+  activerecord:
+    attributes:
+      blog:
+        title: Titulo
+        description: Descripción
+        position: Posición
+        image: Imagen
+        key: Llave
+        scope: Scope
+  scope:
+    total: Total
+    owner: Propietario

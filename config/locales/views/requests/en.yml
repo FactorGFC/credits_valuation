@@ -1,0 +1,31 @@
+en:
+  requests:
+    index:
+      title: Request
+      resource: the request
+      company: Company
+      process_status: Process Status
+      name: Name
+      description: Description
+      one: Request
+      other: Requests
+      count_table:
+        one: 1 Request
+        other: '%{count} Requests'
+    form:
+      title: Request
+      resource: Request
+      company: Company
+      process_status: Process Status
+      name: Name
+      description: Description
+      key: Key
+      back: Go to Request
+      back_resource: Requests
+    new:
+      title: New Request
+    edit:
+      title: Edit Request
+  breadcrumbs:
+    roles: Request
+    permissions_for: Permissions for %{permission_name}

@@ -1,0 +1,68 @@
+.col-xl-12
+  .m-portlet
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          span.m-portlet__head-icon.m--hide
+            i.la.la-gear
+          h3.m-portlet__head-text = t('.title')
+    = form_for @user, url: create_user_path(@user), validate: true, html: {class: 'm-form m-form--fit'} do |f|
+      .m-portlet__body
+        - flash.each do |type, message|
+          - if type == 'notice' && message != 'Ingreso exitoso.'
+            .alert.alert-danger
+              button.close.close-new data-dismiss="alert"
+              span.sr-only
+                | Close
+              = translate_errors message
+        .form-group.m-form__group.row
+          / = f.label :employee_number, class: 'col-sm-2 col-form-label'
+          / .col-lg-10
+          /   = f.text_field :employee_number, class: 'form-control m-input'
+        .form-group.m-form__group.row
+          = f.label t('users.registrations.show.full_name'), class: 'col-sm-2 col-form-label'
+          .col-lg-5
+            = f.text_field :first_name, class: 'form-control m-input', placeholder: t('activerecord.attributes.user.first_name')
+          .col-lg-5
+            = f.text_field :last_name, class: 'form-control m-input', placeholder: t('activerecord.attributes.user.last_name')
+        .form-group.m-form__group.row
+          = f.label :email, class:'col-sm-2 col-form-label'
+          .col-lg-10
+            = f.text_field :email, class:'form-control m-input', placeholder: t('activerecord.attributes.user.email')
+        .form-group.m-form__group.row
+          = f.label :password, class:'col-sm-2 col-form-label'
+          .col-lg-10
+            = f.text_field :password, class:'form-control m-input', placeholder: t('activerecord.attributes.user.password')
+        .form-group.m-form__group.row
+          = f.label :phone, class:'col-sm-2 col-form-label'
+          .col-lg-10
+            = f.text_field :phone, class:'form-control m-input', placeholder: t('activerecord.attributes.user.phone'), required: true
+        .form-group.m-form__group.row
+          = f.label :role_id, class: 'col-2 col-form-label'
+          .col-lg-10
+            = f.select :role_id, Role.all.map { |r| [r.name, r.id, {'data-key': r.key}] },
+                    {include_blank: t('helpers.select.prompt')}, class: 'form-control m-input selectpicker'
+        / .form-group.m-form__group.row.fields_cancelation_employees
+        /   .col-4.text-center
+        /     = f.label :registry, class: 'm-checkbox m-checkbox--state-brand' do
+        /       = f.check_box :registry
+        /       = t('activerecord.attributes.user.registry')
+        /       span
+        /   .col-4.text-center
+        /     = f.label :audit, class: 'm-checkbox m-checkbox--state-brand' do
+        /       = f.check_box :audit
+        /       = t('activerecord.attributes.user.audit')
+        /       span
+        /   .col-4.text-center
+        /     = f.label :reviewer, class: 'm-checkbox m-checkbox--state-brand' do
+        /       = f.check_box :reviewer
+        /       = t('activerecord.attributes.user.reviewer')
+              span
+      .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit
+        .m-form__actions.m-form__actions--solid
+          .row
+            .col-lg-12
+              = f.submit t('helpers.submit.submit', model: t('.resource')), class: 'btn btn-primary'
+              /- if has_policy('Users::Registrations', %w(index))
+              =< link_to user_registrations_path, class: 'btn btn-secondary'
+                = t('helpers.go_to', resource: t('.back_resource'))

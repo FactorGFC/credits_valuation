@@ -1,0 +1,9 @@
+en:
+  activerecord:
+    attributes:
+      process_status:
+        name: Name
+        order: Order
+        active: Active
+        key: Key
+        scope: Scope

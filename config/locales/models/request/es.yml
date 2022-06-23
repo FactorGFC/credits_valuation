@@ -1,0 +1,8 @@
+es:
+  activerecord:
+    attributes:
+      request:
+        company: Compañia
+        credit_type: Tipo de Crédito
+        process_status: Estatus
+        analist: Análista

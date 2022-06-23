@@ -1,0 +1,58 @@
+es:
+  layouts:
+    side_menu:
+      dashboard: Inicio
+      blogs:     Blogs
+      positions: Posiciones
+      blog_types: Tipos de blog
+      process_status: Estatus del Proceso
+      new_process_status: Crear estatus
+      administration: Administración
+      catalogs: Catálogos
+      process: Procesos
+      users: Usuarios
+      new_user: Crear usuario
+      permissions: Permisos
+      new_permission: Crear permiso
+      roles: Roles
+      balance_concepts: Conceptos Balance
+      income_statement_concepts: Conceptos de estado de resultados
+      calendars: Calendarios
+      logbook: Bitácora
+      timeline: Timeline
+      detail: Detallada
+      new_role: Crear rol
+      index_masc: Ver todos
+      index_fem: Ver todas
+      new_blog: Crear blog
+    top_bar:
+      account: Cuenta
+      profile: Perfil
+      change_password: Cambiar contraseña
+      log_out: Salir
+    header:
+      select_language: Selecciona tu idioma
+      english: Inglés
+      spanish: Español
+      account: Cuenta
+      profile: Perfil
+      change_password: Cambiar contraseña
+      log_out: Salir
+      title: Factor GFC
+    blog: blog
+    application:
+      copyright: Todos los derechos reservados.
+    header_menu:
+      select_process: Créditos FACTOR
+  will_paginate:
+    next_label: Siguiente
+    previous_label: Anterior
+    page_gap: ...
+  blogs:
+    form:
+      blogs: Blogs
+      resource: Blog
+  positions:
+    form:
+      positions: Posiciones
+      resource: Posición

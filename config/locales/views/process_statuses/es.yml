@@ -1,0 +1,28 @@
+es:
+  process_statuses:
+    index:
+      title: "Estatus Proceso de Validación"
+      resource: el proceso de validación
+      name: Nombre
+      description: "Descripción"
+      key: Llave
+      one: Estatus de Proceso
+      other: Estatus de Proceso
+      count_table:
+        one: 1 Estatus
+        other: '%{count} Estatus'
+    form:
+      title: "Estatus Proceso de Validación"
+      resource: Estatus
+      name: Nombre
+      description: "Descripción"
+      key: Llave
+      back: Ir a Estatus de Procesos
+      back_resource: Estatus de Procesos
+    new:
+      title: Nuevo Estatus de Proceso
+    edit:
+      title: Editar Estatus de Proceso
+  breadcrumbs:
+    roles: Blogs
+    permissions_for: Permisos para %{permission_name}

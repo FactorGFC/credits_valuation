@@ -1,0 +1,1 @@
+json.partial! "income_statement_concepts/statement_of_income_concept", statement_of_income_concept: @statement_of_income_concept

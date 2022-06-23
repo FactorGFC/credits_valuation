@@ -1,0 +1,64 @@
+#modalCreateSat.modal-backdrop.modal.fade.bs-modal-lg.in tabindex="-1" role="dialog" aria-hidden="true" style="display: block;"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        .modal-title
+          h5
+            | Completar perfil
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"
+            | \&times;
+      = form_for current_user, url: create_sat_user_path, method: 'PUT', remote: :true, html: {multipart: true },class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
+        .modal-body
+          ul.nav.nav-pills role="tablist"
+            li.nav-item
+              a.nav-link.active data-toggle="tab" href="#rfc_form"
+                | CIEC
+            li.nav-item
+              a.nav-link data-toggle="tab" href="#fiel_form"
+                | E.FIRMA
+          .tab-content
+            .tab-pane.active id="rfc_form"
+              .form-group.m-form__group
+                label
+                  | R.F.C
+                input.form-control.m-input.m-input--square placeholder=("R.F.C") type="text" value="#{ @company_rfc}" disabled="true"/
+                input type="hidden" name="rfc" value="#{ @company_rfc}" /
+                span.m-form__help
+
+                .form-group.m-form__group
+                  label for="exampleInputPassword1"
+                    | Contraseña
+                  input#exampleInputPassword1.form-control.m-input.m-input--square placeholder="Contraseña" name="passsword_ciec" type="password" /
+            .tab-pane id="fiel_form"
+              .m-portlet__body
+                .form-group.m-form__group
+                  label
+                    | Certificado (.cer)
+                  .custom-file
+                    = file_field_tag "cer", class: "custom-file-input"
+                    label.custom-file-label for="validatedCustomFile"  Elige un archivo (.cer) ...
+                    .invalid-feedback Archivo invalido
+                .form-group.m-form__group
+                  label
+                    | Clave privada (.key)
+                  .custom-file
+                    = file_field_tag "key", class: "custom-file-input"
+                    label.custom-file-label for="validatedCustomFile"  Elige un archivo (.key) ...
+                    .invalid-feedback Archivo invalido
+                  span.custom-file-control
+              .form-group.m-form__group
+                label for="exampleInputPassword1"
+                  | Contraseña
+                input#exampleInputPassword2.form-control.m-input.m-input--square placeholder="Contraseña" name="passsword_firma" type="password" /
+          - flash.each do |type, message|
+            - if type == 'notice' && message != 'Ingreso exitoso.'
+              .alert.alert-danger
+                button.close.close-new data-dismiss="alert"
+                span.sr-only
+                  | Close
+                = translate_errors message
+        .modal-footer
+          button.btn.btn-secondary data-dismiss="modal" type="button"
+            | Close
+          = f.submit 'Guardar', class: 'btn btn-primary'

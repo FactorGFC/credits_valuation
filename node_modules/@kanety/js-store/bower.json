@@ -1,0 +1,5 @@
+{
+  "name": "@kanety/js-store",
+  "version": "0.1.2",
+  "main": "dist/js-store.js"
+}

@@ -1,0 +1,39 @@
+.form-group.m-form__group.row.nested-fields style="padding: 15px 0; margin-bottom: 0 !important;"
+  .col-xl-10 style="margin-bottom: 1em"
+    .row
+      .col-sm-8
+        = f.label 'Institución', class: 'col-form-label'
+        = f.text_field :institution, class: 'form-control m-input',readonly: true
+      .col-sm-4
+        = f.label 'Tipo de Crédito', class: 'col-form-label'
+        = f.select(:credit_type_id, @credit_types.collect {|u| [u.name, u.id]}, {}, {include_blank: 'Seleccionar una opción', class:'form-control m-input'})
+    .row
+      .col-sm-4
+        = f.label 'Línea Autorizada', class: 'col-form-label'
+        = f.number_field :authorized_line, class: 'form-control m-input', min: 0
+      .col-sm-4
+        = f.label 'Saldo', class: 'col-form-label'
+        = f.number_field :balance, class: 'form-control m-input', min: 0,readonly: true
+      .col-sm-4
+        = f.label 'Moneda', class: 'col-form-label'
+        = f.select :coin, FinancialInstitution.coins.keys.map { |w| [w, w] }, {:prompt => 'SElecciona'},{class:'form-control  m-input',readonly: true, disabled: true}
+    .row
+      .col-sm-6
+        = f.label 'Tipo de contrato', class: 'col-form-label'
+        = f.text_field :type_contract, class: 'form-control m-input',readonly: true
+      .col-sm-6
+        = f.label 'Garantía', class: 'col-form-label'
+        = f.text_field :warranty, class: 'form-control m-input'
+      .col-sm-6
+        = f.label 'Tasa', class: 'col-form-label'
+        = f.number_field :rate, class: 'form-control m-input', min: 0
+    .row
+      .col-sm-6
+        = f.label 'Vencimiento', class: 'col-form-label'
+        = f.text_field :expiration, class: 'form-control m-input', 'data-provide': 'datepicker'
+      .col-sm-6
+        = f.label 'Destíno', class: 'col-form-label'
+        = f.text_field :destiny, class: 'form-control m-input'
+  .col-xl-2 style="display: flex;align-items: center;"
+    = link_to_remove_association "Remover", f, class: 'btn m-btn--pill btn-outline-danger mr-3', style:"margin-top:33px;"
+  .hl-dotted

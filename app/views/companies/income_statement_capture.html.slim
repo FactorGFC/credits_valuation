@@ -1,0 +1,163 @@
+.col-xl-12
+  .portlet-profile.d-flex.justify-content-end.mb-5
+    .info-profile-container
+      .icon-circle.d-flex.justify-content-end.align-items-center.px-5
+        i.fa.fa-id-card.fa-4x style="position: relative;"
+      .d-flex.flex-column.col-md-12.mb-2
+        .col-md-12
+          span.port-title = @company.name
+          span = @company.rfc
+      .d-flex.col-md-12
+        .col-md-6
+          span.port-subtitle = 'Dirección'
+          span = @company.address
+          span.port-subtitle = 'Estatus'
+          span.status-pill class="#{render_status_by_class(@company.try(:status_company).try(:key))}"
+            = @company.try(:status_company).present? ? @company.try(:status_company).try(:name): 'PENDIENTE DE REVISIÓN X FACTOR'
+        .vl
+        .col-md-6
+          span.port-subtitle = 'Actividad Principal'
+          span = @company.main_activity
+          span.port-subtitle = 'Principales Productos/Servicios'
+          - @company.main_product_list.each do |e|
+            span.tag
+              = "#{e}"
+
+  .m-portlet.m-portlet--creative.m-portlet--first.m-portlet--bordered-semi
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          h2.m-portlet__head-label.m-portlet__head-label--info
+            span
+              | Captura de Estado de Resultados
+
+    .m-portlet__body style='margin-top: -60px;'
+      .m-section.mb-0
+        .m-section__content.text-center
+          = form_tag '/create_income_statement_cap', :method => 'post' do
+            .table-wrapper
+              table.table.table-bordered.input-focusable-table
+                tr
+                  th
+                  - @calendar_periods.each do |y|
+                    th = y.calendar.period_name
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Ingresos'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.1][concept]" value="1"
+                        input type="hidden" name="b_sheet[#{y.id}.1][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.1][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 1, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Costo de ventas'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.2][concept]" value="2"
+                        input type="hidden" name="b_sheet[#{y.id}.2][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.2][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 2, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Utilidad Bruta'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.3][concept]" value="3"
+                        input type="hidden" name="b_sheet[#{y.id}.3][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.3][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 3, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Gastos de operación'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.4][concept]" value="4"
+                        input type="hidden" name="b_sheet[#{y.id}.4][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.4][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 4, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Utilidad de operación'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.5][concept]" value="5"
+                        input type="hidden" name="b_sheet[#{y.id}.5][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.5][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 5, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Resultado integral de financiamiento'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.6][concept]" value="6"
+                        input type="hidden" name="b_sheet[#{y.id}.6][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.6][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 6, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Gasto financiero'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.7][concept]" value="7"
+                        input type="hidden" name="b_sheet[#{y.id}.7][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.7][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 7, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Utilidad o perdida cambiaria'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.8][concept]" value="8"
+                        input type="hidden" name="b_sheet[#{y.id}.8][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.8][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 8, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Otros gastos/ingresos'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.9][concept]" value="9"
+                        input type="hidden" name="b_sheet[#{y.id}.9][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.9][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 9, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Utilidad antes de impuestos'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.10][concept]" value="10"
+                        input type="hidden" name="b_sheet[#{y.id}.10][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.10][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 10, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'ISR'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.11][concept]" value="11"
+                        input type="hidden" name="b_sheet[#{y.id}.11][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.11][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 11, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'PTU'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.12][concept]" value="12"
+                        input type="hidden" name="b_sheet[#{y.id}.12][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.12][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 12, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Participacion subsidiarios'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.13][concept]" value="13"
+                        input type="hidden" name="b_sheet[#{y.id}.13][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.13][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 13, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                  tr
+                    td style="font-weight: 800"
+                      span.text-left = 'Utilidad neta'
+                    - @calendar_periods.each do |y|
+                      td class="full-input"
+                        input type="hidden" name="b_sheet[#{y.id}.14][concept]" value="14"
+                        input type="hidden" name="b_sheet[#{y.id}.14][period]" value="#{y.calendar_id}"
+                        input type="number" name="b_sheet[#{y.id}.14][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 14, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+            .d-inline-flex.justify-content-around.col-md-12
+              .col-md-6
+                = button_tag type: 'submit', class: "btn btn-outline-info btn-large" do
+                  | Guardar Borrador
+          - if current_user.company.income_calendar_details.present?
+            = form_tag '/end_capture/income_statement', :method => 'post' do
+              = button_tag type: 'submit', class: "btn btn-primary btn-large" do
+                | Finalizar y enviar

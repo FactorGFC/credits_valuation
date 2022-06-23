@@ -1,0 +1,102 @@
+
+<main>
+
+  <!-- BreadCrumb start-->
+<!--  <section class="breadcrumb-area" id="banner_animation2">
+      <div class="breadcrumb-widget breadcrumb-widget-2  pt-50 pb-45" style="background-image: asset_path('bg-3.jpg');">
+
+          <div class="shapes">
+              <div class="one-shape shape-3" data-parallax='{"x": -100, "y": 0, "rotateZ":0}'>
+                  <img src="img/breadcrumb/Polygon-3.png" alt="shape">
+              </div>
+              <div class="one-shape shape-4" data-parallax='{"x": -200, "y": 0, "rotateZ":0}'>
+                  <img src="img/breadcrumb/Polygon-4.png" alt="shape">
+              </div>
+          </div>
+          <div class="container">
+              <div class="row">
+                  <div class="col-lg-8 mx-auto">
+                      <div class="breadcrumb-content pt-50">
+                          <h1><%#= @blog.title %></h1>
+                          <div class="post-info mt-5">
+                              <div class="date">
+                                  <img src="<%#= asset_path('blog/calendar-outline.svg') %>" alt="icon">
+                                  <span><%#= @blog.created_at.strftime("%B %d, %Y") %></span>
+                              </div>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>-->
+
+  <!-- BreadCrumb end-->
+
+
+  <!-- Blog Details start-->
+  <section class="mt-100 pt-120 pb-120 bg_disable">
+      <div class="container">
+          <div class="row gy-lg-0 gy-4">
+              <div class="col-lg-1 position-relative">
+                  <div class="blog-share-widget d-flex d-lg-block align-items-center">
+                      <p>Compartir</p>
+                      <div class="social-link">
+                          <a href="#"><i class="fa fa-facebook-f"></i></a>
+                          <a href="#"><i class="fa fa-instagram"></i></a>
+                          <a href="#"><i class="fa fa-twitter"></i></a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-7">
+
+                  <div class="post-details-widget pb-70 border-bottom position-relative">
+                      <img class="post-img w-100" src="data:image/jpeg;base64,<%= @blog.image %>" alt="post image" style="width: 670px; height: 418px;">
+
+                      <div class="mt-30">
+                        <h1><%= @blog.title %></h1>
+                        <div class="sec-date">
+                          <img src="<%= asset_path('blog/calendar-outline.svg') %>" alt="icon">
+                          <span class="ml-10"><small><%= @blog.created_at.strftime("%d-%m-%Y") %></small></span>
+                        </div>
+                      </div>
+
+                      <p class="post-text mt-35"><%= @blog.description %>
+                      </p>
+                  </div>
+              </div>
+
+              <div class="col-lg-4 ps-xl-5">
+                  <div class="blog-sidebar-widget ps-lg-2">
+
+                      <div class="widget-news mt-10">
+                        <% if @latest_blogs.present? %>
+                          <h4 class="widget-title">Otros blogs</h4>
+
+                          <ul class="recent-post">
+                            <% @latest_blogs.each do |blog| %>
+                              <li>
+                                <a href="/blog_details/<%= blog.id %>">
+                                  <img src="data:image/jpeg;base64,<%= blog.image %>" alt="recent-post" style="width: 60px; height: 61px;">
+                                  <div class="news-content">
+                                    <h6><a href="#"><%= blog.title %></a></h6>
+                                    <div class="post-date">
+                                      <img src="<%= asset_path('blog/calendar-outline.svg') %>" alt="icon">
+                                      <span><%= blog.created_at.strftime("%d-%m-%Y") %></span>
+                                    </div>
+                                  </div>
+                                </a>
+                              </li>
+                            <% end %>
+                          </ul>
+                        <% end %>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Blog Details end-->
+</main>

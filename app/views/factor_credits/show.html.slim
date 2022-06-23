@@ -1,0 +1,24 @@
+.col-xl-12
+  .m-portlet
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          span.m-portlet__head-icon.m--hide
+            i.la.la-gear
+          h3.m-portlet__head-text = t('.title')
+    .m-portlet__body
+      .row
+        .col-lg-12
+          = "#{t('.name')}: #{@factor_credit.name}"
+        .col-lg-12
+          = "#{t('.description')}: #{@factor_credit.description}"
+        .col-lg-12
+          = "#{t('.active')}: #{@factor_credit.active}"
+        .col-lg-12
+          = "#{t('.order')}: #{@factor_credit.order}"
+    .m-portlet__foot
+      .m-form__actions.m-form__actions--solid
+        .row
+          .col-lg-12
+            =< link_to boards_path, class: 'btn btn-secondary'
+              = t('helpers.go_to', resource: t('.back_resource'))

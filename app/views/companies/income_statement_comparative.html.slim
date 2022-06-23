@@ -1,0 +1,242 @@
+.col-xl-12
+  .m-portlet
+    .m-portlet__body
+      .m-section.mb-0
+
+        .m-section__content.table-responsive.text-center
+          h1 = 'FACTOR'
+          #wrapper
+            #checkbox_div
+              p Mostrar/Ocultar años
+              .d-flex style="justify-content: center; margin: 10px;"
+                - @calendar_periods.each do |y|
+                  .ck-button
+                    label
+                      input onchange="hide_show_table(this.id);" type="checkbox" value="hide" checked="true" id="col-#{y.id}"
+                      span = y.calendar.period_name
+
+
+        table.table.table-bordered.input-focusable-table
+          tr
+            th
+            - @calendar_periods.each do |y|
+              th id="col-#{y.id}_head"
+                = y.calendar.period_name
+          tr
+            td style="font-weight: 800"
+              span.text-left = 'Ingresos'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_income_stat_value(@company.id, y.calendar, 1)
+                br
+                span = income_calendar_detail_value(@company.id, y.calendar, 1)
+          tr
+            td style="font-weight: 800"
+              span.text-left = 'Costo de ventas'
+            - @calendar_periods.each do |y|
+              td class="full-input col-#{y.id}"
+                - if y.calendar.period_type == 'anual'
+                  span.text-success = company_income_stat_value(@company.id, y.calendar, 1)
+                br
+                span = income_calendar_detail_value(@company.id, y.calendar, 1)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Utilidad Bruta'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 2)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 2)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Gastos de operación'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 3)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 3)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Utilidad de operación'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 4)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 4)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Resultado integral de financiamiento'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 5)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 5)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Gasto financiero'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 6)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 6)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Utilidad o perdida cambiaria'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 7)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 7)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Otros gastos/ingresos'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 8)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 8)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Utilidad antes de impuestos'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 9)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 9)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'ISR'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 10)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 10)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'PTU'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 11)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 11)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Participacion subsidiarios'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 12)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 12)
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Utilidad neta'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  - if y.calendar.period_type == 'anual'
+                    span.text-success = company_income_stat_value(@company.id, y.calendar, 13)
+                  br
+                  span = income_calendar_detail_value(@company.id, y.calendar, 13)
+
+/*===========================ANTIGUO METODO==================
+          table.table.table-bordered.input-focusable-table
+            tr
+              th
+              - @calendar_periods.each do |y|
+                th id="col-#{y.id}_head"
+                  = y.calendar.period_name
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Ingresos'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'ingresos', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Costo de ventas'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'costo_de_ventas', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Utilidad Bruta'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'utilidad_bruta', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Gastos de operación'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'gastos_de_operacion', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Utilidad de operación'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'utilidad_de_operacion', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Resultado integral de financiamiento'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'resultado_integral_de_financiamiento', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Gasto financiero'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'gasto_financiero', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Utilidad o perdida cambiaria'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'utilidad_o_perdida_cambiaria', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Otros gastos/ingresos'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'otros_gastos_e_ingresos', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Utilidad antes de impuestos'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'utilidad_antes_de_impuestos', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'ISR'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'ISR', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'PTU'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'PTU', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Participacion subsidiarios'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'participacion_subsidiarios', calendar_id: y.calendar_id).value
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Utilidad neta'
+              - @calendar_periods.each do |y|
+                td class="full-input col-#{y.id}"
+                  span = @ins_details.find_by(income_statement_concept_key: 'utilidad_neta', calendar_id: y.calendar_id).value

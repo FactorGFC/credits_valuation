@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+  <head>
+    <title>FACTOR GLOBAL</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Overpass:300,400,400i,600,700" rel="stylesheet">
+
+    <%= stylesheet_link_tag 'landing', media: 'all', 'data-turbolinks-track' => 'reload' %>
+    <%= javascript_include_tag 'application', media: 'all' %>
+    <%#= javascript_include_tag 'landing', media: 'all', 'data-turbolinks-track' => 'reload' %>
+
+
+  </head>
+
+  <body>
+    <!-- Preloader -->
+    <!--div id="preloader">
+      <div id="ctn-preloader" class="ctn-preloader">
+        <div class="round_spinner">
+          <div class="spinner"></div>
+          <div class="text">
+            <%#= image_tag "logo.png", alt: "Logo", height: 120%>
+          </div>
+        </div>
+        <h2 class="head">Bienvenido</h2>
+        <p></p>
+      </div>
+    </div-->
+    <!-- Header -->
+
+
+    <header class="header">
+      <div class="header-top py-2 bg_white">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-md-5">
+              <div class="header-info-left">
+            <!--
+                <div class="language-list">
+                  <select id="select-lang">
+                    <option value="English">English</option>
+                  </select>
+                </div>
+              -->
+                <div class="timestamp ms-4"> <i class="fa fa-clock-o"></i> Lun - Vie 10:00-18:00
+                </div>
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="header-info-right">
+                <ul>
+                  <li>
+                    <i class="fa fa-phone"></i>
+                    <a href="tel:01234567890">+01234-567890</a>
+                  </li>
+
+                  <li>
+                    <i class="fa fa-envelope"></i>
+                    <a href="#">factorgfc.global@email.com</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="header-menu header-menu-3" id="sticky">
+        <nav class="navbar navbar-expand-lg ">
+          <div class="container">
+            <a class="navbar-brand sticky_logo" href="/">
+              <img class="main" src="<%= asset_path('logo.png') %>" alt="logo" style="width: 100px;">
+              <img class="sticky" src="<%= asset_path('logo.png')%>" alt="logo" style="width: 100px;">
+            </a>
+            <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="menu_toggle">
+                          <span class="hamburger">
+                              <span></span>
+                              <span></span>
+                              <span></span>
+                          </span>
+                          <span class="hamburger-cross">
+                              <span></span>
+                              <span></span>
+                          </span>
+                      </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav menu ms-auto">
+                <li class="nav-item dropdown submenu ">
+                  <a href="/" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">Inicio</a>
+                </li>
+                <li class="nav-item dropdown submenu ">
+                <li class="nav-item dropdown submenu">
+                  <a class="nav-link dropdown-toggle" href="loan" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    PRESTAMO
+                  </a>
+                  <i class="arrow_carrot-down_alt2 mobile_dropdown_icon" aria-hidden="false" data-bs-toggle="dropdown"></i>
+                  <ul class="dropdown-menu">
+                    <li class="nav-item"><a class="nav-link" href="loan">Aplicar Prestamo</a></li>
+                    <!--<li class="nav-item"><a class="nav-link active" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Loan Application</a>
+                      <i class="arrow_carrot-down_alt2 mobile_dropdown_icon" aria-hidden="false" data-bs-toggle="dropdown"></i>
+
+                      <ul class="dropdown-menu">
+                        <li class="nav-item"><a class="nav-link active" href="loan-details">Step 01</a></li>
+                        <li class="nav-item"><a class="nav-link" href="personal-details">Step 02</a></li>
+                        <li class="nav-item"><a class="nav-link" href="personal-details">Step 03</a></li>
+                      </ul>
+                    </li>-->
+                  </ul>
+                </li>
+                <!--<li class="nav-item dropdown submenu">
+                  <a class="nav-link dropdown-toggle" href="career.html" role="button"
+                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Job Pages
+                  </a>
+                  <i class="arrow_carrot-down_alt2 mobile_dropdown_icon" aria-hidden="false"
+                     data-bs-toggle="dropdown"></i>
+                  <ul class="dropdown-menu">
+                    <li class="nav-item"><a class="nav-link" href="career.html">Career</a></li>
+                    <li class="nav-item"><a class="nav-link" href="job-post.html">Jobs</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="job-application.html">Job
+                      Application</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item dropdown submenu">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">
+                    Pages
+                  </a>
+                  <i class="arrow_carrot-down_alt2 mobile_dropdown_icon" aria-hidden="false"
+                     data-bs-toggle="dropdown"></i>
+                  <ul class="dropdown-menu ">
+                    <li class="nav-item"><a class="nav-link" href="card.html">Cards</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="error.html">404 Error</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item dropdown submenu">
+                  <a class="nav-link dropdown-toggle" href="blog.html" role="button"
+                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Blog
+                  </a>
+                  <i class="arrow_carrot-down_alt2 mobile_dropdown_icon" aria-hidden="false"
+                     data-bs-toggle="dropdown"></i>
+                  <ul class="dropdown-menu ">
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog Listing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog-details.html">Blog Details</a>
+                    </li>
+                  </ul>
+                </li>-->
+              </ul>
+              <a class="theme-btn theme-btn-outlined_alt" href="/loan">Aplicar Prestamo</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- Header end-->
+
+    <div>
+      <%= yield %>
+    </div>
+
+    <!-- footer -->
+    <footer class="footer footer-3">
+      <div class="footer-top  pt-200 pb-lg-115 pb-120">
+        <div class="container">
+          <div class="row gx-0 pt-45 ">
+
+            <div class="col-lg-4 col-sm-6 text-center text-sm-start ms-0 ">
+              <div class="footer-widget wow fadeInLeft mb-30">
+                <!--<div class="footer-text mb-20">
+                  <p>Banca is a leading bank in the worldzone and a prominent international banking
+                    institution</p
+                </div>
+
+                <span class="overline">COTATION</span>
+
+                <div class="footer-bold">
+                  <span class="counter">$<span>35.105</span> </span>
+                  <span class="counter">-<span>0.46</span>% </span>
+                </div>
+                <p class="time">2021-01-05 14:00 (INTERNATIONAL TIME)</p>-->
+              </div>
+            </div>
+
+
+            <div class="col-lg-2 col-sm-6 text-center text-sm-start ms-lg-5 ">
+              <div class="footer-widget mb-30 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="f-widget-title">
+                  <h5>Factor GFC Global </h5>
+                </div>
+                <div class="footer-link">
+                  <ul>
+                    <li><a href="#"> Factor GFC Global</a></li>
+                    <li><a href="#"> Factor GFC Global</a></li>
+                    <li><a href="#"> Factor GFC Global</a></li>
+                    <li><a href="#"> Factor GFC Global</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2  col-sm-6 text-center text-sm-start ms-lg-5">
+              <div class="footer-widget mb-30 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="f-widget-title">
+                  <h5>Publicaciones</h5>
+                </div>
+                <div class="footer-link">
+                  <ul>
+                    <li><a href="#"> Factor GFC Global</a></li>
+                    <li><a href="#"> Factor GFC Global</a></li>
+                    <li><a href="#"> Factor GFC Global</a></li>
+                    <li><a href="#"> Factor GFC Global</a></li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-lg-2 col-sm-6 text-center text-sm-start me-0 ms-lg-5">
+              <div class="footer-widget mb-30 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="f-widget-title">
+                  <h5>Acceso Directo</h5>
+                </div>
+                <div class="footer-link">
+                  <ul>
+                    <li><a href="#">Factor GFC Global</a></li>
+                    <li><a href="#">Factor GFC Global</a></li>
+                    <li><a href="#">Factor GFC Global</a></li>
+                    <li><a href="#">Factor GFC Global</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- copyright area -->
+      <div class="copyright pt-25 pb-25">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-3 text-center text-lg-start">
+              <a href="/" class="p-0 m-0">
+                <%= image_tag "logo.png", alt: "Logo", height: 50%>
+              </a>
+            </div>
+            <div class="col-lg-5 text-center my-3 my-sm-0">
+              <div class="copyright-text">
+                <p>Copyright&copy; Factor GFC Global 2021. <br class="d-sm-none"> <a class="ms-2" href="#">Políticas Privacidad</a> |
+                  <a class="ms-0" href="#">Terminos y Condiciones</a>
+                </p>
+              </div>
+            </div>
+            <div class="col-lg-4 text-center text-lg-end ">
+              <div class="social-button">
+                <a href="#"><i class="fa fa-facebook-f"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                <a href="#"><i class="fa fa-linkedin"></i></a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- footer end -->
+
+    <!-- Back to top button -->
+    <a id="back-to-top" title="Back to Top"></a>
+
+  </body>
+</html>

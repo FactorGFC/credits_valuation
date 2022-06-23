@@ -1,0 +1,14 @@
+.col-xl-12
+  .m-portlet
+    .m-portlet__body
+      .m-section.mb-0
+        .m-section__content.table-responsive.text-center
+          table.table.table-bordered.input-focusable-table
+            tr
+              th
+              - @years.each do |y|
+                th = y
+            - @company_bs.pluck(:balance_concept_id).uniq.each_with_index do |bc, bc_index|
+              tr
+                td style="font-weight: 800"
+                  span.text-left = "#{bc_index}. #{BalanceConcept.find(bc).name}"

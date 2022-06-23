@@ -1,0 +1,51 @@
+<main>
+  <!-- BreadCrumb start -->
+  <section class="breadcrumb-area">
+    <div class="breadcrumb-widget  pt-120 pb-30" style="background-image: <%= asset_path("breadcrumb/bg-1.png")%>">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="breadcrumb-content pt-85">
+              <h1>Solicitud de Prestamo</h1>
+              <ul>
+                <li><a href="/">Inicio</a></li>
+                <li>Solicitud Prestamo</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- BreadCrumb end -->
+
+  <!-- Loan details start -->
+  <%= form_tag '/credit_request', :method => 'post' do %>
+    <section class="loan-deatils-area bg_disable pt-50 pb-120" id="first_step">
+      <%= render "loan_fstep" %>
+    </section>
+    <!--section class="loan-deatils-area bg_disable pt-130 pb-120" id="second_step"  style="display: none;">
+      <%#= render "loan_sstep" %>
+    </section-->
+  <% end %>
+  <!-- Loan details end -->
+</main>
+
+<!-- JQuery code to  show the form -->
+<script type="text/javascript">
+    window.onload = function () {
+        $(document).on('click','#btn_next', function(e) {
+            e.preventDefault();
+            $("#first_step").hide();
+            $("#second_step").show();
+            return false;
+        });
+
+        $(document).on('click','#btn_prev', function(e) {
+            e.preventDefault();
+            $("#second_step").hide();
+            $("#first_step").show();
+            return false;
+        });
+    };
+</script>

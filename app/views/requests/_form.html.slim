@@ -1,0 +1,26 @@
+= form_for request, validate: true, html: {class: 'm-form m-form--fit'} do |f|
+  .m-portlet__body
+    .form-group.m-form__group.row
+      = f.label :company, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = f.text_field :company, class: 'form-control m-input' 
+    .form-group.m-form__group.row
+      = f.label :credit_type, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = f.text_field :credit_type, class: 'form-control m-input' 
+    .form-group.m-form__group.row
+      = f.label :process_status, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = f.text_field :process_status, class: 'form-control m-input' 
+    .form-group.m-form__group.row
+      = f.label :user, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = f.text_field :user, class: 'form-control m-input' 
+  .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit
+    .m-form__actions.m-form__actions--solid
+      .row
+        .col-lg-12
+          = f.submit t('helpers.submit.submit', model: t('.resource')), class: 'btn btn-primary'
+          - if has_policy(Request, %w(index))
+            =< link_to requests_path, class: 'btn btn-secondary'
+              = t('helpers.go_to', resource: t('.back_resource'))

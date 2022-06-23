@@ -1,0 +1,89 @@
+
+.input-focusable-table{
+  height: 100% !important;
+
+  tr{
+    position: relative;
+  }
+  tr > th{
+    position:         sticky;
+    color:            white;
+    text-align:       center;
+    font-weight:      bold;
+    background-color: #3b3e52;
+    font-size:        14px;
+    border:           1px solid #3b3e52;
+    top:              70px; /* Don't forget this, required for the stickiness */
+    z-index:          10;
+  }
+
+  td{
+    border:         1px solid #3b3e52;
+    vertical-align: middle;
+  }
+
+  td.full-input{
+    padding:        5px 50px;
+    font-size:      15px;
+    text-align:     center;
+    font-weight:    bold;
+    position:       relative;
+    vertical-align: middle;
+  }
+
+  td > input{
+    background-color: transparent;
+    text-align:       center;
+    font-weight:      bold;
+    border:           1.5px dashed rgba(128, 128, 128, 0.5);
+    height:           100%;
+    width:            100%;
+    color:            #282a3c;
+  }
+
+  td > input:focus{
+    outline:          none;
+    background-color: white;
+    border:           1px solid rgba(0, 80, 178, 0.1);
+  }
+
+  .percentage-badge{
+    position:         absolute;
+    display:          flex;
+    flex-direction:   column;
+    justify-content:  center;
+    align-items:      center;
+    color:            white;
+    height:           135%;
+    width:            25%;
+    border-radius:    0 50px 50px 0;
+    left:             0;
+    top:              30%;
+    font-size:        90%;
+  }
+
+  .red-badge{
+    background: #CD5C5C;
+  }
+
+  .yellow-badge{
+    background: #f0e68c;
+  }
+
+  .green-badge{
+    background: #3CB371;
+  }
+}
+
+.highlightedRowColumn{
+  background-color: rgba(0, 80, 178, 0.1);
+}
+
+.btn-large{
+  width:  50%;
+  margin: 20px;
+}
+
+.text-table-concept{
+  color: #2d51b2;
+}
