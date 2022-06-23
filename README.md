@@ -36,7 +36,7 @@ git clone git@gitlab.com:victormponcem/credits_factor_global.git
 ```
 ```sh
 cd credits_factor_global
-rvm use ruby-2.7.5@credits_factor_global
+rvm use ruby-2.7.6@credits_factor_global
 ```
 
 ##### 2. Crear archivo application.yml
@@ -89,7 +89,7 @@ La aplicación utiliza una serie de gemas para su desarrollo, dentro de las cual
 
 | GEMA | Descripción|PROYECTO |
 | ------ |------ | ------ |
-| GitHub | Repositorio|[https://gitlab.com/credits_factor_global][PlGh] |
+| GitHub | Repositorio|[https://github.com/FactorGFC/credits_valuation][PlGh] |
 | DEVISE | Autenticación basada en Warden|[https://github.com/heartcombo/devise][PlDb] |
 
 
@@ -102,6 +102,6 @@ MIT
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
 [PlDb]: <https://github.com/heartcombo/devise>
-[PlGh]: <https://gitlab.com/victormponcem/credits_factor_global>
+[PlGh]: <git@github.com:FactorGFC/credits_valuation.git>
 
 

@@ -47,8 +47,9 @@
             table.table.m-table.m-table--head-separator-brand.table-custom
               thead
                 tr
-                  th = t('.name')
                   th.text-center = t('.rfc')
+                  th.text-center = t('.name')
+                  th.text-center = t('.username')
                   th.text-center = t('.address')
                   th.text-center = t('.status')
                   - if current_user.god?
@@ -58,10 +59,11 @@
               tbody
                 - @companies.each do |company|
                   tr.tr-custom
-                    th scope="row" = company.name
-                    td = company.rfc
-                    td = company.address
-                    td = company.try(:status_company).present? ? company.try(:status_company).try(:name): 'PENDIENTE DE REVISIÓN X FACTOR'
+                    td.text-center = company.rfc
+                    td.text-center = company.name
+                    td.text-center = company.try(:user).try(:full_name)
+                    td.text-center = company.address
+                    td.text-center = company.try(:status_company).present? ? company.try(:status_company).try(:name): 'PENDIENTE DE REVISIÓN X FACTOR'
                     - if current_user.god?
                       td.text-center
                         - if company.status_company_id.eql?(StatusCompany.where(key: 'aprobada').first.id)
@@ -75,7 +77,7 @@
                           button.btn.btn-danger.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="false"
                             i.fab.fa.fa-times-circle
                             = " Rechazar"
-                    td
+                    td.text-center
                       a.button.btn.btn-success href="/company_details/#{company.id}"
                         i.fa.fa-eye
                         = "Ver más"
