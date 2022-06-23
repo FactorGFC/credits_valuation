@@ -1,0 +1,19 @@
+es:
+  activerecord:
+    attributes:
+      user:
+        email: Correo electrónico
+        phone: Teléfono
+        password: Contraseña
+        password_confirmation: Confirmar contraseña
+        current_password: Contraseña actual
+        first_name: Nombre
+        last_name: Apellidos
+        remember_me: Recuérdame
+        role_id: Rol
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              username_doesnt_exist: No existe usuario en base de datos

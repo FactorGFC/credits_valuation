@@ -1,0 +1,52 @@
+.col-xl-12
+  .m-portlet
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          h3.m-portlet__head-text = t('.title')
+      .m-portlet__head-tools
+        ul.m-portlet__nav
+          li.m-portlet__nav-item
+            = link_item_block new_position_path, class: 'm-portlet__nav-link btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill rounded-circle',
+                    data: {'title': (t('helpers.new')), placement: 'top', toggle: 'm-tooltip', 'skin': "dark"}
+              i.la.la-plus
+    .m-portlet__body
+      .m-section.mb-0
+        - if @positions.empty?
+          .m-section__content
+            .no-results
+              / Edit this
+              / = t('helpers.no_results', resource: params[:q][:***********field1_or_field2_cont***********]) if params[:q]
+              = t('helpers.not_created_yet', resource: t('.other').downcase) unless params[:q]
+        .m-section__content.table-responsive
+          table.table.m-table.m-table--head-separator-brand.table-custom
+            thead
+              tr
+                th = t('.name')
+                th = t('.type')
+                th = t('.order')
+                th.actions-3.text-center = t 'helpers.actions'
+            tbody
+              - @positions.each do |position|
+                tr.tr-custom
+
+                  td = position.name
+                  td = position.blog_type.name
+                  td = position.order
+
+                  td.actions-3.text-center
+                    = link_item_block edit_position_path(position), data: {title: (t('helpers.show_and_edit')), placement: 'top',
+                            toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
+                      i.flaticon-edit-1
+                    / Edit this
+                    / - if has_policy(Position, %w(destroy))
+                      = link_to 'javascript:;', class: 'btn btn-sm btn-pill btn-outline-danger btn-destroy', data: {title: t('helpers.destroy'),
+                              placement: 'top', toggle: 'm-tooltip', 'skin': "dark", resource: :positions, 'resource-id': position.id,
+                              'resource-message': t('questions.destroy', resource: t('.resource'), name: position.***********name***********)} do
+                        i.flaticon-delete
+    .m-portlet__foot
+      .row.align-items-center.pagination-container
+        .col-lg-6.m--valign-middle
+          = t('.count_table', count: @positions.count)
+          .col-lg-6.m--align-right
+            /= paginate(@positions)

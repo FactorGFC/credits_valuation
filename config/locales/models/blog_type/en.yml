@@ -1,0 +1,7 @@
+en:
+  activerecord:
+    attributes:
+      blog_type:
+        name: Name
+        description: Description
+        key: Key

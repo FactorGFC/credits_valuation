@@ -1,0 +1,170 @@
+.col-xl-12
+  .m-portlet
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          h3.m-portlet__head-text = t('.title')
+      .m-portlet__head-tools
+        ul.m-portlet__nav
+          li.m-portlet__nav-item
+            = link_item_block new_income_statement_concept_path, class: 'm-portlet__nav-link btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill rounded-circle',
+                    data: {'title': (t('helpers.new')), placement: 'top', toggle: 'm-tooltip', 'skin': "dark"}
+              i.la.la-plus
+    .m-portlet__body
+      .m-section.mb-0
+        - if @income_statement_concepts.empty?
+          .m-section__content
+            .no-results
+              / Edit this
+              / = t('helpers.no_results', resource: params[:q][:***********field1_or_field2_cont***********]) if params[:q]
+              = t('helpers.not_created_yet', resource: t('.other').downcase) unless params[:q]
+        - else
+          .m-section__sub
+            .row.m-section__sub style="display: flex"
+              .col-6.pl-0
+                = t('.count_table', count: @income_statement_concepts.count)
+              .col-6.per-page-container
+                span.per-page-text
+                  = t('helpers.elements_per_page')
+                = search_form_for @search_income_statement_concepts do |f|
+                  =< select_tag :per_page, options_for_select(pagination_options, @per_page.to_i),
+                          class: 'form-control input-inline per-page-selectpicker per-page-pagination'
+                  / Edit this
+                    / = f.hidden_field :***********field1_or_field2_cont***********
+          .m-section__content.table-responsive.nested-table
+            table.table.nested-table
+              tr
+                th
+                th = t('.number_key')
+                th = t('.name')
+                th = t('.key')
+                th = t('.active')
+                th.actions-3.text-center = t 'helpers.actions'
+              - @income_statement_concepts.order('id').each do |bc|
+                tr
+                  td#collapseButton onclick="tableCollapse(this)"  +
+                  td = bc.number_key
+                  td = bc.name
+                  td = bc.key
+                  td = bc.try(:active).present? ? 'SI' : 'NO'
+                  td.actions-3.text-center
+                    = link_item_block edit_income_statement_concept_path(bc), data: {title: (t('helpers.show_and_edit')), placement: 'top',
+                            toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
+                      i.flaticon-edit-1
+                tr#hidden
+                  td
+                  td colspan="3"
+                    table.table.nested-table
+                      tr
+                        th
+                        th = t('.number_key')
+                        th = t('.name')
+                        th = t('.key')
+                        th = t('.active')
+                        th.actions-3.text-center = t 'helpers.actions'
+                      - bc.children.order('id').each do |second_level|
+                        tr
+                          - if second_level.children.present?
+                            td#collapseButton onclick="tableCollapse(this)"  +
+                          - else
+                            td
+                          td = second_level.number_key
+                          td = second_level.name
+                          td = second_level.try(:key)
+                          td = second_level.try(:active).present? ? 'SI' : 'NO'
+                          td.actions-3.text-center
+                            = link_item_block edit_income_statement_concept_path(second_level), data: {title: (t('helpers.show_and_edit')), placement: 'top',
+                                    toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
+                              i.flaticon-edit-1
+                        tr#hidden
+                          td
+                          td colspan="2"
+                            table.table.nested-table
+                              tr
+                                th
+                                th = t('.number_key')
+                                th = t('.name')
+                                th = t('.key')
+                                th = t('.active')
+                                th.actions-3.text-center = t 'helpers.actions'
+                              - second_level.children.order('id').each do |third_level|
+                                tr
+                                  - if third_level.children.present?
+                                    td#collapseButton onclick="tableCollapse(this)"  +
+                                  - else
+                                    td
+                                  td = third_level.number_key
+                                  td = third_level.name
+                                  td = third_level.key
+                                  td = third_level.active
+                                  td.actions-3.text-center
+                                    = link_item_block edit_income_statement_concept_path(third_level), data: {title: (t('helpers.show_and_edit')), placement: 'top',
+                                            toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
+                                      i.flaticon-edit-1
+                                tr#hidden
+                                  td
+                                  td colspan="2"
+                                    table
+                                      tr
+                                        th
+                                        th = t('.number_key')
+                                        th = t('.name')
+                                        th = t('.key')
+                                        th = t('.active')
+                                        th.actions-3.text-center = t 'helpers.actions'
+                                      - third_level.children.order('id').each do |fourth_level|
+                                        tr
+                                          - if fourth_level.children.present?
+                                            td#collapseButton onclick="tableCollapse(this)"  +
+                                          - else
+                                            td
+                                          td = fourth_level.number_key
+                                          td = fourth_level.name
+                                          td = fourth_level.key
+                                          td = fourth_level.active
+                                          td.actions-3.text-center
+                                            = link_item_block edit_income_statement_concept_path(fourth_level), data: {title: (t('helpers.show_and_edit')), placement: 'top',
+                                                    toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
+                                              i.flaticon-edit-1
+                                        tr#hidden
+                                          td
+                                          td colspan="2"
+                                            table.table.nested-table
+                                              tr
+                                                th = t('.number_key')
+                                                th = t('.name')
+                                                th = t('.key')
+                                                th = t('.active')
+                                                th.actions-3.text-center = t 'helpers.actions'
+                                              - fourth_level.children.order('id').each do |fifth_level|
+                                                tr
+                                                  td = fifth_level.number_key
+                                                  td = fifth_level.name
+                                                  td = fifth_level.key
+                                                  td = fifth_level.active
+                                                  td.actions-3.text-center
+                                                    = link_item_block edit_income_statement_concept_path(fifth_level), data: {title: (t('helpers.show_and_edit')), placement: 'top',
+                                                            toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
+                                                      i.flaticon-edit-1
+
+    .m-portlet__foot
+      .row.align-items-center.pagination-container
+        .col-lg-6.m--valign-middle
+          = t('.count_table', count: @income_statement_concepts.count)
+          .col-lg-6.m--align-right
+            = paginate(@income_statement_concepts)
+
+
+javascript:
+    function tableCollapse(cell) {
+        var row = cell.parentElement;
+        var target_row = row.parentElement.children[row.rowIndex + 1];
+
+        if (target_row.style.display === 'table-row') {
+            cell.innerHTML = '+';
+            target_row.style.display = 'none';
+        } else {
+            cell.innerHTML = '-';
+            target_row.style.display = 'table-row';
+        }
+    }

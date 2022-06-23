@@ -1,0 +1,11 @@
+en:
+  activerecord:
+    attributes:
+      blog:
+        name: Name
+        description: Description
+        key: Key
+        scope: Scope
+  scope:
+    total: Total
+    owner: Owner

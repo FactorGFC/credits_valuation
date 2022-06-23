@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="dist/js-store.js"></script>
+</head>
+<body>
+  <h1>Basic use</h1>
+  <script>
+  var store = new JsStore({ key: 'key' });
+  store.set({test: 'aa'});
+  console.log(store.get());
+  store.remove();
+  </script>
+</body>
+</html>

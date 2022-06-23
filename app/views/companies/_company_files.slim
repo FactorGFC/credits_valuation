@@ -1,0 +1,139 @@
+.multisteps-container.container-fluid
+  .row
+    .steps-container.col-3
+      .steps-content
+        .align-items-center
+          .h5 Captura
+          .h6.mb-10 = @company.name
+        .step-progress
+          section.step-indicator
+            .step.completed#step1
+              .step-icon
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind1
+            .step.completed#step2 style="opacity: 1"
+              .step-icon
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind2
+            .step.completed#step3 style="opacity: 1"
+              .step-icon
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind3
+            - if !@company.has_clients
+              .step.completed#step4 style="opacity: 1"
+                .step-icon
+                  i.fa.fa-check aria-hidden='true'
+              .indicator-line.active#ind4 style="opacity: 1"
+            - if !@company.has_providers
+              .step.completed#step5 style="opacity: 1"
+                .step-icon
+                  i.fa.fa-check aria-hidden='true'
+              .indicator-line.active#ind5 style="opacity: 1"
+            .step.completed#step6 style="opacity: 1"
+              .step-icon
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind6 style="opacity: 1"
+            .step#step7 class="active" style="opacity: 1"
+              .step-icon
+                i.fa.fa-file-alt
+
+          section.step-indicator.description
+            .step-desc#stepDesc1
+              span
+              .title Credenciales
+            .step-desc#stepDesc2
+              span
+              .title Actividad y Producto
+            .step-desc#stepDesc3
+              span
+              .title Número de colaboradores
+            - if !@company.has_clients
+              .step-desc#stepDesc4
+                span
+                .title Principales Clientes
+            - if !@company.has_providers
+              .step-desc#stepDesc5
+                span
+                .title Principales Proveedores
+            .step-desc#stepDesc6
+              span
+              .title Instituciones financieras
+            .step-desc.active#stepDesc7
+              span
+              .title Archivos
+    .step-content.col-9
+      .nav-btns-container
+        button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('5','6')"
+          i.fa.fa-chevron-left
+          | Regresar
+      .step-page.m-animate-fade-in-up
+        .title
+          div style=("color: #602BFA; width: 500px;")
+            strong
+              span style=("color: #3c3e6a; width: 500px") > Archivos
+        .col-xl-12
+          = form_for @company, validate: true, html: {class: ''} do |f|
+            = f.hidden_field :complete, value: true
+            .col-xl-12 style="margin-bottom: 20px"
+              = f.fields_for :company_file do |ff|
+                .form-group.m-form__group.row
+                  .col-sm-6.d-flex.flex-column.justify-content-between
+                    = ff.text_field :id_name, class: 'form-control m-input m-input--square',
+                            value: 'Identificación oficial', disabled: true, placeholder: 'Identificación oficial'
+                  .col-sm-6.d-flex.flex-column.justify-content-between
+                    .form-group.m-form__group
+                      .custom-file
+                        = ff.file_field :id_file, id: 'idFile', class: "custom-file-input", required: true,
+                                id: 'idFile', :onchange => "validate_files();fileSize('idFile')"
+                        label.custom-file-label Elige un archivo...
+                      span.custom-file-control
+                .form-group.m-form__group.row
+                  .col-sm-6.d-flex.flex-column.justify-content-between
+                    = ff.text_field :constancy_name, class: 'form-control m-input m-input--square',
+                            value: 'Constancia de Situacion fiscal', disabled: true, placeholder: 'Constancia de Situacion fiscal'
+                  .col-sm-6.d-flex.flex-column.justify-content-between
+                    .form-group.m-form__group
+                      .custom-file
+                        = ff.file_field :constancy_file, class: "custom-file-input", required: true,id:'constancyFile',
+                                :onchange => "validate_files()"
+                        label.custom-file-label Elige un archivo...
+                      span.custom-file-control
+                .form-group.m-form__group.row
+                  .col-sm-6.d-flex.flex-column.justify-content-between
+                    = ff.text_field :financial_statements_one_name, class: 'form-control m-input m-input--square',
+                            value: 'Estados Financieros (Cierre anual 1)', disabled: true, placeholder: 'Estados Financieros (Cierre anual 1)'
+                  .col-sm-6.d-flex.flex-column.justify-content-between
+                    .form-group.m-form__group
+                      .custom-file
+                        = ff.file_field :financial_statements_one_file, class: "custom-file-input", required: true,
+                                id:'financialStatementsOneFile', :onchange => "validate_files()"
+                        label.custom-file-label Elige un archivo...
+                      span.custom-file-control
+                .form-group.m-form__group.row
+                  .col-sm-6.d-flex.flex-column.justify-content-between
+                    = ff.text_field :financial_statements_two_name, class: 'form-control m-input m-input--square',
+                            value: 'Estados Financieros (Cierre anual 2)', disabled: true, placeholder: 'Estados Financieros (Cierre anual 2)'
+
+                  .col-sm-6.d-flex.flex-column.justify-content-between
+                    .form-group.m-form__group
+                      .custom-file
+                        = ff.file_field :financial_statements_two_file, class: "custom-file-input", required: true,
+                                id:'financialStatementsTwoFile', :onchange => "validate_files()"
+                        label.custom-file-label Elige un archivo...
+                      span.custom-file-control
+                .form-group.m-form__group.row
+                  .col-sm-6.d-flex.flex-column.justify-content-between
+                    = ff.text_field :financial_statements_parcial_name, class: 'form-control m-input m-input--square',
+                            value: 'Estados Financieros (Cierre parcial)', disabled: true, placeholder: 'Estados Financieros (Cierre parcial)'
+
+                  .col-sm-6.d-flex.flex-column.justify-content-between
+                    .form-group.m-form__group
+                      .custom-file
+                        = ff.file_field :financial_statements_parcial_file, class: "custom-file-input", required: true,
+                                id:'financialStatementsParcialFile', :onchange => "validate_files()"
+                        label.custom-file-label Elige un archivo...
+                      span.custom-file-control
+            .col-xl-12
+              = f.submit 'Guardar', class: '', id:'filesBtn'
+
+

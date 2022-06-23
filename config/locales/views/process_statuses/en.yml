@@ -1,0 +1,27 @@
+en:
+  process_statuses:
+    index:
+      title: Process Status
+      resource: the process status
+      name: Name
+      description: Description
+      one: Process Status
+      other: Process Status
+      count_table:
+        one: 1 Process Status
+        other: '%{count} Process Status'
+    form:
+      title: Process Status
+      resource: Process Status
+      name: Name
+      description: Description
+      key: Key
+      back: Go to Process Status
+      back_resource: Process Status
+    new:
+      title: New Process Status
+    edit:
+      title: Editar Process Status
+  breadcrumbs:
+    roles: Process Status
+    permissions_for: Permissions for %{permission_name}

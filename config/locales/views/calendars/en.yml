@@ -1,0 +1,15 @@
+en:
+  calendars:
+    index:
+      others: Calendars
+      title: Calendars
+      period_type: Period type
+      year: Year
+      period: Period
+      count_table:
+        one: 1 Calendar period
+        other: '%{count} Calendar period'
+    form:
+      title: Calendars
+      resource: calendar period
+      back_resource: calendar periods

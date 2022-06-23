@@ -1,0 +1,9 @@
+es:
+  activerecord:
+    attributes:
+      position:
+        name: Nombre
+        description: Descripción
+        key: Llave
+        type: Tipo
+        order: Orden

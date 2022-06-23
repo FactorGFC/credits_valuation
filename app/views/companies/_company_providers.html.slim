@@ -1,0 +1,95 @@
+.multisteps-container.container-fluid
+  .row
+    .steps-container.col-3
+      .steps-content
+        .align-items-center
+          .h5 TITULO
+          .h6.mb-10 Subtitulo
+        .step-progress
+          section.step-indicator
+            .step.completed#step1
+              .step-icon
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind1
+            .step.completed#step2 style="opacity: 1"
+              .step-icon
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind2
+            .step.completed#step3 style="opacity: 1"
+              .step-icon
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind3
+            - if !@company.has_clients
+              .step.completed#step4 style="opacity: 1"
+                .step-icon
+                  i.fa.fa-check aria-hidden='true'
+              .indicator-line.active#ind4 style="opacity: 1"
+            - if !@company.has_providers
+              .step#step5 class="active" style="opacity: 1"
+                .step-icon
+                  i.fa.fa-users
+              .indicator-line#ind5
+            .step#step6
+              .step-icon
+                i.fa.fa-chart-line
+            .indicator-line#ind6
+            .step#step7
+              .step-icon
+                i.fa.fa-file-alt
+
+          section.step-indicator.description
+            .step-desc#stepDesc1
+              span
+              .title Credenciales
+            .step-desc#stepDesc2
+              span
+              .title Actividad y producto
+            .step-desc#stepDesc3
+              span
+              .title Número de colaboradores
+            - if !@company.has_clients
+              .step-desc#stepDesc4
+                span
+                .title Principales Clientes
+            - if !@company.has_providers
+              .step-desc.active#stepDesc5
+                span
+                .title Principales Proveedores
+            .step-desc.inactive#stepDesc6
+              span
+              .title Instituciones financieras
+            .step-desc.inactive#stepDesc7
+              span
+              .title Archivos
+    .step-content.col-9
+      .nav-btns-container
+        - if !@company.has_providers && @company.has_clients
+          button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('2','4')"
+            i.fa.fa-chevron-left
+            | Regresar
+        - else
+          button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('3','4')"
+            i.fa.fa-chevron-left
+            | Regresar
+        button.btn.btn-default.nav-step-btn.btn-next type="button" id="buttonFour" onclick="nextPageNew('5','4')"
+          | Siguiente
+          i.fa.fa-chevron-right
+      .step-page.m-animate-fade-in-up
+        .title
+          div style=("color: #602BFA; width: 500px;")
+            strong
+              span style=("color: #3c3e6a; width: 500px") > Principales Proveedores
+        .col-xl-12
+          = form_for @company, validate: true, html: {class: ''} do |f|
+            = f.hidden_field :step_five, value: true
+            .col-xl-12 style="margin-bottom: 20px"
+              .form-group.m-form__group.row
+                .col-sm-12
+                  = f.fields_for :company_providers do |p|
+                    = render 'company_providers_fields', f: p
+                  .links.d-flex.justify-content-center.mb-20
+                    = link_to_add_association 'Agregar Proveeodr', f, :company_providers, partial: 'companies/company_providers_fields',
+                            class: 'btn m-btn--pill m-btn--air btn-success m-btn m-btn--custom m-btn--bolder m-btn--uppercase'
+            .col-xl-12
+            .col-xl-12
+              = f.submit 'Guardar', class: 'btn btn-primary col-xl-12'

@@ -1,0 +1,160 @@
+.col-xl-12
+  .m-portlet
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          span.m-portlet__head-icon.m--hide
+            i.la.la-gear
+          h3.m-portlet__head-text = t('.title')
+    = form_for @company, validate: true, html: {class: ''} do |f|
+      .m-portlet__body
+        ul.nav.nav-pills role="tablist"
+          li.nav-item
+            a.nav-link.active data-toggle="tab" href="#rfc_form"
+              | CIEC
+          li.nav-item
+            a.nav-link data-toggle="tab" href="#fiel_form"
+              | E.FIRMA
+        .tab-content
+          .tab-pane.active id="rfc_form"
+            .form-group.m-form__group
+              label
+                | R.F.C
+              input.form-control.m-input.m-input--square placeholder=("R.F.C") type="text" value="#{ @company_rfc}" disabled="true"/
+              input type="hidden" name="rfc" value="#{ @company_rfc}" /
+              span.m-form__help
+
+              .form-group.m-form__group
+                label for="exampleInputPassword1"
+                  | Contraseña
+                input#exampleInputPassword1.form-control.m-input.m-input--square placeholder="Contraseña" name="passsword_ciec" type="password" /
+          .tab-pane id="fiel_form"
+            .m-portlet__body
+              .form-group.m-form__group
+                label
+                  | Certificado (.cer)
+                .custom-file
+                  = file_field_tag "cer", class: "custom-file-input"
+                  label.custom-file-label for="validatedCustomFile"  Elige un archivo (.cer) ...
+                  .invalid-feedback Archivo invalido
+              .form-group.m-form__group
+                label
+                  | Clave privada (.key)
+                .custom-file
+                  = file_field_tag "key", class: "custom-file-input"
+                  label.custom-file-label for="validatedCustomFile"  Elige un archivo (.key) ...
+                  .invalid-feedback Archivo invalido
+                span.custom-file-control
+            .form-group.m-form__group
+              label for="exampleInputPassword1"
+                | Contraseña
+              input#exampleInputPassword2.form-control.m-input.m-input--square placeholder="Contraseña" name="passsword_firma" type="password" /
+      .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit
+        .m-form__actions.m-form__actions--solid
+          .row
+            .col-lg-12
+              = f.submit t('.submit'), class: 'btn btn-primary'
+              - if has_policy(Company, %w(index))
+.col-xl-12
+  .m-portlet
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          span.m-portlet__head-icon.m--hide
+            i.la.la-gear
+          h3.m-portlet__head-text = t('.title')
+    = form_for @company, validate: true, html: {class: 'm-form m-form--fit m-form--label-align-right'} do |f|
+      .m-portlet__body
+        .form-group.m-form__group
+          label
+            | Actividad preponderante y/o principal
+          = f.text_field :main_activity, class: 'form-control m-input m-input--square'
+        .form-group.m-form__group
+          label
+            | Principales productos y/o servicios
+          = f.text_field :main_products, class: 'form-control m-input m-input--square'
+        .form-group.m-form__group
+          h3
+            | Número de colaboradores
+        .form-group.m-form__group
+          table.table
+            thead
+              tr
+                th
+                  | Operativos
+                th
+                  | Administrativos
+                th
+                  | Ventas
+                th
+                  | Eventuales
+                th
+                  | Sindicalizados
+                th
+                  | Total
+            tbody
+              tr
+                td
+                  = f.text_field :main_products, class: 'form-control m-input m-input--square'
+                td
+                  = f.text_field :main_products, class: 'form-control m-input m-input--square'
+                td
+                  = f.text_field :main_products, class: 'form-control m-input m-input--square'
+                td
+                  = f.text_field :main_products, class: 'form-control m-input m-input--square'
+                td
+                  = f.text_field :main_products, class: 'form-control m-input m-input--square'
+                td
+                  = f.text_field :main_products, class: 'form-control m-input m-input--square'
+        .form-group.m-form__group
+          h3
+            | Principales Clientes
+          .form-group.m-form__group
+            table.table
+              thead
+                tr
+                  th
+                    | Nombre del cliente (Nombre / Apellido)
+                  th
+                    | % Ventas
+                  th
+                    | Plazo de crédito (dias)
+
+              tbody
+                tr
+                  td
+                    = f.text_field :main_products, class: 'form-control m-input m-input--square'
+                  td
+                    = f.text_field :main_products, class: 'form-control m-input m-input--square'
+                  td
+                    = f.text_field :main_products, class: 'form-control m-input m-input--square'
+        .form-group.m-form__group
+          h3
+            | Principales Proveedores
+          .form-group.m-form__group
+            table.table
+              thead
+                tr
+                  th
+                    | Nombre del Proveedor (Nombre / Apellido)
+                  th
+                    | % Compras
+                  th
+                    | Plazo de crédito (dias)
+
+              tbody
+                tr
+                  td
+                    = f.text_field :main_products, class: 'form-control m-input m-input--square'
+                  td
+                    = f.text_field :main_products, class: 'form-control m-input m-input--square'
+                  td
+                    = f.text_field :main_products, class: 'form-control m-input m-input--square'
+
+      .m-portlet__body
+        .m-section
+          .m-section__content
+
+      .m-portlet__foot.m-portlet__foot--fit
+        .m-form__actions
+          = f.submit t('.submit'), class: 'btn btn-primary'

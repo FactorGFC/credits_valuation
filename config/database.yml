@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  mode: dblib
+  encoding: utf8
+  reconnect: false
+  timeout: 25
+  pool: 5
+
+development:
+  <<: *default
+  database: credits_factor_global
+#  host: <%= ENV['DB_HOST'] %>
+#  database: <%= ENV['DB_DATABASE'] %>
+#  username: <%= ENV['DB_USERNAME'] %>
+#  password: <%= ENV['DB_PASSWORD'] %>
+
+
+production:
+  <<: *default
+  database: credits_factor_global

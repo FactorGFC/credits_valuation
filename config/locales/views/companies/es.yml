@@ -1,0 +1,189 @@
+es:
+  account_type:
+    I: 'Pagos fijos'
+    R: 'Revolvente'
+  contract_type:
+    AF: 'Aparatos /Muebles'
+    AG: 'Agropecuario (PFAE)'
+    AL: 'Arrendamiento Automotriz'
+    AP: 'Aviación'
+    BD: 'Fianza'
+    BT: 'Bote / Lancha'
+    CE: 'Cartas de Crédito (PFAE)'
+    CF: 'Crédito fiscal'
+    CL: 'Línea de Crédito'
+    CO: 'Consolidación'
+    CS: 'Crédito Simple (PFAE)'
+    CT: 'Con Colateral (PFAE)'
+    DE: 'Descuentos (PFAE)'
+    EQ: 'Equipo'
+    FI: 'Fideicomiso (PFAE)'
+    FT: 'Factoraje'
+    HA: 'Habilitación o Avío (PFAE)'
+    HE: 'Préstamo tipo Home Equity'
+    HI: 'Mejoras a la casa'
+    LR: 'Línea de Crédito Reinstalable'
+    LS: 'Arrendamiento'
+    MI: 'Otros'
+    OA: 'Otros adeudos vencidos (PFAE)'
+    PA: 'Préstamo para Personas Físicas con Actividad Empresarial (PFAE)'
+    PB: 'Editorial'
+    PG: 'PGUE - Préstamo como garantía de unidades industriales para PFAE'
+    PL: 'Préstamo personal'
+    PN: 'Préstamo de nómina'
+    PR: 'Prendario (PFAE)'
+    PS: 'Pago de Servicios'
+    PQ: 'Quirografario (PFAE)'
+    RC: 'Reestructurado (PFAE)'
+    RD: 'Redescuento (PFAE)'
+    RE: 'Bienes Raíces'
+    RF: 'Refaccionario (PFAE)'
+    RN: 'Renovado (PFAE)'
+    RV: 'Vehículo Recreativo'
+    SC: 'Tarjeta garantizada'
+    SE: 'Préstamo garantizado'
+    SG: 'Seguros'
+    SM: 'Segunda hipoteca'
+    ST: 'Préstamo para estudiante'
+    TE: 'Tarjeta de Crédito Empresarial'
+    UK: 'Desconocido'
+    AU: 'Compra de Automóvil'
+    CC: 'Tarjeta de Crédito'
+  payments_frecuency:
+    M: 'Pagos fijos'
+    Z: 'Pago minimo'
+  report_type:
+    bureau_pm: 'Listas negras'
+    bureau_pf: 'Listas negras'
+    sat_1: 'RFC'
+    sat_rfc: 'RFC'
+
+
+  companies:
+    new:
+      title: Plantilla
+      sign_up: Registrarse
+      email: Correo
+      password: Contraseña
+      confirmation: Confirmar contraseña
+      unit_id: Unidad
+    edit:
+      my_profile: Mi perfil
+      title: Editar perfil
+      email: Correo electrónico
+      unit_id: Unidad
+      password: Contraseña
+      password_confirmation: Confirmar contraseña
+      current_password: Contraseña actual
+      waiting_confirmation: 'Esperando confirmación para:'
+      leave_blank:  (dejar en blanco si no requieres cambiarla)
+      need_password:  (Necesitamos tu contraseña actual para confirmar tus cambios)
+      update: Actualizar
+      cancel_account: Cancelar mi cuenta
+      back: Regresar
+      back_resource: home
+      unhappy: '¿Descontento?'
+      resource: usuario
+      profile: perfil
+      profile_image: imagen de perfil
+      need_image: Debes seleccionar una imagen primero
+      change_password: Cambiar contraseña
+      log_out: Salir
+      unit_review: Unidad Revisora
+    index:
+      title: Compañia
+      resource: la compañia
+      email: Correo electrónico
+      actions: Acciones
+      one: Usuario
+      other: Usuarios
+      role: Rol
+      first_name: Nombre
+      last_name: Apellido paterno
+      maiden_name: Apellido materno
+      username: Nombre de usuario
+      name: Nombre
+      info: Información
+      address: Dirección
+      unit_review: Unidad Revisora
+      check_company: Revisar compañía
+      status: Estatus
+      rfc: R.F.C
+      count_table:
+        one: 1 Compañia
+        other: '%{count} Compañias'
+    data_company:
+      title: Compañia
+      resource: la compañia
+      email: Correo electrónico
+      actions: Acciones
+      one: Usuario
+      other: Usuarios
+      role: Rol
+      first_name: Nombre
+      last_name: Apellido paterno
+      maiden_name: Apellido materno
+      username: Nombre de usuario
+      name: Nombre
+      info: Información
+      address: Dirección
+      unit_review: Unidad Revisora
+      check_company: Revisar compañía
+      status: Estatus
+      rfc: R.F.C
+      submit: Guardar
+      count_table:
+        one: 1 Compañia
+        other: '%{count} Compañias'
+    new_user:
+      title: Nuevo usuario
+      resource: usuario
+      back: Ir a usuarios
+      back_resource: usuarios
+      unit_id: Unidad
+      unit_review: Unidad Revisora
+    edit_user:
+      profile: "Perfil de %{user}"
+      full_name: Nombre completo
+      resource: usuario
+      title: Editar usuario
+      back: Ir a usuarios
+      back_resource: usuarios
+      change_password: Cambiar contraseña
+      log_out: Salir
+      unit_id: Centro
+      unit_review: Unidad Revisora
+    show:
+      my_profile: Mi perfil
+      profile: "Perfil de %{user}"
+      back: Ir a usuarios
+      email: Correo electrónico
+      unit_id: Unidad
+      role: Rol
+      full_name: Nombre completo
+      first_name: Nombre
+      last_name: Apellido paterno
+      maiden_name: Apellido materno
+      username: Nombre de usuario
+      change_password: Cambiar contraseña
+      log_out: Salir
+    change_password:
+      my_profile: Mi perfil
+      change_password: Cambiar contraseña
+      change_my_password: Cambiar mi contraseña
+      resource: contraseña
+      back_resource: home
+      log_out: Salir
+    change_user_password:
+      profile: "Perfil de %{user}"
+      change_password: Cambiar contraseña
+      change_user_password: "Cambiar contraseña de %{user}"
+      resource: contraseña
+      back_resource: usuarios
+      log_out: Salir
+    form:
+      title: Usuario
+      resource: usuario
+  breadcrumbs:
+    users: Usuarios
+    change_password: Cambiar contraseña

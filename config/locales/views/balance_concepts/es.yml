@@ -1,0 +1,38 @@
+es:
+  balance_concepts:
+    index:
+      title: Conceptos Estado de posición financiera (balance)
+      resource: el concepto
+      name: Nombre
+      description: Descripción
+      active: Activo
+      key: Llave
+      one: Concepto
+      other: Conceptos
+      assign_permissions: Asignar permisos
+      count_table:
+        one: 1 concepto
+        other: '%{count} Conceptos'
+    form:
+      title: Conceptos
+      resource: concepto
+      name: Nombre
+      description: Descripción
+      active: Activo
+      key: Llave
+      back: Ir a conceptos
+      back_resource: conceptos
+    permissions:
+      title: Permisos
+      name: Nombre
+      description: Descripción
+      controller: Controlador
+      action: Acción
+      back_resource: conceptos
+    new:
+      title: Nuevo concepto
+    edit:
+      title: Editar concepto
+  breadcrumbs:
+    roles: Conceptos
+    permissions_for: Permisos para %{permission_name}

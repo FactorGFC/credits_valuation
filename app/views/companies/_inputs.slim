@@ -1,0 +1,90 @@
+.multisteps-container.container-fluid
+  .row
+    .steps-container.col-3
+      .steps-content
+        .align-items-center
+          .h5 Captura
+          .h6.mb-10 = @company.name
+        .step-progress
+          section.step-indicator
+            .step.completed#step1
+              .step-icon
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind1
+            .step#step2 class="active" style="opacity: 1"
+              .step-icon
+                i.fa.fa-list-ol
+            .indicator-line#ind2
+            .step#step3
+              .step-icon
+                i.fa.fa-hashtag
+            .indicator-line#ind3
+            - if !@company.has_clients
+              .step#step4
+                .step-icon
+                  i.fa.fa-users
+              .indicator-line#ind4
+            - if !@company.has_providers
+              .step#step5
+                .step-icon
+                  i.fa.fa-users
+              .indicator-line#ind5
+            .step#step6
+              .step-icon
+                i.fa.fa-chart-line
+            .indicator-line#ind6
+            .step#step7
+              .step-icon
+                i.fa.fa-file-alt
+
+          section.step-indicator.description
+            .step-desc#stepDesc1
+              span
+              .title Credenciales
+            .step-desc.active#stepDesc2
+              span
+              .title Actividad y producto
+            .step-desc.inactive#stepDesc3
+              span
+              .title Número de colaboradores
+            - if !@company.has_clients
+              .step-desc.inactive#stepDesc4
+                span
+                .title Principales Clientes
+            - if !@company.has_providers
+              .step-desc.inactive#stepDesc5
+                span
+                .title Principales Proveedores
+            .step-desc.inactive#stepDesc6
+              span
+              .title Instituciones financieras
+            .step-desc.inactive#stepDesc7
+              span
+              .title Archivos
+    .step-content.col-9
+      .nav-btns-container
+        button.btn.btn-default.nav-step-btn.btn-next id="buttonOne" type="button" onclick="nextPageNew('2','1')"
+          | Siguiente
+          i.fa.fa-chevron-right
+      .step-page.m-animate-fade-in-up
+        .title
+          div style=("color: #602BFA; width: 500px;")
+            strong
+              span style=("color: #3c3e6a; width: 500px") > Actividad y producto
+        .col-xl-12.mt-20
+          = form_for @company, validate: true, html: {class: ''} do |f|
+            .tab-content.col-xl-12.mb-30
+              = f.hidden_field :step_two, value: true
+              .form-group.m-form__group
+                label.text-bold
+                  | Actividad preponderante y/o principal
+                = f.text_field :main_activity, class: 'form-control m-input m-input--square'
+              .form-group.m-form__group
+                label.text-bold
+                  | Principales productos y/o servicios
+                .col-xl-12 style="display: grid;"
+                  =f.collection_select :main_product_list, @company.new_record? ? ActsAsTaggableOn::Tag.order(taggings_count: :desc).limit(100) : @company.main_products, :name, :name, {include_blank: '',include_hidden: false},
+                          {multiple: true, class: 'form-control select2 select2-container select2-multiple '}
+
+            .col-xl-12
+              = f.submit 'Guardar', class: 'btn btn-primary col-xl-12'

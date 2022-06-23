@@ -1,0 +1,126 @@
+.col-xl-12
+  .m-portlet
+    .m-portlet__body
+      .m-section.mb-0
+        .m-section__content.table-responsive.text-center
+          = form_tag '/create_income_statement_cap', :method => 'post' do
+            table.table.table-bordered.input-focusable-table
+              tr
+                th
+                - @calendar_periods.each do |y|
+                  th = y.calendar.period_name
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Ingresos'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[ingresos][concept]" value="ingresos"
+                      input type="hidden" name="b_sheet[ingresos][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[ingresos][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Costo de ventas'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[costo_de_ventas][concept]" value="costo_de_ventas"
+                      input type="hidden" name="b_sheet[costo_de_ventas][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[costo_de_ventas][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Utilidad Bruta'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[utilidad_bruta][concept]" value="utilidad_bruta"
+                      input type="hidden" name="b_sheet[utilidad_bruta][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[utilidad_bruta][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Gastos de operación'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[gastos_de_operacion][concept]" value="gastos_de_operacion"
+                      input type="hidden" name="b_sheet[gastos_de_operacion][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[gastos_de_operacion][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Utilidad de operación'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[utilidad_de_operacion][concept]" value="utilidad_de_operacion"
+                      input type="hidden" name="b_sheet[utilidad_de_operacion][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[utilidad_de_operacion][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Resultado integral de financiamiento'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[resultado_integral_de_financiamiento][concept]" value="resultado_integral_de_financiamiento"
+                      input type="hidden" name="b_sheet[resultado_integral_de_financiamiento][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[resultado_integral_de_financiamiento][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Gasto financiero'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[gasto_financiero][concept]" value="gasto_financiero"
+                      input type="hidden" name="b_sheet[gasto_financiero][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[gasto_financiero][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Utilidad o perdida cambiaria'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[utilidad_o_perdida_cambiaria][concept]" value="utilidad_o_perdida_cambiaria"
+                      input type="hidden" name="b_sheet[utilidad_o_perdida_cambiaria][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[utilidad_o_perdida_cambiaria][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Otros gastos/ingresos'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[otros_gastos_e_ingresos][concept]" value="otros_gastos_e_ingresos"
+                      input type="hidden" name="b_sheet[otros_gastos_e_ingresos][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[otros_gastos_e_ingresos][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Utilidad antes de impuestos'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[utilidad_antes_de_impuestos][concept]" value="utilidad_antes_de_impuestos"
+                      input type="hidden" name="b_sheet[utilidad_antes_de_impuestos][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[utilidad_antes_de_impuestos][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'ISR'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[ISR][concept]" value="ISR"
+                      input type="hidden" name="b_sheet[ISR][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[ISR][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'PTU'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[PTU][concept]" value="PTU"
+                      input type="hidden" name="b_sheet[PTU][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[PTU][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Participacion subsidiarios'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[participacion_subsidiarios][concept]" value="participacion_subsidiarios"
+                      input type="hidden" name="b_sheet[participacion_subsidiarios][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[participacion_subsidiarios][value]" class="focusable-input"
+                tr
+                  td style="font-weight: 800"
+                    span.text-left = 'Utilidad neta'
+                  - @calendar_periods.each do |y|
+                    td class="full-input"
+                      input type="hidden" name="b_sheet[utilidad_neta][concept]" value="utilidad_neta"
+                      input type="hidden" name="b_sheet[utilidad_neta][period]" value="#{y.calendar_id}"
+                      input type="number" name="b_sheet[utilidad_neta][value]" class="focusable-input"
+
+            = button_tag type: 'submit', class: "btn btn-primary btn-large" do
+              | Guardar

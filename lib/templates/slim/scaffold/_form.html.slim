@@ -1,0 +1,16 @@
+= form_for <%= singular_table_name %>, validate: true, html: {class: 'm-form m-form--fit'} do |f|
+  .m-portlet__body
+<% attributes.each do |attribute| -%>
+    .form-group.m-form__group.row
+      = f.label :<%= attribute.name %>, class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = f.<%= attribute.field_type %> :<%= attribute.name %>, class: 'form-control m-input' <%= %w(text_field).include?(attribute.field_type) ? ", placeholder: t('activerecord.attributes.#{singular_table_name}.#{attribute.name}')" : '' %>
+<% end -%>
+  .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit
+    .m-form__actions.m-form__actions--solid
+      .row
+        .col-lg-12
+          = f.submit t('helpers.submit.submit', model: t('.resource')), class: 'btn btn-primary'
+          - if has_policy(<%= singular_table_name.titleize %>, %w(index))
+            =< link_to <%= plural_table_name %>_path, class: 'btn btn-secondary'
+              = t('helpers.go_to', resource: t('.back_resource'))

@@ -1,0 +1,7 @@
+set :rails_env, 'production'
+set :domain, '148.229.0.98'
+set :deploy_to, '/home/factor_global'
+set :repository, 'git@gitlab.com:victormponcem/credits_factor_global.git'
+set :branch, 'master'
+set :user, 'root'
+#set :port, '65535'

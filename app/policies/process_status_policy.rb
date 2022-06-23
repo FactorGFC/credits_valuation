@@ -1,0 +1,2 @@
+class ProcessStatusPolicy < ApplicationPolicy
+end

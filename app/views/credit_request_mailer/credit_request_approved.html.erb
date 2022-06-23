@@ -1,0 +1,22 @@
+<!-- -*- encoding : utf-8 -*- -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <div>
+      <h1>Hola <%= @request_data[:user][:first_name].upcase %> <%= @request_data[:user][:last_name].upcase %></h1>
+      <h2>Tu solicitud de crédito para la compañia <strong><%= @request_data[:company][:name].upcase %></strong> ha sido aprobada para acceder a la captura de información.</h2>
+      <h2>En necesario ingresar al enlace:<a href="https://analisisfg.com/login"></a>https://analisisfg.com/login</h2>
+
+      <h2>Con las siguientes crédenciales:</h2>
+
+      <h2><strong>Usuario: </strong>   <%= @request_data[:user][:email] %></h2>
+      <h2><strong>Password: </strong>  <%= @request_data[:user][:new_password] %></h2>
+
+      <h4>¡Gracias!</h4>
+    </div>
+  </body>
+</html>

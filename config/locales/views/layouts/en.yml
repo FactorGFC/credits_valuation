@@ -1,0 +1,56 @@
+en:
+  layouts:
+    side_menu:
+      dashboard: Dashboard
+      blogs:     Blogs
+      positions: Positions
+      blog_types: Blog types
+      process_status: Process Status
+      new_process_status: Crear  Process Status
+      administration: Administration
+      catalogs: Catalogs
+      users: Users
+      new_user: Create user
+      permissions: Permissions
+      new_permission: Create permission
+      roles: Roles
+      balance_concepts: Balance concepts
+      income_statement_concepts: Income statement concepts
+      calendars: Calendarios
+      logbook: Logbook
+      timeline: Timeline
+      detail: Detail
+      new_role: Create role
+      index_masc: View all
+      index_fem: View all
+      new_blog: Create blog
+    top_bar:
+      account: Account
+      profile: Profile
+      change_password: Change password
+      log_out: Log Out
+    header:
+      select_language: Select your language
+      english: English
+      spanish: Spanish
+      account: Account
+      profile: Profile
+      change_password: Change password
+      log_out: Log Out
+      title: Credits<span>FG</span>
+    application:
+      copyright: All rights reserved.
+    header_menu:
+      credit: Creditos FACTOR
+  will_paginate:
+    next_label: Next
+    previous_label: Previous
+    page_gap: ...
+  blogs:
+    form:
+      blogs: Blogs
+      resource: Blog
+  positions:
+    form:
+      positions: Posiciones
+      resource: Posición

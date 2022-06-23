@@ -1,0 +1,53 @@
+.row
+  .col-md-12
+    .m-portlet.m-portlet--tab
+      .m-portlet__head
+        .m-portlet__head-caption
+          .m-portlet__head-title
+            span.m-portlet__head-icon.m--hide
+              i.la.la-gear
+            h3.m-portlet__head-text
+              | Completar datos
+        .m-portlet__head-tools
+          ul.nav.nav-pills.nav-pills--brand.m-nav-pills--align-right.m-nav-pills--btn-pill.m-nav-pills--btn-sm role="tablist"
+            li.nav-item.m-tabs__item
+              a.nav-link.m-tabs__link.active data-toggle="tab" href="#rfc_form" role="tab"
+                | CIEC
+            li.nav-item.m-tabs__item
+              a.nav-link.m-tabs__link data-toggle="tab" href="#fiel_form" role="tab"
+                | E.FIRMA
+
+      = form_for current_user, url: create_sat_user_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
+        .tab-content
+          .tab-pane.active id="rfc_form"
+            .m-portlet__body
+              .form-group.m-form__group
+                label
+                  | R.F.C
+                input.form-control.m-input.m-input--square name="rfc" placeholder=("R.F.C") type="text" /
+                span.m-form__help
+                  | We'll never share your email with anyone else.
+              .form-group.m-form__group
+                label for="exampleInputPassword1"
+                  | Contraseña
+                input#exampleInputPassword1.form-control.m-input.m-input--square placeholder="Contraseña" name="passsword" type="password" /
+          .tab-pane id="fiel_form"
+            .m-portlet__body
+              .form-group.m-form__group
+                label
+                  | Certificado (.cer)
+                .custom-file
+                  input.custom-file-input accept="application/pdf" name="cer" type="file" /
+                  span.custom-file-control
+
+              .form-group.m-form__group
+                label for="exampleInputPassword1"
+                  | Clave privada (.key)
+                .custom-file
+                  input.custom-file-input type="file" /
+                  span.custom-file-control
+        .m-portlet__foot.m-portlet__foot--fit
+          .m-form__actions
+            = f.submit 'Guardar', class: 'btn btn-metal'
+            button.btn.btn-secondary type="reset"
+              | Cancel

@@ -1,0 +1,34 @@
+en:
+  positions:
+    index:
+      title: Positions
+      name: Name
+      description: Description
+      key: Key
+      one: Position
+      other: Positions
+      count_table:
+        one: 1 Position
+        other: '%{count} Positions'
+    form:
+      title: Positions
+      resource: position
+      name: Name
+      description: Description
+      key: Key
+      back: Go to position
+      back_resource: positions
+    permissions:
+      title: Permissions
+      name: Name
+      description: Description
+      controller: Controller
+      action: Action
+      back_resource: positions
+    new:
+      title: New position
+    edit:
+      title: Editar position
+  breadcrumbs:
+    roles: Positions
+    permissions_for: Permissions for %{permission_name}

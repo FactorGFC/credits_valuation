@@ -1,0 +1,39 @@
+es:
+  positions:
+    index:
+      title: Posiciones
+      resource: la posición
+      position: Posición
+      image: Imagen
+      name: Nombre
+      type: Tipo
+      order: Orden
+      description: Descripción
+      key: Llave
+      one: Posición
+      other: Posiciones
+      count_table:
+        one: 1 Posición
+        other: '%{count} Posiciones'
+    form:
+      title: Posiciones
+      resource: posicion
+      name: Nombre
+      description: Descripción
+      key: Llave
+      back: Ir a posiciones
+      back_resource: posiciones
+    permissions:
+      title: Permisos
+      name: Nombre
+      description: Descripción
+      controller: Controlador
+      action: Acción
+      back_resource: posiciones
+    new:
+      title: Nueva posición
+    edit:
+      title: Editar posición
+  breadcrumbs:
+    roles: Posicion
+    permissions_for: Permisos para %{permission_name}
