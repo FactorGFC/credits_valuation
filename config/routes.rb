@@ -50,6 +50,11 @@ Rails.application.routes.draw do
 
     get '/complete_user' => 'home#complete_user', as: :complete_user
     put 'create_sat_user' => 'home#create_sat_user', as: :create_sat_user
+    put 'sat_info_company/:id' => 'companies#sat_info_company', as: :sat_info_company
+    put 'sat_income_statement/:id' => 'companies#sat_income_statement', as: :sat_income_statement
+    put 'sat_balance_sheet/:id' => 'companies#sat_balance_sheet', as: :sat_balance_sheet
+    put 'credit_bureau_info/:id' => 'companies#credit_bureau_info', as: :credit_bureau_info
+    put 'credit_bureau_report/:id' => 'companies#credit_bureau_report', as: :credit_bureau_report
 
     get 'request_steps'  => 'companies#request_steps', as: :request_steps
     get 'balance_sheet_request'  => 'companies#balance_sheet_request', as: :balance_sheet_request

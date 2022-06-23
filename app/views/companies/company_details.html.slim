@@ -131,21 +131,31 @@
                   i.fa.fa-pencil-alt.mx-1
                   = "Asignar"
               br
-              /   span
-              /     strong = 'Informacion faltante de la compañia'
-              / br
-              /   - unless @comapny.info_company.present?
-              /     button.btn.btn-details.btn-info.open-modal1 data-target="#m_modal_analyst" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
-              /       i.fa.fa-pencil-alt.mx-1
-              /       = "Informacion del SAT"
-              /   - unless @comapny.income_statment.present?
-              /     button.btn.btn-details.btn-info.open-modal1 data-target="#m_modal_analyst" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
-              /       i.fa.fa-pencil-alt.mx-1
-              /       = "Estado de resultados"
-              /   - unless @comapny.balance_sheet.present?
-              /     button.btn.btn-details.btn-info.open-modal1 data-target="#m_modal_analyst" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
-              /       i.fa.fa-pencil-alt.mx-1
-              /       = "Hoja de balance"
+                span
+                  strong = 'Informacion faltante de la compañia'
+                br
+                  - unless @company.try(:info_company).present?
+                    = link_to sat_info_company_path(@company.id), method: :put, class: 'btn btn-details btn-info' do
+                      i.fa.fa-pencil-alt.mx-1
+                      = "Informacion del SAT"
+                  - unless @company.try(:income_statment).present?
+                    = link_to sat_income_statement_path(@company.id), method: :put, class: 'btn btn-details btn-info' do
+                      i.fa.fa-pencil-alt.mx-1
+                      = "Estado de resultados"
+
+                  - unless @company.try(:balance_sheet).present?
+                    = link_to sat_balance_sheet_path(@company.id), method: :put, class: 'btn btn-details btn-info' do
+                      i.fa.fa-pencil-alt.mx-1
+                      = "Hoja de balance"
+                  - unless @company.try(:credit_bureaus).last.try(:bureau_info).present?
+                    = link_to credit_bureau_info_path(@company.id), method: :put, class: 'btn btn-details btn-info' do
+                      i.fa.fa-pencil-alt.mx-1
+                      = "Información del buro de crédito"
+                  - unless @company.try(:credit_bureaus).last.try(:bureau_report).present?
+                    = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-details btn-info' do
+                      i.fa.fa-pencil-alt.mx-1
+                      = "Reporte del buro de crédito"
+
           .col-md-3.text-center
             span
               strong = 'Periodos a capturar'
@@ -850,286 +860,304 @@
                             h3.m-portlet__head-text
                               | Datos Generales
                             .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Nombre
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @credit_bureau.bureau_report['results'][1]['response']['return']['Personas']['Persona'][0]['Nombre']['PrimerNombre'] + ' ' + @credit_bureau.bureau_report['results'][1]['response']['return']['Personas']['Persona'][0]['Nombre']['ApellidoPaterno'] + ' ' + @credit_bureau.bureau_report['results'][1]['response']['return']['Personas']['Persona'][0]['Nombre']['ApellidoMaterno']
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | R.F.C
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @credit_bureau.bureau_report['results'][1]['response']['return']['Personas']['Persona'][0]['Nombre']['RFC']
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Fecha de nacimiento
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @credit_bureau.bureau_report['results'][1]['response']['return']['Personas']['Persona'][0]['Nombre']['FechaNacimiento']
+                              - if @credit_bureau.bureau_report.present?
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Nombre
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @credit_bureau.bureau_report['results'][1]['response']['return']['Personas']['Persona'][0]['Nombre']['PrimerNombre'] + ' ' + @credit_bureau.bureau_report['results'][1]['response']['return']['Personas']['Persona'][0]['Nombre']['ApellidoPaterno'] + ' ' + @credit_bureau.bureau_report['results'][1]['response']['return']['Personas']['Persona'][0]['Nombre']['ApellidoMaterno']
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | R.F.C
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @credit_bureau.bureau_report['results'][1]['response']['return']['Personas']['Persona'][0]['Nombre']['RFC']
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Fecha de nacimiento
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @credit_bureau.bureau_report['results'][1]['response']['return']['Personas']['Persona'][0]['Nombre']['FechaNacimiento']
+                              - else
+                                .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                  .m-alert__icon
+                                    i.flaticon-exclamation-1
+                                    span
+                                  .m-alert__text
+                                    strong
+                                      | Aún no se encuentran datos generales.
                         .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Domicilios registrados
-                            - @credit_bureau['bureau_report']['results'][1]['response']['return']['Personas']['Persona'][0]['Domicilios']['Domicilio'].each do |address|
+                            - if @credit_bureau.bureau_report.present?
+                              - @credit_bureau['bureau_report']['results'][1]['response']['return']['Personas']['Persona'][0]['Domicilios']['Domicilio'].each do |address|
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Calle y número
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = address['Direccion1']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Colonia
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = address['Direccion2']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Del / Mpio
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = address['DelegacionMunicipio']
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Estado
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = address['Estado']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | C.P
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = address['CP']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Teléfono
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = address['NumeroTelefono']
+                                br
+                            - else
                               .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Calle y número
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = address['Direccion1']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Colonia
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = address['Direccion2']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Del / Mpio
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = address['DelegacionMunicipio']
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Estado
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = address['Estado']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | C.P
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = address['CP']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Teléfono
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = address['NumeroTelefono']
-                              br
+                                .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                  .m-alert__icon
+                                    i.flaticon-exclamation-1
+                                    span
+                                  .m-alert__text
+                                    strong
+                                      | Aún no se encuentran domicilios registrados.
                         .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Domicilio(s) de empleo(s) registrado(s)
-                            - @credit_bureau['bureau_report']['results'][1]['response']['return']['Personas']['Persona'][0]['Empleos']['Empleo'].each do |job|
+                            - if @credit_bureau.bureau_report.present?
+                              - @credit_bureau['bureau_report']['results'][1]['response']['return']['Personas']['Persona'][0]['Empleos']['Empleo'].each do |job|
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Compañia
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = job['NombreEmpresa']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Puesto
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = job['Cargo']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Salario
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = job['Salario']
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Calle y número
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = job['Direccion1']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Colonia
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = job['Direccion2']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Del / Mpio
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = job['Direccion2']
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Estado
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = job['Estado']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | C.P
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = job['CP']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Teléfono
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = job['NumeroTelefono']
+                                br
+                            - else
                               .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Compañia
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = job['NombreEmpresa']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Puesto
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = job['Cargo']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Salario
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = job['Salario']
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Calle y número
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = job['Direccion1']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Colonia
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = job['Direccion2']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Del / Mpio
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = job['Direccion2']
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Estado
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = job['Estado']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | C.P
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = job['CP']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Teléfono
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = job['NumeroTelefono']
-                              br
-                        /.m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
-                          .m-demo__preview
-                            .d-flex.flex-column.justify-content-center
-                              .gauge-wrapper
-                                .gauge.four.rischio style="--degres: #{calculate_degrees(@percentage)}deg;"
-                                  .slice-colors
-                                    .st.slice-item
-                                    .st.slice-item
-                                    .st.slice-item
-                                  .needle
-                                  .gauge-center
-                                    .number
-                                      | 771
-                                    .status-face
-                                      = image_tag calculate_face(@percentage)
-
-                              .d-inline-flex.justify-content-center
-                                .d-flex.flex-column.justify-content-between.align-items-center.status-container
-                                  span.text-center
-                                    strong = 'BAJA, MENOR A 550 PUNTOS'
-                                  = image_tag 'face-bad.png'
-                                .d-flex.flex-column.justify-content-between.align-items-center.status-container
-                                  span.text-center
-                                    strong = 'REGULAR / BUENA, 550-700 PUNTOS'
-                                  = image_tag 'face-med.png'
-                                .d-flex.flex-column.justify-content-between.align-items-center.status-container
-                                  span.text-center
-                                    strong = 'EXCELENTE MÁS DE 700 PUNTOS'
-                                  = image_tag 'face-good.png'
+                                .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                  .m-alert__icon
+                                    i.flaticon-exclamation-1
+                                    span
+                                  .m-alert__text
+                                    strong
+                                      | Aún no se encuentran Domicilio(s) de empleo(s) registrado(s).
 
 
                         .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Cuentas
-                            - @credit_bureau['bureau_report']['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Nombre del Otorgante
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = account['NombreOtorgante']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Monto a pagar
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = number_to_currency account['MontoPagar']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Tipo de cuenta
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  / =  account_type account['TipoCuenta']
-                                  =  I18n.t("account_type.#{account['TipoCuenta']}")
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Saldo actual
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = account['SaldoActual']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Saldo vencido
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = account['SaldoVencido']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Tipo de contrato
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  / = contract_type account['TipoContrato']
-                                  =  I18n.t("contract_type.#{account['TipoContrato']}")
+                            - if @credit_bureau.bureau_report.present?
+                              - @credit_bureau['bureau_report']['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Nombre del Otorgante
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = account['NombreOtorgante']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Monto a pagar
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = number_to_currency account['MontoPagar']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Tipo de cuenta
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    / =  account_type account['TipoCuenta']
+                                    =  I18n.t("account_type.#{account['TipoCuenta']}")
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Saldo actual
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = account['SaldoActual']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Saldo vencido
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = account['SaldoVencido']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Tipo de contrato
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    / = contract_type account['TipoContrato']
+                                    =  I18n.t("contract_type.#{account['TipoContrato']}")
 
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Crédito maximo
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = number_to_currency account['CreditoMaximo']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Forma de Pago
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = method_payment account['FormaPagoActual']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Frecuencia de pagos
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  =  I18n.t("payments_frecuency.#{account['FrecuenciaPagos']}")
-                                  / = get_payments_frecuency account['FrecuenciaPagos']
-                                /.m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Nombre de otorgante
-                                /.m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = account['NombreOtorgante']
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Historial de pagos
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | E
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | F
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | M
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | A
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | M
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | J
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | J
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | A
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | S
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | O
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | N
-                                .m-stack__item.body-info-company.m-stack__item--middle
-                                  strong
-                                    | D
-                              - get_history_payments(account).each do |key, value|
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Crédito maximo
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = number_to_currency account['CreditoMaximo']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Forma de Pago
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = method_payment account['FormaPagoActual']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Frecuencia de pagos
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    =  I18n.t("payments_frecuency.#{account['FrecuenciaPagos']}")
+                                    / = get_payments_frecuency account['FrecuenciaPagos']
+                                  /.m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Nombre de otorgante
+                                  /.m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = account['NombreOtorgante']
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Historial de pagos
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                   .m-stack__item.body-info-company.m-stack__item--middle
-                                    = key
-                                  - value.each do |v|
-                                    - if v[:value] == 0
-                                      .m-stack__item.body-info-company.m-stack__item--middle
-                                    - elsif v[:value] == '1'
-                                          .m-stack__item.body-info-one.m-stack__item--middle
-                                            strong
-                                              = v[:value]
-                                    - elsif v[:value] == '2'
-                                      .m-stack__item.body-info-two.m-stack__item--middle
-                                        strong
-                                          = v[:value]
-                                    - else
-                                      .m-stack__item.body-info-x.m-stack__item--middle
-                                        strong
-                                          = v[:value]
-
-
-                              br
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | E
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | F
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | M
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | A
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | M
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | J
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | J
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | A
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | S
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | O
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | N
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | D
+                                - get_history_payments(account).each do |key, value|
+                                  .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                    .m-stack__item.body-info-company.m-stack__item--middle
+                                      = key
+                                    - value.each do |v|
+                                      - if v[:value] == 0
+                                        .m-stack__item.body-info-company.m-stack__item--middle
+                                      - elsif v[:value] == '1'
+                                            .m-stack__item.body-info-one.m-stack__item--middle
+                                              strong
+                                                = v[:value]
+                                      - elsif v[:value] == '2'
+                                        .m-stack__item.body-info-two.m-stack__item--middle
+                                          strong
+                                            = v[:value]
+                                      - else
+                                        .m-stack__item.body-info-x.m-stack__item--middle
+                                          strong
+                                            = v[:value]
+                                br
+                            - else
+                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                  .m-alert__icon
+                                    i.flaticon-exclamation-1
+                                    span
+                                  .m-alert__text
+                                    strong
+                                      | Aún no se encuentran cuentas.
                         .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Consultas
-                            - @credit_bureau['bureau_report']['results'].each do |bureau_report|
-                              - if bureau_report['status']
-                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                    =  I18n.t("report_type.#{bureau_report['metadata']['reportType']}")
-                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                    = bureau_report['status']
-                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                    = bureau_report['createdAt'].to_datetime.strftime('%d-%m-%Y')
-                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                    a href="/credit_bureaus/#{bureau_report['id']}"
-                                      |Ver reporte
+                            - if @credit_bureau.bureau_report.present?
+                              - @credit_bureau['bureau_report']['results'].each do |bureau_report|
+                                - if bureau_report['status']
+                                  .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                    .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                      =  I18n.t("report_type.#{bureau_report['metadata']['reportType']}")
+                                    .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                      = bureau_report['status']
+                                    .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                      = bureau_report['createdAt'].to_datetime.strftime('%d-%m-%Y')
+                                    .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                      a href="/credit_bureaus/#{bureau_report['id']}"
+                                        |Ver reporte
+                            - else
+                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                  .m-alert__icon
+                                    i.flaticon-exclamation-1
+                                    span
+                                  .m-alert__text
+                                    strong
+                                      | Aún no se encuentran consultas.
 
 
                       - else
