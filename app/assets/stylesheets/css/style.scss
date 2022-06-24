@@ -1576,12 +1576,13 @@ header {
           color: #fff; }
         .breadcrumb-widget .breadcrumb-content ul li a {
           display: inline-block; }
-        .breadcrumb-widget .breadcrumb-content ul li::after {
-          content: "\35";
+/*        .breadcrumb-widget .breadcrumb-content ul li::after {
+          content: "\f058";
           position: absolute;
           right: -20px;
           top: 0;
-          font-family: "ElegantIcons"; }
+          font-family: "Font Awesome 5 Free";
+        }*/
   .breadcrumb-widget.breadcrumb-widget-2 {
     overflow: hidden; }
     .breadcrumb-widget.breadcrumb-widget-2::after {

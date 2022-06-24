@@ -473,14 +473,24 @@ span.badge {
   background-color:#f1c40f;
 }
 
+.m-demo{
+  //padding-top: 10px;
+}
+
 .m-list-timeline__item{
   cursor: pointer;
+}
+
+.m-list-timeline__items .m-list-timeline__item:first-child {
+  margin-left: -1px !important;
 }
 
 .m-list-timeline__item:hover{
   background-color: aliceblue;
   transform:        scale(1.2);
   font-weight:      bolder;
+  padding:          10px;
+  border-radius:    10px;
 }
 
 #calendar {

@@ -2,8 +2,10 @@ class EventsController < ApplicationController
   protect_from_forgery
 
   def index
-    @users = User.all
-    @next_events = Event.where('start_date >= ?', Date.today()).order(:start_date)
+    @users            = User.all
+    @next_events      = Event.where('start_date >= ?', Date.today()).order(:start_date)
+    @pending_events   = Event.where(event_finished: [false, nil]).order(:start_date)
+    @finished_events  = Event.where(event_finished: true).order(:start_date)
   end
 
   def get_events
@@ -58,6 +60,10 @@ class EventsController < ApplicationController
           end
         end
 
+        users_ids.each do |id|
+          EventMailer.update_event_email(event, User.find(id)).deliver
+        end
+
         redirect_to "/events", notice: "Evento actualizado correctamente."
       rescue StandardError => e
         p "Error: #{e}"
@@ -69,6 +75,7 @@ class EventsController < ApplicationController
         if event.save
           users_ids.each do |user_id|
             EventDetail.create(event_id: event.id, user_id: user_id)
+            EventMailer.new_event_email(event, User.find(user_id)).deliver
           end
           format.html { redirect_to '/events', notice: 'Evento guardado exitosamente.' }
           format.json { render json: {event: event} }
@@ -77,6 +84,15 @@ class EventsController < ApplicationController
         end
       end
     end
+  end
+
+  def save_event_agreement
+    event_params = params[:event]
+
+    event = Event.where(id: event_params[:id]).try(:first)
+    event.update(agreements:  event_params[:agreements])
+    redirect_to "/events", notice: "Evento actualizado correctamente."
+
   end
 
   def update
@@ -96,6 +112,16 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to events_path, notice: "Evento eliminado exitosamente." }
+      format.json { head :no_content }
+    end
+  end
+
+  def finish_event
+    event = Event.find(params["id"])
+    event.update(event_finished: true)
+
+    respond_to do |format|
+      format.html { redirect_to events_path, notice: "Evento finalizado." }
       format.json { head :no_content }
     end
   end
