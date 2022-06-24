@@ -10,26 +10,80 @@
       button.btn.btn-info.btn-block.btn-details.open-modal-event.my-3 data-target="#m_modal_event" data-toggle="modal" type="button" style="width: inherit;"
         i.fa.fa-calendar-plus
         = "Agregar evento"
+      ul.nav.select_form_switch.select-form-switch-two.mx-3.my-3 role="tablist"
+        li.nav-item.active
+          a.nav-link data-toggle="tab" href="#next_events"
+            | PROXIMAS
+        li.nav-item
+          a.nav-link data-toggle="tab" href="#finished_events"
+            | FINALIZADAS
+        li.slide.slide-two
+
+      .tab-content
+        .tab-pane.active id="next_events"
+          .m-portlet
+            .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+              .m-demo__preview
+                .m-list-timeline
+                  h4 = 'Proximas Reuniones'
+                  .m-list-timeline__items
+                    - @next_events.each do |event|
+                      .list-timeline-item style="display: inline-flex; align-items: center;"
+                        a.m-list-timeline__item.open-modal-event class=('horizontal-shake' if event.start_date.today?) data-target="#m_modal_event" data-toggle="modal" data-id="#{event.id}" data-title="#{event.title}" data-desc="#{event.description}" data-datetime="#{event.start_date.strftime('%Y-%m-%dT%H:%M:%S')}" data-type="#{event.event_type}" data-location="#{event.location}" data-url="#{event.url}" data-users="#{EventDetail.where(event_id: event.id).pluck(:user_id)}"
+                          span.m-list-timeline__badge
+                          span.m-list-timeline__text
+                            = event.title
+                          span.m-list-timeline__time
+                            - if event.start_date.today?
+                              strong = 'HOY'
+                            - else
+                              = event.start_date.strftime('%d/%m/%Y %I:%M%p')
+                        span.m-list-timeline__time.ml-3
+                          a.btn.btn-outline-primary.btn-sm.open-modal-agreement data-target="#m_modal_agreement" data-toggle="modal" data-id="#{event.id}" data-agreements="#{event.agreements}"
+                            span
+                              i.fa.fa-archive
+
+        .tab-pane id="finished_events"
+          .m-portlet
+            .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+              .m-demo__preview
+                .m-list-timeline
+                  h4 = 'Proximas Reuniones'
+                  .m-list-timeline__items
+                    - @finished_events.each do |event|
+                      .list-timeline-item style="display: inline-flex; align-items: center;"
+                        a.m-list-timeline__item.open-modal-event
+                          span.m-list-timeline__badge
+                          span.m-list-timeline__text
+                            = event.title
+                          span.m-list-timeline__time
+                            - if event.start_date.today?
+                              strong = 'HOY'
+                            - else
+                              = event.start_date.strftime('%d/%m/%Y %I:%M%p')
+
       .m-portlet
         .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
           .m-demo__preview
             .m-list-timeline
-              h4 = 'Proximas Reuniones'
+              h4 = 'Reuniones pendientes'
               .m-list-timeline__items
-                - @next_events.each do |event|
-                  a.m-list-timeline__item.open-modal-event class=('horizontal-shake' if event.start_date.today?) data-target="#m_modal_event" data-toggle="modal" data-id="#{event.id}" data-title="#{event.title}" data-desc="#{event.description}" data-datetime="#{event.start_date.strftime('%Y-%m-%dT%H:%M:%S')}" data-type="#{event.event_type}" data-location="#{event.location}" data-url="#{event.url}" data-users="#{EventDetail.where(event_id: event.id).pluck(:user_id)}"
-                    span.m-list-timeline__badge
-                    span.m-list-timeline__text
-                      = event.title
-                    span.m-list-timeline__time
-                      - if event.start_date.today?
-                        strong = 'HOY'
-                      - else
-                        = event.start_date.strftime('%d/%m/%Y %I:%M%p')
-                    /span.m-list-timeline__time
-                      a.btn.btn-outline-primary.m-btn.m-btn--icon.m-btn--pill.m-btn--air href="#"
+                - @pending_events.each do |event|
+                  .list-timeline-item style="display: inline-flex; align-items: center;"
+                    a.m-list-timeline__item.open-modal-event class=('horizontal-shake' if event.start_date.today?) data-target="#m_modal_event" data-toggle="modal" data-id="#{event.id}" data-title="#{event.title}" data-desc="#{event.description}" data-datetime="#{event.start_date.strftime('%Y-%m-%dT%H:%M:%S')}" data-type="#{event.event_type}" data-location="#{event.location}" data-url="#{event.url}" data-users="#{EventDetail.where(event_id: event.id).pluck(:user_id)}"
+                      span.m-list-timeline__badge
+                      span.m-list-timeline__text
+                        = event.title
+                      span.m-list-timeline__time
+                        - if event.start_date.today?
+                          strong = 'HOY'
+                        - else
+                          = event.start_date.strftime('%d/%m/%Y %I:%M%p')
+                    span.m-list-timeline__time.ml-3
+                      a.btn.btn-outline-primary.btn-sm.open-modal-agreement data-target="#m_modal_agreement" data-toggle="modal" data-id="#{event.id}" data-agreements="#{event.agreements}"
                         span
-                          i.fa.fa-pencil-alt
+                          i.fa.fa-archive
+
 
 #m_modal_event.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"
@@ -74,3 +128,28 @@
           button.btn.btn-danger#btn-event-delete type="button" onclick="deleteEvent(event_id)"
             i.fa.fa-trash-alt.mx-2
             | Eliminar
+
+
+#m_modal_agreement.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog role="document" style="margin-top: 0%;"
+    .modal-content
+      .modal-header
+        h5#titleModalLabel.modal-title
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"
+            | \&times;
+      = form_for current_user, url: save_event_agreement_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
+        .modal-body
+          input type="hidden" name="event[id]" id="event_id" value=""
+          .col-md-12
+            = label 'acuerdo','Acuerdos', class: 'col-form-label text-bold'
+            = text_area :event, :agreements, class: 'form-control m-input'
+        .modal-footer.d-flex.justify-content-between.flex-row-reverse
+          section
+            button.btn.btn-secondary.mx-2 data-dismiss="modal" type="button"
+              | Cerrar
+            button.btn.btn-success type="submit"
+              | Guardar
+          button.btn.btn-success type="button" onclick="finishEvent(event_id)"
+            i.fa.fa-check-double.mx-2
+            | FINALIZAR

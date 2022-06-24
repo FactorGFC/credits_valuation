@@ -46,7 +46,9 @@ Rails.application.routes.draw do
     get 'get_events',         to: "events#get_events",     :as=>"get_events"
     get 'get_event_info/:id', to: "events#get_event_info", :as=>"get_event_info"
     post    '/save_event'     => 'events#save_event'
-    delete  'delete_event/:id'=> 'events#delete'
+    put     '/save_event_agreement' => 'events#save_event_agreement'
+    put     'finish_event/:id'      => 'events#finish_event'
+    delete  'delete_event/:id'      => 'events#delete'
 
     get '/complete_user' => 'home#complete_user', as: :complete_user
     put 'create_sat_user' => 'home#create_sat_user', as: :create_sat_user

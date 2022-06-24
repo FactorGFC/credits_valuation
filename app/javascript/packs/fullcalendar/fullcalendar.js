@@ -8,44 +8,45 @@ import I18n from "i18n-js";
 document.addEventListener('turbolinks:load', function() {
 
     var calendarEl  = document.getElementById('calendar');
+    $(document).ready(function() {
+        var calendar = new Calendar(calendarEl, {
+            plugins: [ dayGridPlugin ],
+            initialView: 'dayGridMonth',
+            initialDate: Date.now(),
+            editable: true,
+            droppable: false,
+            locale: esLocale,
+            eventSources: '/get_events',
+            eventClick: function(info) {
 
-    var calendar = new Calendar(calendarEl, {
-        plugins: [ dayGridPlugin ],
-        initialView: 'dayGridMonth',
-        initialDate: Date.now(),
-        editable: true,
-        droppable: false,
-        locale: esLocale,
-        eventSources: '/get_events',
-        eventClick: function(info) {
+                let authenticityToken = $('[name="csrf-token"]')[0] && $('[name="csrf-token"]')[0].content;
 
-            let authenticityToken = $('[name="csrf-token"]')[0] && $('[name="csrf-token"]')[0].content;
-
-            $.ajax({
-                url: 'get_event_info/'+info.event.id,
-                data: {authenticity_token: authenticityToken},
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    let event = data;
-                    $("#titleModalLabel").text('EDITAR EVENTO');
-                    fillEventForm(event.id, event.title, event.description, event.start, event.event_type, event.location, event.url, event.user_ids)
-                },
-                error: function (error) {
-                    let message = I18n.t('messages.try_again');
-                    if (error.responseJSON && error.responseJSON.message) {
-                        message = error.responseJSON.message;
+                $.ajax({
+                    url: 'get_event_info/'+info.event.id,
+                    data: {authenticity_token: authenticityToken},
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        let event = data;
+                        $("#titleModalLabel").text('EDITAR EVENTO');
+                        fillEventForm(event.id, event.title, event.description, event.start, event.event_type, event.location, event.url, event.user_ids)
+                    },
+                    error: function (error) {
+                        let message = I18n.t('messages.try_again');
+                        if (error.responseJSON && error.responseJSON.message) {
+                            message = error.responseJSON.message;
+                        }
+                        swal(I18n.t('messages.error'), message, 'error');
                     }
-                    swal(I18n.t('messages.error'), message, 'error');
-                }
-            });
-            info.el.style.borderColor = 'red';
+                });
+                info.el.style.borderColor = 'red';
 
-            $('#m_modal_event').modal();
-        }
+                $('#m_modal_event').modal();
+            }
+        });
+
+        calendar.render();
     });
-
-    calendar.render();
 
     $(document).on("click", ".open-modal-event", function () {
         var eventId            = $(this).data('id');
@@ -67,6 +68,15 @@ document.addEventListener('turbolinks:load', function() {
         fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers);
         console.log(eventId);
 
+    });
+
+    $(document).on("click", ".open-modal-agreement", function (){
+        var eventId            = $(this).data('id');
+        var eventAgreements    = $(this).data('agreements');
+        $("#titleModalLabel").text('ACUERDOS');
+
+        $(".modal-body #event_id").val(eventId);
+        $(".modal-body #event_agreements").val(eventAgreements);
     });
 
     function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers){
@@ -119,6 +129,41 @@ document.addEventListener('turbolinks:load', function() {
                         });
                         window.location.href = 'events';
 
+                    },
+                    error: function (error) {
+                        let message = I18n.t('messages.try_again');
+                        if (error.responseJSON && error.responseJSON.message) {
+                            message = error.responseJSON.message;
+                        }
+                        swal(I18n.t('messages.error'), message, 'error');
+                    }
+                });
+            }
+        });
+    }
+
+    window.finishEvent = function(event) {
+        let authenticityToken = $('[name="csrf-token"]')[0] && $('[name="csrf-token"]')[0].content;
+        swal({
+            title: '¿Desea FINALIZAR este evento?',
+            buttons: {
+                cancel: I18n.t('messages.cancel'),
+                confirm: I18n.t('messages.confirm')
+            }
+        }).then((isConfirmed) => {
+            if (isConfirmed) {
+                $.ajax({
+                    url: 'finish_event/'+event.value,
+                    data: {authenticity_token: authenticityToken},
+                    type: 'PUT',
+                    dataType: 'json',
+                    success: function (data) {
+                        swal({
+                            title: I18n.t('messages.done'),
+                            text: I18n.t('messages.deleted'),
+                            type: 'success'
+                        });
+                        window.location.href = 'events';
                     },
                     error: function (error) {
                         let message = I18n.t('messages.try_again');
