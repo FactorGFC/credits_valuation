@@ -13,10 +13,10 @@
         = f.number_field :authorized_line, class: 'form-control m-input', min: 0
       .col-sm-4
         = f.label 'Saldo', class: 'col-form-label'
-        = f.number_field :balance, class: 'form-control m-input', min: 0,readonly: true
+        = f.number_field :balance, class: 'form-control m-input', min: 0, readonly: true
       .col-sm-4
         = f.label 'Moneda', class: 'col-form-label'
-        = f.select :coin, FinancialInstitution.coins.keys.map { |w| [w, w] }, {:prompt => 'SElecciona'},{class:'form-control  m-input',readonly: true, disabled: true}
+        = f.select :coin, FinancialInstitution.coins.keys.map { |w| [w, w] }, {:prompt => 'Selecciona'},{class:'form-control  m-input',readonly: true}
     .row
       .col-sm-6
         = f.label 'Tipo de contrato', class: 'col-form-label'

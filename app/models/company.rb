@@ -48,7 +48,7 @@ class Company < ApplicationRecord
   require 'twilio-ruby'
 
 
-  has_many :users
+  has_one :user
   has_many :company_clients, inverse_of: :company
   has_many :company_providers, inverse_of: :company
   has_many :financial_institutions, inverse_of: :company

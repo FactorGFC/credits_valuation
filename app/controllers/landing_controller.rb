@@ -31,9 +31,9 @@ class LandingController < ApplicationController
     }
 
     user    = User.find_by(email: request_data[:user][:email])
-    company = Company.find_by(rfc: request_data[:company][:rfc])
 
-    company ? company : company = Company.new(request_data[:company])
+    company = Company.new(request_data[:company])
+
     if company['sat_id'].present?
       sat_id = company['sat_id']
     else

@@ -98,7 +98,7 @@
                 = f.fields_for :financial_institutions do |fi|
                   = render 'financial_institutions_fields', {f: fi, e: fi}
                 .links.d-flex.justify-content-center.mb-20  style="background-color: white; position: relative; top: -2px;"
-                  = link_to_add_association 'Agregar Institución Financiera', f, :financial_institutions, partial: 'companies/financial_institutions_fields',
+                  = link_to_add_association 'Agregar Institución Financiera', f, :financial_institutions, partial: 'companies/financial_institutions_fields_new',
                           class: 'btn m-btn--pill m-btn--air btn-success m-btn m-btn--custom m-btn--bolder m-btn--uppercase'
             .col-xl-12
               = f.submit 'Guardar', class: 'btn btn-primary col-xl-12'
