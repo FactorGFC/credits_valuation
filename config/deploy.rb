@@ -35,7 +35,7 @@ task :remote_environment do
   # Be sure to commit your .ruby-version or .rbenv-version to your repository.
   # invoke :'rbenv:load'
   # For those using RVM, use this to load an RVM version@gemset.
-  invoke :'rvm:use', 'ruby-2.7.5@credits_factor_global'
+  invoke :'rvm:use', 'ruby-2.7.6@credits_valuation'
 end
 # Put any custom commands you need to run at setup
 # All paths in `shared_dirs` and `shared_paths` will be created on their own.
