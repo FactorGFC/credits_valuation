@@ -62,7 +62,7 @@
               strong = 'SINDICALIZADOS'
         ul.d-flex.justify-content-center.collab-list
           h3
-            strong = "TOTAL:  #{ @company.try(:number_collaborator).try(:total).to_s(:delimited)}"
+            strong = "TOTAL:  #{ @company.try(:number_collaborator).try(:number_collaborator).present?  ? @company.try(:number_collaborator).try(:total).to_s(:delimited) : 0 }"
 
       .col-md-5
         span.port-subtitle = 'ARCHIVOS'
