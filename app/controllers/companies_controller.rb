@@ -248,11 +248,11 @@ class CompaniesController < ApplicationController
     request = Request.find_by(company_id: params[:company_id])
     request_params = params[:request]
     if request
-      if request.update(analyst_id: request_params[:analyst_id], process_status_id: request_params[:process_status_id], credit_type_id: request_params[:credit_type_id], user_id: current_user.id)
+      if request.update(analyst_id: request_params[:analyst_id], process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:credit_type_id], user_id: current_user.id)
         redirect_to "/company_details/#{params[:company_id]}", notice: "Actualizado correctamente."
       end
     else
-      new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id], process_status_id: 1, credit_type_id: request_params[:credit_type_id], user_id: current_user.id)
+      new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id], process_status_id: 1, factor_credit_id: request_params[:credit_type_id], user_id: current_user.id)
 
       if new_request.save
         redirect_to "/company_details/#{params[:company_id]}", notice: "Guardado correctamente."

@@ -14,6 +14,7 @@ pickle-email-*.html
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
+/tmp/cache/*
 !/log/.keep
 !/tmp/.keep
 
@@ -67,12 +68,3 @@ yarn-debug.log*
 /storage/*
 !/storage/.keep
 /public/uploads
-
-# Default ignored files
-/shelf/
-/workspace.xml
-# Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
-# Editor-based HTTP Client requests
-/httpRequests/

@@ -1545,7 +1545,7 @@
           p#textModal
             | Asignar Tipo de Crédito
           .col-xl-12 style="display: grid;"
-            = select("request", "credit_type_id", CreditType.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito', selected: @request.try(:credit_type_id)}, {class: "form-control m-input"})
+            = select("request", "factor_credit_id",FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito', selected: @request.try(:credit_type_id)}, {class: "form-control m-input"})
           - if @request.try(:order).present?
             - if @request.try(:order) >= 2
               p#textModal
