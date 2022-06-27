@@ -460,7 +460,7 @@ span.badge {
 }
 
 
-.four .slice-colors .st.slice-item:nth-child(1) {
+/*.four .slice-colors .st.slice-item:nth-child(1) {
   border-top: 50px #f1c40f solid;
   border-right: 50px #f1c40f solid;
   background-color: #E84C3D;
@@ -471,16 +471,39 @@ span.badge {
   border-bottom: 65px #1eaa59 solid;
   border-right: 50px #1eaa59 solid;
   background-color:#f1c40f;
+}*/
+
+.four .slice-colors .st.slice-item:nth-child(2) {
+  border-top: 50px #f1c40f solid;
+  border-right: 50px #f1c40f solid;
+  background-color: #E84C3D;
+}
+
+.four .slice-colors .st.slice-item:nth-child(4) {
+  left:50%;
+  border-bottom: 50px #1eaa59 solid;
+  border-right: 50px #1eaa59 solid;
+  background-color: #7caa55;
+}
+
+.m-demo{
+  //padding-top: 10px;
 }
 
 .m-list-timeline__item{
   cursor: pointer;
 }
 
+.m-list-timeline__items .m-list-timeline__item:first-child {
+  margin-left: -1px !important;
+}
+
 .m-list-timeline__item:hover{
   background-color: aliceblue;
   transform:        scale(1.2);
   font-weight:      bolder;
+  padding:          10px;
+  border-radius:    10px;
 }
 
 #calendar {
@@ -589,7 +612,7 @@ span.badge {
 }
 
 .collab-list{
-  padding-right: 30px;
+  padding: 0 !important;
 }
 
 .collab-list > li{
@@ -602,18 +625,76 @@ span.badge {
 }
 
 .quantity-circle{
-  background:       rgba(0, 197, 221, 0.3);
-  font-weight:      bold;
-  font-size:        1.3em;
-  width:            80px;
-  height:           80px;
-  margin:           10px 0;
-  border-radius:    50%;
-  color:            #004e5f;
+  background:     transparent;
+  font-weight:    bold;
+  font-size:      1.3em;
+  width:          80px;
+  height:         80px;
+  margin:         10px 0;
+  border-radius:  50%;
+  color:          #004e5f;
+  border:         5px double rgba(0, 197, 221, 0.3);
 }
 
 .quantity-num{
   color: #444655;
+}
+
+.btns-card{
+  border:         1px solid lightsteelblue;
+  border-radius:  15px;
+  padding:        0 20px 20px 20px;
+  text-align:     center;
+}
+
+.subtitle-icon{
+  position: relative;
+  top: -20px;
+  right: auto;
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  margin: auto;
+  border: 1px solid lightgrey;
+}
+
+.subtitle-icon > i{
+  margin: auto;
+  font-size: 20px;
+}
+
+.comments-card{
+  max-height: 260px;
+  overflow: scroll;
+}
+
+.btn{
+  overflow: hidden;
+}
+
+.m-widget3__text{
+  text-align: initial;
+}
+
+.m-widget3 .m-widget3__item .m-widget3__header .m-widget3__info {
+  padding-left: unset !important;
+}
+
+.m-widget3__info{
+  display: flex !important;
+  justify-content: space-between;
+}
+
+.m-widget3__header{
+  display: flex !important;
+}
+
+.m-widget3__username{
+  text-align: left;
+}
+.m-widget3__time{
+  text-align: right;
 }
 
 ////ANIMATIONS

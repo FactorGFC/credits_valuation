@@ -17,7 +17,6 @@ require("bootstrap-select");
 require("javascripts/scripts.bundle");
 require("javascripts/tooltip");
 require("@fortawesome/fontawesome-free/js/all");
-//require("fullcalendar/fullcalendar.js");
 
 // require('@client-side-validations/client-side-validations');
 

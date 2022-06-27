@@ -1,0 +1,30 @@
+<!-- -*- encoding : utf-8 -*- -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <div>
+      <h1>Hola <%= @user.full_name %></h1>
+      <h2>Se actualizarón los datos de el evento:</h2>
+      <p>
+        Evento: <%= @event.title %>
+        <br>
+        Descripción: <%= @event.description %>
+        <br>
+        Fecha y Hora: <%= @event.start_date.strftime("%d/%m%Y %I:%M%p")%>
+        <br>
+        Se llevará a cabo de forma <strong><%= @event.event_type %></strong>
+        <br>
+        <% if @event.event_type === 'PRESENCIAL' %>
+          Ubicación: <%= @event.location %>
+      <% else %>
+          URL: <%= @event.url %>
+      <% end %>
+      </p>
+      <h4>¡Gracias!</h4>
+    </div>
+  </body>
+</html>

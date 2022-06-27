@@ -33,10 +33,10 @@
               = "#{e}"
   .portlet-profile.d-flex
     .col-md-12.d-flex
-      .col-md-8
+      .col-md-7
         span.port-subtitle = 'INSTITUCIONES FINANCIERAS'
-        btn.btn.btn-primary
-          = 'Ver instituciones financieras'
+        button.btn.btn-primary.btn-block.my-2.open-modal1 data-target="#m_modal_financial_institutions" data-toggle="modal" type="button"
+          = "Ver instituciones financieras"
 
         span.port-subtitle.mt-4 = 'COLABORADORES'
         ul.d-flex.justify-content-between.align-items-center.collab-list
@@ -64,7 +64,7 @@
           h3
             strong = "TOTAL:  #{ @company.try(:number_collaborator).try(:total).to_s(:delimited)}"
 
-      .col-md-4
+      .col-md-5
         span.port-subtitle = 'ARCHIVOS'
         .d-flex.flex-column
           a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="/open_pdf/#{@company.id}/id_file"
@@ -94,79 +94,110 @@
               i.fa.fa-file
 
   .m-portlet
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          h3.m-portlet__head-text
+            | Configuraciones
+
     .m-portlet__body
       .m-section.mb-0
-        .row.col-md-12
-          .col-md-3.text-center
-            span
-              strong = 'Revisar Compañia'
-            br
-            - if @company.status_company_id.eql?(StatusCompany.where(key: 'aprobada').first.id)
-              button.btn.btn-details.btn-info.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{@company.name}" data-rfc="#{@company.rfc}" data-id="#{@company.id}" data-approved="true"
-                i.fa.fa-check
-                = " Aprobada"
-            - elsif @company.status_company_id == StatusCompany.where(key: 'pendiente').first.id
-              button.btn.btn-details.btn-lg.btn-success.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{@company.name}" data-rfc="#{@company.rfc}" data-id="#{@company.id}" data-approved="true"
-                i.fab.fa.fa-check-circle-o
-                = " Aprobar"
-              button.btn.btn-details.btn-lg.btn-danger.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{@company.name}" data-rfc="#{@company.rfc}" data-id="#{@company.id}" data-approved="false"
-                i.fab.fa.fa-times-circle
-                = " Rechazar"
-            br
-            br
-            span
-              strong = 'Comentarios'
-            br
-            a.button.btn-details.btn.btn-success href="/request_comments/#{@company.id}"
-              i.fa.fa-eye
-              = "Ver comentarios"
+        .d-inline-flex.col-md-12
+          .col-md-3
+            .btns-card
+              .subtitle-icon.d-flex.justify-content-center.align-items-center
+                i.fa.fa-building.fa-lg.m--font-primary
+              h5.h5.subtitle = 'Detalles de solicitud'
+              - if @company.status_company_id.eql?(StatusCompany.where(key: 'aprobada').first.id)
+                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{@company.name}" data-rfc="#{@company.rfc}" data-id="#{@company.id}" data-approved="true"
+                  = "Estatus: Aprobada"
+              - elsif @company.status_company_id == StatusCompany.where(key: 'pendiente').first.id
+                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{@company.name}" data-rfc="#{@company.rfc}" data-id="#{@company.id}" data-approved="true"
+                  i.fab.fa.fa-check-circle-o
+                  = "Estatus:  Aprobar"
+                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{@company.name}" data-rfc="#{@company.rfc}" data-id="#{@company.id}" data-approved="false"
+                  i.fab.fa.fa-times-circle
+                  = "Estatus:  Rechazar"
 
+              button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_analyst" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
+                = "Más detalles (Analista, tipo, ...)"
 
-          - if current_user.role.key == 'god'
-            .col-md-3.text-center
-              span
-                strong = 'Asignar detalles de solicitud'
-              br
-                button.btn.btn-details.btn-info.open-modal1 data-target="#m_modal_analyst" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
-                  i.fa.fa-pencil-alt.mx-1
-                  = "Asignar"
-              br
-                span
-                  strong = 'Informacion faltante de la compañia'
-                br
-                  - unless @company.try(:info_company).present?
-                    = link_to sat_info_company_path(@company.id), method: :put, class: 'btn btn-details btn-info' do
-                      i.fa.fa-pencil-alt.mx-1
-                      = "Informacion del SAT"
-                  - unless @company.try(:income_statment).present?
-                    = link_to sat_income_statement_path(@company.id), method: :put, class: 'btn btn-details btn-info' do
-                      i.fa.fa-pencil-alt.mx-1
-                      = "Estado de resultados"
-
-                  - unless @company.try(:balance_sheet).present?
-                    = link_to sat_balance_sheet_path(@company.id), method: :put, class: 'btn btn-details btn-info' do
-                      i.fa.fa-pencil-alt.mx-1
-                      = "Hoja de balance"
-                  - unless @company.try(:credit_bureaus).last.try(:bureau_info).present?
-                    = link_to credit_bureau_info_path(@company.id), method: :put, class: 'btn btn-details btn-info' do
-                      i.fa.fa-pencil-alt.mx-1
-                      = "Información del buro de crédito"
-                  - unless @company.try(:credit_bureaus).last.try(:bureau_report).present?
-                    = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-details btn-info' do
-                      i.fa.fa-pencil-alt.mx-1
-                      = "Reporte del buro de crédito"
-
-          .col-md-3.text-center
-            span
-              strong = 'Periodos a capturar'
-            br
-              button.btn.btn-details.btn-info.open-modal1.mx-4 data-target="#m_modal_balance" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="balance_sheet" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
-                i.fa.fa-calendar-plus
+          .col-md-3
+            .btns-card
+              .subtitle-icon.d-flex.justify-content-center.align-items-center
+                i.fa.fa-calendar.fa-lg.m--font-primary
+              h5.h5.subtitle = 'Asignación de periodos'
+              button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_balance" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="balance_sheet" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
                 = "Balance Financiero"
-            br
-              button.btn.btn-details.btn-info.open-modal1.mx-4 data-target="#m_modal_income" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="income_statement" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
-                i.fa.fa-calendar-plus
+              button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_income" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="income_statement" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
                 = "Estado Resultados"
+
+          .col-md-3
+            .btns-card
+              .subtitle-icon.d-flex.justify-content-center.align-items-center
+                i.fa.fa-sync.fa-lg.m--font-primary
+              h5.h5.subtitle = 'Información faltante de compañia'
+              - if @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present?
+                span.text-center
+                  | Todo en orden.
+              - else
+                - unless @company.try(:info_company).present?
+                  = link_to sat_info_company_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                    = "Información del SAT"
+                - unless @company.try(:income_statment).present?
+                  = link_to sat_income_statement_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                    = "Estado de resultados"
+
+                - unless @company.try(:balance_sheet).present?
+                  = link_to sat_balance_sheet_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                    = "Hoja de balance"
+                - unless @company.try(:credit_bureaus).last.try(:bureau_info).present?
+                  = link_to credit_bureau_info_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                    = "Info. Buró de crédito"
+                - unless @company.try(:credit_bureaus).last.try(:bureau_report).present?
+                  = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                    = "Reporte del buro de crédito"
+
+          .col-md-3
+            .btns-card
+              .subtitle-icon.d-flex.justify-content-center.align-items-center
+                i.fa.fa-comment.fa-lg.m--font-primary
+              h5.h5.subtitle = 'Comentarios'
+              .comments-card.m-widget3
+                - if @request_comments.length > 0
+                  - @request_comments.each do |comment|
+                    .m-widget3__item
+                      .m-widget3__header
+                        .m-widget3__info
+                          span.m-widget3__username
+                            = User.where(id: comment.user_id).try(:first).full_name
+                            br
+                            span.m--font-primary
+                              = "#{comment.process_status.name}"
+                          br
+                          span.m-widget3__time
+                            = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p')
+
+                      .m-widget3__body
+                        p.m-widget3__text
+                          = comment.comment
+                - else
+                  .m-widget3__item
+                    .m-widget3__body
+                      p.m-widget3__text
+                        .text-center
+                          | Aún no hay comentarios.
+              a.btn.btn-block.btn-info href="/request_comments/#{@company.id}"
+                | IR A COMENTARIOS
+
+  .m-portlet
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          h3.m-portlet__head-text
+            | Tablas de información
+    .m-portlet__body
+      .m-section.mb-0
         .col-xl-12.my-5
           ul.nav.select_form_switch role="tablist"
             li.nav-item.active
@@ -835,6 +866,7 @@
                                     .st.slice-item
                                     .st.slice-item
                                     .st.slice-item
+                                    .st.slice-item
                                   .needle
                                   .gauge-center
                                     .number
@@ -845,15 +877,19 @@
                               .d-inline-flex.justify-content-center
                                 .d-flex.flex-column.justify-content-between.align-items-center.status-container
                                   span.text-center
-                                    strong = 'BAJA, MENOR A 550 PUNTOS'
+                                    strong  = 'BAJA, MENOR A 550 PUNTOS'
                                   = image_tag 'face-bad.png'
                                 .d-flex.flex-column.justify-content-between.align-items-center.status-container
                                   span.text-center
-                                    strong = 'REGULAR / BUENA, 550-700 PUNTOS'
+                                    strong = 'REGULAR, 551-650 PUNTOS'
                                   = image_tag 'face-med.png'
                                 .d-flex.flex-column.justify-content-between.align-items-center.status-container
                                   span.text-center
-                                    strong = 'EXCELENTE MÁS DE 700 PUNTOS'
+                                    strong = 'BUENA 651- 750 PUNTOS'
+                                  = image_tag 'face-nice.png'
+                                .d-flex.flex-column.justify-content-between.align-items-center.status-container
+                                  span.text-center
+                                    strong = 'EXCELENTE MÁS DE 751 PUNTOS'
                                   = image_tag 'face-good.png'
 
                           .m-demo__preview
@@ -1450,14 +1486,6 @@
                                           = obligation['startDate']
                                         td
                                           = obligation['endDate']
-        / td.d-inline-flex
-        /   = link_item_block "/company_balance_sheet/#{@company.id}", data: {title: 'Balance general', placement: 'top',
-        /           toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
-        /     i.fa.fa-eye
-        /   = link_item_block "/company_income_statement/#{@company.id}", data: {title: 'Estado de resultados', placement: 'top',
-        /           toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
-        /     i.fa.fa-eye
-
 
 #m_modal_1.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"
@@ -1557,3 +1585,67 @@
             | Cerrar
           button#idBtn.btn.btn-success type="submit"
             | Guardar
+
+
+#m_modal_financial_institutions.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog role="document" style="margin-top: 0%;"
+    .modal-content
+      .modal-header
+        h5.modal-title
+          = 'Instituciones financieras'
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"
+            | \&times;
+      .modal-body
+        .col-xl-12 style="display: grid;"
+          - @financial_inst.each do |fin_inst|
+            .m-portlet.p-4
+              .row
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Institución'
+                  span = fin_inst.institution
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Tipo de Crédito'
+                  span = CreditType.where(id: fin_inst.credit_type_id).first.try(:name)
+              .row
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Línea Autorizada'
+                  span = fin_inst.authorized_line
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 =  'Saldo'
+                  span =  fin_inst.balance
+              .row
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Tipo de contrato'
+                  span = fin_inst.type_contract
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Moneda'
+                  span = fin_inst.coin
+              .row
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Garantía'
+                  span = fin_inst.warranty
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Tasa'
+                  span = fin_inst.rate
+              .row
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Vencimiento'
+                  span = fin_inst.expiration
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Destíno'
+                  span = fin_inst.destiny
+
+      .modal-footer
+        button.btn.btn-secondary data-dismiss="modal" type="button"
+          | Cerrar
