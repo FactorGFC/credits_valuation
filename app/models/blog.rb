@@ -16,6 +16,8 @@ class Blog < ApplicationRecord
   has_one :blog_type
   has_one :position
 
+  validates_presence_of :image
+
   def encode_image file
     Base64.strict_encode64(file.read)
   end
