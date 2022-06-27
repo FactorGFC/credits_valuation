@@ -35,8 +35,8 @@
     .col-md-12.d-flex
       .col-md-7
         span.port-subtitle = 'INSTITUCIONES FINANCIERAS'
-        btn.btn.btn-primary
-          = 'Ver instituciones financieras'
+        button.btn.btn-primary.btn-block.my-2.open-modal1 data-target="#m_modal_financial_institutions" data-toggle="modal" type="button"
+          = "Ver instituciones financieras"
 
         span.port-subtitle.mt-4 = 'COLABORADORES'
         ul.d-flex.justify-content-between.align-items-center.collab-list
@@ -1486,14 +1486,6 @@
                                           = obligation['startDate']
                                         td
                                           = obligation['endDate']
-        / td.d-inline-flex
-        /   = link_item_block "/company_balance_sheet/#{@company.id}", data: {title: 'Balance general', placement: 'top',
-        /           toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
-        /     i.fa.fa-eye
-        /   = link_item_block "/company_income_statement/#{@company.id}", data: {title: 'Estado de resultados', placement: 'top',
-        /           toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
-        /     i.fa.fa-eye
-
 
 #m_modal_1.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"
@@ -1593,3 +1585,67 @@
             | Cerrar
           button#idBtn.btn.btn-success type="submit"
             | Guardar
+
+
+#m_modal_financial_institutions.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog role="document" style="margin-top: 0%;"
+    .modal-content
+      .modal-header
+        h5.modal-title
+          = 'Instituciones financieras'
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"
+            | \&times;
+      .modal-body
+        .col-xl-12 style="display: grid;"
+          - @financial_inst.each do |fin_inst|
+            .m-portlet.p-4
+              .row
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Institución'
+                  span = fin_inst.institution
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Tipo de Crédito'
+                  span = CreditType.where(id: fin_inst.credit_type_id).first.try(:name)
+              .row
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Línea Autorizada'
+                  span = fin_inst.authorized_line
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 =  'Saldo'
+                  span =  fin_inst.balance
+              .row
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Tipo de contrato'
+                  span = fin_inst.type_contract
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Moneda'
+                  span = fin_inst.coin
+              .row
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Garantía'
+                  span = fin_inst.warranty
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Tasa'
+                  span = fin_inst.rate
+              .row
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Vencimiento'
+                  span = fin_inst.expiration
+                .col-sm-6.d-flex.justify-content-between
+                  span
+                    strong.mr-2 = 'Destíno'
+                  span = fin_inst.destiny
+
+      .modal-footer
+        button.btn.btn-secondary data-dismiss="modal" type="button"
+          | Cerrar
