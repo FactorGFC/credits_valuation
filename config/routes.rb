@@ -79,9 +79,6 @@ Rails.application.routes.draw do
       # Shows all users.
       get '/users', to: 'users/registrations#index', as: :user_registrations
 
-      #Report routes
-      get 'letter_authorization_pdf/:id' => 'reports#letter_authorization', :defaults => {:format => 'pdf'}
-
       # Create new users.
       get '/users/new', to: 'users/registrations#new_user', as: :new_user
       post '/users', to: 'users/registrations#create_user', as: :create_user
