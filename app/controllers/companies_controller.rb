@@ -146,10 +146,11 @@ class CompaniesController < ApplicationController
 
   def company_details
     sort_order = %w(anual trimestral mensual)
-    @periods = Calendar.all.order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.period_type) }
+    @periods             = Calendar.all.order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.period_type) }
     @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
     @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
-    @request = Request.find_by(company_id: params[:id])
+    @request             = Request.find_by(company_id: params[:id])
+    @request_comments    = RequestComment.where(request_id: @request.try(:id)).order(:created_at).limit(5)
 
     @credit_bureau = @company.credit_bureaus.last
 

@@ -1,10 +1,14 @@
 import swal from 'sweetalert';
-import $ from 'jquery';
+import $    from 'jquery';
 import I18n from 'i18n-js';
+import { Calendar }  from "@fullcalendar/core";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import esLocale      from '@fullcalendar/core/locales/es';
+import {toastr} from './notifications';
+import { fillEventForm } from './events';
 import 'bootstrap';
 import 'select2';// from 'select2';
 import 'javascripts/i18n/translations';
-import {toastr} from './notifications';
 
 I18n.locale = window.I18n.locale;
 
@@ -19,6 +23,45 @@ $(document).on('turbo:render', function(){
 
 $(document).on('turbolinks:load', function () {
 
+    if(document.getElementById('calendar')) {
+        var calendarEl  = document.getElementById('calendar');
+        var calendar = new Calendar(calendarEl, {
+            plugins: [ dayGridPlugin ],
+            initialView: 'dayGridMonth',
+            initialDate: Date.now(),
+            editable: true,
+            droppable: false,
+            locale: esLocale,
+            eventSources: '/get_events',
+            eventClick: function(info) {
+
+                var authenticityToken = $('[name="csrf-token"]')[0] && $('[name="csrf-token"]')[0].content;
+
+                $.ajax({
+                    url: 'get_event_info/'+info.event.id,
+                    data: {authenticity_token: authenticityToken},
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        let event = data;
+                        $("#titleModalLabel").text('EDITAR EVENTO');
+                        fillEventForm(event.id, event.title, event.description, event.start, event.event_type, event.location, event.url, event.user_ids)
+                    },
+                    error: function (error) {
+                        var message = I18n.t('messages.try_again');
+                        if (error.responseJSON && error.responseJSON.message) {
+                            message = error.responseJSON.message;
+                        }
+                        swal(I18n.t('messages.error'), message, 'error');
+                    }
+                });
+                info.el.style.borderColor = 'red';
+
+                $('#m_modal_event').modal();
+            }
+        });
+        calendar.render();
+    }
     // $('.select2-tag').select2({
     //     placeholder: 'Agregar tags...',
     //     tokenSeparators: [',', '\\n'],
