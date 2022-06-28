@@ -2,6 +2,7 @@ import swal from 'sweetalert';
 import $    from 'jquery';
 import I18n from 'i18n-js';
 import moment from 'moment'
+import '@fullcalendar/daygrid/main.css';
 import { Calendar }  from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import esLocale      from '@fullcalendar/core/locales/es';
