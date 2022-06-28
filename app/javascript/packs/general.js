@@ -30,7 +30,7 @@ $(document).on('turbolinks:load', function () {
     //window.Calendar = require("@fullcalenda/core").Calendar;
     //window.dayGridPlugin = require("@fullcalendar/daygrid").default;
 
-    window.moment = moment
+    window.moment = moment;
 
     if(document.getElementById('calendar')) {
         var calendarEl  = document.getElementById('calendar');
@@ -169,20 +169,40 @@ $(document).on('turbolinks:load', function () {
     $('.selectpicker, .per-page-selectpicker').selectpicker();
 
     // select2 initializer
-    $('.select2-multiple').select2({
-        placeholder: "Crear selección",
+    $('.select2#eventUsers').select2({
+        placeholder: "Agregar usuarios",
         multiple: true,
-        theme: "classic"
+        theme: "classic",
+        createTag: function(params) {
+            return undefined;
+        }
         //dropdownParent: $('#m_modal_2')
         //theme: 'bootstrap4',
         //closeOnSelect: false,
     });
 
-    $('.select2').select2({
-        placeholder: "Crear selección",
+    $('.select2#product_list').select2({
+        placeholder: "Agregar selección",
         multiple: true,
         theme: "classic",
         tags: true
+    });
+
+    $('.select2#company_income_calendars').select2({
+        placeholder: "Asignar periodos",
+        multiple: true,
+        theme: "classic",
+        createTag: function(params) {
+            return undefined;
+        }
+    });
+    $('.select2#company_balance_calendars').select2({
+        placeholder: "Asignar periodos",
+        multiple: true,
+        theme: "classic",
+        createTag: function(params) {
+            return undefined;
+        }
     });
 
     // Submit for elements per page on tables
