@@ -51,15 +51,19 @@ module CompaniesHelper
     end
   end
 
-  def calculate_degrees percent = 0
-    (percent * 180)/100
+  def calculate_degrees percent
+     percent.present? ?  (percent * 180)/100 : 0
   end
 
   def calculate_face percent
-    if percent < 33
-      'face-bad.png'
-    elsif percent >= 33 and percent < 66
-      'face-med.png'
+    if percent.present?
+      if percent < 33
+        'face-bad.png'
+      elsif percent >= 33 and percent < 66
+        'face-med.png'
+      else
+        'face-good.png'
+      end
     else
       'face-good.png'
     end

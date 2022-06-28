@@ -79,7 +79,7 @@ class HomeController < ApplicationController
                                          income_statment: @income_statment,  buro_id: @buro.first['id'],
                                          sat_password: params[:passsword_ciec], balance_sheet: @balance_sheet,
                                          main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'])
-                        @bureau_report = BuroCredito.get_buro_report 4450
+                        @bureau_report = BuroCredito.get_buro_report @buro.first['id'] #4450
                         # @bureau_report = BuroCredito.get_report_by_id 12468
                         @bureau_info = BuroCredito.get_buro_info @buro.first['id']
 
@@ -241,14 +241,18 @@ class HomeController < ApplicationController
     exterior_number = "1500"
     municipality = "ZAPOPAN"
 
-    if info_sat['hydra:member'][0]['company'].present?
-      account_type = "PM"
-    else
-      first_name = info_sat['hydra:member'][0]['person']['firstName']
-      first_last_name = info_sat['hydra:member'][0]['person']['middleName']
-      second_last_name = info_sat['hydra:member'][0]['person']['lastName']
-      account_type = "PF"
-    end
+    account_type = "PM"
+    first_name = "VICTOR"
+    first_last_name = "P"
+    second_last_name = 'M'
+    #if info_sat['hydra:member'][0]['company'].present?
+    #  account_type = "PM"
+    #else
+    #  first_name = info_sat['hydra:member'][0]['person']['firstName']
+    #  first_last_name = info_sat['hydra:member'][0]['person']['middleName']
+    #  second_last_name = info_sat['hydra:member'][0]['person']['lastName']
+    #  account_type = "PF"
+    #end
 
     data = [accountType: account_type, email: email, firstName: first_name, middleName: "", rfc: rfc,
             firstLastName: first_last_name, secondLastName: second_last_name, address: address, city: city,

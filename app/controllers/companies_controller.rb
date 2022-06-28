@@ -237,7 +237,7 @@ class CompaniesController < ApplicationController
 
     if @credit_bureau.present?
 
-      @percentage = avg_gagement @credit_bureau
+      #@percentage = avg_gagement @credit_bureau
     end
 
   end

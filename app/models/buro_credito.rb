@@ -12,7 +12,7 @@ class BuroCredito < ApplicationRecord
     # token = 'Token: 8d3f4980e76f1cf12da3005bac068636c1f36aa4cda8176de91bc64c00346f5b'
 
     uri = URI.parse("https://app.moffin.mx/api/v1/profiles/info")
-    token = 'Token: 786ebae2e76f1cf12da3005bac068636c1f36aa4cda8176de91bc64c00346f5b'
+    token = 'Token: 59f899b9f9de3db1191b36d06cff5d63c563feba86a1678031637c9827156c7e'
 
     request = Net::HTTP::Post.new(uri.request_uri)
 
@@ -40,7 +40,7 @@ class BuroCredito < ApplicationRecord
     # token = 'Token: 8d3f4980e76f1cf12da3005bac068636c1f36aa4cda8176de91bc64c00346f5b'
 
     uri = URI.parse("https://app.moffin.mx/api/v1/profiles/#{id}")
-    token = 'Token: 786ebae2'
+    token = 'Token: 59f899b9f9de3db1191b36d06cff5d63c563feba86a1678031637c9827156c7e'
 
     request = Net::HTTP::Get.new(uri.request_uri)
 
@@ -66,7 +66,7 @@ class BuroCredito < ApplicationRecord
 
 
     uri = URI.parse("https://app.moffin.mx/api/v1/profiles/#{id}/query")
-    token = 'Token: 786ebae2'
+    token = 'Token: 59f899b9f9de3db1191b36d06cff5d63c563feba86a1678031637c9827156c7e'
 
     data = {
         bureauPM: true,
