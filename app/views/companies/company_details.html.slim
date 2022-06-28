@@ -67,27 +67,27 @@
       .col-md-4
         span.port-subtitle = 'ARCHIVOS'
         .d-flex.flex-column
-          a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="/open_pdf/#{@company.id}/id_file"
+          a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_id_file)}/#{@company.try(:company_file).try(:name_id_file)}" target="_blank"
             span.d-flex.justify-content-between.align-items-center
               span
                 | Identificación oficial
               i.fa.fa-file
-          a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="/open_pdf/#{@company.id}/constancy_file"
+          a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_constancy)}/#{@company.try(:company_file).try(:name_constancy)}" target="_blank"
             span.d-flex.justify-content-between.align-items-center
               span
                 | Constancia de Situacion fiscal
               i.fa.fa-file
-          a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="/open_pdf/#{@company.id}/financial_statements_one_file"
+          a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_one)}/#{@company.try(:company_file).try(:name_financial_statements_one)}" target="_blank"
             span.d-flex.justify-content-between.align-items-center
               span
                 | Estados Financieros (Cierre anual 1)
               i.fa.fa-file
-          a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="/open_pdf/#{@company.id}/financial_statements_two_file"
+          a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_two)}/#{@company.try(:company_file).try(:name_financial_statements_two)}" target="_blank"
             span.d-flex.justify-content-between.align-items-center
               span
                 | Estados Financieros (Cierre anual 2)
               i.fa.fa-file
-          a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="/open_pdf/#{@company.id}/financial_statements_parcial_file"
+          a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_parcial)}/#{@company.try(:company_file).try(:name_financial_statements_parcial)}" target="_blank"
             span.d-flex.justify-content-between.align-items-center
               span
                 | Estados Financieros (Cierre parcial)

@@ -157,16 +157,10 @@ $(document).on('turbolinks:load', function () {
 
     });
 
-    // console.log(document.getElementById("idStepOne"));
-    // console.log(document.getElementById("idStepOne").value);
 
-    $('#idFile').bind("change", function() {
-    });
+    window.fileSize = function(type_file) {
 
-    function fileEntrante() {
-
-
-        var fileInput = document.getElementById("idFileEntrante");
+        var fileInput = document.getElementById(type_file);
 
         try {
             if (fileInput.files[0].size > 2000000) {
@@ -176,7 +170,7 @@ $(document).on('turbolinks:load', function () {
                     icon: 'warning',
                     button: I18n.t('messages.ok')
                 });
-                document.getElementById("idFileEntrante").value = null;
+                document.getElementById(type_file).value = null;
 
             }
         } catch (e) {
@@ -198,8 +192,6 @@ $(document).on('turbolinks:load', function () {
             && financialStatementsParcialFile){
             $('#filesBtn').attr('class', 'btn btn-primary col-xl-12');
         }
-
-
 
     };
 

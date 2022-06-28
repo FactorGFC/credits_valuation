@@ -91,34 +91,114 @@ class CompaniesController < ApplicationController
   def update
     process_date
 
+    s3 = Aws::S3::Resource.new(access_key_id: 'AKIAWRCSQFXT4UEWO2PS' , region: 'us-east-1',
+                               secret_access_key:  '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')
+    bucket_name = 'analisisbucket'
+
     respond_to do |format|
       if @company.update(company_params)
         if company_params[:company_file_attributes].present?
           if company_params[:company_file_attributes][:authorization_file].present?
-            authorization_file = Base64.strict_encode64(company_params[:company_file_attributes][:authorization_file].read)
-            @company.company_file.update(authorization_file: authorization_file)
+
+            # invoice_authorization = [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+            # file = File.open(Rails.root.join(company_params[:company_file_attributes][:authorization_file]))
+            # p "file ------------------------------------------------------------"
+            # p file
+            # obj = s3.bucket(bucket_name).object("credits_valuation/#{invoice_authorization}/#{@filename}")
+            # obj.put(
+            #     body: file,
+            #     acl: "public-read" # optional: makes the file readable/downloadable by anyone
+            # )
+            # file.close
+
+            # authorization_file = Base64.strict_encode64(company_params[:company_file_attributes][:authorization_file].read)
+            # @company.company_file.update(authorization_file: authorization_file,invoice_authorization: invoice_authorization)
 
           end
           if company_params[:company_file_attributes][:id_file].present?
-            id_file = Base64.strict_encode64(company_params[:company_file_attributes][:id_file].read)
-            @company.company_file.update(id_file: id_file)
+
+            invoice_id_file = @company.id.to_s + [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+            file_id_file = File.open(Rails.root.join(company_params[:company_file_attributes][:id_file]))
+            name_id_file = company_params[:company_file_attributes][:id_file].original_filename.gsub(/\s+/, "")
+
+            obj_id_file = s3.bucket(bucket_name).object("credits_valuation/#{invoice_id_file}/#{name_id_file}")
+            obj_id_file.put(
+                body: file_id_file,
+                acl: "public-read" # optional: makes the file readable/downloadable by anyone
+            )
+
+
+            file_id_file.close
+
+            # id_file = Base64.strict_encode64(company_params[:company_file_attributes][:id_file].read)
+            @company.company_file.update(invoice_id_file: invoice_id_file, name_id_file: name_id_file)
 
           end
           if company_params[:company_file_attributes][:constancy_file].present?
-            constancy_file = Base64.strict_encode64(company_params[:company_file_attributes][:constancy_file].read)
-            @company.company_file.update(constancy_file: constancy_file)
+            invoice_constancy = @company.id.to_s + [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+
+            file_constancy = File.open(Rails.root.join(company_params[:company_file_attributes][:constancy_file]))
+            name_constancy = company_params[:company_file_attributes][:constancy_file].original_filename.gsub(/\s+/, "")
+            obj_constancy = s3.bucket(bucket_name).object("credits_valuation/#{invoice_constancy}/#{name_constancy}")
+            obj_constancy.put(
+                body: file_constancy,
+                acl: "public-read" # optional: makes the file readable/downloadable by anyone
+            )
+            file_constancy.close
+
+            # constancy_file = Base64.strict_encode64(company_params[:company_file_attributes][:constancy_file].read)
+            @company.company_file.update(invoice_constancy: invoice_constancy, name_constancy: name_constancy)
           end
           if company_params[:company_file_attributes][:financial_statements_one_file].present?
-            financial_statements_one_file = Base64.strict_encode64(company_params[:company_file_attributes][:financial_statements_one_file].read)
-            @company.company_file.update(financial_statements_one_file: financial_statements_one_file)
+            invoice_financial_statements_one = @company.id.to_s + [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+
+            file_statements_one = File.open(Rails.root.join(company_params[:company_file_attributes][:financial_statements_one_file]))
+            name_statements_one = company_params[:company_file_attributes][:financial_statements_one_file].original_filename.gsub(/\s+/, "")
+
+            obj_statements_one = s3.bucket(bucket_name).object("credits_valuation/#{invoice_financial_statements_one}/#{name_statements_one}")
+            obj_statements_one.put(
+                body: file_statements_one,
+                acl: "public-read" # optional: makes the file readable/downloadable by anyone
+            )
+
+
+            file_statements_one.close
+
+            # financial_statements_one_file = Base64.strict_encode64(company_params[:company_file_attributes][:financial_statements_one_file].read)
+            @company.company_file.update(invoice_financial_statements_one: invoice_financial_statements_one,
+                                         name_financial_statements_one: name_statements_one)
           end
           if company_params[:company_file_attributes][:financial_statements_two_file].present?
-            financial_statements_two_file = Base64.strict_encode64(company_params[:company_file_attributes][:financial_statements_two_file].read)
-            @company.company_file.update(financial_statements_two_file: financial_statements_two_file)
+            invoice_financial_statements_two = @company.id.to_s + [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+
+            file_statements_two = File.open(Rails.root.join(company_params[:company_file_attributes][:financial_statements_two_file]))
+            name_statements_two = company_params[:company_file_attributes][:financial_statements_two_file].original_filename.gsub(/\s+/, "")
+            obj_statements_two = s3.bucket(bucket_name).object("credits_valuation/#{invoice_financial_statements_two}/#{name_statements_two}")
+            obj_statements_two.put(
+                body: file_statements_two,
+                acl: "public-read" # optional: makes the file readable/downloadable by anyone
+            )
+            file_statements_two.close
+
+            # financial_statements_two_file = Base64.strict_encode64(company_params[:company_file_attributes][:financial_statements_two_file].read)
+            @company.company_file.update(invoice_financial_statements_two: invoice_financial_statements_two,
+                                         name_financial_statements_two: name_statements_two )
           end
           if company_params[:company_file_attributes][:financial_statements_parcial_file].present?
-            financial_statements_parcial_file = Base64.strict_encode64(company_params[:company_file_attributes][:financial_statements_parcial_file].read)
-            @company.company_file.update(financial_statements_parcial_file: financial_statements_parcial_file)
+            invoice_financial_statements_parcial = @company.id.to_s + [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+
+            file_statements_parcial = File.open(Rails.root.join(company_params[:company_file_attributes][:financial_statements_parcial_file]))
+            name_statements_parcial = company_params[:company_file_attributes][:financial_statements_parcial_file].original_filename.gsub(/\s+/, "")
+            obj_statements_parcial = s3.bucket(bucket_name).object("credits_valuation/#{invoice_financial_statements_parcial}/#{name_statements_parcial}")
+            obj_statements_parcial.put(
+                body: file_statements_parcial,
+                acl: "public-read" # optional: makes the file readable/downloadable by anyone
+            )
+            file_statements_parcial.close
+
+            # financial_statements_parcial_file = Base64.strict_encode64(company_params[:company_file_attributes][:financial_statements_parcial_file].read)
+            @company.company_file.update(invoice_financial_statements_parcial: invoice_financial_statements_parcial,
+                                         name_financial_statements_parcial: name_statements_parcial)
           end
         end
         format.html { redirect_to '/home_company', notice: "La compañia se actualizó correctamente." }
@@ -203,7 +283,7 @@ class CompaniesController < ApplicationController
         if approved_company == "true"
 
           #Send Mail to Company, is approved by FACTOR
-          #CreditRequestMailer.with(request_data: request_data).credit_request_approved.deliver_now
+          CreditRequestMailer.with(request_data: request_data).credit_request_approved.deliver_now
           #Send MSG to Company, is approved by FACTOR
           Company.send_msj_to_company company, user, 2
 
@@ -214,7 +294,7 @@ class CompaniesController < ApplicationController
 
           format.html { redirect_to '/login', notice: "La compañia ha sido rechazada." }
           format.json { head :no_content }
-          #CreditRequestMailer.with(request_data: request_data).credit_request_refused.deliver_now
+          CreditRequestMailer.with(request_data: request_data).credit_request_refused.deliver_now
         end
       else
         format.html { redirect_to '/login', notice: "La compañia no ha podido ser aprobada." }
@@ -571,7 +651,11 @@ class CompaniesController < ApplicationController
                                                               :id_name, :id_file, :constancy_name, :constancy_file,
                                                               :financial_statements_one_name, :financial_statements_one_file,
                                                               :financial_statements_two_name, :financial_statements_two_file,
-                                                              :financial_statements_parcial_name, :financial_statements_parcial_file],
+                                                              :financial_statements_parcial_name,
+                                                              :financial_statements_parcial_file,:invoice_authorization,
+                                                              :invoice_id_file, :invoice_constancy,
+                                                              :invoice_financial_statements_one,:invoice_financial_statements_two,
+                                                              :invoice_financial_statements_parcial],
                                     main_product_list: [])
   end
 end

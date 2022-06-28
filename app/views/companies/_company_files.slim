@@ -84,7 +84,7 @@
                     .form-group.m-form__group
                       .custom-file
                         = ff.file_field :id_file, id: 'idFile', class: "custom-file-input", required: true,
-                                id: 'idFile', :onchange => "validate_files();fileSize('idFile')"
+                                id: 'idFile', :onchange => "validate_files();fileSize('idFile')", accept: "application/pdf"
                         label.custom-file-label Elige un archivo...
                       span.custom-file-control
                 .form-group.m-form__group.row
@@ -95,7 +95,7 @@
                     .form-group.m-form__group
                       .custom-file
                         = ff.file_field :constancy_file, class: "custom-file-input", required: true,id:'constancyFile',
-                                :onchange => "validate_files()"
+                                :onchange => "validate_files();fileSize('constancyFile')", accept: "application/pdf"
                         label.custom-file-label Elige un archivo...
                       span.custom-file-control
                 .form-group.m-form__group.row
@@ -106,19 +106,22 @@
                     .form-group.m-form__group
                       .custom-file
                         = ff.file_field :financial_statements_one_file, class: "custom-file-input", required: true,
-                                id:'financialStatementsOneFile', :onchange => "validate_files()"
+                                id:'financialStatementsOneFile', accept: "application/pdf",
+                                :onchange => "validate_files();fileSize('financialStatementsOneFile')"
                         label.custom-file-label Elige un archivo...
                       span.custom-file-control
                 .form-group.m-form__group.row
                   .col-sm-6.d-flex.flex-column.justify-content-between
                     = ff.text_field :financial_statements_two_name, class: 'form-control m-input m-input--square',
-                            value: 'Estados Financieros (Cierre anual 2)', disabled: true, placeholder: 'Estados Financieros (Cierre anual 2)'
+                            value: 'Estados Financieros (Cierre anual 2)', disabled: true,
+                            placeholder: 'Estados Financieros (Cierre anual 2)'
 
                   .col-sm-6.d-flex.flex-column.justify-content-between
                     .form-group.m-form__group
                       .custom-file
                         = ff.file_field :financial_statements_two_file, class: "custom-file-input", required: true,
-                                id:'financialStatementsTwoFile', :onchange => "validate_files()"
+                                id:'financialStatementsTwoFile', accept: "application/pdf",
+                                :onchange => "validate_files();fileSize('financialStatementsTwoFile')"
                         label.custom-file-label Elige un archivo...
                       span.custom-file-control
                 .form-group.m-form__group.row
@@ -130,7 +133,8 @@
                     .form-group.m-form__group
                       .custom-file
                         = ff.file_field :financial_statements_parcial_file, class: "custom-file-input", required: true,
-                                id:'financialStatementsParcialFile', :onchange => "validate_files()"
+                                id:'financialStatementsParcialFile', accept: "application/pdf",
+                                :onchange => "validate_files();fileSize('financialStatementsParcialFile')"
                         label.custom-file-label Elige un archivo...
                       span.custom-file-control
             .col-xl-12

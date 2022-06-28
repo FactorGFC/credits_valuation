@@ -3,3 +3,4 @@ DB_HOST: localhost
 DB_DATABASE: credits_factor_global
 DB_USERNAME: ''
 DB_PASSWORD: ''
+DOWNLOAD_FILES: 'https://analisisbucket.s3.amazonaws.com/credits_valuation'

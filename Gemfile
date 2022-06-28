@@ -136,4 +136,6 @@ gem 'acts-as-taggable-on', '~> 9.0'
 #manage sms comunication
 gem 'twilio-ruby'
 
+gem 'aws-sdk-core'
+gem 'aws-sdk', '~> 3'
 
