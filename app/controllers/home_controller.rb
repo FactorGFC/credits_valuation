@@ -221,24 +221,25 @@ class HomeController < ApplicationController
 
   def create_buro info_sat
 
-    rfc = info_sat['hydra:member'][0]['rfc']
-    # rfc = 'ROGA940403PT'
-    email = info_sat['hydra:member'][0]['email']
-    address = info_sat['hydra:member'][0]['address']['streetName']
-    city = info_sat['hydra:member'][0]['address']['locality']
+    # rfc = info_sat['hydra:member'][0]['rfc']
+    # email = info_sat['hydra:member'][0]['email']
+    # address = info_sat['hydra:member'][0]['address']['streetName']
+    # city = info_sat['hydra:member'][0]['address']['locality']
+    # state = get_state info_sat['hydra:member'][0]['address']['state']
+    # zip_code = info_sat['hydra:member'][0]['address']['postalCode']
+    # interior_number = info_sat['hydra:member'][0]['address']['buildingNumber']
+    # exterior_number = info_sat['hydra:member'][0]['address']['streetNumber']
+    # municipality = info_sat['hydra:member'][0]['address']['municipality']
 
-
-    p "info_sat['hydra:member'][0]['address']['state'] -----------------------------------------------------------------"
-    p info_sat['hydra:member'][0]['address']['state']
-
-    state = get_state info_sat['hydra:member'][0]['address']['state']
-
-    p "state ----------------------------------------------------------------------------------------------------------------"
-    p state
-    zip_code = info_sat['hydra:member'][0]['address']['postalCode']
-    interior_number = info_sat['hydra:member'][0]['address']['buildingNumber']
-    exterior_number = info_sat['hydra:member'][0]['address']['streetNumber']
-    municipality = info_sat['hydra:member'][0]['address']['municipality']
+    rfc = "AIN080117NQA"
+    email = "contabilidad2@aluminiointeligente.com.mx"
+    address = "PERIFERICO"
+    city = "ZAPOPAN"
+    state = "JAL"
+    zip_code = "45019"
+    interior_number = ""
+    exterior_number = "1500"
+    municipality = "ZAPOPAN"
 
     if info_sat['hydra:member'][0]['company'].present?
       account_type = "PM"
