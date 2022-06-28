@@ -38,6 +38,7 @@
     "html-loader": "^3.1.0",
     "i18n-js": "^3.5.0",
     "jquery-ui": "^1.13.1",
+    "moment": "^2.29.3",
     "ngx-bootstrap": "^8.0.0",
     "popper.js": "1.14.3",
     "prop-types": "^15.7.2",
