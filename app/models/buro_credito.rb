@@ -102,7 +102,7 @@ class BuroCredito < ApplicationRecord
     # token = 'Token: 8d3f4980e76f1cf12da3005bac068636c1f36aa4cda8176de91bc64c00346f5b'
 
     uri = URI.parse("https://app.moffin.mx/api/v1/profiles/#{id}/info")
-    token = 'Token: 786ebae2'
+    token = 'Token: 59f899b9f9de3db1191b36d06cff5d63c563feba86a1678031637c9827156c7e'
 
     data = {
         bureauPM: true,
@@ -137,7 +137,7 @@ class BuroCredito < ApplicationRecord
     # token = 'Token: 8d3f4980e76f1cf12da3005bac068636c1f36aa4cda8176de91bc64c00346f5b'
 
     uri = URI.parse("https://app.moffin.mx/api/v1/report")
-    token = 'Token: 786ebae2'
+    token = 'Token: 59f899b9f9de3db1191b36d06cff5d63c563feba86a1678031637c9827156c7e'
     # data = {
     #     bureauPM: true,
     #     bureauPF: true,
@@ -164,13 +164,13 @@ class BuroCredito < ApplicationRecord
 
   end
 
-  def self.get_report_by_id id
+  def self.get_report_by_id_repetido id
 
     # uri = URI.parse("https://sandbox.moffin.mx/api/v1/report/#{id}")
     # token = 'Token: 8d3f4980e76f1cf12da3005bac068636c1f36aa4cda8176de91bc64c00346f5b'
 
     uri = URI.parse("https://app.moffin.mx/api/v1/report/#{id}")
-    token = 'Token: 786ebae2'
+    token = 'Token: 59f899b9f9de3db1191b36d06cff5d63c563feba86a1678031637c9827156c7e'
 
     # data = {
     #     bureauPM: true,
@@ -204,7 +204,7 @@ class BuroCredito < ApplicationRecord
       # token_desarollo = 'Token: 8d3f4980e76f1cf12da3005bac068636c1f36aa4cda8176de91bc64c00346f5b'
 
       uri = URI.parse("https://app.moffin.mx/api/v1/report/#{id}")
-      token = 'Token: 786ebae2'
+      token = 'Token: 59f899b9f9de3db1191b36d06cff5d63c563feba86a1678031637c9827156c7e'
 
 
       request = Net::HTTP::Get.new(uri.request_uri)
