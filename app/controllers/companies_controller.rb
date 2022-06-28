@@ -226,10 +226,12 @@ class CompaniesController < ApplicationController
 
   def company_details
     sort_order = %w(anual trimestral mensual)
-    @periods = Calendar.all.order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.period_type) }
+    @periods             = Calendar.all.order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.period_type) }
     @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
     @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
-    @request = Request.find_by(company_id: params[:id])
+    @request             = Request.find_by(company_id: params[:id])
+    @request_comments    = RequestComment.where(request_id: @request.try(:id)).order(:created_at).limit(5)
+    @financial_inst      = @company.financial_institutions
 
     @credit_bureau = @company.credit_bureaus.last
 
@@ -329,11 +331,11 @@ class CompaniesController < ApplicationController
     request         = Request.find_by(company_id: params[:company_id])
     request_params  = params[:request]
     if request
-      if request.update(analyst_id: request_params[:analyst_id], process_status_id: request_params[:process_status_id], credit_type_id: request_params[:credit_type_id], user_id: current_user.id)
+      if request.update(analyst_id: request_params[:analyst_id], process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:credit_type_id], user_id: current_user.id)
         redirect_to "/company_details/#{params[:company_id]}", notice: "Actualizado correctamente."
       end
     else
-      new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id], process_status_id: 1, credit_type_id: request_params[:credit_type_id], user_id: current_user.id)
+      new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id], process_status_id: 1, factor_credit_id: request_params[:credit_type_id], user_id: current_user.id)
 
       if new_request.save
         redirect_to "/company_details/#{params[:company_id]}", notice: "Guardado correctamente."

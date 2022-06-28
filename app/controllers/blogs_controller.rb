@@ -24,7 +24,9 @@ class BlogsController < ApplicationController
   def create
     @blog = Blog.new(blog_params)
 
-    @blog[:image] = @blog.encode_image(blog_params[:image])
+    if blog_params[:image].present?
+      @blog[:image] = @blog.encode_image(blog_params[:image])
+    end
 
     respond_to do |format|
       if @blog.save
