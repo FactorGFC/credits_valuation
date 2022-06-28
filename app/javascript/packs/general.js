@@ -2,7 +2,7 @@ import swal from 'sweetalert';
 import $    from 'jquery';
 import I18n from 'i18n-js';
 import moment from 'moment'
-import '@fullcalendar/daygrid/main.css';
+//import '@fullcalendar/daygrid/main.css';
 import { Calendar }  from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import esLocale      from '@fullcalendar/core/locales/es';
@@ -25,10 +25,18 @@ $(document).on('turbo:render', function(){
 
 $(document).on('turbolinks:load', function () {
 
+
+
+    //window.Calendar = require("@fullcalenda/core").Calendar;
+    //window.dayGridPlugin = require("@fullcalendar/daygrid").default;
+
     window.moment = moment
 
     if(document.getElementById('calendar')) {
         var calendarEl  = document.getElementById('calendar');
+
+        console.log('***');
+        console.log(calendarEl);
         var calendar = new Calendar(calendarEl, {
             plugins: [ dayGridPlugin ],
             initialView: 'dayGridMonth',
