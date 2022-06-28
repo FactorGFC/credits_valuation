@@ -84,7 +84,7 @@
                   | Principales productos y/o servicios
                 .col-xl-12 style="display: grid;"
                   =f.collection_select :main_product_list, @company.new_record? ? ActsAsTaggableOn::Tag.order(taggings_count: :desc).limit(100) : @company.main_products, :name, :name, {include_blank: '',include_hidden: false},
-                          {multiple: true, class: 'form-control select2 select2-container select2-multiple '}
+                          {multiple: true, class: 'form-control select2 select2-container select2-multiple ', id: 'product_list'}
 
             .col-xl-12
               = f.submit 'Guardar', class: 'btn btn-primary col-xl-12'
