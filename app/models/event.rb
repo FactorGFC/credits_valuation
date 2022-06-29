@@ -16,4 +16,5 @@
 #  updated_at     :datetime         not null
 #
 class Event < ApplicationRecord
+  validates_presence_of :title
 end

@@ -67,7 +67,7 @@
                     - if current_user.god?
                       td.text-center
                         - if company.status_company_id.eql?(StatusCompany.where(key: 'aprobada').first.id)
-                          button.btn.btn-info.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="true"
+                          button.btn.btn-info.open-modal1 data-target="#modal_validate_success" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="true"
                             i.fa.fa-check
                             = " Aprobada"
                         - elsif company.status_company_id == StatusCompany.where(key: 'pendiente').first.id
@@ -122,3 +122,16 @@
           button#idBtn.btn.btn-success type="submit"
             | Validar
 
+#modal_validate_success.modal tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        h5.modal-title Información
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"
+            | \&times;
+      .modal-body
+        p La Empresa ya se encuentra validada.
+      .modal-footer
+        button.btn.btn-secondary data-dismiss="modal" type="button"
+          | Cerrar

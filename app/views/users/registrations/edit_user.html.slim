@@ -57,22 +57,6 @@
 /               .col-lg-10
 /                 = f.select :role_id, Role.all.map { |r| [r.name, r.id, {'data-key': r.key}] },
 /                         {include_blank: t('helpers.select.prompt')}, class: 'form-control m-input selectpicker'
-/             .form-group.m-form__group.row.fields_cancelation_employees
-/               .col-4.text-center
-/                 = f.label :registry, class: 'm-checkbox m-checkbox--state-brand' do
-/                   = f.check_box :registry
-/                   = t('activerecord.attributes.user.registry')
-/                   span
-/               .col-4.text-center
-/                 = f.label :audit, class: 'm-checkbox m-checkbox--state-brand' do
-/                   = f.check_box :audit
-/                   = t('activerecord.attributes.user.audit')
-/                   span
-/               .col-4.text-center
-/                 = f.label :reviewer, class: 'm-checkbox m-checkbox--state-brand' do
-/                   = f.check_box :reviewer
-/                   = t('activerecord.attributes.user.reviewer')
-/                   span
 /           .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit
 /             .m-form__actions.m-form__actions--solid
 /               .row
