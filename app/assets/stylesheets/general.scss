@@ -637,6 +637,7 @@ span.badge {
 }
 
 .quantity-num{
+  font-size: 12px;
   color: #444655;
 }
 
@@ -695,6 +696,34 @@ span.badge {
 }
 .m-widget3__time{
   text-align: right;
+}
+
+.history-header{
+  //border-radius: 10px 10px 0 0;
+}
+
+.history-table{
+
+}
+
+.history-icon{
+  background-color: white;
+  padding:          15px;
+  border-radius:    50%;
+}
+
+.m-stack--demo.history-table {
+  height: 50px !important;
+}
+
+.invalid_value{
+  color:   red;
+  display: none;
+}
+
+.btn-section-disabled{
+  opacity:        0.5 !important;
+  pointer-events: none;
 }
 
 ////ANIMATIONS

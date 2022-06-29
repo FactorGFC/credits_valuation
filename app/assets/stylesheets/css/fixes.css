@@ -56,21 +56,24 @@
 }
 
 .body-info-one {
-    background: green !important;
-    overflow: auto;
+    background: #6cdc81 !important;
+    overflow:   auto;
     text-align: center;
+    color:      dimgray;
 }
 
 .body-info-two {
-    background: yellow !important;
-    overflow: auto;
+    background: #f2d753 !important;
+    overflow:   auto;
     text-align: center;
+    color:      dimgray;
 }
 
 .body-info-x {
-    background: red !important;
-    overflow: auto;
+    background: #f27670 !important;
+    overflow:   auto;
     text-align: center;
+    color:      dimgray;
 }
 
 /*NestedTable*/
@@ -269,4 +272,16 @@ table{
 .btn-details svg{
     position:   relative;
     float:      left;
+}
+
+.lightgray-text{
+    color: #f4f4f4;
+}
+
+.m-stack--demo-fixed{
+    padding: 15px;
+}
+
+hr.dotted {
+    border-top: 2px dotted #bbb;
 }
