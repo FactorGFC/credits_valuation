@@ -1126,72 +1126,72 @@
                                         | Nombre de otorgante
                                     /.m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
                                       = account['NombreOtorgante']
-                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
-                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
-                                    h4.strong
-                                      | Historial de pagos
-                                    .history-icon
-                                      i.fa.fa-calendar-check.fa-2x.lightgray-text
-                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo.history-table
-                                  .m-stack__item.body-info-company.m-stack__item--middle
-                                    strong
-                                      | Mes
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | E
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | F
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | M
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | A
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | M
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | J
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | J
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | A
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | S
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | O
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | N
-                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
-                                    strong
-                                      | D
-                                - get_history_payments(account).each do |key, value|
-                                  .m-stack.m-stack--ver.m-stack--general.m-stack--demo.history-table
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      = key
-                                    - value.each do |v|
-                                      - if v[:value] == 0
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
+                                        .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
+                                          h4.strong
+                                            | Historial de pagos
+                                          .history-icon
+                                            i.fa.fa-calendar-check.fa-2x.lightgray-text
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo.history-table
                                         .m-stack__item.body-info-company.m-stack__item--middle
-                                      - elsif v[:value] == '1'
-                                        .m-stack__item.body-info-one.m-stack__item--middle
                                           strong
-                                            = v[:value]
-                                      - elsif v[:value] == '2'
-                                        .m-stack__item.body-info-two.m-stack__item--middle
+                                            | Mes
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
                                           strong
-                                            = v[:value]
-                                      - else
-                                        .m-stack__item.body-info-x.m-stack__item--middle
+                                            | E
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
                                           strong
-                                            = v[:value]
-                                hr.dotted
+                                            | F
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                          strong
+                                            | M
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                          strong
+                                            | A
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                          strong
+                                            | M
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                          strong
+                                            | J
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                          strong
+                                            | J
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                          strong
+                                            | A
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                          strong
+                                            | S
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                          strong
+                                            | O
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                          strong
+                                            | N
+                                        .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                          strong
+                                            | D
+                                      - get_history_payments(account).each do |key, value|
+                                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo.history-table
+                                          .m-stack__item.body-info-company.m-stack__item--middle
+                                            = key
+                                          - value.each do |v|
+                                            - if v[:value] == 0
+                                              .m-stack__item.body-info-company.m-stack__item--middle
+                                            - elsif v[:value] == '1'
+                                              .m-stack__item.body-info-one.m-stack__item--middle
+                                                strong
+                                                  = v[:value]
+                                            - elsif v[:value] == '2'
+                                              .m-stack__item.body-info-two.m-stack__item--middle
+                                                strong
+                                                  = v[:value]
+                                            - else
+                                              .m-stack__item.body-info-x.m-stack__item--middle
+                                                strong
+                                                  = v[:value]
+                                      hr.dotted
                               - else
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                   .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
