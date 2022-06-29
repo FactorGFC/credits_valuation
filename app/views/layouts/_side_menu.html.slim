@@ -96,13 +96,13 @@
               ul.m-menu__subnav
                 - if has_policy('ProcessStatus', %w(new_user))
                   li.m-menu__item aria-haspopup="true"
-                    = link_to(new_user_path, class: 'm-menu__link')
+                    = link_to(new_process_status_path, class: 'm-menu__link')
                       i.m-menu__link-bullet.m-menu__link-bullet--dot
                         span
                       span.m-menu__link-text = t('.new_user')
                 - if has_policy('ProcessStatus', %w(index))
                   li.m-menu__item aria-haspopup="true"
-                    = link_to(user_registrations_path, class: 'm-menu__link')
+                    = link_to(process_statuses_path, class: 'm-menu__link')
                       i.m-menu__link-bullet.m-menu__link-bullet--dot
                         span
                       span.m-menu__link-text = t('.index_masc')
@@ -117,13 +117,13 @@
               ul.m-menu__subnav
                 - if has_policy('FactorCredits', %w(new_user))
                   li.m-menu__item aria-haspopup="true"
-                    = link_to(new_user_path, class: 'm-menu__link')
+                    = link_to(new_factor_credit_path, class: 'm-menu__link')
                       i.m-menu__link-bullet.m-menu__link-bullet--dot
                         span
                       span.m-menu__link-text = t('.new_factor_credits')
                 - if has_policy('FactorCredits', %w(index))
                   li.m-menu__item aria-haspopup="true"
-                    = link_to(user_registrations_path, class: 'm-menu__link')
+                    = link_to(factor_credits_path, class: 'm-menu__link')
                       i.m-menu__link-bullet.m-menu__link-bullet--dot
                         span
                       span.m-menu__link-text = t('.index_masc')
