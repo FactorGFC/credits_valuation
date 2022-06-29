@@ -1104,29 +1104,28 @@
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
                                       / = contract_type account['TipoContrato']
                                       =  I18n.t("contract_type.#{account['TipoContrato']}")
-
-                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                    strong
-                                      | Crédito maximo
-                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                    = number_to_currency account['CreditoMaximo']
-                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                    strong
-                                      | Forma de Pago
-                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                    = method_payment account['FormaPagoActual']
-                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                    strong
-                                      | Frecuencia de pagos
-                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                    =  I18n.t("payments_frecuency.#{account['FrecuenciaPagos']}")
-                                    / = get_payments_frecuency account['FrecuenciaPagos']
-                                  /.m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                    strong
-                                      | Nombre de otorgante
-                                  /.m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                    = account['NombreOtorgante']
+                                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                      .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                        strong
+                                          | Crédito maximo
+                                      .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                        = number_to_currency account['CreditoMaximo']
+                                      .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                        strong
+                                          | Forma de Pago
+                                      .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                        = method_payment account['FormaPagoActual']
+                                      .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                        strong
+                                          | Frecuencia de pagos
+                                      .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                        =  I18n.t("payments_frecuency.#{account['FrecuenciaPagos']}")
+                                      / = get_payments_frecuency account['FrecuenciaPagos']
+                                    /.m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                      strong
+                                        | Nombre de otorgante
+                                    /.m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                      = account['NombreOtorgante']
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
                                   .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
                                     h4.strong
