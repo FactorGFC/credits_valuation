@@ -1,0 +1,2 @@
+class FactorCreditPolicy < ApplicationPolicy
+end

@@ -1,0 +1,8 @@
+en:
+  activerecord:
+    attributes:
+      factor_credit:
+        name: Name
+        description: Description
+        active: active
+        order: Order

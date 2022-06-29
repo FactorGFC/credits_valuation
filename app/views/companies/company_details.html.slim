@@ -39,24 +39,24 @@
           = "Ver instituciones financieras"
 
         span.port-subtitle.mt-4 = 'COLABORADORES'
-        ul.d-flex.justify-content-between.align-items-center.collab-list
-          li.d-flex.flex-column.align-items-center
+        ul.col-md-12.d-flex.justify-content-between.align-items-center.collab-list
+          li.d-flex.flex-column.align-items-center.col-md-2
             span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:operative)
             span.quantity-num
               strong = 'OPERATIVOS'
-          li.d-flex.flex-column.align-items-center
+          li.d-flex.flex-column.align-items-center.col-md-2
             span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:administrative)
             span.quantity-num
               strong = 'ADMINISTRATIVOS'
-          li.d-flex.flex-column.align-items-center
+          li.d-flex.flex-column.align-items-center.col-md-2
             span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:sales)
             span.quantity-num
               strong = 'VENTAS'
-          li.d-flex.flex-column.align-items-center
+          li.d-flex.flex-column.align-items-center.col-md-2
             span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:eventual)
             span.quantity-num
               strong = 'EVENTUAL'
-          li.d-flex.flex-column.align-items-center
+          li.d-flex.flex-column.align-items-center.col-md-2
             span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:unionized)
             span.quantity-num
               strong = 'SINDICALIZADOS'
@@ -1105,90 +1105,94 @@
                                       / = contract_type account['TipoContrato']
                                       =  I18n.t("contract_type.#{account['TipoContrato']}")
 
-                                  .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                    .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                      strong
-                                        | Crédito maximo
-                                    .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      = number_to_currency account['CreditoMaximo']
-                                    .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                      strong
-                                        | Forma de Pago
-                                    .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      = method_payment account['FormaPagoActual']
-                                    .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                      strong
-                                        | Frecuencia de pagos
-                                    .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      =  I18n.t("payments_frecuency.#{account['FrecuenciaPagos']}")
-                                      / = get_payments_frecuency account['FrecuenciaPagos']
-                                    /.m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                      strong
-                                        | Nombre de otorgante
-                                    /.m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      = account['NombreOtorgante']
-                                  .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                    .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                      strong
-                                        | Historial de pagos
-                                  .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Crédito maximo
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = number_to_currency account['CreditoMaximo']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Forma de Pago
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = method_payment account['FormaPagoActual']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Frecuencia de pagos
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    =  I18n.t("payments_frecuency.#{account['FrecuenciaPagos']}")
+                                    / = get_payments_frecuency account['FrecuenciaPagos']
+                                  /.m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Nombre de otorgante
+                                  /.m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = account['NombreOtorgante']
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
+                                    h4.strong
+                                      | Historial de pagos
+                                    .history-icon
+                                      i.fa.fa-calendar-check.fa-2x.lightgray-text
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo.history-table
+                                  .m-stack__item.body-info-company.m-stack__item--middle
+                                    strong
+                                      | Mes
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | E
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | F
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | M
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | A
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | M
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | J
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | J
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | A
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | S
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | O
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | N
+                                  .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                    strong
+                                      | D
+                                - get_history_payments(account).each do |key, value|
+                                  .m-stack.m-stack--ver.m-stack--general.m-stack--demo.history-table
                                     .m-stack__item.body-info-company.m-stack__item--middle
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | E
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | F
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | M
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | A
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | M
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | J
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | J
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | A
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | S
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | O
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | N
-                                    .m-stack__item.body-info-company.m-stack__item--middle
-                                      strong
-                                        | D
-                                  - get_history_payments(account).each do |key, value|
-                                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                      .m-stack__item.body-info-company.m-stack__item--middle
-                                        = key
-                                      - value.each do |v|
-                                        - if v[:value] == 0
-                                          .m-stack__item.body-info-company.m-stack__item--middle
-                                        - elsif v[:value] == '1'
-                                              .m-stack__item.body-info-one.m-stack__item--middle
-                                                strong
-                                                  = v[:value]
-                                        - elsif v[:value] == '2'
-                                          .m-stack__item.body-info-two.m-stack__item--middle
-                                            strong
-                                              = v[:value]
-                                        - else
-                                          .m-stack__item.body-info-x.m-stack__item--middle
-                                            strong
-                                              = v[:value]
-                                  br
+                                      = key
+                                    - value.each do |v|
+                                      - if v[:value] == 0
+                                        .m-stack__item.body-info-company.m-stack__item--middle
+                                      - elsif v[:value] == '1'
+                                        .m-stack__item.body-info-one.m-stack__item--middle
+                                          strong
+                                            = v[:value]
+                                      - elsif v[:value] == '2'
+                                        .m-stack__item.body-info-two.m-stack__item--middle
+                                          strong
+                                            = v[:value]
+                                      - else
+                                        .m-stack__item.body-info-x.m-stack__item--middle
+                                          strong
+                                            = v[:value]
+                                hr.dotted
                               - else
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                   .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
@@ -1612,7 +1616,7 @@
           p#textModal
             | Asignar Tipo de Crédito
           .col-xl-12 style="display: grid;"
-            = select("request", "factor_credit_id",FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito', selected: @request.try(:credit_type_id)}, {class: "form-control m-input"})
+            = select("request", "factor_credit_id",FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito', selected: @request.try(:factor_credit_id)}, {class: "form-control m-input"})
           - if @request.try(:order).present?
             - if @request.try(:order) >= 2
               p#textModal

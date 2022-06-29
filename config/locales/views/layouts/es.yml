@@ -2,6 +2,7 @@ es:
   layouts:
     side_menu:
       dashboard: Inicio
+      meetings: Reuniones
       blogs:     Blogs
       positions: Posiciones
       blog_types: Tipos de blog
@@ -25,6 +26,8 @@ es:
       index_masc: Ver todos
       index_fem: Ver todas
       new_blog: Crear blog
+      factor_credits: Créditos Factor GFC Global
+      new_factor_credits: Nuevo Crédito
     top_bar:
       account: Cuenta
       profile: Perfil

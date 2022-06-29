@@ -108,7 +108,6 @@ class HomeController < ApplicationController
                             else
                               format.html { redirect_to companies_url, alert: '(4)Hubo un error favor volver a intentar' }
                             end
-
                           else
                             format.html { redirect_to companies_url, alert: '(5)Hubo un error favor volver a intentar' }
                           end

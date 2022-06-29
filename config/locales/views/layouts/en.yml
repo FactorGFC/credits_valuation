@@ -2,10 +2,12 @@ en:
   layouts:
     side_menu:
       dashboard: Dashboard
+      meetings: Meetings
       blogs:     Blogs
       positions: Positions
       blog_types: Blog types
       process_status: Process Status
+      factor_credits: Factor GFC Global Credits
       new_process_status: Crear  Process Status
       administration: Administration
       catalogs: Catalogs
