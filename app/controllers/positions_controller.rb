@@ -24,7 +24,7 @@ class PositionsController < ApplicationController
     @position = Position.new(position_params)
     respond_to do |format|
       if @position.save
-        format.html { redirect_to positions_path, notice: "Position was successfully created." }
+        format.html { redirect_to positions_path, notice: "Posición creada exitosamente." }
         format.json { render :show, status: :created, location: @position }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -37,7 +37,7 @@ class PositionsController < ApplicationController
   def update
     respond_to do |format|
       if @position.update(position_params)
-        format.html { redirect_to positions_path, notice: "Position was successfully updated." }
+        format.html { redirect_to positions_path, notice: "Posición actualizada exitosamente." }
         format.json { render :show, status: :ok, location: @position }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,7 +51,7 @@ class PositionsController < ApplicationController
     @position.destroy
 
     respond_to do |format|
-      format.html { redirect_to positions_url, notice: "Position was successfully destroyed." }
+      format.html { redirect_to positions_url, notice: "Posición eliminada exitosamente." }
       format.json { head :no_content }
     end
   end

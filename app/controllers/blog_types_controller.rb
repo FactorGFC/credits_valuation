@@ -25,7 +25,7 @@ class BlogTypesController < ApplicationController
 
     respond_to do |format|
       if @blog_type.save
-        format.html { redirect_to blog_types_path, notice: "BlogType was successfully created." }
+        format.html { redirect_to blog_types_path, notice: "Tipo de blog creado exitosamente" }
         format.json { render :show, status: :created, location: @blog_type }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class BlogTypesController < ApplicationController
   def update
     respond_to do |format|
       if @blog_type.update(blog_type_params)
-        format.html { redirect_to blog_types_path, notice: "BlogType was successfully updated." }
+        format.html { redirect_to blog_types_path, notice: "Tipo de blog actualizado exitosamente." }
         format.json { render :show, status: :ok, location: @blog_type }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +52,7 @@ class BlogTypesController < ApplicationController
     @blog_type.destroy
 
     respond_to do |format|
-      format.html { redirect_to blog_types_url, notice: "BlogType was successfully destroyed." }
+      format.html { redirect_to blog_types_url, notice: "Tipo de blog eliminado exitosamente." }
       format.json { head :no_content }
     end
   end

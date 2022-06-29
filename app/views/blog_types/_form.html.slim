@@ -1,7 +1,7 @@
 = form_for blog_type, validate: true, html: {class: 'm-form m-form--fit'} do |f|
   .m-portlet__body
     .form-group.m-form__group.row
-      = f.label :posición, class: 'col-sm-2 col-form-label'
+      = f.label 'Tipo de blog', class: 'col-sm-2 col-form-label'
       .col-sm-10
         = f.text_field :name, class: 'form-control m-input'
   .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit

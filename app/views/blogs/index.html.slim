@@ -6,12 +6,12 @@
           h3.m-portlet__head-text = t('.title')
       .m-portlet__head-tools
         ul.m-portlet__nav
-          / li.m-portlet__nav-item
+          li.m-portlet__nav-item
             = search_form_for @search_blogs do |f|
               .form-group.mb-0
                 .input-group.input-search-group
                   / Edit this
-                  = f.text_field :***********field1_or_field2_cont***********,
+                  = f.text_field :title_or_description_cont,
                           class: 'form-control form-control-sm border-brand search-field',
                           style: 'width:28px;',
                           placeholder: t('helpers.search')
@@ -39,7 +39,7 @@
               .col-6.per-page-container
                 span.per-page-text
                   = t('helpers.elements_per_page')
-                = search_form_for @q do |f|
+                = search_form_for @search_blogs do |f|
                   =< select_tag :per_page, options_for_select(pagination_options, @per_page.to_i),
                           class: 'form-control input-inline per-page-selectpicker per-page-pagination'
                   / Edit this

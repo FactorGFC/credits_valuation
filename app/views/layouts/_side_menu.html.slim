@@ -29,20 +29,20 @@
               span.m-menu__arrow
               ul.m-menu__subnav
                 li.m-menu__item aria-haspopup="true"
-                  = link_to(blogs_path, class: 'm-menu__link')
+                  = link_to(blog_types_path, class: 'm-menu__link')
                     i.m-menu__link-bullet.m-menu__link-bullet--dot
                       span
-                    span.m-menu__link-text = t('.index_masc')
+                    span.m-menu__link-text = t('.blog_types')
                 li.m-menu__item aria-haspopup="true"
                   = link_to(positions_path, class: 'm-menu__link')
                     i.m-menu__link-bullet.m-menu__link-bullet--dot
                       span
                     span.m-menu__link-text = t('.positions')
                 li.m-menu__item aria-haspopup="true"
-                  = link_to(blog_types_path, class: 'm-menu__link')
+                  = link_to(blogs_path, class: 'm-menu__link')
                     i.m-menu__link-bullet.m-menu__link-bullet--dot
                       span
-                    span.m-menu__link-text = t('.blog_types')
+                    span.m-menu__link-text = t('.blogs')
           li aria-haspopup="true" m-menu-submenu-toggle="hover" class="m-menu__item m-menu__item--submenu #{'m-menu__item--open m-menu__item--active' if controller_name.eql?('balance_concepts')}"
             a.m-menu__link.m-menu__toggle href="javascript:;"
               i.m-menu__link-icon.flaticon-graph

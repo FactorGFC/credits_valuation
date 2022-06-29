@@ -3,8 +3,8 @@ class BlogsController < ApplicationController
 
   # GET /blogs or /blogs.json
   def index
-    @q      = Blog.ransack(params[:q])
-    @blogs = @q.result(distinct: true)
+    @search_blogs = policy_scope(Blog).ransack(params[:q])
+    @blogs = @search_blogs.result.paginate(page: params[:page], per_page: get_pagination).order('id DESC')
   end
 
   # GET /blogs/1 or /blogs/1.json

@@ -1,38 +1,38 @@
 es:
   blog_types:
     index:
-      title: Tipos de Posiciones
+      title: Tipos de blog
       title_blog: Título
-      resource: el blog
-      position: Posición
+      resource: el tipo de blog
       image: Imagen
       name: Nombre
       description: Descripción
       key: Llave
-      one: Blog
-      other: Blogs
+      one: Tipo de Blog
+      other: Tipos de Blog
       count_table:
         one: 1 Blog
         other: '%{count} Blogs'
     form:
-      title: Blogs
-      resource: blog
+      title: Tipo de Blog
+      blog_types: Tipos de blog
+      resource: tipo de blog
       name: Nombre
       description: Descripción
       key: Llave
-      back: Ir a blogs
-      back_resource: blogs
+      back: Ir a tipos de blog
+      back_resource: Tipo de blog
     permissions:
       title: Permisos
       name: Nombre
       description: Descripción
       controller: Controlador
       action: Acción
-      back_resource: blogs
+      back_resource: tipos de blog
     new:
-      title: Nuevo blog
+      title: Nuevo Tipo de Blog
     edit:
-      title: Editar blog
+      title: Editar Tipo de Blog
   breadcrumbs:
     roles: Blogs
     permissions_for: Permisos para %{permission_name}
