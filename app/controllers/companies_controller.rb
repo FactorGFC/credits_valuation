@@ -99,7 +99,7 @@ class CompaniesController < ApplicationController
     end
 
     respond_to do |format|
-      if false#company.save
+      if company.save
         if user.id
           user.company_id             = company.id
           user.sat_id                 = sat_id
@@ -116,7 +116,7 @@ class CompaniesController < ApplicationController
           user.skip_confirmation!
         end
 
-        if false#user.save
+        if user.save
           #Envia correo
           if company.status_company.key == 'aprobada'
             CreditRequestMailer.with(request_data: {user: user, company: company}).credit_request_approved.deliver_now
