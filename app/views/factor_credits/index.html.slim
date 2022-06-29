@@ -50,8 +50,8 @@
                 tr
                   th = t('.name')
                   th = t('.description')
-                  th = t('.active')
-                  th = t('.order')
+                  th.text-center = t('.active')
+                  th.text-center = t('.order')
                   th.actions-3.text-center = t 'helpers.actions'
               tbody
                 - @factor_credits.each do |factor_credit|
@@ -61,9 +61,9 @@
 
                     td = factor_credit.description
 
-                    td = factor_credit.active
+                    td.text-center = factor_credit.try(:active).present? ? 'SI':'NO'
 
-                    td = factor_credit.order
+                    td.text-center = factor_credit.order
                     td.actions-3.text-center
                       = link_item_block edit_factor_credit_path(factor_credit), data: {title: (t('helpers.show_and_edit')), placement: 'top',
                               toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do

@@ -7,7 +7,7 @@
     .form-group.m-form__group.row
       = f.label :description, class: 'col-sm-2 col-form-label'
       .col-sm-10
-        = f.text_field :description, class: 'form-control m-input' 
+        = f.text_area :description, class: 'form-control m-input'
     .form-group.m-form__group.row
       = f.label :active, class: 'col-sm-2 col-form-label'
       .col-sm-10
@@ -15,12 +15,12 @@
     .form-group.m-form__group.row
       = f.label :order, class: 'col-sm-2 col-form-label'
       .col-sm-10
-        = f.number_field :order, class: 'form-control m-input' 
+        = f.number_field :order,min:0, class: 'form-control m-input'
   .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit
     .m-form__actions.m-form__actions--solid
       .row
         .col-lg-12
           = f.submit t('helpers.submit.submit', model: t('.resource')), class: 'btn btn-primary'
-          - if has_policy(Factor Credit, %w(index))
+          - if has_policy(FactorCredit, %w(index))
             =< link_to factor_credits_path, class: 'btn btn-secondary'
               = t('helpers.go_to', resource: t('.back_resource'))

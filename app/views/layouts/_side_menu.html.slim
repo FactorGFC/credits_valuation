@@ -9,9 +9,9 @@
             span.m-menu__link-wrap
               span.m-menu__link-text = t('.dashboard')
       - unless  current_user.enterprise?
-        li class="m-menu__item #{'m-menu__item--active' if controller_name.eql?('home')}" aria-haspopup="true"
+        li class="m-menu__item #{'m-menu__item--active' if controller_name.eql?('events')}" aria-haspopup="true"
           a.m-menu__link href="/events"
-            i.m-menu__link-icon.flaticon-line-graph
+            i.m-menu__link-icon.flaticon-users
             span.m-menu__link-title
               span.m-menu__link-wrap
                 span.m-menu__link-text = t('.meetings')
@@ -45,7 +45,7 @@
                     span.m-menu__link-text = t('.blogs')
           li aria-haspopup="true" m-menu-submenu-toggle="hover" class="m-menu__item m-menu__item--submenu #{'m-menu__item--open m-menu__item--active' if controller_name.eql?('balance_concepts')}"
             a.m-menu__link.m-menu__toggle href="javascript:;"
-              i.m-menu__link-icon.flaticon-graph
+              i.m-menu__link-icon.flaticon-open-box
               span.m-menu__link-text = t('.balance_concepts')
               i.m-menu__ver-arrow.la.la-angle-right
             .m-menu__submenu
@@ -71,7 +71,7 @@
                     span.m-menu__link-text = t('.income_statement_concepts')
           li aria-haspopup="true" m-menu-submenu-toggle="hover" class="m-menu__item m-menu__item--submenu #{'m-menu__item--open m-menu__item--active' if controller_name.eql?('calendars')}"
             a.m-menu__link.m-menu__toggle href="javascript:;"
-              i.m-menu__link-icon.flaticon-graph
+              i.m-menu__link-icon.flaticon-calendar
               span.m-menu__link-text = t('.calendars')
               i.m-menu__ver-arrow.la.la-angle-right
             .m-menu__submenu
@@ -101,6 +101,27 @@
                         span
                       span.m-menu__link-text = t('.new_user')
                 - if has_policy('ProcessStatus', %w(index))
+                  li.m-menu__item aria-haspopup="true"
+                    = link_to(user_registrations_path, class: 'm-menu__link')
+                      i.m-menu__link-bullet.m-menu__link-bullet--dot
+                        span
+                      span.m-menu__link-text = t('.index_masc')
+        - if has_policy('FactorCredits', %w(index))
+          li aria-haspopup="true" m-menu-submenu-toggle="hover" class="m-menu__item m-menu__item--submenu #{'m-menu__item--open m-menu__item--active' if controller_name.eql?('factor_credits')}"
+            a.m-menu__link.m-menu__toggle href="javascript:;"
+              i.m-menu__link-icon.flaticon-feed
+              span.m-menu__link-text = t('.factor_credits')
+              i.m-menu__ver-arrow.la.la-angle-right
+            .m-menu__submenu
+              span.m-menu__arrow
+              ul.m-menu__subnav
+                - if has_policy('FactorCredits', %w(new_user))
+                  li.m-menu__item aria-haspopup="true"
+                    = link_to(new_user_path, class: 'm-menu__link')
+                      i.m-menu__link-bullet.m-menu__link-bullet--dot
+                        span
+                      span.m-menu__link-text = t('.new_factor_credits')
+                - if has_policy('FactorCredits', %w(index))
                   li.m-menu__item aria-haspopup="true"
                     = link_to(user_registrations_path, class: 'm-menu__link')
                       i.m-menu__link-bullet.m-menu__link-bullet--dot

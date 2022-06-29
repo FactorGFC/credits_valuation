@@ -1,0 +1,41 @@
+es:
+  factor_credits:
+    index:
+      title: Créditos Factor GFC Global
+      resource: el crédito
+      name: Nombre
+      description: Descripción
+      active: Activo
+      order: Orden
+      one: Crédito
+      other: Créditos
+      count_table:
+        one: 1 Crédito
+        other: '%{count} Créditos'
+    form:
+      title: Créditos Factor GFC Global
+      resource: crédito
+      name: Nombre
+      description: Descripción
+      back: Ir a créditos
+      back_resource: créditos
+    new:
+      title: Nuevo crédito
+    edit:
+      title: Editar crédito
+    show:
+      title: Créditos Factor GFC Global
+      resource: el crédito
+      name: Nombre
+      description: Descripción
+      active: Activo
+      order: Orden
+      one: Crédito
+      other: Créditos
+      back: Ir a créditos
+      back_resource: créditos
+      count_table:
+        one: 1 Crédito
+        other: '%{count} Créditos'
+  breadcrumbs:
+    roles: Créditos Factor

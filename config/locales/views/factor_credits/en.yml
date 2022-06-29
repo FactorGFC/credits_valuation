@@ -1,0 +1,38 @@
+en:
+  factor_credits:
+    index:
+      title: Factor GFC Global Credits
+      resource: the credit
+      name: Name
+      description: Description
+      active: Active
+      order: Order
+      one: Credit
+      other: Credits
+      count_table:
+        one: 1 Credit
+        other: '%{count} Credits'
+    form:
+      title: Factor GFC Global Credits
+      resource: the credit
+      name: Name
+      description: Description
+      active: Key
+      order: Order
+      back: Go to credits
+      back_resource: credits
+    new:
+      title: New credit
+    edit:
+      title: Edit credit
+    show:
+      title: Factor GFC Global Credits
+      resource: the credit
+      name: Name
+      description: Description
+      active: Key
+      order: Order
+      back: Go to credits
+      back_resource: credits
+  breadcrumbs:
+    roles: Credits

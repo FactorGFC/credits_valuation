@@ -3,7 +3,9 @@ class FactorCreditsController < ApplicationController
 
   # GET /factor_credits or /factor_credits.json
   def index
-    @factor_credits = FactorCredit.all
+    @search_factor_credits = FactorCredit.ransack(params[:q])
+    @factor_credits = @search_factor_credits.result.paginate(page: params[:page], per_page: get_pagination).order('name ASC')
+    #@factor_credits = FactorCredit.all
   end
 
   # GET /factor_credits/1 or /factor_credits/1.json
@@ -25,7 +27,7 @@ class FactorCreditsController < ApplicationController
 
     respond_to do |format|
       if @factor_credit.save
-        format.html { redirect_to factor_credit_url(@factor_credit), notice: "Factor credit was successfully created." }
+        format.html { redirect_to factor_credits_url(@factor_credit), notice: "Se creó el crédito corrrectamente." }
         format.json { render :show, status: :created, location: @factor_credit }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +40,7 @@ class FactorCreditsController < ApplicationController
   def update
     respond_to do |format|
       if @factor_credit.update(factor_credit_params)
-        format.html { redirect_to factor_credit_url(@factor_credit), notice: "Factor credit was successfully updated." }
+        format.html { redirect_to factor_credits_url(@factor_credit), notice: "Se actualizó el crédito correctamente." }
         format.json { render :show, status: :ok, location: @factor_credit }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +54,7 @@ class FactorCreditsController < ApplicationController
     @factor_credit.destroy
 
     respond_to do |format|
-      format.html { redirect_to factor_credits_url, notice: "Factor credit was successfully destroyed." }
+      format.html { redirect_to factor_credits_url, notice: "Se eliminó el crédito correctamente." }
       format.json { head :no_content }
     end
   end
