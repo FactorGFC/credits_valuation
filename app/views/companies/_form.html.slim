@@ -1,22 +1,51 @@
 = form_for company, validate: true, html: {class: 'm-form m-form--fit'} do |f|
   .m-portlet__body
-    .form-group.m-form__group.row
-      = f.label :rfc, class: 'col-sm-2 col-form-label'
-      .col-sm-10
-        = f.text_field :rfc, class: 'form-control m-input' 
-    .form-group.m-form__group.row
-      = f.label :address, class: 'col-sm-2 col-form-label'
-      .col-sm-10
-        = f.text_field :address, class: 'form-control m-input' 
-    .form-group.m-form__group.row
-      = f.label :name, class: 'col-sm-2 col-form-label'
-      .col-sm-10
-        = f.text_field :name, class: 'form-control m-input' 
+    .m-form__section.m-form__section--first
+      .m-form__heading
+        h3.m-form__heading-title = 'Datos del usuario'
+      .form-group.m-form__group.row
+        .col-sm-6
+          = label :company_user, 'Nombre', class: 'col-form-label'
+          = text_field :company_user, :first_name, class:"form-control", required: true
+        .col-sm-6
+          = label :company_user, 'Apellido(s)', class: 'col-form-label'
+          = text_field :company_user, :last_name, class: "form-control", required: true
+      .form-group.m-form__group.row
+        .col-sm-6
+          = label :company_user, 'Télefono', class: 'col-form-label'
+          = number_field :company_user, :phone, class:"form-control", type: "number", id: "phone_input", onkeyup: 'phoneValidate()', maxlength: 10, min: 1, required: true
+          span class="invalid_value" id="validPhone" = 'Télefono invalido'
+        .col-sm-6
+          = label :company_user, 'Email', class: 'col-form-label'
+          = text_field :company_user, :email, id: "email_input", placeholder: "examplename@example.com", onkeyup: 'emailValidate()', class:"form-control", required: true
+          span class="invalid_value" id="validEmail" = 'Email invalido'
+
+    hr.dotted
+    .m-form__section.m-form__section--last
+      .m-form__heading
+        h3.m-form__heading-title = 'Datos del la compañia'
+      .form-group.m-form__group.row
+        .col-sm-6
+          = f.label 'Nombre de la compañia', class: 'col-form-label'
+          = f.text_field :name, class: 'form-control m-input'
+        .col-sm-6
+          = f.label :rfc, class: 'col-form-label'
+          = f.text_field :rfc, id: "rfc_input", onkeyup: 'rfcValidate()', required: true, maxlength: 13, class: 'form-control m-input'
+          span class="invalid_value" id="validRfc" = 'RFC invalido'
+      .form-group.m-form__group.row
+        = f.label 'Dirección', class: 'col-sm-2 col-form-label'
+        .col-sm-10
+          = f.text_field :address, class: 'form-control m-input'
+      .form-group.m-form__group.row
+        = f.label 'Estatus', class: 'col-sm-2 col-form-label'
+        .col-sm-10
+          = f.select :status_company_id, StatusCompany.all.order(:name).collect { |p| [p.name, p.id] },{ include_blank: false, required: true }, {class: "form-control m-input"}
   .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit
     .m-form__actions.m-form__actions--solid
       .row
-        .col-lg-12
-          = f.submit t('helpers.submit.submit', model: t('.resource')), class: 'btn btn-primary'
+        .col-lg-12.d-flex.justify-content-between
           - if has_policy(Company, %w(index))
             =< link_to companies_path, class: 'btn btn-secondary'
               = t('helpers.go_to', resource: t('.back_resource'))
+          .btn-section-disabled id="request_btn"
+            = f.submit t('helpers.submit.submit', model: t('.resource')), class: 'btn btn-primary'

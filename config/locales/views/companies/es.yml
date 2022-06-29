@@ -61,7 +61,7 @@ es:
 
   companies:
     new:
-      title: Plantilla
+      title: Compañia
       sign_up: Registrarse
       email: Correo
       password: Contraseña
@@ -69,7 +69,7 @@ es:
       unit_id: Unidad
     edit:
       my_profile: Mi perfil
-      title: Editar perfil
+      title: Editar compañia
       email: Correo electrónico
       unit_id: Unidad
       password: Contraseña
@@ -182,8 +182,9 @@ es:
       back_resource: usuarios
       log_out: Salir
     form:
-      title: Usuario
-      resource: usuario
+      title: Compañia
+      resource: compañia
+      back_resource: compañias
   breadcrumbs:
     users: Usuarios
     change_password: Cambiar contraseña

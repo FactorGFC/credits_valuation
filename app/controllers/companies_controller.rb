@@ -74,15 +74,70 @@ class CompaniesController < ApplicationController
 
   # POST /companies or /companies.json
   def create
-    @company = Company.new(company_params)
+
+    p '============='
+    p params[:company_user]
+    p params[:company]
+    p '============='
+    user_params = {
+        first_name: params[:company_user][:first_name],
+        last_name:  params[:company_user][:last_name],
+        phone:      params[:company_user][:phone],
+        email:      params[:company_user][:email]
+    }
+    company_params = {
+        rfc:                params[:company][:rfc],
+        name:               params[:company][:name],
+        address:            params[:company][:address],
+        status_company_id:  params[:company][:status_company_id]
+    }
+
+    user    = User.find_by(email: user_params[:email])
+    user ? user : user = User.new(user_params)
+
+    company = Company.new(company_params)
+
+    if company['sat_id'].present?
+      sat_id = company['sat_id']
+    else
+      sat_id = nil
+    end
 
     respond_to do |format|
-      if @company.save
-        format.html { redirect_to company_url(@company), notice: "La compañia se creó correctamente" }
-        format.json { render :show, status: :created, location: @company }
+      if false#company.save
+        if user.id
+          user.company_id             = company.id
+          user.sat_id                 = sat_id
+        else
+          new_password = [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+
+          user.company_id             = company.id
+          user.role_id                = Role.find_by_key('enterprise').try(:id).present? ?   Role.find_by_key('enterprise').try(:id) : 4
+          user.password               = new_password
+          user.password_confirmation  = new_password
+          user.new_password           = new_password
+          user.sat_id                 = sat_id
+
+          user.skip_confirmation!
+        end
+
+        if false#user.save
+          #Envia correo
+          if company.status_company.key == 'aprobada'
+            CreditRequestMailer.with(request_data: {user: user, company: company}).credit_request_approved.deliver_now
+          elsif company.status_company.key == 'rechazada'
+            CreditRequestMailer.with(request_data: {user: user, company: company}).credit_request_refused.deliver_now
+          end
+
+          format.html { redirect_to companies_path, notice: t('notifications_masc.success.resource.created',
+                                                   resource: t('roles.form.resource')) }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: user.errors, status: :unprocessable_entity }
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
+        format.json { render json: company.errors, status: :unprocessable_entity }
       end
     end
   end
