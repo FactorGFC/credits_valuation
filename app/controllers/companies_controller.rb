@@ -74,11 +74,6 @@ class CompaniesController < ApplicationController
 
   # POST /companies or /companies.json
   def create
-
-    p '============='
-    p params[:company_user]
-    p params[:company]
-    p '============='
     user_params = {
         first_name: params[:company_user][:first_name],
         last_name:  params[:company_user][:last_name],
