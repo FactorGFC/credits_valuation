@@ -4,3 +4,5 @@ DB_DATABASE: credits_factor_global
 DB_USERNAME: ''
 DB_PASSWORD: ''
 DOWNLOAD_FILES: 'https://analisisbucket.s3.amazonaws.com/credits_valuation'
+TOKEN_BURO_PRODUCTION: 'Token: 59f899b9f9de3db1191b36d06cff5d63c563feba86a1678031637c9827156c7e'
+TOKEN_BURO_DEVELOP: 'Token: 8d3f4980e76f1cf12da3005bac068636c1f36aa4cda8176de91bc64c00346f5b'

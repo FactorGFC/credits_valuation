@@ -76,13 +76,14 @@ class HomeController < ApplicationController
 
                     if !@balance_sheet.first[0].present?
                       if @company.update(info_company: @info, credential_company: @credential, sat_id: @sat['id'],
-                                         income_statment: @income_statment,  buro_id: @buro.first['id'],
+                                         income_statment: @income_statment, buro_id: @buro.first['id'],
                                          sat_password: params[:passsword_ciec], balance_sheet: @balance_sheet,
                                          main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'])
 
-                        @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450
+                        @bureau_report = BuroCredito.get_buro_report 60368 #@buro.first['id'],@info #4450
+
                         # @bureau_report = BuroCredito.get_report_by_id 12468
-                        @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @info
+                        @bureau_info = BuroCredito.get_buro_info 60368 # @buro.first['id'], @info
 
                         if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
                           if @user.update(sat_id: @sat['id'])
@@ -95,46 +96,42 @@ class HomeController < ApplicationController
                               @providers = get_providers_sat @user.try(:company)
                               if @providers
                                 @financial_institutions = create_financial_institutions @bureau_report, @company.id
-                                if @financial_institutions
-                                  if @company.update(step_one: true)
-                                    format.html { redirect_to companies_url, notice: t('notifications_masc.success.resource.updated',
+                                if @company.update(step_one: true)
+                                  format.html { redirect_to companies_url, notice: t('notifications_masc.success.resource.updated',
                                                                                      resource: t('users.registrations.form.resource')) }
-                                  else
-                                    format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
-                                  end
                                 else
-                                  format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                                  format.html { redirect_to companies_url, alert: '(1)Hubo un error favor volver a intentar' }
                                 end
                               else
-                                format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                                format.html { redirect_to companies_url, alert: '(3)Hubo un error favor volver a intentar' }
                               end
                             else
-                              format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                              format.html { redirect_to companies_url, alert: '(4)Hubo un error favor volver a intentar' }
                             end
 
                           else
-                            format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                            format.html { redirect_to companies_url, alert: '(5)Hubo un error favor volver a intentar' }
                           end
                         else
-                          format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                          format.html { redirect_to companies_url, alert: '(6)Hubo un error favor volver a intentar' }
                         end
                       else
-                        format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                        format.html { redirect_to companies_url, alert: '(7)Hubo un error favor volver a intentar' }
                       end
                     else
-                      format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                      format.html { redirect_to companies_url, alert: '(10)Hubo un error favor volver a intentar' }
                     end
                   else
-                    format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                    format.html { redirect_to companies_url, alert: '(11)Hubo un error favor volver a intentar' }
                   end
                 else
-                  format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                  format.html { redirect_to companies_url, alert: '(12)Hubo un error favor volver a intentar' }
                 end
               else
-                format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                format.html { redirect_to companies_url, alert: '(13)Hubo un error favor volver a intentar' }
               end
             else
-              format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+              format.html { redirect_to companies_url, alert: '(14)Hubo un error favor volver a intentar' }
             end
           else
             format.html { redirect_to companies_url, alert: 'El RFC no es valido.' }
@@ -172,48 +169,46 @@ class HomeController < ApplicationController
                             @providers = get_providers_sat @user.try(:company)
                             if @providers
                               @financial_institutions = create_financial_institutions @bureau_report, @company.id
-                              if @financial_institutions
-                                if @company.update(step_one: true)
-                                  format.html { redirect_to companies_url, notice: t('notifications_masc.success.resource.updated',
+
+                              if @company.update(step_one: true)
+                                format.html { redirect_to companies_url, notice: t('notifications_masc.success.resource.updated',
                                                                                    resource: t('users.registrations.form.resource')) }
-                                else
-                                  format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
-                                end
                               else
-                                format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                                format.html { redirect_to companies_url, alert: '(1)Hubo un error favor volver a intentar' }
                               end
+
                             else
-                              format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                              format.html { redirect_to companies_url, alert: '(3)Hubo un error favor volver a intentar' }
                             end
                           else
-                            format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                            format.html { redirect_to companies_url, alert: '(4)Hubo un error favor volver a intentar' }
                           end
                         else
-                          format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                          format.html { redirect_to companies_url, alert: '(5)Hubo un error favor volver a intentar' }
                         end
                       else
-                        format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                        format.html { redirect_to companies_url, alert: '(6)Hubo un error favor volver a intentar' }
                       end
                     else
-                      format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                      format.html { redirect_to companies_url, alert: '(7)Hubo un error favor volver a intentar' }
                     end
                   else
-                    format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                    format.html { redirect_to companies_url, alert: '(8)Hubo un error favor volver a intentar' }
                   end
                 else
-                  format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                  format.html { redirect_to companies_url, alert: '(10)Hubo un error favor volver a intentar' }
                 end
               else
-                format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+                format.html { redirect_to companies_url, alert: '(11)Hubo un error favor volver a intentar' }
               end
             else
-              format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+              format.html { redirect_to companies_url, alert: '(12)Hubo un error favor volver a intentar' }
             end
           else
-            format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+            format.html { redirect_to companies_url, alert: '(13)Hubo un error favor volver a intentar' }
           end
         else
-          format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+          format.html { redirect_to companies_url, alert: '(14)Hubo un error favor volver a intentar' }
         end
       end
     end
@@ -406,20 +401,22 @@ class HomeController < ApplicationController
 
   end
 
-  def create_financial_institutions credit_bureau,company_id
+  def create_financial_institutions credit_bureau, company_id
     response = false
     if credit_bureau['results'].present?
+      if credit_bureau['results'][1]['response'].present?
 
-      credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
+        credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
 
-        if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
-                                       type_contract: I18n.t("contract_type.#{account['TipoContrato']}"),balance: account['CreditoMaximo'], coin: 0)
-          response = true
-        else
-          response = false
+          if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
+                                         type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
+            response = true
+          else
+            response = false
+
+          end
 
         end
-
       end
     end
 
