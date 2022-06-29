@@ -15,6 +15,7 @@ en:
     form:
       title: Roles
       resource: role
+      blog_types: blog types
       name: Name
       description: Description
       key: Key

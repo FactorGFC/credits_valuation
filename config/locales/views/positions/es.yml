@@ -17,7 +17,7 @@ es:
         other: '%{count} Posiciones'
     form:
       title: Posiciones
-      resource: posicion
+      resource: posición
       name: Nombre
       description: Descripción
       key: Llave
@@ -35,5 +35,5 @@ es:
     edit:
       title: Editar posición
   breadcrumbs:
-    roles: Posicion
+    roles: Posición
     permissions_for: Permisos para %{permission_name}

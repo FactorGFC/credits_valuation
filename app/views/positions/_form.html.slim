@@ -7,11 +7,11 @@
     .form-group.m-form__group.row
       = f.label :orden, class: 'col-sm-2 col-form-label'
       .col-sm-10
-        = f.number_field :order, class: 'form-control m-input'
+        = f.number_field :order, min: 1, class: 'form-control m-input'
     .form-group.m-form__group.row
-      = f.label :tipo, class: 'col-sm-2 col-form-label'
+      = f.label :tipo_de_blog,class: 'col-sm-2 col-form-label'
       .col-sm-10
-        = f.select(:blog_type_id, BlogType.all.collect { |p| [p.name, p.id] }, {include_blank: true}, { :class => 'form-control m-input' })
+        = f.select(:blog_type_id, BlogType.all.collect { |p| [p.name, p.id] }, {include_blank: 'Seleccione un tipo de blog'}, { class: 'form-control m-input' })
   .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit
     .m-form__actions.m-form__actions--solid
       .row
