@@ -79,9 +79,10 @@ class HomeController < ApplicationController
                                          income_statment: @income_statment,  buro_id: @buro.first['id'],
                                          sat_password: params[:passsword_ciec], balance_sheet: @balance_sheet,
                                          main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'])
-                        @bureau_report = BuroCredito.get_buro_report @buro.first['id'] #4450
+
+                        @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450
                         # @bureau_report = BuroCredito.get_report_by_id 12468
-                        @bureau_info = BuroCredito.get_buro_info @buro.first['id']
+                        @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @info
 
                         if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
                           if @user.update(sat_id: @sat['id'])
@@ -245,6 +246,7 @@ class HomeController < ApplicationController
     first_name = "VICTOR"
     first_last_name = "P"
     second_last_name = 'M'
+
     #if info_sat['hydra:member'][0]['company'].present?
     #  account_type = "PM"
     #else

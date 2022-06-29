@@ -60,9 +60,24 @@ class BuroCredito < ApplicationRecord
   end
 
 
-  def self.get_buro_report id
+  def self.get_buro_report id,info_sat = nil
     # uri = URI.parse("https://sandbox.moffin.mx/api/v1/profiles/#{id}/query")
     # token = 'Token: 8d3f4980e76f1cf12da3005bac068636c1f36aa4cda8176de91bc64c00346f5b'
+
+    account_type_pf_b = false
+    account_type_pm_b = false
+
+
+    #if info_sat['hydra:member'][0]['company'].present?
+    #  account_type = "PM"
+    # account_type_pm_b = true
+    #else
+    #  first_name = info_sat['hydra:member'][0]['person']['firstName']
+    #  first_last_name = info_sat['hydra:member'][0]['person']['middleName']
+    #  second_last_name = info_sat['hydra:member'][0]['person']['lastName']
+    #  account_type = "PF"
+    # account_type_pf_b = true
+    #end
 
 
     uri = URI.parse("https://app.moffin.mx/api/v1/profiles/#{id}/query")
@@ -70,8 +85,8 @@ class BuroCredito < ApplicationRecord
 
     data = {
         bureauPM: true,
-        bureauPF: true,
-        satBlackList: true,
+        bureauPF: false,
+        satBlackList: false,
         satRFC: true
     }
 
@@ -97,16 +112,27 @@ class BuroCredito < ApplicationRecord
 
   end
 
-  def self.get_buro_info id
+  def self.get_buro_info id , info_sat = nil
     # uri = URI.parse("https://sandbox.moffin.mx/api/v1/profiles/#{id}/info")
     # token = 'Token: 8d3f4980e76f1cf12da3005bac068636c1f36aa4cda8176de91bc64c00346f5b'
+
+    account_type_pf_b = false
+    account_type_pm_b = false
+
+
+    #if info_sat['hydra:member'][0]['company'].present?
+    # account_type_pm_b = true
+    #else
+    # account_type_pf_b = true
+    #end
+
 
     uri = URI.parse("https://app.moffin.mx/api/v1/profiles/#{id}/info")
     token = 'Token: 59f899b9f9de3db1191b36d06cff5d63c563feba86a1678031637c9827156c7e'
 
     data = {
         bureauPM: true,
-        bureauPF: true,
+        bureauPF: false,
         satBlackList: true,
         satRFC: true
     }
