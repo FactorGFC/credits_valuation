@@ -180,6 +180,10 @@
 }
 
 table{
+    table-layout: auto;
+}
+
+.input-focusable-table{
     table-layout: fixed;
 }
 

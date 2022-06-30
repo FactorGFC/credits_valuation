@@ -13,3 +13,7 @@ es:
       title: Calendarios
       resource: periodo de calendario
       back_resource: periodos de calendario
+    new:
+      title: Nuevo Periodo Calendario
+    edit:
+      title: Editar Periodo Calendario
