@@ -2,6 +2,7 @@ es:
   layouts:
     side_menu:
       dashboard: Inicio
+      landing: Landing
       meetings: Reuniones
       blogs:     Blogs
       positions: Posiciones

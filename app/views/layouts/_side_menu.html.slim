@@ -14,7 +14,7 @@
             i.m-menu__link-icon.flaticon-line-graph
             span.m-menu__link-title
               span.m-menu__link-wrap
-                span.m-menu__link-text = t('.dashboard')
+                span.m-menu__link-text = t('.landing')
       - unless  current_user.enterprise?
         li class="m-menu__item #{'m-menu__item--active' if controller_name.eql?('events')}" aria-haspopup="true"
           a.m-menu__link href="/events"
