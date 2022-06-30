@@ -231,6 +231,7 @@ class BuroCredito < ApplicationRecord
       # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/report/#{id}")
       # token = ENV['TOKEN_BURO_DEVELOP']
 
+
       uri = URI.parse("#{ENV['URL_BUREAU_PRODUCTION']}api/v1/report/#{id}")
       token = ENV['TOKEN_BURO_PRODUCTION']
 

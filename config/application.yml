@@ -11,4 +11,4 @@ TOKEN_BURO_DEVELOP: 'Token: 8d3f4980e76f1cf12da3005bac068636c1f36aa4cda8176de91b
 API_KEY_SAT_DEVELOP: '690cac03af62759362bd1fed20710ab4'
 API_KEY_SAT_PRODUCTION: 'dc087a1fc8bb716cb2c2ff199c6d69c0'
 URL_SAT_DEVELOP: 'https://api.sandbox.satws.com/'
-URL_SAT_PRODUCTION: 'https://api.sandbox.satws.com/'
+URL_SAT_PRODUCTION: 'https://api.satws.com/'
