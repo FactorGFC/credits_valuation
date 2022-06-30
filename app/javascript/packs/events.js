@@ -1,6 +1,5 @@
 import swal from "sweetalert";
 import I18n from "i18n-js";
-import $ from "../../../../../../../.rvm/gems/ruby-2.7.6/gems/jquery-rails-4.5.0/vendor/assets/javascripts/jquery";
 import {fillEventForm} from './general';
 
 document.addEventListener('turbolinks:load', function() {
