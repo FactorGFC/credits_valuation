@@ -7,6 +7,7 @@
 #  balance_sheet             :jsonb
 #  balance_sheet_finished    :boolean
 #  cer_encoded               :text
+#  client_type               :string
 #  complete                  :boolean
 #  credential_company        :jsonb
 #  group_company             :boolean
