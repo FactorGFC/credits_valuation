@@ -7,7 +7,7 @@ import { Calendar }  from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import esLocale      from '@fullcalendar/core/locales/es';
 import {toastr} from './notifications';
-import { fillEventForm } from './events';
+import {validateData} from './events';
 import 'bootstrap';
 import 'select2';// from 'select2';
 import 'javascripts/i18n/translations';
@@ -35,8 +35,8 @@ $(document).on('turbolinks:load', function () {
     if(document.getElementById('calendar')) {
         var calendarEl  = document.getElementById('calendar');
 
-        console.log('***');
-        console.log(calendarEl);
+        //console.log('***');
+        //console.log(calendarEl);
         var calendar = new Calendar(calendarEl, {
             plugins: [ dayGridPlugin ],
             initialView: 'dayGridMonth',
@@ -176,9 +176,6 @@ $(document).on('turbolinks:load', function () {
         createTag: function(params) {
             return undefined;
         }
-        //dropdownParent: $('#m_modal_2')
-        //theme: 'bootstrap4',
-        //closeOnSelect: false,
     });
 
     $('.select2#product_list').select2({
@@ -196,6 +193,7 @@ $(document).on('turbolinks:load', function () {
             return undefined;
         }
     });
+
     $('.select2#company_balance_calendars').select2({
         placeholder: "Asignar periodos",
         multiple: true,
@@ -508,4 +506,16 @@ let loadSelectPeriod = (period_type) => {
     $('#period_selector').empty().append(array.join(''));
 };
 
-export {cascadeSelects};
+function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers){
+    $(".modal-body #event_id").val(eventId);
+    $(".modal-body #title_input").val(eventTitle);
+    $(".modal-body #event_description").val(eventDesc);
+    $(".modal-body #datetime_input").val(eventDatetime);
+    $(".modal-body #event_type_select").val(eventType).trigger('change');
+    $(".modal-body #event_location").val(eventLocation);
+    $(".modal-body #event_url").val(eventUrl);
+    $("#eventUsers").val(eventUsers).trigger('change');
+    validateData();
+}
+
+export {cascadeSelects, fillEventForm};

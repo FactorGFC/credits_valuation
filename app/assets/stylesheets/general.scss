@@ -721,6 +721,11 @@ span.badge {
   display: none;
 }
 
+.m-invalid_value{
+  color:   red;
+  display: block;
+}
+
 .btn-section-disabled{
   opacity:        0.5 !important;
   pointer-events: none;
