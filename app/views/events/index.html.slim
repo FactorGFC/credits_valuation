@@ -99,13 +99,15 @@
           input type="hidden" name="event[id]" id="event_id" value=""
           .col-md-12
             = label 'asunto','Asunto', class: 'col-form-label text-bold'
-            = text_field :event, :title, class: 'form-control m-input'
+            = text_field :event, :title, onkeyup: 'validateData()', id: 'title_input', class: 'form-control m-input'
+            span class="m-invalid_value" id="validTitle" = 'Es necesario asignar un asunto.'
           .col-md-12
             = label 'descripcion','Descripción', class: 'col-form-label text-bold'
             = text_area :event, :description, class: 'form-control m-input'
           .col-md-12
             = label 'initial_date','Fecha y hora', class: 'col-form-label text-bold'
-            = datetime_field :event, :date_time, class: 'form-control m-input'
+            = datetime_field :event, :date_time, onchange: 'validateData()', id:'datetime_input', class: 'form-control m-input'
+            span class="m-invalid_value" id="validDateTime" = 'Es necesario asignar fecha y hora.'
           .col-md-12
             = label 'tipo', 'Tipo de reunión', class: 'col-form-label text-bold'
             = select('event', 'event_type', [ 'PRESENCIAL', 'VIRTUAL'], {:prompt => 'Seleccionar un tipo'}, {class: 'form-control m-input', id: 'event_type_select', onchange: "displayFieldByType('event_ptype', 'event_vtype', this)"})
@@ -120,11 +122,12 @@
             select.select2.select2-container.select2-multiple#eventUsers multiple="multiple" name="users[]"
               = @users.each do |user|
                 option value="#{user.id}"= user.full_name
+
         .modal-footer.d-flex.justify-content-between.flex-row-reverse
           section
             button.btn.btn-secondary.mx-2 data-dismiss="modal" type="button"
               | Cerrar
-            button.btn.btn-success type="submit"
+            button.btn.btn-success.btn-section-disabled type="submit" id="request_btn"
               | Guardar
           button.btn.btn-danger#btn-event-delete type="button" onclick="deleteEvent(event_id)"
             i.fa.fa-trash-alt.mx-2

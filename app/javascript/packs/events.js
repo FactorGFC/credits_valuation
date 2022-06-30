@@ -1,5 +1,7 @@
 import swal from "sweetalert";
 import I18n from "i18n-js";
+import $ from "../../../../../../../.rvm/gems/ruby-2.7.6/gems/jquery-rails-4.5.0/vendor/assets/javascripts/jquery";
+import {fillEventForm} from './general';
 
 document.addEventListener('turbolinks:load', function() {
 
@@ -114,20 +116,34 @@ document.addEventListener('turbolinks:load', function() {
                 });
             }
         });
-    }
+    };
+
+    window.validateData = function() {
+        validateData();
+    };
+
 });
 
 
-export function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers){
-    $(".modal-body #event_id").val(eventId);
-    $(".modal-body #event_title").val(eventTitle);
-    $(".modal-body #event_description").val(eventDesc);
-    $(".modal-body #event_date_time").val(eventDatetime);
-    $(".modal-body #event_type_select").val(eventType);
-    $(".modal-body #event_location").val(eventLocation);
-    $(".modal-body #event_url").val(eventUrl);
-    $("#eventUsers").val(eventUsers);
+export function validateData(){
+    var title       = $("#title_input").val();
+    var datetime    = $("#datetime_input").val();
 
-    $('#event_type_select').trigger('change');
-    $('#eventUsers').trigger('change');
+    if(title !== ''){
+        $("#validTitle").hide();
+    }else{
+        $('#validTitle ').show();
+    }
+
+    if(datetime !== ''){
+        $("#validDateTime").hide();
+    }else{
+        $('#validDateTime ').show();
+    }
+
+    if (title !== '' && datetime !== '') {
+        $('#request_btn').attr('class', 'btn btn-success');
+    }else{
+        $('#request_btn').attr('class', 'btn btn-success btn-section-disabled');
+    }
 }

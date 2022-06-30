@@ -380,25 +380,20 @@ class CompaniesController < ApplicationController
   def asign_details_to_request
     request         = Request.find_by(company_id: params[:company_id])
     request_params  = params[:request]
+    request_params[:process_status_id] = 1 unless request_params[:process_status_id].present?
     if request
-
-      unless request_params[:process_status_id].present?
-        request_params[:process_status_id] = 1
-      end
-
       if request.update(analyst_id: request_params[:analyst_id], process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
         redirect_to "/company_details/#{params[:company_id]}", notice: "Actualizado correctamente."
       else
-        p '------'
-        p request.errors
-        sleep 2
+        redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')
       end
     else
       new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id], process_status_id: 1, factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
+
       if new_request.save
         redirect_to "/company_details/#{params[:company_id]}", notice: "Guardado correctamente."
       else
-        redirect_to "/company_details/#{params[:company_id]}", alert: "Ocurrio un Error, vuelve a intentarlo."
+        redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')
       end
     end
   end

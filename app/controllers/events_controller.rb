@@ -39,8 +39,8 @@ class EventsController < ApplicationController
   end
 
   def save_event
-    event_params = params[:event]
-    users_ids = params[:users].map(&:to_i)
+    event_params  = params[:event]
+    users_ids     = params[:users].present? ? params[:users].map(&:to_i) : []
 
     #Validar si ya existe
     if event_params[:id].present?
