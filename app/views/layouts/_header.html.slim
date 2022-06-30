@@ -4,7 +4,7 @@ header#m_header.m-grid__item.m-header m-minimize-mobile-offset="200" m-minimize-
       div class="m-stack__item m-brand #{ user_with_side_menu? ? "m-brand--skin-dark" : "background-header" }"
         .m-stack.m-stack--ver.m-stack--general
           .m-stack__item.m-stack__item--middle.m-brand__logo class="#{ 'text-lg-center text-md-left' unless user_with_side_menu? }"
-            a class="header-title-#{ (user_with_side_menu? ? 'white' : 'black')}" href="/"
+            a class="header-title-#{ (user_with_side_menu? ? 'white' : 'black')}" href="/login"
               = t('.title').html_safe
           .m-stack__item.m-stack__item--middle.m-brand__tools
             - if user_with_side_menu?
