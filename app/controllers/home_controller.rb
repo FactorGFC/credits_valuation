@@ -61,6 +61,12 @@ class HomeController < ApplicationController
           if @sat['hydra:title'] != 'An error occurred'
             @info = SatW.get_tax_status @user.try(:company).try(:rfc)
 
+            if @info['hydra:member'][0]['company'].present?
+             client_type = "PM"
+            else
+             client_type = "PF"
+            end
+
             if @info['@type'] != 'hydra:Error'
               @buro = create_buro @info, @user.try(:phone)
 
@@ -78,7 +84,8 @@ class HomeController < ApplicationController
                       if @company.update(info_company: @info, credential_company: @credential, sat_id: @sat['id'],
                                          income_statment: @income_statment, buro_id: @buro.first['id'],
                                          sat_password: params[:passsword_ciec], balance_sheet: @balance_sheet,
-                                         main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'])
+                                         main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
+                                         client_type: client_type)
 
                         @bureau_report = BuroCredito.get_buro_report 60368 #@buro.first['id'],@info #4450
 
@@ -155,7 +162,8 @@ class HomeController < ApplicationController
                     if @company.update(info_company: @info, credential_company: @credential, sat_id: @sat['id'],
                                        sat_password: params[:passsword_firma], key_encoded: key_base_64, cer_encoded: cer_base_64,
                                        buro_id: @buro.first['id'], balance_sheet: @balance_sheet,
-                                       main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'])
+                                       main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
+                                       client_type: client_type)
                       @bureau_report = BuroCredito.get_buro_report @buro.first['id']
                       @bureau_info = BuroCredito.get_buro_info @buro.first['id']
 
