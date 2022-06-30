@@ -62,7 +62,7 @@ class HomeController < ApplicationController
             @info = SatW.get_tax_status @user.try(:company).try(:rfc)
 
             if @info['@type'] != 'hydra:Error'
-              @buro = create_buro @info
+              @buro = create_buro @info, @user.try(:phone)
 
 
               if @buro
@@ -214,7 +214,7 @@ class HomeController < ApplicationController
 
   end
 
-  def create_buro info_sat
+  def create_buro info_sat, user_phone = nil
 
     # rfc = info_sat['hydra:member'][0]['rfc']
     # email = info_sat['hydra:member'][0]['email']
@@ -225,6 +225,7 @@ class HomeController < ApplicationController
     # interior_number = info_sat['hydra:member'][0]['address']['buildingNumber']
     # exterior_number = info_sat['hydra:member'][0]['address']['streetNumber']
     # municipality = info_sat['hydra:member'][0]['address']['municipality']
+    # neighborhood = info_sat['hydra:member'][0]['address']['neighborhood']
 
     rfc = "AIN080117NQA"
     email = "contabilidad2@aluminiointeligente.com.mx"
@@ -235,6 +236,7 @@ class HomeController < ApplicationController
     interior_number = ""
     exterior_number = "1500"
     municipality = "ZAPOPAN"
+    neighborhood = ""
 
     account_type = "PM"
     first_name = "VICTOR"
@@ -253,8 +255,8 @@ class HomeController < ApplicationController
     data = [accountType: account_type, email: email, firstName: first_name, middleName: "", rfc: rfc,
             firstLastName: first_last_name, secondLastName: second_last_name, address: address, city: city,
             state: state, zipCode: zip_code, exteriorNumber: exterior_number, interiorNumber: interior_number,
-            neighborhood: "", municipality: municipality,
-            nationality: "MX"]
+            neighborhood: neighborhood, municipality: municipality,
+            nationality: "MX",phone: user_phone]
 
 
     @buro = BuroCredito.create_client data
