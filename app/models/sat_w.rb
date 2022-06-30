@@ -9,15 +9,19 @@ class SatW < ApplicationRecord
   def self.create_sat_ws data
 
 
-    uri = URI.parse("https://api.sandbox.satws.com/credentials")
+    #Desarrollo
+    uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}credentials")
+    api_key = ENV['API_KEY_SAT_DEVELOP']
 
-    primer_api_key = '6f59423beb92df5571cc5da0e5d44202'
-    segunda_api_key = '690cac03af62759362bd1fed20710ab4'
+    #Produccion
+    # uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}credentials")
+    # api_key = ENV['API_KEY_SAT_PRODUCTION']
 
+    
     request = Net::HTTP::Post.new(uri.request_uri)
 
     request.content_type = "application/json"
-    request["X-API-Key"] = segunda_api_key
+    request["X-API-Key"] = api_key
     request["Cache-Control"] = "no-cache"
     request.body = data.to_json
 
@@ -34,20 +38,19 @@ class SatW < ApplicationRecord
   end
 
   def self.get_credential id
-    primer_api_key = '6f59423beb92df5571cc5da0e5d44202'
 
     #Desarrollo
-    uri = URI.parse("https://api.sandbox.satws.com/credentials/" +id  )
-    segunda_api_key = '690cac03af62759362bd1fed20710ab4'
-
+    uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}credentials/" +id  )
+    api_key = ENV['API_KEY_SAT_DEVELOP']
+    
     #Produccion
-    # segunda_api_key = 'dc087a1fc8bb716cb2c2ff199c6d69c0'
-    # uri = URI.parse("https://api.satws.com/credentials/" +id  )
+    # uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}credentials/" +id  )
+    # api_key = ENV['API_KEY_SAT_PRODUCTION']
 
     request = Net::HTTP::Get.new(uri.request_uri)
 
     request.content_type = "application/id+json"
-    request["X-API-Key"] = segunda_api_key
+    request["X-API-Key"] = api_key
     request["Cache-Control"] = "no-cache"
   # request.body = {
   #     "id": "957534d2-a8d3-49ee-8d67-130dd8acbd77	"
@@ -65,20 +68,19 @@ class SatW < ApplicationRecord
   end
 
   def self.get_tax_status rfc
-    primer_api_key = '6f59423beb92df5571cc5da0e5d44202'
 
     #Desarollo
-    segunda_api_key = '690cac03af62759362bd1fed20710ab4'
-    uri = URI.parse("https://api.sandbox.satws.com/taxpayers/#{rfc}/tax-status")
+    uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}taxpayers/#{rfc}/tax-status")
+    api_key = ENV['API_KEY_SAT_DEVELOP']
 
     #Produccion
-    # segunda_api_key = 'dc087a1fc8bb716cb2c2ff199c6d69c0'
-    # uri = URI.parse("https://api.satws.com/taxpayers/#{rfc}/tax-status")
+    # uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}taxpayers/#{rfc}/tax-status")
+    # api_key = ENV['API_KEY_SAT_PRODUCTION']
 
     request = Net::HTTP::Get.new(uri.request_uri)
 
     request.content_type = "application/id+json"
-    request["X-API-Key"] = segunda_api_key
+    request["X-API-Key"] = api_key
     request["Cache-Control"] = "no-cache"
 # request.body = {
 #     "id": "957534d2-a8d3-49ee-8d67-130dd8acbd77	"
@@ -98,20 +100,19 @@ class SatW < ApplicationRecord
   end
 
   def self.get_taxpayers id
-    primer_api_key = '6f59423beb92df5571cc5da0e5d44202'
 
     #Desarollo
-    segunda_api_key = '690cac03af62759362bd1fed20710ab4'
-    uri = URI.parse("https://api.sandbox.satws.com/tax-status/#{id}")
+    uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}tax-status/#{id}")
+    api_key = ENV['API_KEY_SAT_DEVELOP']
 
     #Produccion
-    # segunda_api_key = 'dc087a1fc8bb716cb2c2ff199c6d69c0'
-    # uri = URI.parse("https://api.satws.com/tax-status/#{id}")
+    # uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}tax-status/#{id}")
+    # api_key = ENV['API_KEY_SAT_PRODUCTION']
 
     request = Net::HTTP::Get.new(uri.request_uri)
 
     request.content_type = "application/id+json"
-    request["X-API-Key"] = segunda_api_key
+    request["X-API-Key"] = api_key
     request["Cache-Control"] = "no-cache"
 
     req_options = {
@@ -128,21 +129,19 @@ class SatW < ApplicationRecord
   end
 
   def self.get_income_statment id
-    primer_api_key = '6f59423beb92df5571cc5da0e5d44202'
 
     #Desarrollo
-    segunda_api_key = '690cac03af62759362bd1fed20710ab4'
-    uri = URI.parse("https://api.sandbox.satws.com/insights/#{id}/income-statement")
-    # uri = URI.parse("https://api.sandbox.satws.com/insights/123/income-statement")
+    uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}insights/#{id}/income-statement")
+    api_key = ENV['API_KEY_SAT_DEVELOP']
 
     #Produccion
-    # segunda_api_key = 'dc087a1fc8bb716cb2c2ff199c6d69c0'
-    # uri = URI.parse("https://api.satws.com/insights/#{id}/income-statement")
+    # uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}insights/#{id}/income-statement")
+    # api_key = ENV['API_KEY_SAT_PRODUCTION']
 
     request = Net::HTTP::Get.new(uri.request_uri)
 
     request.content_type = "application/id+json"
-    request["X-API-Key"] = segunda_api_key
+    request["X-API-Key"] = api_key
     request["Cache-Control"] = "no-cache"
 
     req_options = {
@@ -161,22 +160,19 @@ class SatW < ApplicationRecord
 
 
   def self.get_balance_sheet id
-    primer_api_key = '6f59423beb92df5571cc5da0e5d44202'
-
-    #https://api.sandbox.satws.com/insights/{id}/balance-sheet
 
     # Desarrollo
-    uri = URI.parse("https://api.sandbox.satws.com/insights/#{id}/balance-sheet")
-    segunda_api_key = '690cac03af62759362bd1fed20710ab4'
+    uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}insights/#{id}/balance-sheet")
+    api_key = ENV['API_KEY_SAT_DEVELOP']
 
     # Produccion
-    # segunda_api_key = 'dc087a1fc8bb716cb2c2ff199c6d69c0'
-    # uri = URI.parse("https://api.satws.com/insights/#{id}/balance-sheet")
+    # uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}insights/#{id}/balance-sheet")
+    # api_key = ENV['API_KEY_SAT_PRODUCTION']
 
     request = Net::HTTP::Get.new(uri.request_uri)
 
     request.content_type = "application/id+json"
-    request["X-API-Key"] = segunda_api_key
+    request["X-API-Key"] = api_key
     request["Cache-Control"] = "no-cache"
 
     req_options = {
@@ -191,25 +187,19 @@ class SatW < ApplicationRecord
   end
 
   def self.get_customer_concentration id
-    primer_api_key = '6f59423beb92df5571cc5da0e5d44202'
-
-    p "id --------------------------------------------------------------------------------"
-    p id
-    #https://api.sandbox.satws.com/insights/{id}/balance-sheet
 
     # Desarrollo
-    #
-    uri = URI.parse("https://api.sandbox.satws.com/insights/#{id}/customer-concentration")
-    segunda_api_key = '690cac03af62759362bd1fed20710ab4'
+    uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}insights/#{id}/customer-concentration")
+    api_key = ENV['API_KEY_SAT_DEVELOP']
 
     # Produccion
-    # segunda_api_key = 'dc087a1fc8bb716cb2c2ff199c6d69c0'
-    # uri = URI.parse("https://api.satws.com/insights/#{id}/balance-sheet")
+    # uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}insights/#{id}/customer-concentration")
+    # api_key = ENV['API_KEY_SAT_PRODUCTION']
 
     request = Net::HTTP::Get.new(uri.request_uri)
 
     request.content_type = "application/id+json"
-    request["X-API-Key"] = segunda_api_key
+    request["X-API-Key"] = api_key
     request["Cache-Control"] = "no-cache"
 
     req_options = {
@@ -224,18 +214,14 @@ class SatW < ApplicationRecord
   end
 
   def self.get_suppliers_concentration id
-    primer_api_key = '6f59423beb92df5571cc5da0e5d44202'
-
-    #https://api.sandbox.satws.com/insights/{id}/balance-sheet
 
     # Desarrollo
-
-    uri = URI.parse("https://api.sandbox.satws.com/insights/#{id}/supplier-concentration")
-    segunda_api_key = '690cac03af62759362bd1fed20710ab4'
-
+    uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}insights/#{id}/supplier-concentration")
+    api_key = ENV['API_KEY_SAT_DEVELOP']
+    
     # Produccion
-    # segunda_api_key = 'dc087a1fc8bb716cb2c2ff199c6d69c0'
-    # uri = URI.parse("https://api.satws.com/insights/#{id}/balance-sheet")
+    uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}insights/#{id}/supplier-concentration")
+    api_key = ENV['API_KEY_SAT_PRODUCTION']
 
     request = Net::HTTP::Get.new(uri.request_uri)
 

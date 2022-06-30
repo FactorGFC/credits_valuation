@@ -8,10 +8,10 @@ class BuroCredito < ApplicationRecord
   def self.create_client data
 
     #desarrollo
-    # uri = URI.parse("https://sandbox.moffin.mx/api/v1/profiles/info")
+    # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/profiles/info")
     # token = ENV['TOKEN_BURO_DEVELOP']
 
-    uri = URI.parse("https://app.moffin.mx/api/v1/profiles/info")
+    uri = URI.parse("#{ENV['URL_BUREAU_PRODUCTION']}api/v1/profiles/info")
     token = ENV['TOKEN_BURO_PRODUCTION']
 
     request = Net::HTTP::Post.new(uri.request_uri)
@@ -36,10 +36,10 @@ class BuroCredito < ApplicationRecord
 
   def self.get_client id
     #desarrollo
-    # uri = URI.parse("https://sandbox.moffin.mx/api/v1/profiles/#{id}")
+    # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/profiles/#{id}")
     # token = ENV['TOKEN_BURO_DEVELOP']
 
-    uri = URI.parse("https://app.moffin.mx/api/v1/profiles/#{id}")
+    uri = URI.parse("#{ENV['URL_BUREAU_PRODUCTION']}api/v1/profiles/#{id}")
     token = ENV['TOKEN_BURO_PRODUCTION']
 
     request = Net::HTTP::Get.new(uri.request_uri)
@@ -61,10 +61,10 @@ class BuroCredito < ApplicationRecord
 
 
   def self.get_buro_report id,info_sat = nil
-    # uri = URI.parse("https://sandbox.moffin.mx/api/v1/profiles/#{id}/query")
+    # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/profiles/#{id}/query")
     # token = ENV['TOKEN_BURO_DEVELOP']
 
-    uri = URI.parse("https://app.moffin.mx/api/v1/profiles/#{id}/query")
+    uri = URI.parse("#{ENV['URL_BUREAU_PRODUCTION']}api/v1/profiles/#{id}/query")
     token = ENV['TOKEN_BURO_PRODUCTION']
 
     account_type_pf_b = false
@@ -113,10 +113,10 @@ class BuroCredito < ApplicationRecord
   end
 
   def self.get_buro_info id , info_sat = nil
-    # uri = URI.parse("https://sandbox.moffin.mx/api/v1/profiles/#{id}/info")
+    # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/profiles/#{id}/info")
     # token = ENV['TOKEN_BURO_DEVELOP']
 
-    uri = URI.parse("https://app.moffin.mx/api/v1/profiles/#{id}/info")
+    uri = URI.parse("#{ENV['URL_BUREAU_PRODUCTION']}api/v1/profiles/#{id}/info")
     token = ENV['TOKEN_BURO_PRODUCTION']
 
     account_type_pf_b = false
@@ -160,10 +160,10 @@ class BuroCredito < ApplicationRecord
 
   def self.get_all_reports
 
-    # uri = URI.parse("https://sandbox.moffin.mx/api/v1/report")
+    # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/report")
     # token = ENV['TOKEN_BURO_DEVELOP']
 
-    uri = URI.parse("https://app.moffin.mx/api/v1/report")
+    uri = URI.parse("#{ENV['URL_BUREAU_PRODUCTION']}api/v1/report")
     token = ENV['TOKEN_BURO_PRODUCTION']
 
     # data = {
@@ -194,10 +194,10 @@ class BuroCredito < ApplicationRecord
 
   def self.get_report_by_id_repetido id
 
-    # uri = URI.parse("https://sandbox.moffin.mx/api/v1/report/#{id}")
+    # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/report/#{id}")
     # token = ENV['TOKEN_BURO_DEVELOP']
 
-    uri = URI.parse("https://app.moffin.mx/api/v1/report/#{id}")
+    uri = URI.parse("#{ENV['URL_BUREAU_PRODUCTION']}api/v1/report/#{id}")
     token = ENV['TOKEN_BURO_PRODUCTION']
 
     # data = {
@@ -228,10 +228,10 @@ class BuroCredito < ApplicationRecord
 
 
   def self.get_report_by_id id
-      # uri = URI.parse("https://sandbox.moffin.mx/api/v1/report/#{id}")
+      # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/report/#{id}")
       # token = ENV['TOKEN_BURO_DEVELOP']
 
-      uri = URI.parse("https://app.moffin.mx/api/v1/report/#{id}")
+      uri = URI.parse("#{ENV['URL_BUREAU_PRODUCTION']}api/v1/report/#{id}")
       token = ENV['TOKEN_BURO_PRODUCTION']
 
 
@@ -256,10 +256,10 @@ class BuroCredito < ApplicationRecord
 
   def self.update_profile id
 
-    # uri = URI.parse("https://sandbox.moffin.mx/api/v1/report/#{id}")
+    # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/report/#{id}")
     # token = ENV['TOKEN_BURO_DEVELOP']
 
-    uri = URI.parse("https://app.moffin.mx/api/v1/profiles/#{id}")
+    uri = URI.parse("#{ENV['URL_BUREAU_PRODUCTION']}api/v1/profiles/#{id}")
     token = ENV['TOKEN_BURO_PRODUCTION']
 
     data = {
