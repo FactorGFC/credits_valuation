@@ -64,16 +64,15 @@ Rails.application.configure do
   config.hosts.clear
   # Devise default url options.
   config.active_record.dump_schema_after_migration = false
-  config.action_mailer.default_options = { from: 'arodriguezg@uach.mx' }
-  config.action_mailer.default_url_options = { :host => 'http://analyticfg.com/' }
+  config.action_mailer.default_url_options = { :host => 'http://analisisfg.com' }
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
       address: 'smtp.gmail.com',
       port: 587,
       domain: 'gmail.com',
-      user_name: 'arodriguezg@uach.mx',
-      password: 'cv78ajmn4b',
+      user_name: 'sistemasfgfc@gmail.com',
+      password: 'lxihadubkdbluobl',
       authentication: 'plain',
       enable_starttls_auto:  true
   }

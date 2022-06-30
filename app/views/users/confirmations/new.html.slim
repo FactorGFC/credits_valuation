@@ -11,7 +11,7 @@
                 .form-group.m-form__group
                   = f.email_field :email, autofocus: true, autocomplete: 'off',  class: 'form-control m-input', placeholder: t('helpers.email')
                 .d-flex.justify-content-between
-                  = link_to unauthenticated_root_path, class: 'text-muted pt-2'
+                  = link_to authenticated_root_path, class: 'text-muted pt-2'
                     i.icon-arrow-left.mr-1
                     = t('helpers.back')
                   = f.submit t('helpers.send'), class: 'btn btn-focus m-btn--pill m-btn--custom'
