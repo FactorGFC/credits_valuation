@@ -36,7 +36,7 @@ class HomeController < ApplicationController
       params_ciec = true
       rfc_valid = params[:rfc] == @company.rfc
       data = {
-          "type": "ciec",
+          "type":"ciec",
           "rfc": params[:rfc],
           "password": params[:passsword_ciec]
       }
@@ -268,10 +268,6 @@ class HomeController < ApplicationController
 
 
     @buro = BuroCredito.create_client data
-
-
-    p "@buro 2 --------------------------------------------------------------------------------"
-    p @buro
 
 
     if @buro['result'].present?

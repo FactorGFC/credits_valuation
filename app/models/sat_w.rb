@@ -8,7 +8,6 @@ class SatW < ApplicationRecord
 
   def self.create_sat_ws data
 
-
     #Desarrollo
     uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}credentials")
     api_key = ENV['API_KEY_SAT_DEVELOP']
@@ -220,13 +219,13 @@ class SatW < ApplicationRecord
     api_key = ENV['API_KEY_SAT_DEVELOP']
     
     # Produccion
-    uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}insights/#{id}/supplier-concentration")
-    api_key = ENV['API_KEY_SAT_PRODUCTION']
+    # uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}insights/#{id}/supplier-concentration")
+    # api_key = ENV['API_KEY_SAT_PRODUCTION']
 
     request = Net::HTTP::Get.new(uri.request_uri)
 
     request.content_type = "application/id+json"
-    request["X-API-Key"] = segunda_api_key
+    request["X-API-Key"] = api_key
     request["Cache-Control"] = "no-cache"
 
     req_options = {
