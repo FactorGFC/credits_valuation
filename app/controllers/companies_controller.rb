@@ -360,11 +360,13 @@ class CompaniesController < ApplicationController
     calendar_ids      = params[:periods].map(&:to_i)
     company_calendars = CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: params[:assign_to]).pluck(:calendar_id)
 
+    #TODO: Evaluar las que ya tengan captura para no eliminar.
+
     new_records       = (calendar_ids - company_calendars)
     destroy_records   = (company_calendars - calendar_ids)
 
     begin
-      c.where(company_id: params[:company_id], assign_to: params[:assign_to], calendar_id: destroy_records).destroy_all
+      CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: params[:assign_to], calendar_id: destroy_records).destroy_all
       BalanceCalendarDetail.transaction do
         new_records.each do |e|
           CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: params[:assign_to])
