@@ -52,7 +52,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.1][concept]" value="1"
                     input type="hidden" name="b_sheet[#{y.id}.1][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.1][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 1, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.1][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 1, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Clientes'
@@ -60,7 +60,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.2][concept]" value="2"
                     input type="hidden" name="b_sheet[#{y.id}.2][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.2][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 2, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.2][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 2, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Inventarios'
@@ -68,7 +68,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.3][concept]" value="3"
                     input type="hidden" name="b_sheet[#{y.id}.3][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.3][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 3, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.3][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 3, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Otros activos circulantes'
@@ -76,7 +76,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.4][concept]" value="4"
                     input type="hidden" name="b_sheet[#{y.id}.4][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.4][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 4, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.4][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 4, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
 
               tr
                 td style="font-weight: 800"
@@ -90,7 +90,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.5][concept]" value="5"
                     input type="hidden" name="b_sheet[#{y.id}.5][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.5][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 5, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.5][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 5, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Maquinaria y equipo'
@@ -98,7 +98,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.6][concept]" value="6"
                     input type="hidden" name="b_sheet[#{y.id}.6][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.6][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 6, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.6][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 6, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Depreciación acumulada'
@@ -106,7 +106,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.7][concept]" value="7"
                     input type="hidden" name="b_sheet[#{y.id}.7][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.7][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 7, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.7][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 7, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Otros activos fijos'
@@ -114,7 +114,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.8][concept]" value="8"
                     input type="hidden" name="b_sheet[#{y.id}.8][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.8][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 8, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.8][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 8, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Cargos y gastos diferidos'
@@ -122,7 +122,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.9][concept]" value="9"
                     input type="hidden" name="b_sheet[#{y.id}.9][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.9][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 9, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.9][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 9, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
 
               tr
                 td style="font-weight: 800"
@@ -136,7 +136,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.10][concept]" value="10"
                     input type="hidden" name="b_sheet[#{y.id}.10][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.10][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 10, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.10][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 10, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Contribuciones por pagar'
@@ -144,7 +144,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.11][concept]" value="11"
                     input type="hidden" name="b_sheet[#{y.id}.11][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.11][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 11, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.11][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 11, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Anticipo de clientes'
@@ -152,7 +152,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.12][concept]" value="12"
                     input type="hidden" name="b_sheet[#{y.id}.12][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.12][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 12, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.12][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 12, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Otros pasivos'
@@ -160,7 +160,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.13][concept]" value="13"
                     input type="hidden" name="b_sheet[#{y.id}.13][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.13][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 13, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.13][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 13, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
 
               tr
                 td style="font-weight: 800"
@@ -174,7 +174,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.14][concept]" value="14"
                     input type="hidden" name="b_sheet[#{y.id}.14][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.14][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 14, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.14][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 14, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Utilidad/Perdida acumulada'
@@ -182,7 +182,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.15][concept]" value="15"
                     input type="hidden" name="b_sheet[#{y.id}.15][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.15][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 15, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.15][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 15, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Utilidad/Perdida ejercicio'
@@ -190,7 +190,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.16][concept]" value="16"
                     input type="hidden" name="b_sheet[#{y.id}.16][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.16][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 16, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.16][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 16, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Otras cuentas de capital'
@@ -198,7 +198,7 @@
                   td class="full-input"
                     input type="hidden" name="b_sheet[#{y.id}.17][concept]" value="17"
                     input type="hidden" name="b_sheet[#{y.id}.17][period]" value="#{y.calendar_id}"
-                    input type="number" name="b_sheet[#{y.id}.17][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 17, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
+                    input type="number" step=0.01 name="b_sheet[#{y.id}.17][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 17, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
             .d-inline-flex.justify-content-around.col-md-12
               .col-md-6
                 = button_tag type: 'submit', class: "btn btn-outline-info btn-large" do
@@ -228,7 +228,7 @@
                       td class="full-input"
                         input type="hidden" name="b_sheet[#{bc.id}.#{bc_index}.#{y.calendar_id}][concept]" value="#{bc.id}"
                         input type="hidden" name="b_sheet[#{bc.id}.#{bc_index}.#{y.calendar_id}][period]" value="#{y.calendar_id}"
-                        input type="number" name="b_sheet[#{bc.id}.#{bc_index}.#{y.calendar_id}][value]" class="focusable-input"
+                        input type="number" step=0.01 name="b_sheet[#{bc.id}.#{bc_index}.#{y.calendar_id}][value]" class="focusable-input"
                     - else
                       td
                 - bc.children.where('active= ? OR capturable = ?', true, true).order('id').each_with_index do |second_level, sl_index|
@@ -240,7 +240,7 @@
                         td class="full-input"
                           input type="hidden" name="b_sheet[#{second_level.id}.#{sl_index}.#{y.calendar_id}][concept]" value="#{second_level.id}"
                           input type="hidden" name="b_sheet[#{second_level.id}.#{sl_index}.#{y.calendar_id}][period]" value="#{y.calendar_id}"
-                          input type="number" name="b_sheet[#{second_level.id}.#{sl_index}.#{y.calendar_id}][value]" class="focusable-input"
+                          input type="number" step=0.01 name="b_sheet[#{second_level.id}.#{sl_index}.#{y.calendar_id}][value]" class="focusable-input"
                       - else
                         td
                   - second_level.children.where('active= ? OR capturable = ?', true, true).order('id').each_with_index do |third_level, tl_index|
@@ -252,7 +252,7 @@
                           td class="full-input"
                             input type="hidden" name="b_sheet[#{third_level.id}.#{tl_index}.#{y.calendar_id}][concept]" value="#{third_level.id}"
                             input type="hidden" name="b_sheet[#{third_level.id}.#{tl_index}.#{y.calendar_id}][period]" value="#{y.calendar_id}"
-                            input type="number" name="b_sheet[#{third_level.id}.#{tl_index}.#{y.calendar_id}][value]" class="focusable-input"
+                            input type="number" step=0.01 name="b_sheet[#{third_level.id}.#{tl_index}.#{y.calendar_id}][value]" class="focusable-input"
                         - else
                           td
                     - third_level.children.where('active= ? OR capturable = ?', true, true).order('id').each_with_index do |fourth_level, fol_index|
@@ -264,7 +264,7 @@
                             td class="full-input"
                               input type="hidden" name="b_sheet[#{fourth_level.id}.#{fol_index}.#{y.calendar_id}][concept]" value="#{fourth_level.id}"
                               input type="hidden" name="b_sheet[#{fourth_level.id}.#{fol_index}.#{y.calendar_id}][period]" value="#{y.calendar_id}"
-                              input type="number" name="b_sheet[#{fourth_level.id}.#{fol_index}.#{y.calendar_id}][value]" class="focusable-input"
+                              input type="number" step=0.01 name="b_sheet[#{fourth_level.id}.#{fol_index}.#{y.calendar_id}][value]" class="focusable-input"
                           - else
                             td
                       - fourth_level.children.where('active= ? OR capturable = ?', true, true).order('id').each_with_index do |fifth_level, fil_index|
@@ -276,7 +276,7 @@
                               td class="full-input"
                                 input type="hidden" name="b_sheet[#{fifth_level.id}.#{fil_index}.#{y.calendar_id}][concept]" value="#{fifth_level.id}"
                                 input type="hidden" name="b_sheet[#{fifth_level.id}.#{fil_index}.#{y.calendar_id}][period]" value="#{y.calendar_id}"
-                                input type="number" name="b_sheet[#{fifth_level.id}.#{fil_index}.#{y.calendar_id}][value]" class="focusable-input"
+                                input type="number" step=0.01 name="b_sheet[#{fifth_level.id}.#{fil_index}.#{y.calendar_id}][value]" class="focusable-input"
                             - else
                               td
             = button_tag type: 'submit', class: "btn btn-primary btn-large" do

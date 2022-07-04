@@ -35,37 +35,53 @@ module CompaniesHelper
     end
 
     max_num = [sat_value, fg_value].max
-    min_num   = [sat_value, fg_value].min
+    min_num = [sat_value, fg_value].min
 
     if max_num != 0 and min_num != 0
-      percent_value = (min_num/(max_num*100)).round(2)
-      if percent_value >= 80
+      percent_value = ((max_num - min_num)/min_num).round(2)
+      if percent_value <= 15
         [percent_value, 'green-badge']
-      elsif percent_value >= 40 and percent_value < 80
+      elsif percent_value > 15 and percent_value <= 30
         [percent_value, 'yellow-badge']
-      else
+      elsif percent_value > 30 and percent_value <= 100
         [percent_value, 'red-badge']
+      else
+        ['+100', 'red-badge']
       end
     else
-      [0, 'red-badge']
+      ['+100', 'red-badge']
     end
   end
 
-  def calculate_degrees percent
-     percent.present? ?  (percent * 180)/100 : 0
+  def calculate_degrees score
+    if score.present?
+      if score < 550
+        (score * 45)/549
+      elsif score >= 550 and score < 650
+        45+(((100-(650-score))*45)/100)
+      elsif score >= 650 and score < 750
+        90+(((100-(750-score))*45)/100)
+      else
+        135+(((100-(850-score))*45)/100)
+      end
+    else
+      0
+    end
   end
 
-  def calculate_face percent
-    if percent.present?
-      if percent < 33
+  def calculate_face score
+    if score.present?
+      if score < 550
         'face-bad.png'
-      elsif percent >= 33 and percent < 66
+      elsif score >= 550 and score < 650
         'face-med.png'
+      elsif score >= 650 and score < 750
+        'face-nice.png'
       else
         'face-good.png'
       end
     else
-      'face-good.png'
+      'face-bad.png'
     end
   end
 

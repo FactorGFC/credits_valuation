@@ -286,7 +286,7 @@ class CompaniesController < ApplicationController
     @credit_bureau = @company.credit_bureaus.last
 
     if @credit_bureau.present?
-
+      @score = 650
       #@percentage = avg_gagement @credit_bureau
     end
 
@@ -358,7 +358,7 @@ class CompaniesController < ApplicationController
 
   def asign_calendar
     calendar_ids      = params[:periods].map(&:to_i)
-    company_calendars = CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: params[:assign_to]).pluck(:calendar_id)
+    company_calendars = CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'balance_sheet').pluck(:calendar_id)
 
     #TODO: Evaluar las que ya tengan captura para no eliminar.
 
@@ -366,10 +366,12 @@ class CompaniesController < ApplicationController
     destroy_records   = (company_calendars - calendar_ids)
 
     begin
-      CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: params[:assign_to], calendar_id: destroy_records).destroy_all
+      CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'balance_sheet', calendar_id: destroy_records).destroy_all
+      CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'income_statement', calendar_id: destroy_records).destroy_all
       BalanceCalendarDetail.transaction do
         new_records.each do |e|
-          CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: params[:assign_to])
+          CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'balance_sheet')
+          CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'income_statement')
         end
       end
 
