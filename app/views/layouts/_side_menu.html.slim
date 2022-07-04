@@ -4,13 +4,13 @@
       li class="m-menu__item #{'m-menu__item--active' if controller_name.eql?('home')}" aria-haspopup="true"
         - home = current_user.enterprise? ? 'home_company' : 'login'
         a.m-menu__link href="/#{home}"
-          i.m-menu__link-icon.flaticon-line-graph
+          i.m-menu__link-icon.flaticon-home-1
           span.m-menu__link-title
             span.m-menu__link-wrap
               span.m-menu__link-text = t('.dashboard')
-        li class="m-menu__item #{'m-menu__item--active' if controller_name.eql?('home')}" aria-haspopup="true"
+        li class="m-menu__item #{'m-menu__item--active' if controller_name.eql?('landing')}" aria-haspopup="true"
           - home = current_user.enterprise? ? 'home_company' : 'login'
-          a.m-menu__link href="/"
+          a.m-menu__link href="/" target='_blank'
             i.m-menu__link-icon.flaticon-line-graph
             span.m-menu__link-title
               span.m-menu__link-wrap
