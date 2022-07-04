@@ -364,7 +364,7 @@ class CompaniesController < ApplicationController
     destroy_records   = (company_calendars - calendar_ids)
 
     begin
-      CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: params[:assign_to], calendar_id: destroy_records).destroy_all
+      c.where(company_id: params[:company_id], assign_to: params[:assign_to], calendar_id: destroy_records).destroy_all
       BalanceCalendarDetail.transaction do
         new_records.each do |e|
           CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: params[:assign_to])
@@ -393,7 +393,7 @@ class CompaniesController < ApplicationController
       if new_request.save
         redirect_to "/company_details/#{params[:company_id]}", notice: "Guardado correctamente."
       else
-        redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')
+        redirect_to "/company_details/#{params[:company_id]}", alert: new_request.errors.full_messages.join(' ')
       end
     end
   end
