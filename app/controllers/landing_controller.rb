@@ -64,7 +64,7 @@ class LandingController < ApplicationController
           CreditRequestMailer.with(request_data: request_data).new_credit_request_email.deliver_now
 
           #Envia mensaje de bienvenida al registrarse en el portal
-          Company.send_msj_to_company  company, user,1
+          #Company.send_msj_to_company  company, user,1
 
           format.html { redirect_to '/', notice: t('notifications_masc.success.resource.created',
                                                          resource: t('roles.form.resource')) }
