@@ -87,7 +87,9 @@ class HomeController < ApplicationController
                                          main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
                                          client_type: client_type)
 
-                        @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
+                        #@bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
+                        @bureau_report = BuroCredito.get_report_by_id 95998#4450 60368
+
 
                         # @bureau_report = BuroCredito.get_report_by_id 12468
                         @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @info
