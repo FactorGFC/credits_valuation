@@ -282,6 +282,8 @@ class CompaniesController < ApplicationController
     @request             = Request.find_by(company_id: params[:id])
     @request_comments    = RequestComment.where(request_id: @request.try(:id)).order(:created_at).limit(5)
     @financial_inst      = @company.financial_institutions
+    @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
+    @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
 
     @credit_bureau = @company.credit_bureaus.last
 
@@ -489,15 +491,15 @@ class CompaniesController < ApplicationController
   end
 
   def create_balance_sheet_request
-
+    value_scale = params[:bs_request][:value_scale]
     begin
       BalanceCalendarDetail.transaction do
         params[:b_sheet].each do |e|
           bs_detail = BalanceCalendarDetail.find_by(balance_concept_key: e[1][:concept], calendar_id: e[1][:period], company_id: current_user.company_id)
           if bs_detail.present?
-            raise ActiveRecord::Rollback unless bs_detail.update(value: e[1][:value])
+            raise ActiveRecord::Rollback unless bs_detail.update(value: e[1][:value], value_scale: value_scale)
           else
-            raise ActiveRecord::Rollback unless BalanceCalendarDetail.new(balance_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value], balance_type: 'FACTOR', company_id: current_user.company_id).save
+            raise ActiveRecord::Rollback unless BalanceCalendarDetail.new(balance_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value], balance_type: 'FACTOR', company_id: current_user.company_id, value_scale: value_scale).save
           end
         end
       end

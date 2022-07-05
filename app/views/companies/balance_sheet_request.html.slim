@@ -35,7 +35,10 @@
       .m-section.mb-0
         .m-section__content.text-center
           = form_tag '/create_balance_sheet_request', :method => 'post' do
-            table.table.table-bordered.input-focusable-table
+            /.col-md-12
+            h3 = 'Seleccione la escala del monto ingresado: '
+            = select('bs_request', 'value_scale', ['pesos', 'miles', 'millones'], {prompt: false, selected: @company.try(:balance_calendar_details).try(:first).try(:value_scale)}, {class: 'form-control m-input form-control-lg upcase-txt'})
+            table.table.table-bordered.input-focusable-table.mt-3
               tr
                 th
                 - @calendar_periods.each do |y|

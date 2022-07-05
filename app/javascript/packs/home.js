@@ -63,13 +63,17 @@ $(document).on('turbolinks:load', function () {
             for (var col = 0; col < colMax; col++) {
                 var colData = parseFloat(columns.eq(col).find('span.td-value'+index).text());
                 if(colData){
-                    rowTotal += (1 * colData);
+                    if(col === 0){
+                        rowTotal = colData;
+                    }else{
+                        rowTotal -= colData;
+                    }
                 }else{
-                    rowTotal += 0;
+                    rowTotal -= 0;
                 }
             }
 
-            $('input[name=total_p'+index+']').val(rowTotal);
+            $('input[name=total_p'+index+']').val(rowTotal.toFixed(2));
         });
 
         var rowMax = ($("table#comparative_table tr.tr-rdata").length)/2;

@@ -1,16 +1,41 @@
 #Console: include Rails.application.helpers
 
 module CompaniesHelper
-  #Valor obtenido de satws de balance
-  def company_balance_sheet_value(company_id, calendar, number_key)
+  #Valores obtenido de satws de balance
+  def company_balance_sheet_value(company_id, calendar, number_key, value_scale)
     company_bs = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: number_key, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f)
-    company_bs.present? ? company_bs.round(2) : 0
+
+    if company_bs.present?
+      if value_scale === 'millones'
+        return (company_bs/1000000).round(2)
+      elsif value_scale === 'miles'
+        return (company_bs/1000).round(2)
+      else
+        return company_bs.round(2)
+      end
+    else
+      return 0
+    end
   end
 
   #Valor capturado en FG de balance
-  def balance_calendar_detail_value(company_id, calendar, number_key)
+  def balance_calendar_detail_value(company_id, calendar, number_key, value_scale)
     balance_cd = BalanceCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, balance_concept_key: number_key).try(:first).try(:value)
-    balance_cd.present? ? balance_cd.round(2) : 0
+    if balance_cd.present?
+      if value_scale === 'millones'
+        return (balance_cd/1000000).round(2)
+      elsif value_scale === 'miles'
+        return (balance_cd/1000).round(2)
+      else
+        return balance_cd.round(2)
+      end
+    else
+      return 0
+    end
+  end
+
+  def calculate_percent_of_total(value, total)
+    ((value*100)/total).round
   end
 
   #Valor obtenido de satws para estado de resultados
@@ -25,13 +50,22 @@ module CompaniesHelper
     income_cs.present? ? income_cs.round(2) : 0
   end
 
-  def calculate_percentage(type, company_id, calendar, number_key)
+  #Calculo de porcentaje de diferencia entre valores y render de badge
+  def calculate_percentage(type, company_id, calendar, number_key, value_scale)
     if type === 'balance_sheet'
       sat_value = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: number_key, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f).abs
       fg_value  = BalanceCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, balance_concept_key: number_key).try(:first).try(:value).to_f.abs
     else
       sat_value = CompanyIncomeStatement.where(company_id: company_id, year: calendar.year, income_statement_concept_id: IncomeStatementConcept.where(number_key: number_key, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f).abs
       fg_value  = IncomeCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, income_statement_concept_key: number_key).try(:first).try(:value).to_f.abs
+    end
+
+    if value_scale === 'millones'
+      sat_value = sat_value/1000000
+      fg_value  = fg_value/1000000
+    elsif value_scale === 'miles'
+      sat_value = sat_value/1000
+      fg_value  = fg_value/1000
     end
 
     max_num = [sat_value, fg_value].max
@@ -50,6 +84,18 @@ module CompaniesHelper
       end
     else
       ['+100', 'red-badge']
+    end
+  end
+
+  #Calcula sumatoria de valores capturados
+  def bs_capture_sum company_id, bs_keys_array, calendar_id, value_scale
+    total = BalanceCalendarDetail.where(company_id: company_id, balance_concept_key: bs_keys_array, calendar_id: calendar_id).sum(:value)
+    if value_scale === 'millones'
+      total/1000000
+    elsif value_scale === 'miles'
+      total/1000
+    else
+      total
     end
   end
 

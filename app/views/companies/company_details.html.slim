@@ -239,10 +239,23 @@
                               = y.calendar.period_name
                           th = 'COMPARACIÓN (ANUAL)'
                         tr
-                          td style=" font-weight: 800; font-size: 16px;"
+                          td style=" font-weight: 800; font-size: 16px;" rowspan="2"
                             span.text-left = 'Activo circulante'
+                          - @calendar_periods_bs.each_with_index do |y, y_index|
+                            td class="full-input col-#{y.id}"
+                              - if y.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SUM. SAT'
+                                br
+                                span = company_balance_sheet_value(@company.id, y.calendar, ['1','2','3','4'], @bs_scale)
+                                span.value-scale = @bs_scale
+                          td
+                        tr
                           - @calendar_periods_bs.each do |y|
                             td class="full-input col-#{y.id}"
+                              span.text-table-concept = 'SUM. CAPTURA'
+                              br
+                              span = bs_capture_sum(@company.id, ['1','2','3','4'], y.calendar.id, @bs_scale)
+                              span.value-scale = @bs_scale
                           td
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -250,98 +263,127 @@
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input.sat_value class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 1)[1]]
-                                  span class=["percent-bdg0-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 1)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 1, @bs_scale)[1]]
+                                  span class=["percent-bdg0-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 1, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value0 = company_balance_sheet_value(@company.id, y.calendar, 1)
+                                span.td-value0 = company_balance_sheet_value(@company.id, y.calendar, 1, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 1, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['1','2','3','4'], @bs_scale))} %"
                           td.full-input.total_p0
                             div.percentage-badge.blue-badge
                               span.tb-badge0 = "0"
-                            input type='text' name='total_p0' value='0'
+                            input.input-borderless type='text' name='total_p0' value='0' disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span class=["#{'td-value1' if y.calendar.period_type == 'anual'}"] = balance_calendar_detail_value(@company.id, y.calendar, 1)
+                              span.td-value1 = balance_calendar_detail_value(@company.id, y.calendar, 1, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 1, @bs_scale), bs_capture_sum(@company.id, ['1','2','3','4'], y.calendar.id, @bs_scale))} %"
                           td.full_input.total_p1
-                            input type='text' name='total_p1' value='0'
+                            input.input-borderless type='text' name='total_p1' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Clientes'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 2)[1]]
-                                  span class=["percent-bdg1-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 2)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 2, @bs_scale)[1]]
+                                  span class=["percent-bdg1-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 2, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value2 = company_balance_sheet_value(@company.id, y.calendar, 2)
+                                span.td-value2 = company_balance_sheet_value(@company.id, y.calendar, 2, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 2, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['1','2','3','4'], @bs_scale))} %"
                           td.full-input.total_p2
                             div.percentage-badge.blue-badge
                               span.tb-badge1 = "0"
-                            input type='text' name='total_p2' value='0'
+                            input.input-borderless type='text' name='total_p2' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value3 = balance_calendar_detail_value(@company.id, y.calendar, 2)
+                              span.td-value3 = balance_calendar_detail_value(@company.id, y.calendar, 2, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 2, @bs_scale), bs_capture_sum(@company.id, ['1','2','3','4'], y.calendar.id, @bs_scale))} %"
                           td.total_p3
-                            input type='text' name='total_p3' value='0'
+                            input.input-borderless type='text' name='total_p3' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Inventarios'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 3)[1]]
-                                  span class=["percent-bdg2-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 3)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 3, @bs_scale)[1]]
+                                  span class=["percent-bdg2-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 3, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value4 = company_balance_sheet_value(@company.id, y.calendar, 3)
+                                span.td-value4 = company_balance_sheet_value(@company.id, y.calendar, 3, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 3, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['1','2','3','4'], @bs_scale))} %"
                           td.full-input.total_p4
                             div.percentage-badge.blue-badge
                               span.tb-badge2 = "0"
-                            input type='text' name='total_p4' value='0'
+                            input.input-borderless type='text' name='total_p4' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value5 = balance_calendar_detail_value(@company.id, y.calendar, 3)
+                              span.td-value5 = balance_calendar_detail_value(@company.id, y.calendar, 3, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 3, @bs_scale), bs_capture_sum(@company.id, ['1','2','3','4'], y.calendar.id, @bs_scale))} %"
                           td.total_p5
-                            input type='text' name='total_p5' value='0'
+                            input.input-borderless type='text' name='total_p5' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Otros activos circulantes'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 4)[1]]
-                                  span class=["percent-bdg3-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 4)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 4, @bs_scale)[1]]
+                                  span class=["percent-bdg3-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 4, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value6 = company_balance_sheet_value(@company.id, y.calendar, 4)
+                                span.td-value6 = company_balance_sheet_value(@company.id, y.calendar, 4, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 4, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['1','2','3','4'], @bs_scale))} %"
                           td.full-input.total_p6
                             div.percentage-badge.blue-badge
                               span.tb-badge3 = "0"
-                            input type='text' name='total_p6' value='0'
+                            input.input-borderless type='text' name='total_p6' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value7 = balance_calendar_detail_value(@company.id, y.calendar, 4)
+                              span.td-value7 = balance_calendar_detail_value(@company.id, y.calendar, 4, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 4, @bs_scale), bs_capture_sum(@company.id, ['1','2','3','4'], y.calendar.id, @bs_scale))} %"
                           td.total_p7
-                            input type='text' name='total_p7' value='0'
+                            input.input-borderless type='text' name='total_p7' value='0'  disabled='disabled'
 
                         tr
-                          td style=" font-weight: 800; font-size: 18px"
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Activo fijo'
                           - @calendar_periods_bs.each do |y|
                             td class="full-input col-#{y.id}"
+                              - if y.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SUM. SAT'
+                                br
+                                span = company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale)
+                                span.value-scale = @bs_scale
+                          td
+                        tr
+                          - @calendar_periods_bs.each do |y|
+                            td class="full-input col-#{y.id}"
+                              span.text-table-concept = 'SUM. CAPTURA'
+                              br
+                              span = bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale)
+                              span.value-scale = @bs_scale
                           td
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -349,121 +391,154 @@
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 5)[1]]
-                                  span class=["percent-bdg4-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 5)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 5, @bs_scale)[1]]
+                                  span class=["percent-bdg4-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 5, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value8 = company_balance_sheet_value(@company.id, y.calendar, 5)
+                                span.td-value8 = company_balance_sheet_value(@company.id, y.calendar, 5, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 5, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale))} %"
                           td.full-input.total_p8
                             div.percentage-badge.blue-badge
                               span.tb-badge4 = "0"
-                            input type='text' name='total_p8' value='0'
+                            input.input-borderless type='text' name='total_p8' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value9 = balance_calendar_detail_value(@company.id, y.calendar, 5)
+                              span.td-value9 = balance_calendar_detail_value(@company.id, y.calendar, 5, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 5, @bs_scale), bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale))} %"
                           td.total_p9
-                            input type='text' name='total_p9' value='0'
+                            input.input-borderless type='text' name='total_p9' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Maquinaria y equipo'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 6)[1]]
-                                  span class=["percent-bdg5-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 6)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 6, @bs_scale)[1]]
+                                  span class=["percent-bdg5-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 6, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value10 = company_balance_sheet_value(@company.id, y.calendar, 6)
+                                span.td-value10 = company_balance_sheet_value(@company.id, y.calendar, 6, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 6, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale))} %"
                           td.full-input.total_p10
                             div.percentage-badge.blue-badge
                               span.tb-badge5 = "0"
-                            input type='text' name='total_p10' value='0'
+                            input.input-borderless type='text' name='total_p10' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value11 = balance_calendar_detail_value(@company.id, y.calendar, 6)
+                              span.td-value11 = balance_calendar_detail_value(@company.id, y.calendar, 6, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 6, @bs_scale), bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale))} %"
                           td.total_p11
-                            input type='text' name='total_p11' value='0'
+                            input.input-borderless type='text' name='total_p11' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Depreciación acumulada'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 7)[1]]
-                                  span class=["percent-bdg6-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 7)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 7, @bs_scale)[1]]
+                                  span class=["percent-bdg6-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 7, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value12 = company_balance_sheet_value(@company.id, y.calendar, 7)
+                                span.td-value12 = company_balance_sheet_value(@company.id, y.calendar, 7, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 7, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale))} %"
                           td.full-input.total_p12
                             div.percentage-badge.blue-badge
                               span.tb-badge6 = "0"
-                            input type='text' name='total_p12' value='0'
+                            input.input-borderless type='text' name='total_p12' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value13 = balance_calendar_detail_value(@company.id, y.calendar, 7)
+                              span.td-value13 = balance_calendar_detail_value(@company.id, y.calendar, 7, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 7, @bs_scale), bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale))} %"
                           td.total_p13
-                            input type='text' name='total_p13' value='0'
+                            input.input-borderless type='text' name='total_p13' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Otros activos fijos'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 8)[1]]
-                                  span class=["percent-bdg7-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 8)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 8, @bs_scale)[1]]
+                                  span class=["percent-bdg7-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 8, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value14 = company_balance_sheet_value(@company.id, y.calendar, 8)
+                                span.td-value14 = company_balance_sheet_value(@company.id, y.calendar, 8, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 8, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale))} %"
                           td.full-input.total_p14
                             div.percentage-badge.blue-badge
                               span.tb-badge7 = "0"
-                            input type='text' name='total_p14' value='0'
+                            input.input-borderless type='text' name='total_p14' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value15 = balance_calendar_detail_value(@company.id, y.calendar, 8)
+                              span.td-value15 = balance_calendar_detail_value(@company.id, y.calendar, 8, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 8, @bs_scale), bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale))} %"
                           td.total_p15
-                            input type='text' name='total_p15' value='0'
+                            input.input-borderless type='text' name='total_p15' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Cargos y gastos diferidos'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 9)[1]]
-                                  span class=["percent-bdg8-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 9)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 9, @bs_scale)[1]]
+                                  span class=["percent-bdg8-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 9, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value16 = company_balance_sheet_value(@company.id, y.calendar, 9)
+                                span.td-value16 = company_balance_sheet_value(@company.id, y.calendar, 9, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 9, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale))} %"
                           td.full-input.total_p16
                             div.percentage-badge.blue-badge
                               span.tb-badge8 = "0"
-                            input type='text' name='total_p16' value='0'
+                            input.input-borderless type='text' name='total_p16' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value17 = balance_calendar_detail_value(@company.id, y.calendar, 9)
+                              span.td-value17 = balance_calendar_detail_value(@company.id, y.calendar, 9, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 9, @bs_scale), bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale))} %"
                           td.total_p17
-                            input type='text' name='total_p17' value='0'
+                            input.input-borderless type='text' name='total_p17' value='0'  disabled='disabled'
 
                         tr
-                          td style=" font-weight: 800; font-size: 18px"
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Pasivo total'
                           - @calendar_periods_bs.each do |y|
                             td class="full-input col-#{y.id}"
+                              - if y.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SUM. SAT'
+                                br
+                                span = company_balance_sheet_value(@company.id, y.calendar, ['10','11','12','13'], @bs_scale)
+                                span.value-scale = @bs_scale
+                          td
+                        tr
+                          - @calendar_periods_bs.each do |y|
+                            td class="full-input col-#{y.id}"
+                              span.text-table-concept = 'SUM. CAPTURA'
+                              br
+                              span = bs_capture_sum(@company.id, ['10','11','12','13'], y.calendar.id, @bs_scale)
+                              span.value-scale = @bs_scale
                           td
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -471,98 +546,127 @@
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 10)[1]]
-                                  span class=["percent-bdg9-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 10)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 10, @bs_scale)[1]]
+                                  span class=["percent-bdg9-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 10, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value18 = company_balance_sheet_value(@company.id, y.calendar, 10)
+                                span.td-value18 = company_balance_sheet_value(@company.id, y.calendar, 10, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 10, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['10','11','12','13'], @bs_scale))} %"
                           td.full-input.total_p18
                             div.percentage-badge.blue-badge
                               span.tb-badge9 = "0"
-                            input type='text' name='total_p18' value='0'
+                            input.input-borderless type='text' name='total_p18' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value19 = balance_calendar_detail_value(@company.id, y.calendar, 10)
+                              span.td-value19 = balance_calendar_detail_value(@company.id, y.calendar, 10, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 10, @bs_scale), bs_capture_sum(@company.id, ['10','11','12','13'], y.calendar.id, @bs_scale))} %"
                           td.total_p19
-                            input type='text' name='total_p19' value='0'
+                            input.input-borderless type='text' name='total_p19' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Contribuciones por pagar'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 11)[1]]
-                                  span class=["percent-bdg10-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 11)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 11, @bs_scale)[1]]
+                                  span class=["percent-bdg10-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 11, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value20 = company_balance_sheet_value(@company.id, y.calendar, 11)
+                                span.td-value20 = company_balance_sheet_value(@company.id, y.calendar, 11, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 11, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['10','11','12','13'], @bs_scale))} %"
                           td.full-input.total_p20
                             div.percentage-badge.blue-badge
                               span.tb-badge10 = "0"
-                            input type='text' name='total_p20' value='0'
+                            input.input-borderless type='text' name='total_p20' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value21 = balance_calendar_detail_value(@company.id, y.calendar, 11)
+                              span.td-value21 = balance_calendar_detail_value(@company.id, y.calendar, 11, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 11, @bs_scale), bs_capture_sum(@company.id, ['10','11','12','13'], y.calendar.id, @bs_scale))} %"
                           td.total_p21
-                            input type='text' name='total_p21' value='0'
+                            input.input-borderless type='text' name='total_p21' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Anticipo de clientes'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 12)[1]]
-                                  span class=["percent-bdg11-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 12)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 12, @bs_scale)[1]]
+                                  span class=["percent-bdg11-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 12, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value22 = company_balance_sheet_value(@company.id, y.calendar, 12)
+                                span.td-value22 = company_balance_sheet_value(@company.id, y.calendar, 12, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 12, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['10','11','12','13'], @bs_scale))} %"
                           td.full-input.total_p22
                             div.percentage-badge.blue-badge
                               span.tb-badge11 = "0"
-                            input type='text' name='total_p22' value='0'
+                            input.input-borderless type='text' name='total_p22' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value23 = balance_calendar_detail_value(@company.id, y.calendar, 12)
+                              span.td-value23 = balance_calendar_detail_value(@company.id, y.calendar, 12, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 12, @bs_scale), bs_capture_sum(@company.id, ['10','11','12','13'], y.calendar.id, @bs_scale))} %"
                           td.total_p23
-                            input type='text' name='total_p23' value='0'
+                            input.input-borderless type='text' name='total_p23' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Otros pasivos'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 13)[1]]
-                                  span class=["percent-bdg12-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 13)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 13, @bs_scale)[1]]
+                                  span class=["percent-bdg12-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 13, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value24 = company_balance_sheet_value(@company.id, y.calendar, 13)
+                                span.td-value24 = company_balance_sheet_value(@company.id, y.calendar, 13, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 13, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['10','11','12','13'], @bs_scale))} %"
                           td.full-input.total_p24
                             div.percentage-badge.blue-badge
                               span.tb-badge12 = "0"
-                            input type='text' name='total_p24' value='0'
+                            input.input-borderless type='text' name='total_p24' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value25 = balance_calendar_detail_value(@company.id, y.calendar, 13)
+                              span.td-value25 = balance_calendar_detail_value(@company.id, y.calendar, 13, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 13, @bs_scale), bs_capture_sum(@company.id, ['10','11','12','13'], y.calendar.id, @bs_scale))} %"
                           td.total_p25
-                            input type='text' name='total_p25' value='0'
+                            input.input-borderless type='text' name='total_p25' value='0'  disabled='disabled'
 
                         tr
-                          td style=" font-weight: 800; font-size: 18px"
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Capital Total'
                           - @calendar_periods_bs.each do |y|
                             td class="full-input col-#{y.id}"
+                              - if y.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SUM. SAT'
+                                br
+                                span = company_balance_sheet_value(@company.id, y.calendar, ['14','15','16','17'], @bs_scale)
+                                span.value-scale = @bs_scale
+                          td
+                        tr
+                          - @calendar_periods_bs.each do |y|
+                            td class="full-input col-#{y.id}"
+                              span.text-table-concept = 'SUM. CAPTURA'
+                              br
+                              span = bs_capture_sum(@company.id, ['14','15','16','17'], y.calendar.id, @bs_scale)
+                              span.value-scale = @bs_scale
                           td
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -570,92 +674,108 @@
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 14)[1]]
-                                  span class=["percent-bdg13-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 14)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 14, @bs_scale)[1]]
+                                  span class=["percent-bdg13-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 14, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value26 = company_balance_sheet_value(@company.id, y.calendar, 14)
+                                span.td-value26 = company_balance_sheet_value(@company.id, y.calendar, 14, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 8, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['14','15','16','17'], @bs_scale))} %"
                           td.full-input.total_p26
                             div.percentage-badge.blue-badge
                               span.tb-badge13 = "0"
-                            input type='text' name='total_p26' value='0'
+                            input.input-borderless type='text' name='total_p26' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value27 = balance_calendar_detail_value(@company.id, y.calendar, 14)
+                              span.td-value27 = balance_calendar_detail_value(@company.id, y.calendar, 14, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 14, @bs_scale), bs_capture_sum(@company.id, ['14','15','16','17'], y.calendar.id, @bs_scale))} %"
                           td.total_p27
-                            input type='text' name='total_p27' value='0'
+                            input.input-borderless type='text' name='total_p27' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Utilidad/Perdida acumulada'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 15)[1]]
-                                  span class=["percent-bdg14-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 15)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 15, @bs_scale)[1]]
+                                  span class=["percent-bdg14-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 15, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value28 = company_balance_sheet_value(@company.id, y.calendar, 15)
+                                span.td-value28 = company_balance_sheet_value(@company.id, y.calendar, 15, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 15, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['14','15','16','17'], @bs_scale))} %"
                           td.full-input.total_p28
                             div.percentage-badge.blue-badge
                               span.tb-badge14 = "0"
-                            input type='text' name='total_p28' value='0'
+                            input.input-borderless type='text' name='total_p28' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value29 = balance_calendar_detail_value(@company.id, y.calendar, 15)
+                              span.td-value29 = balance_calendar_detail_value(@company.id, y.calendar, 15, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 15, @bs_scale), bs_capture_sum(@company.id, ['14','15','16','17'], y.calendar.id, @bs_scale))} %"
                           td.total_p29
-                            input type='text' name='total_p29' value='0'
+                            input.input-borderless type='text' name='total_p29' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Utilidad/Perdida ejercicio'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 16)[1]]
-                                  span class=["percent-bdg15-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 16)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 16, @bs_scale)[1]]
+                                  span class=["percent-bdg15-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 16, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value30 = company_balance_sheet_value(@company.id, y.calendar, 16)
+                                span.td-value30 = company_balance_sheet_value(@company.id, y.calendar, 16, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 16, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['14','15','16','17'], @bs_scale))} %"
                           td.full-input.total_p30
                             div.percentage-badge.blue-badge
                               span.tb-badge15 = "0"
-                            input type='text' name='total_p30' value='0'
+                            input.input-borderless type='text' name='total_p30' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value31 = balance_calendar_detail_value(@company.id, y.calendar, 16)
+                              span.td-value31 = balance_calendar_detail_value(@company.id, y.calendar, 16, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 16, @bs_scale), bs_capture_sum(@company.id, ['14','15','16','17'], y.calendar.id, @bs_scale))} %"
                           td.total_p31
-                            input type='text' name='total_p31' value='0'
+                            input.input-borderless type='text' name='total_p31' value='0'  disabled='disabled'
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
                             span.text-left = 'Otras cuentas de capital'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 17)[1]]
-                                  span class=["percent-bdg16-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 17)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('balance_sheet', @company.id, y.calendar, 17, @bs_scale)[1]]
+                                  span class=["percent-bdg16-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 17, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value32 = company_balance_sheet_value(@company.id, y.calendar, 17)
+                                span.td-value32 = company_balance_sheet_value(@company.id, y.calendar, 17, @bs_scale)
+                                span.value-scale = @bs_scale
+                                span.float-percent = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 17, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['14','15','16','17'], @bs_scale))} %"
                           td.full-input.total_p32
                             div.percentage-badge.blue-badge
                               span.tb-badge16 = "0"
-                            input type='text' name='total_p32' value='0'
+                            input.input-borderless type='text' name='total_p32' value='0'  disabled='disabled'
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value33 = balance_calendar_detail_value(@company.id, y.calendar, 17)
+                              span.td-value33 = balance_calendar_detail_value(@company.id, y.calendar, 17, @bs_scale)
+                              span.value-scale = @bs_scale
+                              span.float-percent = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 17, @bs_scale), bs_capture_sum(@company.id, ['14','15','16','17'], y.calendar.id, @bs_scale))} %"
                           td.total_p33
-                            input type='text' name='total_p33' value='0'
+                            input.input-borderless type='text' name='total_p33' value='0'  disabled='disabled'
                     - else
                       .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
                         .m-alert__icon
@@ -695,8 +815,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 1)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 1)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 1, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 1, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 1)
@@ -712,8 +832,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 2)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 2)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 2, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 2, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 2)
@@ -730,8 +850,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 3)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 2)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 3, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 2, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 3)
@@ -747,8 +867,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 4)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 4)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 4, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 4, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 4)
@@ -766,8 +886,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 5)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 5)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 5, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 5, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 5)
@@ -783,8 +903,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 6)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 6)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 6, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 6, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 6)
@@ -800,8 +920,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 7)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 7)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 7, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 7, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 7)
@@ -817,8 +937,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 8)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 8)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 8, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 8, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 8)
@@ -834,8 +954,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 9)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 9)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 9, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 9, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 9)
@@ -851,8 +971,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 10)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 10)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 10, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 10, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 10)
@@ -868,8 +988,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 11)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 11)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 11, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 11, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 11)
@@ -885,8 +1005,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 12)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 12)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 12, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 12, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 12)
@@ -902,8 +1022,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 13)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 13)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 13, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 13, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 13)
@@ -919,8 +1039,8 @@
                           - @calendar_periods_is.each do |y|
                             td class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
-                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 14)[1]]
-                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 14)[0]} %"
+                                div class=['percentage-badge', calculate_percentage('income_statement', @company.id, y.calendar, 14, @ins_scale)[1]]
+                                  = "#{calculate_percentage('income_statement', @company.id, y.calendar, 14, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
                                 span  = company_income_stat_value(@company.id, y.calendar, 14)
