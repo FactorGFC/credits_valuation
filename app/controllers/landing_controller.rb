@@ -1,5 +1,8 @@
 class LandingController < ApplicationController
   skip_before_action :authenticate_user!, :is_authorized
+  skip_before_action :verify_authenticity_token, only: [:credit_request]
+
+
   layout 'landing'
 
   def index
