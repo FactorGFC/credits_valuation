@@ -30,7 +30,7 @@
                   .m-list-timeline__items
                     - @next_events.each do |event|
                       .list-timeline-item style="display: inline-flex; align-items: center;"
-                        a.m-list-timeline__item.open-modal-event class=('horizontal-shake' if event.start_date.today?) data-target="#m_modal_event" data-toggle="modal" data-id="#{event.id}" data-title="#{event.title}" data-desc="#{event.description}" data-datetime="#{event.start_date.strftime('%Y-%m-%dT%H:%M:%S')}" data-type="#{event.event_type}" data-location="#{event.location}" data-url="#{event.url}" data-users="#{EventDetail.where(event_id: event.id).pluck(:user_id)}"
+                        a.m-list-timeline__item.open-modal-event class=('horizontal-shake' if event.start_date.today?) data-target="#m_modal_event" data-toggle="modal" data-id="#{event.id}" data-title="#{event.title}" data-desc="#{event.description}" data-datetime="#{event.start_date.strftime('%Y-%m-%dT%H:%M:%S')}" data-type="#{event.event_type}" data-location="#{event.location}" data-url="#{event.url}" data-users="#{EventDetail.where(event_id: event.id).pluck(:user_id)}" data-requests="#{EventRequest.where(event_id: event.id).pluck(:request_id)}"
                           span.m-list-timeline__badge
                           span.m-list-timeline__text
                             = event.title
@@ -71,7 +71,7 @@
               .m-list-timeline__items
                 - @pending_events.each do |event|
                   .list-timeline-item style="display: inline-flex; align-items: center;"
-                    a.m-list-timeline__item.open-modal-event class=('horizontal-shake' if event.start_date.today?) data-target="#m_modal_event" data-toggle="modal" data-id="#{event.id}" data-title="#{event.title}" data-desc="#{event.description}" data-datetime="#{event.start_date.strftime('%Y-%m-%dT%H:%M:%S')}" data-type="#{event.event_type}" data-location="#{event.location}" data-url="#{event.url}" data-users="#{EventDetail.where(event_id: event.id).pluck(:user_id)}"
+                    a.m-list-timeline__item.open-modal-event class=('horizontal-shake' if event.start_date.today?) data-target="#m_modal_event" data-toggle="modal" data-id="#{event.id}" data-title="#{event.title}" data-desc="#{event.description}" data-datetime="#{event.start_date.strftime('%Y-%m-%dT%H:%M:%S')}" data-type="#{event.event_type}" data-location="#{event.location}" data-url="#{event.url}" data-users="#{EventDetail.where(event_id: event.id).pluck(:user_id)}"  data-requests="#{EventRequest.where(event_id: event.id).pluck(:request_id)}"
                       span.m-list-timeline__badge
                       span.m-list-timeline__text
                         = event.title
@@ -81,7 +81,7 @@
                         - else
                           = event.start_date.strftime('%d/%m/%Y %I:%M%p')
                     span.m-list-timeline__time.ml-3
-                      a.btn.btn-outline-primary.btn-sm.open-modal-agreement data-target="#m_modal_agreement" data-toggle="modal" data-id="#{event.id}" data-agreements="#{event.agreements}"
+                      a.btn.btn-outline-primary.btn-sm.open-modal-agreement data-target="#m_modal_agreement" data-toggle="modal" data-id="#{event.id}" data-agreements="#{event.agreements}" data-requests="#{EventRequest.where(event_id: event.id).pluck(:request_id)}"
                         span
                           i.fa.fa-archive
 
@@ -122,6 +122,11 @@
             select.select2.select2-container.select2-multiple#eventUsers multiple="multiple" name="users[]"
               = @users.each do |user|
                 option value="#{user.id}"= user.full_name
+          .col-md-12 style="display: grid;"
+            = label 'Solicitudes de Crédito', 'Solicitudes de Crédito', class: 'col-form-label text-bold'
+            select.select2.select2-container.select2-multiple#eventRequests multiple="multiple" name="requests[]"
+              = Request.all.each do |request|
+                option value="#{request.id}"= "#{request.try(:company).try(:rfc)} / #{request.try(:factor_credit).try(:name)}"
 
         .modal-footer.d-flex.justify-content-between.flex-row-reverse
           section
@@ -145,8 +150,8 @@
       = form_for current_user, url: save_event_agreement_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
         .modal-body
           input type="hidden" name="event[id]" id="event_id" value=""
-          .col-md-12
-            = label 'acuerdo','Acuerdos', class: 'col-form-label text-bold'
+          col-md-12
+            = label 'acuerdo', 'Acuerdos', class: 'col-form-label text-bold'
             = text_area :event, :agreements, class: 'form-control m-input'
         .modal-footer.d-flex.justify-content-between.flex-row-reverse
           section

@@ -1,34 +1,20 @@
 es:
-  requests:
+  events:
     index:
-      title: Solicitudes
-      company: Compañia
-      credit_type: Tipo de Crédito
-      process_status: Estatus del Proceso
-      resource: la solicitud
-      name: Nombre
-      description: "Descripción"
-      key: Llave
-      one: Solicitud
-      other: Solicitudes
+      title: Evento
       count_table:
-        one: 1 Solicitud
-        other: '%{count} Solicitudes'
-    form:
-      title: Solicitudes
-      company: Compañia
-      credit_type: Tipo de Crédito
-      process_status: Estatus del Proceso
-      resource: Solicitud
-      name: Nombre
-      description: "Descripción"
-      key: Llave
-      back: Ir a Solicitud
-      back_resource: Solicitudes
-    new:
-      title: Nueva Solicitud de crédito
-    edit:
-      title: Editar Solicitud de crédito
+        one: 1 Evento
+        other: '%{count} Eventos'
+    agreements:
+      title: Evento
+      title_name: Nombre del Evento
+      description: Descripción
+      start_date: Fecha del Evento
+      url: URL
+      location: Lugar
+      event_type: Tipo de Evento
+      agreements: Acuerdos
+      end_date: Fecha de Termino
+      event_finished: Estatus Evento
   breadcrumbs:
-    requests: Solicitudes
-    permissions_for: Permisos para %{permission_name}
+    requests: Eventos

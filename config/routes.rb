@@ -49,6 +49,7 @@ Rails.application.routes.draw do
     put     '/save_event_agreement' => 'events#save_event_agreement'
     put     'finish_event/:id'      => 'events#finish_event'
     delete  'delete_event/:id'      => 'events#delete'
+    get 'agreements/:id'  => 'events#agreements'
 
     get '/complete_user' => 'home#complete_user', as: :complete_user
     put 'create_sat_user' => 'home#create_sat_user', as: :create_sat_user

@@ -13,6 +13,9 @@ document.addEventListener('turbolinks:load', function() {
         var eventLocation      = $(this).data('location');
         var eventUrl           = $(this).data('url');
         var eventUsers         = $(this).data('users');
+        var eventRequests      = $(this).data('requests');
+
+
         if(eventId){
             $("#titleModalLabel").text('EDITAR EVENTO');
             document.getElementById('btn-event-delete').style.display = 'block';
@@ -21,12 +24,13 @@ document.addEventListener('turbolinks:load', function() {
             document.getElementById('btn-event-delete').style.display = 'none';
         }
 
-        fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers);
+        fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers,eventRequests);
     });
 
     $(document).on("click", ".open-modal-agreement", function (){
         var eventId            = $(this).data('id');
         var eventAgreements    = $(this).data('agreements');
+        var eventRequests      = $(this).data('requests');
         $("#titleModalLabel").text('ACUERDOS');
 
         $(".modal-body #event_id").val(eventId);

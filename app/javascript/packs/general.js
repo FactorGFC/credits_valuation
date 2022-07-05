@@ -55,9 +55,13 @@ $(document).on('turbolinks:load', function () {
                     type: 'GET',
                     dataType: 'json',
                     success: function (data) {
+
+                        console.log('Eventos');
+                        console.log(data);
+
                         let event = data;
                         $("#titleModalLabel").text('EDITAR EVENTO');
-                        fillEventForm(event.id, event.title, event.description, event.start, event.event_type, event.location, event.url, event.user_ids)
+                        fillEventForm(event.id, event.title, event.description, event.start, event.event_type, event.location, event.url, event.user_ids,event.request_ids)
                     },
                     error: function (error) {
                         var message = I18n.t('messages.try_again');
@@ -171,6 +175,16 @@ $(document).on('turbolinks:load', function () {
     // select2 initializer
     $('.select2#eventUsers').select2({
         placeholder: "Agregar usuarios",
+        multiple: true,
+        theme: "classic",
+        createTag: function(params) {
+            return undefined;
+        }
+    });
+
+    // select2 initializer
+    $('.select2#eventRequests').select2({
+        placeholder: "Agregar Solicitudes",
         multiple: true,
         theme: "classic",
         createTag: function(params) {
@@ -506,7 +520,7 @@ let loadSelectPeriod = (period_type) => {
     $('#period_selector').empty().append(array.join(''));
 };
 
-function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers){
+function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers,eventRequests){
     $(".modal-body #event_id").val(eventId);
     $(".modal-body #title_input").val(eventTitle);
     $(".modal-body #event_description").val(eventDesc);
@@ -515,7 +529,13 @@ function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType,
     $(".modal-body #event_location").val(eventLocation);
     $(".modal-body #event_url").val(eventUrl);
     $("#eventUsers").val(eventUsers).trigger('change');
+
+    $("#eventRequests").val(eventRequests).trigger('change');
+
     validateData();
 }
+
+
+
 
 export {cascadeSelects, fillEventForm};

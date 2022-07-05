@@ -24,6 +24,7 @@ class EventsController < ApplicationController
   def get_event_info
     event    = Event.find(params[:id])
     user_ids = EventDetail.where(event_id: event.id).pluck(:user_id)
+    request_ids = EventRequest.where(event_id: event.id).pluck(:request_id)
 
     render :json => {
         id:         event.id,
@@ -34,13 +35,15 @@ class EventsController < ApplicationController
         event_type: event.event_type,
         url:        event.url,
         location:   event.location,
-        user_ids:   user_ids
+        user_ids:   user_ids,
+        request_ids:  request_ids
     }
   end
 
   def save_event
     event_params  = params[:event]
     users_ids     = params[:users].present? ? params[:users].map(&:to_i) : []
+    requests_ids     = params[:requests].present? ? params[:requests].map(&:to_i) : []
 
     #Validar si ya existe
     if event_params[:id].present?
@@ -52,7 +55,12 @@ class EventsController < ApplicationController
       new_records       = (users_ids - event_users)
       destroy_records   = (event_users - users_ids)
 
+      event_request_ids = EventRequest.where(event_id: event.id).pluck(:request_id)
+      new_event_requests       = (requests_ids - event_request_ids)
+      destroy_event_requests  = (event_request_ids - requests_ids)
+
       begin
+
         EventDetail.where(event_id: event.id, user_id: destroy_records).destroy_all
         EventDetail.transaction do
           new_records.each do |e|
@@ -60,9 +68,19 @@ class EventsController < ApplicationController
           end
         end
 
-        users_ids.each do |id|
-          EventMailer.update_event_email(event, User.find(id)).deliver
+        EventRequest.where(event_id: event.id, request_id: destroy_event_requests).destroy_all
+        EventRequest.transaction do
+          new_event_requests.each do |event_request|
+            EventRequest.create(event_id: event.id, request_id: event_request)
+          end
         end
+
+
+        #Send email confirmation
+        #users_ids.each do |id|
+        #  EventMailer.update_event_email(event, User.find(id)).deliver
+        #end
+
 
         redirect_to "/events", notice: "Evento actualizado correctamente."
       rescue StandardError => e
@@ -77,6 +95,11 @@ class EventsController < ApplicationController
             EventDetail.create(event_id: event.id, user_id: user_id)
             EventMailer.new_event_email(event, User.find(user_id)).deliver
           end
+
+          requests_ids.each do |request_id|
+            EventRequest.create(event_id: event.id, request_id: request_id)
+          end
+
           format.html { redirect_to '/events', notice: 'Evento guardado exitosamente.' }
           format.json { render json: {event: event} }
         else
@@ -125,4 +148,13 @@ class EventsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+  def agreements
+    @event = Event.where(id: params[:id])
+    #@search_event = event.ransack(params[:q])
+    #@events = @search_event.result.paginate(page: params[:page], per_page: get_pagination).order('id DESC')
+  end
+
+
 end
