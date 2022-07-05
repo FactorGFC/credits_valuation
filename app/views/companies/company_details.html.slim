@@ -109,7 +109,7 @@
                 i.fa.fa-building.fa-lg.m--font-primary
               h5.h5.subtitle = 'Detalles de solicitud'
               - if @company.status_company_id.eql?(StatusCompany.where(key: 'aprobada').first.id)
-                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{@company.name}" data-rfc="#{@company.rfc}" data-id="#{@company.id}" data-approved="true"
+                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2
                   = "Estatus: Aprobada"
               - elsif @company.status_company_id == StatusCompany.where(key: 'pendiente').first.id
                 button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{@company.name}" data-rfc="#{@company.rfc}" data-id="#{@company.id}" data-approved="true"
@@ -118,9 +118,12 @@
                 button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{@company.name}" data-rfc="#{@company.rfc}" data-id="#{@company.id}" data-approved="false"
                   i.fab.fa.fa-times-circle
                   = "Estatus:  Rechazar"
-
               button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_analyst" data-toggle="modal" type="button" data-id="#{@company.id}"
-                = "Más detalles (Analista, tipo, ...)"
+                i.fa.fa-plus.left
+                = " Analista y Crédito"
+              /button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_analyst" data-toggle="modal" type="button" data-id="#{@company.id}"
+                i.fab.fa-facebook-f.left
+                | Facebook
 
           .col-md-3
             .btns-card

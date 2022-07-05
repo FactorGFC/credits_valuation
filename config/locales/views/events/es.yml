@@ -1,0 +1,34 @@
+es:
+  requests:
+    index:
+      title: Solicitudes
+      company: Compañia
+      credit_type: Tipo de Crédito
+      process_status: Estatus del Proceso
+      resource: la solicitud
+      name: Nombre
+      description: "Descripción"
+      key: Llave
+      one: Solicitud
+      other: Solicitudes
+      count_table:
+        one: 1 Solicitud
+        other: '%{count} Solicitudes'
+    form:
+      title: Solicitudes
+      company: Compañia
+      credit_type: Tipo de Crédito
+      process_status: Estatus del Proceso
+      resource: Solicitud
+      name: Nombre
+      description: "Descripción"
+      key: Llave
+      back: Ir a Solicitud
+      back_resource: Solicitudes
+    new:
+      title: Nueva Solicitud de crédito
+    edit:
+      title: Editar Solicitud de crédito
+  breadcrumbs:
+    requests: Solicitudes
+    permissions_for: Permisos para %{permission_name}
