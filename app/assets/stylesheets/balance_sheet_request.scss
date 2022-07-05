@@ -73,6 +73,10 @@
   .green-badge{
     background: #3CB371;
   }
+
+  .blue-badge{
+    background: #5d80af;
+  }
 }
 
 .highlightedRowColumn{
@@ -86,4 +90,24 @@
 
 .text-table-concept{
   color: #2d51b2;
+}
+
+.value-scale{
+  font-size:    10px;
+  margin-left:  5px;
+}
+
+.input-borderless{
+  border-color: transparent !important;
+}
+
+.float-percent{
+  color:            white;
+  position:         absolute;
+  background-color: #5d80af;
+  font-size:        10px;
+  top:              5px;
+  right:            5px;
+  padding:          3px 5px;
+  border-radius:    40%;
 }

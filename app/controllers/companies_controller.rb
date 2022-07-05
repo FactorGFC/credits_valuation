@@ -282,6 +282,8 @@ class CompaniesController < ApplicationController
     @request             = Request.find_by(company_id: params[:id])
     @request_comments    = RequestComment.where(request_id: @request.try(:id)).order(:created_at).limit(5)
     @financial_inst      = @company.financial_institutions
+    @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
+    @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
 
     if @company.credit_bureaus.last.bureau_report['results'][0]['response'].present?
       @report_result = @company.credit_bureaus.last.bureau_report['results'][0]
@@ -293,7 +295,7 @@ class CompaniesController < ApplicationController
     @credit_bureau = @company.credit_bureaus.last
 
     if @credit_bureau.present?
-
+      @score = 650
       #@percentage = avg_gagement @credit_bureau
     end
 
@@ -365,16 +367,20 @@ class CompaniesController < ApplicationController
 
   def asign_calendar
     calendar_ids      = params[:periods].map(&:to_i)
-    company_calendars = CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: params[:assign_to]).pluck(:calendar_id)
+    company_calendars = CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'balance_sheet').pluck(:calendar_id)
+
+    #TODO: Evaluar las que ya tengan captura para no eliminar.
 
     new_records       = (calendar_ids - company_calendars)
     destroy_records   = (company_calendars - calendar_ids)
 
     begin
-      CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: params[:assign_to], calendar_id: destroy_records).destroy_all
+      CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'balance_sheet', calendar_id: destroy_records).destroy_all
+      CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'income_statement', calendar_id: destroy_records).destroy_all
       BalanceCalendarDetail.transaction do
         new_records.each do |e|
-          CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: params[:assign_to])
+          CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'balance_sheet')
+          CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'income_statement')
         end
       end
 
@@ -387,7 +393,7 @@ class CompaniesController < ApplicationController
   def asign_details_to_request
     request         = Request.find_by(company_id: params[:company_id])
     request_params  = params[:request]
-    request_params[:process_status_id] = 1 unless request_params[:process_status_id].present?
+    request_params[:process_status_id] = ProcessStatus.first_step unless request_params[:process_status_id].present?
     if request
       if request.update(analyst_id: request_params[:analyst_id], process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
         redirect_to "/company_details/#{params[:company_id]}", notice: "Actualizado correctamente."
@@ -395,12 +401,12 @@ class CompaniesController < ApplicationController
         redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')
       end
     else
-      new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id], process_status_id: 1, factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
+      new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id], process_status_id: ProcessStatus.first_step, factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
 
       if new_request.save
         redirect_to "/company_details/#{params[:company_id]}", notice: "Guardado correctamente."
       else
-        redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')
+        redirect_to "/company_details/#{params[:company_id]}", alert: new_request.errors.full_messages.join(' ')
       end
     end
   end
@@ -492,15 +498,15 @@ class CompaniesController < ApplicationController
   end
 
   def create_balance_sheet_request
-
+    value_scale = params[:bs_request][:value_scale]
     begin
       BalanceCalendarDetail.transaction do
         params[:b_sheet].each do |e|
           bs_detail = BalanceCalendarDetail.find_by(balance_concept_key: e[1][:concept], calendar_id: e[1][:period], company_id: current_user.company_id)
           if bs_detail.present?
-            raise ActiveRecord::Rollback unless bs_detail.update(value: e[1][:value])
+            raise ActiveRecord::Rollback unless bs_detail.update(value: e[1][:value], value_scale: value_scale)
           else
-            raise ActiveRecord::Rollback unless BalanceCalendarDetail.new(balance_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value], balance_type: 'FACTOR', company_id: current_user.company_id).save
+            raise ActiveRecord::Rollback unless BalanceCalendarDetail.new(balance_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value], balance_type: 'FACTOR', company_id: current_user.company_id, value_scale: value_scale).save
           end
         end
       end

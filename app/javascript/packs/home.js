@@ -12,7 +12,7 @@ $(document).on('turbolinks:load', function () {
         var companyId           = $(this).data('id');
         var companyApproved     = $(this).data('approved');
         var companyCalendars    = $(this).data('calendars');
-        var companyAssignTo     = $(this).data('assignto');
+        //var companyAssignTo     = $(this).data('assignto');
 
         $("#titleModalLabel").text( companyRfc + ' - '+ companyName);
         $('#company_income_calendars').val(companyCalendars);
@@ -21,7 +21,7 @@ $(document).on('turbolinks:load', function () {
         $('#company_balance_calendars').trigger('change');
         $(".modal-body #companyId").val(companyId);
         $(".modal-body #companyApproved").val(companyApproved);
-        $(".modal-body #companyAssignTo").val(companyAssignTo);
+        //$(".modal-body #companyAssignTo").val(companyAssignTo);
 
         if (companyApproved){
             $("#idBtn").text('Aprobar');
@@ -50,5 +50,52 @@ $(document).on('turbolinks:load', function () {
         $(".modal-body #processId").val(processId);
         $(".modal-body #currentUserId").val(currentUserId);
     });
+
+    if(document.getElementById('comparative_table')) {
+        var colMax = 0;
+
+        $("table#comparative_table tr.tr-rdata").each(function(index, tb_row) {
+            var columns     = $(tb_row).children('td.sum_input');
+            var rowTotal    = 0;
+
+            colMax = columns.length;
+
+            for (var col = 0; col < colMax; col++) {
+                var colData = parseFloat(columns.eq(col).find('span.td-value'+index).text());
+                if(colData){
+                    if(col === 0){
+                        rowTotal = colData;
+                    }else{
+                        rowTotal -= colData;
+                    }
+                }else{
+                    rowTotal -= 0;
+                }
+            }
+
+            $('input[name=total_p'+index+']').val(rowTotal.toFixed(2));
+        });
+
+        var rowMax = ($("table#comparative_table tr.tr-rdata").length)/2;
+
+        for(var row = 0; row < rowMax; row ++){
+            var values_array  = [];
+            var max_num       = 0;
+            var min_num       = 0;
+            var percent_value = 0;
+            var rowData       = '';
+
+            for (var col = 0; col < colMax; col++) {
+                rowData = $('.percent-bdg'+row+'-'+col).text();
+                values_array.push(parseFloat(rowData));
+            }
+
+            max_num = Math.max(...values_array);
+            min_num = Math.min(...values_array);
+            percent_value = ((max_num - min_num)/min_num);
+
+            $('span.tb-badge'+row).text(percent_value.toFixed(2) + ' %');
+        }
+    }
 
 });

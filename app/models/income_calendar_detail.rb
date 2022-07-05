@@ -5,6 +5,7 @@
 #  id                           :bigint           not null, primary key
 #  income_statement_concept_key :string
 #  value                        :float
+#  value_scale                  :string
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
 #  calendar_id                  :bigint           not null

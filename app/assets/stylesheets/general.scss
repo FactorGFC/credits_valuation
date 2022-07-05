@@ -456,22 +456,8 @@ span.badge {
   bottom: 0;
   width: 0;
   height: 0;
-  border: 55px solid transparent;
+  border: 52px solid transparent;
 }
-
-
-/*.four .slice-colors .st.slice-item:nth-child(1) {
-  border-top: 50px #f1c40f solid;
-  border-right: 50px #f1c40f solid;
-  background-color: #E84C3D;
-}
-
-.four .slice-colors .st.slice-item:nth-child(3) {
-  left:50%;
-  border-bottom: 65px #1eaa59 solid;
-  border-right: 50px #1eaa59 solid;
-  background-color:#f1c40f;
-}*/
 
 .four .slice-colors .st.slice-item:nth-child(2) {
   border-top: 50px #f1c40f solid;
@@ -481,13 +467,9 @@ span.badge {
 
 .four .slice-colors .st.slice-item:nth-child(4) {
   left:50%;
-  border-bottom: 50px #1eaa59 solid;
+  border-bottom: 55px #1eaa59 solid;
   border-right: 50px #1eaa59 solid;
   background-color: #7caa55;
-}
-
-.m-demo{
-  //padding-top: 10px;
 }
 
 .m-list-timeline__item{
@@ -729,6 +711,12 @@ span.badge {
 .btn-section-disabled{
   opacity:        0.5 !important;
   pointer-events: none;
+}
+
+.form-control-lg{
+  border:         3px solid #39c1a6;
+  font-weight:    bold;
+  text-transform: uppercase;
 }
 
 ////ANIMATIONS

@@ -11,4 +11,7 @@
 #  updated_at :datetime         not null
 #
 class ProcessStatus < ApplicationRecord
+
+  #scopes
+  scope :first_step, ->{self.first.try(:id)}
 end

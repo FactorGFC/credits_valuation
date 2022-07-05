@@ -1,6 +1,6 @@
 = form_for @user, url: update_profile_path, validate: true, html: {class: 'col-12'} do |f|
   .row
-    .col-xl-3.col-lg-4
+    /.col-xl-3.col-lg-4
       .m-portlet.m-portlet--full-height
         .m-portlet__body
           .m-card-profile
@@ -31,7 +31,7 @@
             li.m-nav__item.text-center
               = link_to destroy_user_session_path, method: :delete, class: 'btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder'
                 = t('.log_out')
-    .col-xl-9.col-lg-8
+    .col-xl-12.col-lg-12
       .m-portlet
         .m-portlet__head
           .m-portlet__head-caption
@@ -42,10 +42,6 @@
         .m-form.m-form--fit
           .m-portlet__body
             .form-group.m-form__group.row
-              = f.label :employee_number, class: 'col-sm-2 col-form-label'
-              .col-lg-10
-                = f.text_field :employee_number, class: 'form-control m-input'
-            .form-group.m-form__group.row
               = f.label t('users.registrations.show.full_name'), class: 'col-sm-2 col-form-label'
               .col-lg-5
                 = f.text_field :first_name, class: 'form-control m-input', placeholder: t('activerecord.attributes.user.first_name')
@@ -53,9 +49,12 @@
                 = f.text_field :last_name, class: 'form-control m-input', placeholder: t('activerecord.attributes.user.last_name')
             .form-group.m-form__group.row
               = f.label :email, class:'col-sm-2 col-form-label'
-              .col-lg-10
+              .col-lg-4
                 = f.text_field :email, class:'form-control m-input', placeholder: t('activerecord.attributes.user.email')
-            .form-group.m-form__group.row
+              = f.label :phone, class: 'col-sm-2 col-form-label'
+              .col-lg-4
+                = f.text_field :phone, class: 'form-control m-input', placeholder: t('activerecord.attributes.user.phone')
+            /.form-group.m-form__group.row
               = f.label :role_id, class: 'col-2 col-form-label'
               .col-lg-10
                 = f.select :role_id, Role.all.map { |r| [r.name, r.id, {'data-key': r.key}] },
@@ -82,5 +81,5 @@
               .row
                 .col-lg-12
                   = f.submit t('helpers.submit.submit', model: t('.profile')), class: 'btn btn-primary'
-                  =< link_to '/', class: 'btn btn-secondary'
+                  =< link_to '/login', class: 'btn btn-secondary'
                     = t('helpers.go_to', resource: t('.back_resource'))
