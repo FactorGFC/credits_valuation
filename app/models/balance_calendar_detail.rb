@@ -6,6 +6,7 @@
 #  balance_concept_key :string
 #  balance_type        :string
 #  value               :float
+#  value_scale         :string
 #  balance_concept_id  :integer
 #  calendar_id         :integer          not null
 #  company_id          :bigint

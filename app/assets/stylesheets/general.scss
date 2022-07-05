@@ -713,6 +713,12 @@ span.badge {
   pointer-events: none;
 }
 
+.form-control-lg{
+  border:         3px solid #39c1a6;
+  font-weight:    bold;
+  text-transform: uppercase;
+}
+
 ////ANIMATIONS
 
 @-webkit-keyframes fourspeed {
