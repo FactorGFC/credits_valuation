@@ -1782,7 +1782,8 @@
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Consultas
-                            - if @credit_bureau.bureau_report.present?
+                            - if false
+                            /- if @credit_bureau.bureau_report.present?
                               - @credit_bureau['bureau_report']['results'].each do |bureau_report|
                                 - if bureau_report['status']
                                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
