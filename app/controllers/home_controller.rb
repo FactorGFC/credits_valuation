@@ -88,7 +88,7 @@ class HomeController < ApplicationController
                                          client_type: client_type)
 
                         #@bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
-                        @bureau_report = BuroCredito.get_report_by_id 95998#4450 60368
+                        @bureau_report = BuroCredito.get_report_by_id 95999#4450 60368
 
 
                         # @bureau_report = BuroCredito.get_report_by_id 12468
