@@ -87,10 +87,10 @@ class HomeController < ApplicationController
                                          main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
                                          client_type: client_type)
 
-                        @bureau_report = BuroCredito.get_buro_report 60368 #@buro.first['id'],@info #4450
+                        @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
 
                         # @bureau_report = BuroCredito.get_report_by_id 12468
-                        @bureau_info = BuroCredito.get_buro_info 60368 # @buro.first['id'], @info
+                        @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @info
 
                         if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
                           if @user.update(sat_id: @sat['id'])
@@ -235,24 +235,38 @@ class HomeController < ApplicationController
     # municipality = info_sat['hydra:member'][0]['address']['municipality']
     # neighborhood = info_sat['hydra:member'][0]['address']['neighborhood']
 
-    rfc = "AIN080117NQA"
-    email = "contabilidad2@aluminiointeligente.com.mx"
-    address = "PERIFERICO"
-    city = "ZAPOPAN"
-    state = "JAL"
-    zip_code = "45019"
+    rfc = "HEMG4812162Q2"
+    address = "CLL SA CATARINA"
+    city = "CHIHUAHUA"
+    state = "CHI"
+    zip_code = "31215"
     interior_number = ""
-    exterior_number = "1500"
-    municipality = "ZAPOPAN"
+    exterior_number = "3206"
+    municipality = "CHIHUAHUA"
     neighborhood = ""
 
-    account_type = "PM"
-    first_name = "VICTOR"
-    first_last_name = "P"
-    second_last_name = 'M'
+    account_type = "PF"
+    first_name = "GUSTAVO"
+    first_last_name = "HERNANDEZ"
+    second_last_name = 'MONROY'
+
+    # rfc = "GLO0605033G2"
+    # basic_rfc = "GLO060503"
+    # address = "REPUBLICA DE CUBA"
+    # city = "CHIHUAHUA"
+    # state = "CHI"
+    # zip_code = "31210"
+    # interior_number = ""
+    # exterior_number = "806"
+    # municipality = "CHIHUAHUA"
+    # neighborhood = "PANAMERICANA"
+    #
+    # account_type = "PM"
+    # trade_name="GRUPO LOPIC SA DE CV"
 
     #if info_sat['hydra:member'][0]['company'].present?
     #  account_type = "PM"
+    #  trade_name = ""
     #else
     #  first_name = info_sat['hydra:member'][0]['person']['firstName']
     #  first_last_name = info_sat['hydra:member'][0]['person']['middleName']
@@ -260,11 +274,16 @@ class HomeController < ApplicationController
     #  account_type = "PF"
     #end
 
-    data = [accountType: account_type, email: email, firstName: first_name, middleName: "", rfc: rfc,
+    data = [accountType: account_type, firstName: first_name, middleName: "", rfc: rfc,
             firstLastName: first_last_name, secondLastName: second_last_name, address: address, city: city,
             state: state, zipCode: zip_code, exteriorNumber: exterior_number, interiorNumber: interior_number,
             neighborhood: neighborhood, municipality: municipality,
             nationality: "MX",phone: user_phone]
+
+    # data = [accountType: account_type, tradeName: trade_name,  rfc: rfc,basicRFC: basic_rfc,
+    #         address: address, city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
+    #         interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality,
+    #         nationality: "MX", country: "MX"]
 
 
     @buro = BuroCredito.create_client data

@@ -283,6 +283,13 @@ class CompaniesController < ApplicationController
     @request_comments    = RequestComment.where(request_id: @request.try(:id)).order(:created_at).limit(5)
     @financial_inst      = @company.financial_institutions
 
+    if @company.credit_bureaus.last.bureau_report['results'][0]['response'].present?
+      @report_result = @company.credit_bureaus.last.bureau_report['results'][0]
+    else
+      @report_result = @company.credit_bureaus.last.bureau_report['results'][1]
+      
+    end
+
     @credit_bureau = @company.credit_bureaus.last
 
     if @credit_bureau.present?

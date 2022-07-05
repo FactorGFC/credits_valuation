@@ -82,10 +82,10 @@ class BuroCredito < ApplicationRecord
     # account_type_pf_b = true
     #end
 
-
+    
     data = {
-        bureauPM: true,
-        bureauPF: false,
+        bureauPM: false,
+        bureauPF: true,
         satBlackList: false,
         satRFC: true
     }
