@@ -193,10 +193,6 @@ module CompaniesHelper
 
   def get_history_payments_pm account
 
-    p "account ------------------------------------------------"
-    p account
-
-
     first_date = account['apertura'].last(4).to_i
     first_month = account['apertura'][2,2]
     if account['fechaCierre'].present?
@@ -210,9 +206,6 @@ module CompaniesHelper
     total_year = (last_date - first_date) + 1
 
     payment_history = account['historicoPagos']
-
-    p "payment_history--------------------------------------------------------"
-    p payment_history
 
     months = (1..12).to_a
 
@@ -388,6 +381,72 @@ module CompaniesHelper
     month = get_month historia.last(2)
 
     return month + ' ' + historia.first(4)
+  end
+
+  def get_ur_credits credits
+    ur_credits = {mop: 'UR', cuentas_abiertas: 0, limite_abiertas: 0, maximo_abiertas: 0, saldo_actual: 0, 
+                  saldo_vencido: 0, pago_realizar: 0, cuentas_cerradas: 0, limite_cerradas: 0, maximo_cerradas: 0, 
+                  saldo_cerradas: 0, monto_cerradas: 0}
+
+    credits_01 = {mop: '01',cuentas_abiertas: 0, limite_abiertas: 0, maximo_abiertas: 0, saldo_actual: 0, saldo_vencido: 0, 
+                  pago_realizar: 0, cuentas_cerradas: 0, limite_cerradas: 0, maximo_cerradas: 0, saldo_cerradas: 0, 
+                  monto_cerradas: 0}
+
+    
+    all_credits = []
+
+
+    credits.each do |credit|
+
+
+      if credit['FechaCierreCuenta'].present? && credit['FormaPagoActual'] == 'UR'
+
+        ur_credits[:cuentas_cerradas] += 1
+        ur_credits[:limite_cerradas] += credit['LimiteCredito'].to_i
+        ur_credits[:maximo_cerradas] += credit['CreditoMaximo'].to_i
+        ur_credits[:saldo_cerradas] += credit['SaldoActual'].to_i
+        ur_credits[:monto_cerradas] += credit['MontoPagar'].to_i
+
+      elsif credit['FechaCierreCuenta'].present? && credit['FormaPagoActual'] == '01'
+
+        credits_01[:cuentas_cerradas] += 1
+        credits_01[:limite_cerradas] += credit['LimiteCredito'].to_i
+        credits_01[:maximo_cerradas] += credit['CreditoMaximo'].to_i
+        credits_01[:saldo_cerradas] += credit['SaldoActual'].to_i
+        credits_01[:monto_cerradas] += credit['MontoPagar'].to_i
+        
+      elsif !credit['FechaCierreCuenta'].present? && credit['FormaPagoActual'] == 'UR'
+
+        ur_credits[:cuentas_abiertas] += 1
+        ur_credits[:limite_abiertas] += credit['LimiteCredito'].to_i
+        ur_credits[:maximo_abiertas] += credit['CreditoMaximo'].to_i
+        ur_credits[:saldo_actual] += credit['SaldoActual'].to_i
+        ur_credits[:saldo_vencido] += credit['SaldoVencido'].to_i
+        ur_credits[:pago_realizar] += credit['MontoPagar'].to_i
+
+      elsif !credit['FechaCierreCuenta'].present? && credit['FormaPagoActual'] == '01'
+        credits_01[:cuentas_abiertas] += 1
+        credits_01[:limite_abiertas] += credit['LimiteCredito'].to_i
+        credits_01[:maximo_abiertas] += credit['CreditoMaximo'].to_i
+        credits_01[:saldo_actual] += credit['SaldoActual'].to_i
+        credits_01[:saldo_vencido] += credit['SaldoVencido'].to_i
+        credits_01[:pago_realizar] += credit['MontoPagar'].to_i
+      end
+    end
+
+    all_credits.push(ur_credits)
+    all_credits.push(credits_01)
+
+    return all_credits
+  end
+
+
+  def get_pm_birthdate date
+    day = date.first(2)
+    month = get_month date[2,2]
+    year = date.last(4)
+    
+    return day + '-' + month + '-' + year
   end
 
   def get_month month

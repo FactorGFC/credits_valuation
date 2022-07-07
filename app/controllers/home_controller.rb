@@ -70,7 +70,6 @@ class HomeController < ApplicationController
             if @info['@type'] != 'hydra:Error'
               @buro = create_buro @info, @user.try(:phone)
 
-
               if @buro
                 @credential = SatW.get_credential @sat['id']
 
@@ -237,21 +236,22 @@ class HomeController < ApplicationController
     # municipality = info_sat['hydra:member'][0]['address']['municipality']
     # neighborhood = info_sat['hydra:member'][0]['address']['neighborhood']
 
-    rfc = "HEMG4812162Q2"
-    address = "CLL SA CATARINA"
-    city = "CHIHUAHUA"
-    state = "CHI"
-    zip_code = "31215"
-    interior_number = ""
-    exterior_number = "3206"
-    municipality = "CHIHUAHUA"
-    neighborhood = ""
+    #PF
+    # rfc = "HEMG4812162Q2"
+    # address = "CLL SA CATARINA"
+    # city = "CHIHUAHUA"
+    # state = "CHI"
+    # zip_code = "31215"
+    # interior_number = ""
+    # exterior_number = "3206"
+    # municipality = "CHIHUAHUA"
+    # neighborhood = ""
+    # account_type = "PF"
+    # first_name = "GUSTAVO"
+    # first_last_name = "HERNANDEZ"
+    # second_last_name = 'MONROY'
 
-    account_type = "PF"
-    first_name = "GUSTAVO"
-    first_last_name = "HERNANDEZ"
-    second_last_name = 'MONROY'
-
+    #PM
     # rfc = "GLO0605033G2"
     # basic_rfc = "GLO060503"
     # address = "REPUBLICA DE CUBA"
@@ -262,9 +262,23 @@ class HomeController < ApplicationController
     # exterior_number = "806"
     # municipality = "CHIHUAHUA"
     # neighborhood = "PANAMERICANA"
-    #
     # account_type = "PM"
     # trade_name="GRUPO LOPIC SA DE CV"
+
+    #PFAE
+    rfc = "COPS611102S83"
+    basic_rfc = "COPS611102"
+    address = "IGNACIO LOPEZ RAYON"
+    city = "CIUDAD CUAUHTEMOC"
+    state = "CHI"
+    zip_code = "31530"
+    interior_number = ""
+    exterior_number = "1925"
+    municipality = "CUAUHTEMOC"
+    neighborhood = "CIUDAD CUAUHTEMOC"
+    account_type = "PF"
+    trade_name="SALVADOR CORRAL PEREZ"
+
 
     #if info_sat['hydra:member'][0]['company'].present?
     #  account_type = "PM"
@@ -276,16 +290,16 @@ class HomeController < ApplicationController
     #  account_type = "PF"
     #end
 
-    data = [accountType: account_type, firstName: first_name, middleName: "", rfc: rfc,
-            firstLastName: first_last_name, secondLastName: second_last_name, address: address, city: city,
-            state: state, zipCode: zip_code, exteriorNumber: exterior_number, interiorNumber: interior_number,
-            neighborhood: neighborhood, municipality: municipality,
-            nationality: "MX",phone: user_phone]
+    # data = [accountType: account_type, firstName: first_name, middleName: "", rfc: rfc,
+    #         firstLastName: first_last_name, secondLastName: second_last_name, address: address, city: city,
+    #         state: state, zipCode: zip_code, exteriorNumber: exterior_number, interiorNumber: interior_number,
+    #         neighborhood: neighborhood, municipality: municipality,
+    #         nationality: "MX",phone: user_phone]
 
-    # data = [accountType: account_type, tradeName: trade_name,  rfc: rfc,basicRFC: basic_rfc,
-    #         address: address, city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
-    #         interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality,
-    #         nationality: "MX", country: "MX"]
+    data = [accountType: account_type, tradeName: trade_name,  rfc: rfc,basicRFC: basic_rfc,
+            address: address, city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
+            interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality,
+            nationality: "MX", country: "MX"]
 
 
     @buro = BuroCredito.create_client data

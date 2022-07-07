@@ -84,8 +84,8 @@ class BuroCredito < ApplicationRecord
 
     
     data = {
-        bureauPM: false,
-        bureauPF: true,
+        bureauPM: true,
+        bureauPF: false,
         satBlackList: false,
         satRFC: true
     }
@@ -105,8 +105,6 @@ class BuroCredito < ApplicationRecord
       http.request(request)
     end
 
-    p "JSON.parse(response.body) ------------------------------------------------------------------------"
-    p JSON.parse(response.body)
 
     return JSON.parse(response.body)
 
