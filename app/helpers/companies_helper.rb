@@ -35,19 +35,43 @@ module CompaniesHelper
   end
 
   def calculate_percent_of_total(value, total)
-    ((value*100)/total).round
+    if value.present? and value != 0 and total and total != 0
+      ((value*100)/total).round
+    else
+      0
+    end
   end
 
   #Valor obtenido de satws para estado de resultados
-  def company_income_stat_value(company_id, calendar, number_key)
+  def company_income_stat_value(company_id, calendar, number_key, value_scale)
     company_is = CompanyIncomeStatement.where(company_id: company_id, year: calendar.year, income_statement_concept_id: IncomeStatementConcept.where(number_key: number_key, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f)
-    company_is.present? ? company_is.round(2) : 0
+    if company_is.present?
+      if value_scale === 'millones'
+        return (company_is/1000000).round(2)
+      elsif value_scale === 'miles'
+        return (company_is/1000).round(2)
+      else
+        return company_is.round(2)
+      end
+    else
+      return 0
+    end
   end
 
   #Valor capturado en FG para estado de resultados
-  def income_calendar_detail_value(company_id, calendar, number_key)
+  def income_calendar_detail_value(company_id, calendar, number_key, value_scale)
     income_cs = IncomeCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, income_statement_concept_key: number_key).try(:first).try(:value)
-    income_cs.present? ? income_cs.round(2) : 0
+    if income_cs.present?
+      if value_scale === 'millones'
+        return (income_cs/1000000).round(2)
+      elsif value_scale === 'miles'
+        return (income_cs/1000).round(2)
+      else
+        return income_cs.round(2)
+      end
+    else
+      return 0
+    end
   end
 
   #Calculo de porcentaje de diferencia entre valores y render de badge

@@ -523,15 +523,16 @@ class CompaniesController < ApplicationController
   end
 
   def create_income_statement_cap
+    value_scale = params[:ins_request][:value_scale]
     #p '=entre'
     begin
       IncomeCalendarDetail.transaction do
         params[:b_sheet].each do |e|
           ic_detail = IncomeCalendarDetail.find_by(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], company_id: current_user.company_id)
           if ic_detail.present?
-            raise ActiveRecord::Rollback unless ic_detail.update(value: e[1][:value])
+            raise ActiveRecord::Rollback unless ic_detail.update(value: e[1][:value], value_scale: value_scale)
           else
-            raise ActiveRecord::Rollback unless IncomeCalendarDetail.new(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value], company_id: current_user.company_id).save
+            raise ActiveRecord::Rollback unless IncomeCalendarDetail.new(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value], company_id: current_user.company_id, value_scale: value_scale).save
           end
         end
       end
