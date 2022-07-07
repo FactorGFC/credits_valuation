@@ -440,8 +440,9 @@ $(document).on('turbolinks:load', function () {
     });
 
     //Tabla comparativa
-
-    calculate_comparative('comparative_table_bs');
+    if(document.getElementById("comparative_table_bs")){
+        calculate_comparative('comparative_table_bs');
+    }
     window.display_table = function (table_id) {
         calculate_comparative(table_id);
     };
@@ -522,7 +523,7 @@ let loadSelectPeriod = (period_type) => {
     $('#period_selector').empty().append(array.join(''));
 };
 
-async function calculate_comparative(table_id){
+function calculate_comparative(table_id){
     //$("table#comparative_table").hide();
     var colMax  = 0;
     var all_col = document.getElementsByClassName('col-comp');
@@ -607,8 +608,10 @@ async function calculate_comparative(table_id){
             $('input[name=total_p'+index+']').closest('td').removeClass( "bg-lines" );
         }else{
             $('input[name=total_p'+index+']').val('');
-            if(titles[0].toLowerCase() != 'anual'){
-                $('input[name=total_p'+index+']').closest('td').addClass( "bg-lines" );
+            if(titles.length > 0){
+                if(titles[0].toLowerCase() != 'anual'){
+                    $('input[name=total_p'+index+']').closest('td').addClass( "bg-lines" );
+                }
             }
             $('span.percent_t'+index).hide();
         }
