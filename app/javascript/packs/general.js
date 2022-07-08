@@ -575,7 +575,7 @@ function calculate_comparative(table_id){
 
         for (var col = 0; col < colMax; col++) {
             if(columns.eq(col).css('display') !== 'none'){
-                var colData    = parseFloat(columns.eq(col).find('span.td-value'+index).text());
+                var colData    = parseFloat(columns.eq(col).find('span.td-value'+index).text().replace(',', ''));
                 var colPercent = columns.eq(col).find('span.percent-value'+index).text().split(" ")[0];
                 percent_values_array.push(colPercent);
 
@@ -603,16 +603,20 @@ function calculate_comparative(table_id){
         }
 
         if(rowTotal !== null){
-            $('input[name=total_p'+index+']').val(rowTotal.toFixed(2));
+            console.log();
+
+            $('span.total_p'+index).text(rowTotal.toLocaleString());
             $('span.percent_t'+index).show();
-            $('input[name=total_p'+index+']').closest('td').removeClass( "bg-lines" );
+            $('span.scale'+index).show();
+            $('span.total_p'+index).closest('td').removeClass( "bg-lines" );
         }else{
-            $('input[name=total_p'+index+']').val('');
+            $('span.total_p'+index).text('');
             if(titles.length > 0){
                 if(titles[0].toLowerCase() != 'anual'){
-                    $('input[name=total_p'+index+']').closest('td').addClass( "bg-lines" );
+                    $('span.total_p'+index).closest('td').addClass( "bg-lines" );
                 }
             }
+            $('span.scale'+index).hide();
             $('span.percent_t'+index).hide();
         }
     });
