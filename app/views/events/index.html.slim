@@ -81,9 +81,9 @@
                         - else
                           = event.start_date.strftime('%d/%m/%Y %I:%M%p')
                     span.m-list-timeline__time.ml-3
-                      a.btn.btn-outline-primary.btn-sm.open-modal-agreement data-target="#m_modal_agreement" data-toggle="modal" data-id="#{event.id}" data-agreements="#{event.agreements}" data-requests="#{EventRequest.where(event_id: event.id).pluck(:request_id)}"
+                      a.btn.btn-outline-primary.btn-sm href="agreements/#{event.id}"
                         span
-                          i.fa.fa-archive
+                          i.fa.fa-arrow-right
 
 
 #m_modal_event.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"

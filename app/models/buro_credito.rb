@@ -84,7 +84,7 @@ class BuroCredito < ApplicationRecord
 
     
     data = {
-        bureauPM: true,
+        bureauPM: false,
         bureauPF: true,
         satBlackList: false,
         satRFC: true

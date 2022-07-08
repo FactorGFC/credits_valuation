@@ -313,7 +313,7 @@ class CompaniesController < ApplicationController
     total = 0
     total_ones = 0
     if credit_bureau['bureau_report'].present?
-      credit_bureau['bureau_report']['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].pluck('HistoricoPagos').each do |credit|
+      credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].pluck('HistoricoPagos').each do |credit|
         credit.each_char do |char|
           total += 1
           if char == '1'
