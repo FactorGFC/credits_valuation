@@ -300,7 +300,7 @@ class CompaniesController < ApplicationController
     @credit_bureau = @company.credit_bureaus.last
 
     if @credit_bureau.present?
-      if @company.try(:client_type) == 'PM'
+      if @company.try(:client_type) == 'PF'
         @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
       end
       #@percentage = avg_gagement @credit_bureau
