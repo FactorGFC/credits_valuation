@@ -252,7 +252,7 @@
                               - if y.calendar.period_type == 'anual'
                                 span.text-table-concept = 'SUM. SAT'
                                 br
-                                span = company_balance_sheet_value(@company.id, y.calendar, ['1','2','3','4'], @bs_scale)
+                                span = company_balance_sheet_value(@company.id, y.calendar, ['1','2','3','4'], @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                           td.col-comp
                         tr
@@ -260,7 +260,7 @@
                             td class="full-input col-#{y.id}"
                               span.text-table-concept = 'SUM. CAPTURA'
                               br
-                              span = bs_capture_sum(@company.id, ['1','2','3','4'], y.calendar.id, @bs_scale)
+                              span = bs_capture_sum(@company.id, ['1','2','3','4'], y.calendar.id, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                           td.col-comp
                         tr.tr-rdata
@@ -273,24 +273,26 @@
                                   span#comparative_table_bs class=["percent-bdg0-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 1, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value0 = company_balance_sheet_value(@company.id, y.calendar, 1, @bs_scale)
+                                span.td-value0 = company_balance_sheet_value(@company.id, y.calendar, 1, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value0 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 1, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['1','2','3','4'], @bs_scale))} %"
                           td.full-input.total_p0.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge0 = "0"
-                            input.input-borderless type='text' name='total_p0' value='0' disabled='disabled'
+                            span.total_p0 = "0"
+                            span.scale0.value-scale = @bs_scale
                             span.float-percent.percent_t0 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value1 = balance_calendar_detail_value(@company.id, y.calendar, 1, @bs_scale)
+                              span.td-value1 = balance_calendar_detail_value(@company.id, y.calendar, 1, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value1 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 1, @bs_scale), bs_capture_sum(@company.id, ['1','2','3','4'], y.calendar.id, @bs_scale))} %"
-                          td.full_input.total_p1.col-comp
-                            input.input-borderless type='text' name='total_p1' value='0'  disabled='disabled'
+                          td.full-input.total_p1.col-comp
+                            span.total_p1 = "0"
+                            span.scale1.value-scale = @bs_scale
                             span.float-percent.percent_t1 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -302,24 +304,26 @@
                                   span#comparative_table_bs class=["percent-bdg1-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 2, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value2 = company_balance_sheet_value(@company.id, y.calendar, 2, @bs_scale)
+                                span.td-value2 = company_balance_sheet_value(@company.id, y.calendar, 2, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value2 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 2, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['1','2','3','4'], @bs_scale))} %"
                           td.full-input.total_p2.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge1 = "0"
-                            input.input-borderless type='text' name='total_p2' value='0'  disabled='disabled'
+                            span.total_p2 = "0"
+                            span.scale2.value-scale = @bs_scale
                             span.float-percent.percent_t2 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value3 = balance_calendar_detail_value(@company.id, y.calendar, 2, @bs_scale)
+                              span.td-value3 = balance_calendar_detail_value(@company.id, y.calendar, 2, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value3 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 2, @bs_scale), bs_capture_sum(@company.id, ['1','2','3','4'], y.calendar.id, @bs_scale))} %"
-                          td.total_p3.col-comp
-                            input.input-borderless type='text' name='total_p3' value='0'  disabled='disabled'
+                          td.full-input.total_p3.col-comp
+                            span.total_p3 = "0"
+                            span.scale3.value-scale = @bs_scale
                             span.float-percent.percent_t3 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -331,24 +335,26 @@
                                   span#comparative_table_bs class=["percent-bdg2-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 3, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value4 = company_balance_sheet_value(@company.id, y.calendar, 3, @bs_scale)
+                                span.td-value4 = company_balance_sheet_value(@company.id, y.calendar, 3, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value4 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 3, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['1','2','3','4'], @bs_scale))} %"
                           td.full-input.total_p4.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge2 = "0"
-                            input.input-borderless type='text' name='total_p4' value='0'  disabled='disabled'
+                            span.total_p4 = "0"
+                            span.scale4.value-scale = @bs_scale
                             span.float-percent.percent_t4 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value5 = balance_calendar_detail_value(@company.id, y.calendar, 3, @bs_scale)
+                              span.td-value5 = balance_calendar_detail_value(@company.id, y.calendar, 3, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value6 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 3, @bs_scale), bs_capture_sum(@company.id, ['1','2','3','4'], y.calendar.id, @bs_scale))} %"
-                          td.total_p5.col-comp
-                            input.input-borderless type='text' name='total_p5' value='0'  disabled='disabled'
+                          td.full-input.total_p5.col-comp
+                            span.total_p5 = "0"
+                            span.scale5.value-scale = @bs_scale
                             span.float-percent.percent_t5 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -360,24 +366,26 @@
                                   span#comparative_table_bs class=["percent-bdg3-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 4, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value6 = company_balance_sheet_value(@company.id, y.calendar, 4, @bs_scale)
+                                span.td-value6 = company_balance_sheet_value(@company.id, y.calendar, 4, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value6 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 4, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['1','2','3','4'], @bs_scale))} %"
                           td.full-input.total_p6.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge3 = "0"
-                            input.input-borderless type='text' name='total_p6' value='0'  disabled='disabled'
+                            span.total_p6 = "0"
+                            span.scale6.value-scale = @bs_scale
                             span.float-percent.percent_t6 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value7 = balance_calendar_detail_value(@company.id, y.calendar, 4, @bs_scale)
+                              span.td-value7 = balance_calendar_detail_value(@company.id, y.calendar, 4, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value7 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 4, @bs_scale), bs_capture_sum(@company.id, ['1','2','3','4'], y.calendar.id, @bs_scale))} %"
                           td.full-input.total_p7.col-comp
-                            input.input-borderless type='text' name='total_p7' value='0'  disabled='disabled'
+                            span.total_p7 = "0"
+                            span.scale7.value-scale = @bs_scale
                             span.float-percent.percent_t7 = "0 %"
 
                         tr
@@ -388,7 +396,7 @@
                               - if y.calendar.period_type == 'anual'
                                 span.text-table-concept = 'SUM. SAT'
                                 br
-                                span = company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale)
+                                span = company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                           td.col-comp
                         tr
@@ -396,7 +404,7 @@
                             td class="full-input col-#{y.id}"
                               span.text-table-concept = 'SUM. CAPTURA'
                               br
-                              span = bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale)
+                              span = bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                           td.col-comp
                         tr.tr-rdata
@@ -409,24 +417,26 @@
                                   span#comparative_table_bs class=["percent-bdg4-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 5, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value8 = company_balance_sheet_value(@company.id, y.calendar, 5, @bs_scale)
+                                span.td-value8 = company_balance_sheet_value(@company.id, y.calendar, 5, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value8 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 5, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale))} %"
                           td.full-input.total_p8.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge4 = "0"
-                            input.input-borderless type='text' name='total_p8' value='0'  disabled='disabled'
+                            span.total_p8 = "0"
+                            span.scale8.value-scale = @bs_scale
                             span.float-percent.percent_t8 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value9 = balance_calendar_detail_value(@company.id, y.calendar, 5, @bs_scale)
+                              span.td-value9 = balance_calendar_detail_value(@company.id, y.calendar, 5, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value9 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 5, @bs_scale), bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale))} %"
-                          td.total_p9.col-comp
-                            input.input-borderless type='text' name='total_p9' value='0'  disabled='disabled'
+                          td.full-input.total_p9.col-comp
+                            span.total_p9 = "0"
+                            span.scale9.value-scale = @bs_scale
                             span.float-percent.percent_t9 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -438,24 +448,26 @@
                                   span#comparative_table_bs class=["percent-bdg5-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 6, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value10 = company_balance_sheet_value(@company.id, y.calendar, 6, @bs_scale)
+                                span.td-value10 = company_balance_sheet_value(@company.id, y.calendar, 6, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value10 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 6, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale))} %"
                           td.full-input.total_p10.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge5 = "0"
-                            input.input-borderless type='text' name='total_p10' value='0'  disabled='disabled'
+                            span.total_p10 = "0"
+                            span.scale10.value-scale = @bs_scale
                             span.float-percent.percent_t10 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value11 = balance_calendar_detail_value(@company.id, y.calendar, 6, @bs_scale)
+                              span.td-value11 = balance_calendar_detail_value(@company.id, y.calendar, 6, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value11 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 6, @bs_scale), bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale))} %"
-                          td.total_p11.col-comp
-                            input.input-borderless type='text' name='total_p11' value='0'  disabled='disabled'
+                          td.full-input.total_p11.col-comp
+                            span.total_p11 = "0"
+                            span.scale11.value-scale = @bs_scale
                             span.float-percent.percent_t11 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -467,24 +479,26 @@
                                   span#comparative_table_bs class=["percent-bdg6-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 7, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value12 = company_balance_sheet_value(@company.id, y.calendar, 7, @bs_scale)
+                                span.td-value12 = company_balance_sheet_value(@company.id, y.calendar, 7, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value12 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 7, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale))} %"
                           td.full-input.total_p12.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge6 = "0"
-                            input.input-borderless type='text' name='total_p12' value='0'  disabled='disabled'
+                            span.total_p12 = "0"
+                            span.scale12.value-scale = @bs_scale
                             span.float-percent.percent_t12 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value13 = balance_calendar_detail_value(@company.id, y.calendar, 7, @bs_scale)
+                              span.td-value13 = balance_calendar_detail_value(@company.id, y.calendar, 7, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value13 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 7, @bs_scale), bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale))} %"
-                          td.total_p13.col-comp
-                            input.input-borderless type='text' name='total_p13' value='0'  disabled='disabled'
+                          td.full-input.total_p13.col-comp
+                            span.total_p13 = "0"
+                            span.scale13.value-scale = @bs_scale
                             span.float-percent.percent_t13 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -496,24 +510,26 @@
                                   span#comparative_table_bs class=["percent-bdg7-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 8, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value14 = company_balance_sheet_value(@company.id, y.calendar, 8, @bs_scale)
+                                span.td-value14 = company_balance_sheet_value(@company.id, y.calendar, 8, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value14 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 8, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale))} %"
                           td.full-input.total_p14.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge7 = "0"
-                            input.input-borderless type='text' name='total_p14' value='0'  disabled='disabled'
+                            span.total_p14 = "0"
+                            span.scale14.value-scale = @bs_scale
                             span.float-percent.percent_t14 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value15 = balance_calendar_detail_value(@company.id, y.calendar, 8, @bs_scale)
+                              span.td-value15 = balance_calendar_detail_value(@company.id, y.calendar, 8, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value15 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 8, @bs_scale), bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale))} %"
-                          td.total_p15.col-comp
-                            input.input-borderless type='text' name='total_p15' value='0'  disabled='disabled'
+                          td.full-input.total_p15.col-comp
+                            span.total_p15 = "0"
+                            span.scale15.value-scale = @bs_scale
                             span.float-percent.percent_t15 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -525,24 +541,26 @@
                                   span#comparative_table_bs class=["percent-bdg8-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 9, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value16 = company_balance_sheet_value(@company.id, y.calendar, 9, @bs_scale)
+                                span.td-value16 = company_balance_sheet_value(@company.id, y.calendar, 9, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value16 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 9, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale))} %"
                           td.full-input.total_p16.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge8 = "0"
-                            input.input-borderless type='text' name='total_p16' value='0'  disabled='disabled'
+                            span.total_p16 = "0"
+                            span.scale16.value-scale = @bs_scale
                             span.float-percent.percent_t16 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value17 = balance_calendar_detail_value(@company.id, y.calendar, 9, @bs_scale)
+                              span.td-value17 = balance_calendar_detail_value(@company.id, y.calendar, 9, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value17 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 9, @bs_scale), bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale))} %"
-                          td.total_p17.col-comp
-                            input.input-borderless type='text' name='total_p17' value='0'  disabled='disabled'
+                          td.full-input.total_p17.col-comp
+                            span.total_p17 = "0"
+                            span.scale17.value-scale = @bs_scale
                             span.float-percent.percent_t17 = "0 %"
 
                         tr
@@ -553,7 +571,7 @@
                               - if y.calendar.period_type == 'anual'
                                 span.text-table-concept = 'SUM. SAT'
                                 br
-                                span = company_balance_sheet_value(@company.id, y.calendar, ['10','11','12','13'], @bs_scale)
+                                span = company_balance_sheet_value(@company.id, y.calendar, ['10','11','12','13'], @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                           td.col-comp
                         tr
@@ -561,7 +579,7 @@
                             td class="full-input col-#{y.id}"
                               span.text-table-concept = 'SUM. CAPTURA'
                               br
-                              span = bs_capture_sum(@company.id, ['10','11','12','13'], y.calendar.id, @bs_scale)
+                              span = bs_capture_sum(@company.id, ['10','11','12','13'], y.calendar.id, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                           td.col-comp
                         tr.tr-rdata
@@ -574,24 +592,26 @@
                                   span#comparative_table_bs class=["percent-bdg9-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 10, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value18 = company_balance_sheet_value(@company.id, y.calendar, 10, @bs_scale)
+                                span.td-value18 = company_balance_sheet_value(@company.id, y.calendar, 10, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value18 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 10, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['10','11','12','13'], @bs_scale))} %"
                           td.full-input.total_p18.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge9 = "0"
-                            input.input-borderless type='text' name='total_p18' value='0'  disabled='disabled'
+                            span.total_p18 = "0"
+                            span.scale18.value-scale = @bs_scale
                             span.float-percent.percent_t18 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value19 = balance_calendar_detail_value(@company.id, y.calendar, 10, @bs_scale)
+                              span.td-value19 = balance_calendar_detail_value(@company.id, y.calendar, 10, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value19 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 10, @bs_scale), bs_capture_sum(@company.id, ['10','11','12','13'], y.calendar.id, @bs_scale))} %"
-                          td.total_p19.col-comp
-                            input.input-borderless type='text' name='total_p19' value='0'  disabled='disabled'
+                          td.full-input.total_p19.col-comp
+                            span.total_p19 = "0"
+                            span.scale19.value-scale = @bs_scale
                             span.float-percent.percent_t19 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -603,24 +623,26 @@
                                   span#comparative_table_bs class=["percent-bdg10-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 11, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value20 = company_balance_sheet_value(@company.id, y.calendar, 11, @bs_scale)
+                                span.td-value20 = company_balance_sheet_value(@company.id, y.calendar, 11, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value20 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 11, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['10','11','12','13'], @bs_scale))} %"
                           td.full-input.total_p20.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge10 = "0"
-                            input.input-borderless type='text' name='total_p20' value='0'  disabled='disabled'
+                            span.total_p20 = "0"
+                            span.scale20.value-scale = @bs_scale
                             span.float-percent.percent_t20 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value21 = balance_calendar_detail_value(@company.id, y.calendar, 11, @bs_scale)
+                              span.td-value21 = balance_calendar_detail_value(@company.id, y.calendar, 11, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value21 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 11, @bs_scale), bs_capture_sum(@company.id, ['10','11','12','13'], y.calendar.id, @bs_scale))} %"
-                          td.total_p21.col-comp
-                            input.input-borderless type='text' name='total_p21' value='0'  disabled='disabled'
+                          td.full-input.total_p21.col-comp
+                            span.total_p21 = "0"
+                            span.scale21.value-scale = @bs_scale
                             span.float-percent.percent_t21 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -632,24 +654,26 @@
                                   span#comparative_table_bs class=["percent-bdg11-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 12, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value22 = company_balance_sheet_value(@company.id, y.calendar, 12, @bs_scale)
+                                span.td-value22 = company_balance_sheet_value(@company.id, y.calendar, 12, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value22 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 12, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['10','11','12','13'], @bs_scale))} %"
                           td.full-input.total_p22.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge11 = "0"
-                            input.input-borderless type='text' name='total_p22' value='0'  disabled='disabled'
+                            span.total_p22 = "0"
+                            span.scale22.value-scale = @bs_scale
                             span.float-percent.percent_t22 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value23 = balance_calendar_detail_value(@company.id, y.calendar, 12, @bs_scale)
+                              span.td-value23 = balance_calendar_detail_value(@company.id, y.calendar, 12, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value23 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 12, @bs_scale), bs_capture_sum(@company.id, ['10','11','12','13'], y.calendar.id, @bs_scale))} %"
-                          td.total_p23.col-comp
-                            input.input-borderless type='text' name='total_p23' value='0'  disabled='disabled'
+                          td.full-input.total_p23.col-comp
+                            span.total_p23 = "0"
+                            span.scale23.value-scale = @bs_scale
                             span.float-percent.percent_t23 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -661,24 +685,26 @@
                                   span#comparative_table_bs class=["percent-bdg12-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 13, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value24 = company_balance_sheet_value(@company.id, y.calendar, 13, @bs_scale)
+                                span.td-value24 = company_balance_sheet_value(@company.id, y.calendar, 13, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value24 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 13, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['10','11','12','13'], @bs_scale))} %"
                           td.full-input.total_p24.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge12 = "0"
-                            input.input-borderless type='text' name='total_p24' value='0'  disabled='disabled'
+                            span.total_p24 = "0"
+                            span.scale24.value-scale = @bs_scale
                             span.float-percent.percent_t24 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value25 = balance_calendar_detail_value(@company.id, y.calendar, 13, @bs_scale)
+                              span.td-value25 = balance_calendar_detail_value(@company.id, y.calendar, 13, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value25 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 13, @bs_scale), bs_capture_sum(@company.id, ['10','11','12','13'], y.calendar.id, @bs_scale))} %"
-                          td.total_p25.col-comp
-                            input.input-borderless type='text' name='total_p25' value='0'  disabled='disabled'
+                          td.full-input.total_p25.col-comp
+                            span.total_p25 = "0"
+                            span.scale25.value-scale = @bs_scale
                             span.float-percent.percent_t25 = "0 %"
 
                         tr
@@ -689,7 +715,7 @@
                               - if y.calendar.period_type == 'anual'
                                 span.text-table-concept = 'SUM. SAT'
                                 br
-                                span = company_balance_sheet_value(@company.id, y.calendar, ['14','15','16','17'], @bs_scale)
+                                span = company_balance_sheet_value(@company.id, y.calendar, ['14','15','16','17'], @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                           td.col-comp
                         tr
@@ -697,7 +723,7 @@
                             td class="full-input col-#{y.id}"
                               span.text-table-concept = 'SUM. CAPTURA'
                               br
-                              span = bs_capture_sum(@company.id, ['14','15','16','17'], y.calendar.id, @bs_scale)
+                              span = bs_capture_sum(@company.id, ['14','15','16','17'], y.calendar.id, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                           td.col-comp
                         tr.tr-rdata
@@ -710,24 +736,26 @@
                                   span#comparative_table_bs class=["percent-bdg13-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 14, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value26 = company_balance_sheet_value(@company.id, y.calendar, 14, @bs_scale)
+                                span.td-value26 = company_balance_sheet_value(@company.id, y.calendar, 14, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value26 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 8, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['14','15','16','17'], @bs_scale))} %"
                           td.full-input.total_p26.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge13 = "0"
-                            input.input-borderless type='text' name='total_p26' value='0'  disabled='disabled'
+                            span.total_p26 = "0"
+                            span.scale26.value-scale = @bs_scale
                             span.float-percent.percent_t26 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value27 = balance_calendar_detail_value(@company.id, y.calendar, 14, @bs_scale)
+                              span.td-value27 = balance_calendar_detail_value(@company.id, y.calendar, 14, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value27 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 14, @bs_scale), bs_capture_sum(@company.id, ['14','15','16','17'], y.calendar.id, @bs_scale))} %"
-                          td.total_p27.col-comp
-                            input.input-borderless type='text' name='total_p27' value='0'  disabled='disabled'
+                          td.full-input.total_p27.col-comp
+                            span.total_p27 = "0"
+                            span.scale27.value-scale = @bs_scale
                             span.float-percent.percent_t27 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -739,24 +767,26 @@
                                   span#comparative_table_bs class=["percent-bdg14-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 15, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value28 = company_balance_sheet_value(@company.id, y.calendar, 15, @bs_scale)
+                                span.td-value28 = company_balance_sheet_value(@company.id, y.calendar, 15, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value28 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 15, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['14','15','16','17'], @bs_scale))} %"
                           td.full-input.total_p28.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge14 = "0"
-                            input.input-borderless type='text' name='total_p28' value='0'  disabled='disabled'
+                            span.total_p28 = "0"
+                            span.scale28.value-scale = @bs_scale
                             span.float-percent.percent_t28 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value29 = balance_calendar_detail_value(@company.id, y.calendar, 15, @bs_scale)
+                              span.td-value29 = balance_calendar_detail_value(@company.id, y.calendar, 15, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value29 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 15, @bs_scale), bs_capture_sum(@company.id, ['14','15','16','17'], y.calendar.id, @bs_scale))} %"
-                          td.total_p29.col-comp
-                            input.input-borderless type='text' name='total_p29' value='0'  disabled='disabled'
+                          td.full-input.total_p29.col-comp
+                            span.total_p29 = "0"
+                            span.scale29.value-scale = @bs_scale
                             span.float-percent.percent_t29 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -768,24 +798,26 @@
                                   span#comparative_table_bs class=["percent-bdg15-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 16, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value30 = company_balance_sheet_value(@company.id, y.calendar, 16, @bs_scale)
+                                span.td-value30 = company_balance_sheet_value(@company.id, y.calendar, 16, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value30 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 16, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['14','15','16','17'], @bs_scale))} %"
                           td.full-input.total_p30.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge15 = "0"
-                            input.input-borderless type='text' name='total_p30' value='0'  disabled='disabled'
+                            span.total_p30 = "0"
+                            span.scale30.value-scale = @bs_scale
                             span.float-percent.percent_t30 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value31 = balance_calendar_detail_value(@company.id, y.calendar, 16, @bs_scale)
+                              span.td-value31 = balance_calendar_detail_value(@company.id, y.calendar, 16, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value31 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 16, @bs_scale), bs_capture_sum(@company.id, ['14','15','16','17'], y.calendar.id, @bs_scale))} %"
-                          td.total_p31.col-comp
-                            input.input-borderless type='text' name='total_p31' value='0'  disabled='disabled'
+                          td.full-input.total_p31.col-comp
+                            span.total_p31 = "0"
+                            span.scale31.value-scale = @bs_scale
                             span.float-percent.percent_t31 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
@@ -797,24 +829,26 @@
                                   span#comparative_table_bs class=["percent-bdg16-#{y_index}"] = "#{calculate_percentage('balance_sheet', @company.id, y.calendar, 17, @bs_scale)[0]} %"
                                 span.text-table-concept = 'SAT'
                                 br
-                                span.td-value32 = company_balance_sheet_value(@company.id, y.calendar, 17, @bs_scale)
+                                span.td-value32 = company_balance_sheet_value(@company.id, y.calendar, 17, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                                 span.float-percent.percent-value32 = "#{calculate_percent_of_total(company_balance_sheet_value(@company.id, y.calendar, 17, @bs_scale), company_balance_sheet_value(@company.id, y.calendar, ['14','15','16','17'], @bs_scale))} %"
                           td.full-input.total_p32.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge16 = "0"
-                            input.input-borderless type='text' name='total_p32' value='0'  disabled='disabled'
+                            span.total_p32 = "0"
+                            span.scale32.value-scale = @bs_scale
                             span.float-percent.percent_t32 = "0 %"
                         tr.tr-rdata
                           - @calendar_periods_bs.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value33 = balance_calendar_detail_value(@company.id, y.calendar, 17, @bs_scale)
+                              span.td-value33 = balance_calendar_detail_value(@company.id, y.calendar, 17, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                               span.float-percent.percent-value33 = "#{calculate_percent_of_total(balance_calendar_detail_value(@company.id, y.calendar, 17, @bs_scale), bs_capture_sum(@company.id, ['14','15','16','17'], y.calendar.id, @bs_scale))} %"
-                          td.total_p33.col-comp
-                            input.input-borderless type='text' name='total_p33' value='0'  disabled='disabled'
+                          td.full-input.total_p33.col-comp
+                            span.total_p33 = "0"
+                            span.scale33.value-scale = @bs_scale
                             span.float-percent.percent_t33 = "0 %"
                     - else
                       .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
@@ -861,23 +895,25 @@
                                   span#comparative_table_is class=["percent-bdg0-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 1, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value0 = company_income_stat_value(@company.id, y.calendar, 1, @ins_scale)
+                                span.td-value0 = company_income_stat_value(@company.id, y.calendar, 1, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p0.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge0 = "0"
-                            input.input-borderless type='text' name='total_p0' disabled='disabled'
+                            span.total_p0 = "0"
+                            span.scale0.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value1 = income_calendar_detail_value(@company.id, y.calendar, 1, @ins_scale)
+                              span.td-value1 = income_calendar_detail_value(@company.id, y.calendar, 1, @ins_scale).to_s(:delimited)
                               span.value-scale = @ins_scale
 
-                          td.full_input.total_p1.col-comp
-                            input.input-borderless type='text' name='total_p1' disabled='disabled'
+                          td.full-input.total_p1.col-comp
+                            span.total_p1 = "0"
+                            span.scale1.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Costo de ventas'
@@ -888,23 +924,25 @@
                                   span#comparative_table_is class=["percent-bdg1-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 2, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value2 = company_income_stat_value(@company.id, y.calendar, 2, @ins_scale)
+                                span.td-value2 = company_income_stat_value(@company.id, y.calendar, 2, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p2.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge1 = "0"
-                            input.input-borderless type='text' name='total_p2' value='0' disabled='disabled'
+                            span.total_p2 = "0"
+                            span.scale2.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value3 = income_calendar_detail_value(@company.id, y.calendar, 2, @ins_scale)
+                              span.td-value3 = income_calendar_detail_value(@company.id, y.calendar, 2, @ins_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
 
-                          td.total_p3.col-comp
-                            input.input-borderless type='text' name='total_p3' value='0' disabled='disabled'
+                          td.full-input.total_p3.col-comp
+                            span.total_p3 = "0"
+                            span.scale3.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Utilidad Bruta'
@@ -915,23 +953,25 @@
                                   span#comparative_table_is class=["percent-bdg2-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 2, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value4  = company_income_stat_value(@company.id, y.calendar, 3, @ins_scale)
+                                span.td-value4  = company_income_stat_value(@company.id, y.calendar, 3, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p4.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge2 = "0"
-                            input.input-borderless type='text' name='total_p4' value='0' disabled='disabled'
+                            span.total_p4 = "0"
+                            span.scale4.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value5 = income_calendar_detail_value(@company.id, y.calendar, 3, @ins_scale)
+                              span.td-value5 = income_calendar_detail_value(@company.id, y.calendar, 3, @ins_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
 
-                          td.total_p5.col-comp
-                            input.input-borderless type='text' name='total_p5' value='0' disabled='disabled'
+                          td.full-input.total_p5.col-comp
+                            span.total_p5 = "0"
+                            span.scale5.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Gastos de operación'
@@ -942,23 +982,25 @@
                                   span#comparative_table_is class=["percent-bdg3-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 4, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value6 = company_income_stat_value(@company.id, y.calendar, 4, @ins_scale)
+                                span.td-value6 = company_income_stat_value(@company.id, y.calendar, 4, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p6.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge3 = "0"
-                            input.input-borderless type='text' name='total_p6' value='0' disabled='disabled'
+                            span.total_p6 = "0"
+                            span.scale6.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value7 = income_calendar_detail_value(@company.id, y.calendar, 4, @ins_scale)
+                              span.td-value7 = income_calendar_detail_value(@company.id, y.calendar, 4, @ins_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
 
                           td.full-input.total_p7.col-comp
-                            input.input-borderless type='text' name='total_p7' value='0' disabled='disabled'
+                            span.total_p7 = "0"
+                            span.scale7.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Utilidad de operación'
@@ -969,23 +1011,25 @@
                                   span#comparative_table_is class=["percent-bdg4-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 5, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value8 = company_income_stat_value(@company.id, y.calendar, 5, @ins_scale)
+                                span.td-value8 = company_income_stat_value(@company.id, y.calendar, 5, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p8.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge4 = "0"
-                            input.input-borderless type='text' name='total_p8' value='0' disabled='disabled'
+                            span.total_p8 = "0"
+                            span.scale8.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value9 = income_calendar_detail_value(@company.id, y.calendar, 5, @ins_scale)
+                              span.td-value9 = income_calendar_detail_value(@company.id, y.calendar, 5, @ins_scale).to_s(:delimited)
                               span.value-scale = @ins_scale
 
-                          td.total_p9.col-comp
-                            input.input-borderless type='text' name='total_p9' value='0' disabled='disabled'
+                          td.full-input.total_p9.col-comp
+                            span.total_p9 = "0"
+                            span.scale9.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Resultado integral de financiamiento'
@@ -996,23 +1040,25 @@
                                   span#comparative_table_is class=["percent-bdg5-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 6, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value10  = company_income_stat_value(@company.id, y.calendar, 6, @ins_scale)
+                                span.td-value10  = company_income_stat_value(@company.id, y.calendar, 6, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p10.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge5 = "0"
-                            input.input-borderless type='text' name='total_p10' value='0' disabled='disabled'
+                            span.total_p10 = "0"
+                            span.scale10.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value11 = income_calendar_detail_value(@company.id, y.calendar, 6, @ins_scale)
+                              span.td-value11 = income_calendar_detail_value(@company.id, y.calendar, 6, @ins_scale).to_s(:delimited)
                               span.value-scale = @ins_scale
 
-                          td.total_p11.col-comp
-                            input.input-borderless type='text' name='total_p11' value='0' disabled='disabled'
+                          td.full-input.total_p11.col-comp
+                            span.total_p11 = "0"
+                            span.scale11.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Gasto financiero'
@@ -1023,23 +1069,25 @@
                                   span#comparative_table_is class=["percent-bdg6-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 7, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value12  = company_income_stat_value(@company.id, y.calendar, 7, @ins_scale)
+                                span.td-value12  = company_income_stat_value(@company.id, y.calendar, 7, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p12.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge6 = "0"
-                            input.input-borderless type='text' name='total_p12' value='0' disabled='disabled'
+                            span.total_p12 = "0"
+                            span.scale12.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value13 = income_calendar_detail_value(@company.id, y.calendar, 7, @ins_scale)
+                              span.td-value13 = income_calendar_detail_value(@company.id, y.calendar, 7, @ins_scale).to_s(:delimited)
                               span.value-scale = @ins_scale
 
-                          td.total_p13.col-comp
-                            input.input-borderless type='text' name='total_p13' value='0' disabled='disabled'
+                          td.full-input.total_p13.col-comp
+                            span.total_p13 = "0"
+                            span.scale13.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Utilidad o perdida cambiaria'
@@ -1050,23 +1098,25 @@
                                   span#comparative_table_is class=["percent-bdg7-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 8, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value14  = company_income_stat_value(@company.id, y.calendar, 8, @ins_scale)
+                                span.td-value14  = company_income_stat_value(@company.id, y.calendar, 8, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p14.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge7 = "0"
-                            input.input-borderless type='text' name='total_p14' value='0' disabled='disabled'
+                            span.total_p14 = "0"
+                            span.scale14.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value15 = income_calendar_detail_value(@company.id, y.calendar, 8, @ins_scale)
+                              span.td-value15 = income_calendar_detail_value(@company.id, y.calendar, 8, @ins_scale).to_s(:delimited)
                               span.value-scale = @ins_scale
 
-                          td.total_p15.col-comp
-                            input.input-borderless type='text' name='total_p15' value='0' disabled='disabled'
+                          td.full-input.total_p15.col-comp
+                            span.total_p15 = "0"
+                            span.scale15.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Otros gastos/ingresos'
@@ -1077,23 +1127,25 @@
                                   span#comparative_table_is class=["percent-bdg8-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 9, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value16  = company_income_stat_value(@company.id, y.calendar, 9, @ins_scale)
+                                span.td-value16  = company_income_stat_value(@company.id, y.calendar, 9, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p16.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge8 = "0"
-                            input.input-borderless type='text' name='total_p16' value='0' disabled='disabled'
+                            span.total_p16 = "0"
+                            span.scale16.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value17 = income_calendar_detail_value(@company.id, y.calendar, 9, @ins_scale)
+                              span.td-value17 = income_calendar_detail_value(@company.id, y.calendar, 9, @ins_scale).to_s(:delimited)
                               span.value-scale = @ins_scale
 
-                          td.total_p17.col-comp
-                            input.input-borderless type='text' name='total_p17' value='0' disabled='disabled'
+                          td.full-input.total_p17.col-comp
+                            span.total_p17 = "0"
+                            span.scale17.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Utilidad antes de impuestos'
@@ -1104,23 +1156,25 @@
                                   span#comparative_table_is class=["percent-bdg9-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 10, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value18  = company_income_stat_value(@company.id, y.calendar, 10, @ins_scale)
+                                span.td-value18  = company_income_stat_value(@company.id, y.calendar, 10, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p18.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge9 = "0"
-                            input.input-borderless type='text' name='total_p18' value='0' disabled='disabled'
+                            span.total_p18 = "0"
+                            span.scale18.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value19 = income_calendar_detail_value(@company.id, y.calendar, 10, @ins_scale)
+                              span.td-value19 = income_calendar_detail_value(@company.id, y.calendar, 10, @ins_scale).to_s(:delimited)
                               span.value-scale = @ins_scale
 
-                          td.total_p19.col-comp
-                            input.input-borderless type='text' name='total_p19' value='0' disabled='disabled'
+                          td.full-input.total_p19.col-comp
+                            span.total_p19 = "0"
+                            span.scale19.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'ISR'
@@ -1131,23 +1185,25 @@
                                   span#comparative_table_is class=["percent-bdg10-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 11, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value20  = company_income_stat_value(@company.id, y.calendar, 11, @ins_scale)
+                                span.td-value20  = company_income_stat_value(@company.id, y.calendar, 11, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p20.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge10 = "0"
-                            input.input-borderless type='text' name='total_p20' value='0' disabled='disabled'
+                            span.total_p20 = "0"
+                            span.scale20.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value21 = income_calendar_detail_value(@company.id, y.calendar, 11, @ins_scale)
+                              span.td-value21 = income_calendar_detail_value(@company.id, y.calendar, 11, @ins_scale).to_s(:delimited)
                               span.value-scale = @ins_scale
 
-                          td.total_p21.col-comp
-                            input.input-borderless type='text' name='total_p21' value='0' disabled='disabled'
+                          td.full-input.total_p21.col-comp
+                            span.total_p21 = "0"
+                            span.scale21.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'PTU'
@@ -1158,23 +1214,25 @@
                                   span#comparative_table_is class=["percent-bdg11-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 12, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value22  = company_income_stat_value(@company.id, y.calendar, 12, @ins_scale)
+                                span.td-value22  = company_income_stat_value(@company.id, y.calendar, 12, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p22.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge11 = "0"
-                            input.input-borderless type='text' name='total_p22' value='0' disabled='disabled'
+                            span.total_p22 = "0"
+                            span.scale22.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value23 = income_calendar_detail_value(@company.id, y.calendar, 12, @ins_scale)
+                              span.td-value23 = income_calendar_detail_value(@company.id, y.calendar, 12, @ins_scale).to_s(:delimited)
                               span.value-scale = @ins_scale
 
-                          td.total_p23.col-comp
-                            input.input-borderless type='text' name='total_p23' value='0' disabled='disabled'
+                          td.full-input.total_p23.col-comp
+                            span.total_p23 = "0"
+                            span.scale23.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Participacion subsidiarios'
@@ -1185,23 +1243,25 @@
                                   span#comparative_table_is class=["percent-bdg12-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 13, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value24  = company_income_stat_value(@company.id, y.calendar, 13, @ins_scale)
+                                span.td-value24  = company_income_stat_value(@company.id, y.calendar, 13, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p24.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge12 = "0"
-                            input.input-borderless type='text' name='total_p24' value='0' disabled='disabled'
+                            span.total_p24 = "0"
+                            span.scale24.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value25 = income_calendar_detail_value(@company.id, y.calendar, 13, @ins_scale)
+                              span.td-value25 = income_calendar_detail_value(@company.id, y.calendar, 13, @ins_scale).to_s(:delimited)
                               span.value-scale = @ins_scale
 
-                          td.total_p25.col-comp
-                            input.input-borderless type='text' name='total_p25' value='0' disabled='disabled'
+                          td.full-input.total_p25.col-comp
+                            span.total_p25 = "0"
+                            span.scale25.value-scale = @bs_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Utilidad neta'
@@ -1212,23 +1272,25 @@
                                   span#comparative_table_is class=["percent-bdg13-#{y_index}"] = "#{calculate_percentage('income_statement', @company.id, y.calendar, 14, @ins_scale)[0]} %"
                                 span.text-table-concept  = 'SAT'
                                 br
-                                span.td-value26  = company_income_stat_value(@company.id, y.calendar, 14, @ins_scale)
+                                span.td-value26  = company_income_stat_value(@company.id, y.calendar, 14, @ins_scale).to_s(:delimited)
                                 span.value-scale = @ins_scale
 
                           td.full-input.total_p26.col-comp
                             div.percentage-badge.blue-badge
                               span.tb-badge13 = "0"
-                            input.input-borderless type='text' name='total_p26' value='0' disabled='disabled'
+                            span.total_p26 = "0"
+                            span.scale26.value-scale = @bs_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
-                              span.td-value27 = income_calendar_detail_value(@company.id, y.calendar, 14, @ins_scale)
+                              span.td-value27 = income_calendar_detail_value(@company.id, y.calendar, 14, @ins_scale).to_s(:delimited)
                               span.value-scale = @ins_scale
 
-                          td.total_p27.col-comp
-                            input.input-borderless type='text' name='total_p27' value='0' disabled='disabled'
+                          td.full-input.total_p27.col-comp
+                            span.total_p27 = "0"
+                            span.scale27.value-scale = @bs_scale
                     - else
                       .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
                         .m-alert__icon
