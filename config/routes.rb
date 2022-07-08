@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     get 'get_event_info/:id', to: "events#get_event_info", :as=>"get_event_info"
     post    '/save_event'     => 'events#save_event'
     put     '/save_event_agreement' => 'events#save_event_agreement'
+    put     '/update_event_agreement' => 'events#update_event_agreement', as: :update_event_agreement
     put     'finish_event/:id'      => 'events#finish_event'
     delete  'delete_event/:id'      => 'events#delete'
     get 'agreements/:id'  => 'events#agreements'

@@ -152,9 +152,34 @@ class EventsController < ApplicationController
 
   def agreements
     @event = Event.where(id: params[:id])
+    @process_status = ProcessStatus.where(key:['approved','rejected','pending'])
+
+    attendants_ids = EventDetail.where(event_id: params[:id]).pluck(:user_id)
+    @attendants = User.where(id: attendants_ids)
+
+    @requests = EventRequest.where(event_id: params[:id]).order(:id)
+    # @requests = Request.where(id: request_ids)
+
     #@search_event = event.ransack(params[:q])
     #@events = @search_event.result.paginate(page: params[:page], per_page: get_pagination).order('id DESC')
   end
 
+  def update_event_agreement
+    # puts params['requests']
+    pending_status_id = ProcessStatus.find_by_key('pending').try(:id)
+    params['requests'].each do |key, request|
+      event_request = EventRequest.where(event_id: params[:event_id], request_id: request['request_id']).try(:first)
+
+      if event_request.present?
+        if request['process_status_id'].blank?
+          event_request.update(process_status_id: pending_status_id, comment: request['comment'])
+        else
+          event_request.update(process_status_id: request['process_status_id'], comment: request['comment'])
+        end
+      end
+    end
+
+    redirect_to "/events", notice: "Evento actualizado correctamente."
+  end
 
 end

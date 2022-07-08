@@ -58,3 +58,82 @@
           = t('.count_table', count: @event.count)
         /.col-lg-6.m--align-right
           = paginate(@event)
+
+  .m-portlet
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          h3.m-portlet__head-text = t('.attendants')
+    .m-portlet__body
+      .m-section.mb-0
+        - if @attendants.empty?
+          .m-section__content
+            .no-results
+              = t('helpers.not_created_yet', resource: t('.other').downcase)
+        - else
+          .m-section__content.table-responsive
+            table.table.m-table.m-table--head-separator-brand.table-custom
+              thead
+                tr
+                  th = t('.full_name')
+                  th = t('.email')
+                  th = t('.role_name')
+              /th.actions-4.text-center = t('helpers.actions')
+              tbody
+                - @attendants.each do |user|
+                  tr.tr-custom
+                    th scope="row" = user.full_name
+                    td = user.email
+                    td = user.role_name
+    .m-portlet__foot
+      .row.align-items-center.pagination-container
+        /.col-lg-6.m--valign-middle
+            = t('.count_table', count: @event.count)
+        /.col-lg-6.m--align-right
+            = paginate(@event)
+
+  .m-portlet
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          h3.m-portlet__head-text = t('.requests')
+    .m-portlet__body
+      .m-section.mb-0
+        - if @requests.empty?
+          .m-section__content
+            .no-results
+              = t('helpers.not_created_yet', resource: t('.other').downcase)
+        - else
+          = form_tag '/update_event_agreement', method: 'PUT' do |f|
+            input type="hidden" name="event_id" value="#{params[:id]}"
+            .m-section__content.table-responsive
+              table.table.m-table.m-table--head-separator-brand.table-custom
+                thead
+                  tr
+                    th = t('.rfc')
+                    th = t('.factor_credit')
+                    th = t('.opinion')
+                    th = t('.estatus')
+                    th = t('.comment')
+                /th.actions-4.text-center = t('helpers.actions')
+                tbody
+                  - @requests.each_with_index do |event_request, index|
+                    tr.tr-custom
+                      th scope="row" = event_request.try(:request).try(:company).try(:rfc)
+                      td = event_request.try(:request).try(:factor_credit).try(:name)
+                      td
+                      / td = select_tag "requests[#{index}][process_status_id]", options_for_select(@process_status.collect{ |u| [u.name, u.id] }),
+                              { include_blank: t('helpers.select.prompt'), class: "form-control m-input" }
+                      td = select("requests[#{index}]", "process_status_id", @process_status.all.collect {|p| [ p.name, p.id ] },
+                              { selected: event_request.try(:process_status_id) }, {class: "form-control m-input"})
+                      td = text_field_tag "requests[#{index}][comment]", event_request.comment, class: 'form-control m-input'
+                      input type="hidden" name="requests[#{index}][request_id]" value="#{event_request.request_id}"
+                tfoot
+                  button.btn.btn-success type="submit"
+                    | Guardar
+    .m-portlet__foot
+      .row.align-items-center.pagination-container
+        /.col-lg-6.m--valign-middle
+            = t('.count_table', count: @event.count)
+        /.col-lg-6.m--align-right
+            = paginate(@event)

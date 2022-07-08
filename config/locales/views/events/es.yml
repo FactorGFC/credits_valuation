@@ -16,5 +16,15 @@ es:
       agreements: Acuerdos
       end_date: Fecha de Termino
       event_finished: Estatus Evento
+      attendants: Participantes
+      full_name: Nombre
+      email: Email
+      role_name: Rol
+      requests: Solicitudes de Crédito
+      rfc: RFC
+      factor_credit: Tipo de Crédito
+      opinion: Dictamen
+      status: Estatus
+      comment: Comentario
   breadcrumbs:
     requests: Eventos
