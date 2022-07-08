@@ -443,9 +443,10 @@ $(document).on('turbolinks:load', function () {
     if(document.getElementById("comparative_table_bs")){
         calculate_comparative('comparative_table_bs');
     }
-    window.display_table = function (table_id) {
-        calculate_comparative(table_id);
-    };
+
+    //window.display_table = function (table_id) {
+    //    calculate_comparative(table_id);
+    //};
 });
 
 let readURL = (input) => {
