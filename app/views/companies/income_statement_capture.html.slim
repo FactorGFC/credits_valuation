@@ -35,8 +35,10 @@
       .m-section.mb-0
         .m-section__content.text-center
           = form_tag '/create_income_statement_cap', :method => 'post' do
+            h3 = 'Seleccione la escala del monto ingresado: '
+            = select('ins_request', 'value_scale', ['pesos', 'miles', 'millones'], {prompt: false, selected: @company.try(:income_calendar_details).try(:first).try(:value_scale)}, {class: 'form-control m-input form-control-lg upcase-txt'})
             .table-wrapper
-              table.table.table-bordered.input-focusable-table
+              table.table.table-bordered.input-focusable-table.mt-3
                 tr
                   th
                   - @calendar_periods.each do |y|
