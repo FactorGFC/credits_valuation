@@ -237,33 +237,33 @@ class HomeController < ApplicationController
     # neighborhood = info_sat['hydra:member'][0]['address']['neighborhood']
 
     #PF
-    # rfc = "HEMG4812162Q2"
-    # address = "CLL SA CATARINA"
-    # city = "CHIHUAHUA"
-    # state = "CHI"
-    # zip_code = "31215"
-    # interior_number = ""
-    # exterior_number = "3206"
-    # municipality = "CHIHUAHUA"
-    # neighborhood = ""
-    # account_type = "PF"
-    # first_name = "GUSTAVO"
-    # first_last_name = "HERNANDEZ"
-    # second_last_name = 'MONROY'
-
-    #PM
-    rfc = "GLO0605033G2"
-    basic_rfc = "GLO060503"
-    address = "REPUBLICA DE CUBA"
+    rfc = "HEMG4812162Q2"
+    address = "CLL SA CATARINA"
     city = "CHIHUAHUA"
     state = "CHI"
-    zip_code = "31210"
+    zip_code = "31215"
     interior_number = ""
-    exterior_number = "806"
+    exterior_number = "3206"
     municipality = "CHIHUAHUA"
-    neighborhood = "PANAMERICANA"
-    account_type = "PM"
-    trade_name="GRUPO LOPIC SA DE CV"
+    neighborhood = ""
+    account_type = "PF"
+    first_name = "GUSTAVO"
+    first_last_name = "HERNANDEZ"
+    second_last_name = 'MONROY'
+
+    #PM
+    # rfc = "GLO0605033G2"
+    # basic_rfc = "GLO060503"
+    # address = "REPUBLICA DE CUBA"
+    # city = "CHIHUAHUA"
+    # state = "CHI"
+    # zip_code = "31210"
+    # interior_number = ""
+    # exterior_number = "806"
+    # municipality = "CHIHUAHUA"
+    # neighborhood = "PANAMERICANA"
+    # account_type = "PM"
+    # trade_name="GRUPO LOPIC SA DE CV"
 
     #PFAE
     # rfc = "COPS611102S83"
@@ -290,16 +290,16 @@ class HomeController < ApplicationController
     #  account_type = "PF"
     #end
 
-    # data = [accountType: account_type, firstName: first_name, middleName: "", rfc: rfc,
-    #         firstLastName: first_last_name, secondLastName: second_last_name, address: address, city: city,
-    #         state: state, zipCode: zip_code, exteriorNumber: exterior_number, interiorNumber: interior_number,
-    #         neighborhood: neighborhood, municipality: municipality,
-    #         nationality: "MX",phone: user_phone]
+    data = [accountType: account_type, firstName: first_name, middleName: "", rfc: rfc,
+            firstLastName: first_last_name, secondLastName: second_last_name, address: address, city: city,
+            state: state, zipCode: zip_code, exteriorNumber: exterior_number, interiorNumber: interior_number,
+            neighborhood: neighborhood, municipality: municipality,
+            nationality: "MX",phone: user_phone]
 
-    data = [accountType: account_type, tradeName: trade_name,  rfc: rfc,basicRFC: basic_rfc,
-            address: address, city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
-            interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality,
-            nationality: "MX", country: "MX"]
+    # data = [accountType: account_type, tradeName: trade_name,  rfc: rfc,basicRFC: basic_rfc,
+    #         address: address, city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
+    #         interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality,
+    #         nationality: "MX", country: "MX"]
 
 
     @buro = BuroCredito.create_client data
