@@ -86,8 +86,8 @@ class HomeController < ApplicationController
                                          main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
                                          client_type: client_type)
 
-                        #@bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
-                        @bureau_report = BuroCredito.get_report_by_id 95999#4450 60368
+                        @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
+                        # @bureau_report = BuroCredito.get_report_by_id 95999#4450 60368
 
 
                         # @bureau_report = BuroCredito.get_report_by_id 12468
@@ -252,32 +252,32 @@ class HomeController < ApplicationController
     # second_last_name = 'MONROY'
 
     #PM
-    # rfc = "GLO0605033G2"
-    # basic_rfc = "GLO060503"
-    # address = "REPUBLICA DE CUBA"
-    # city = "CHIHUAHUA"
-    # state = "CHI"
-    # zip_code = "31210"
-    # interior_number = ""
-    # exterior_number = "806"
-    # municipality = "CHIHUAHUA"
-    # neighborhood = "PANAMERICANA"
-    # account_type = "PM"
-    # trade_name="GRUPO LOPIC SA DE CV"
+    rfc = "GLO0605033G2"
+    basic_rfc = "GLO060503"
+    address = "REPUBLICA DE CUBA"
+    city = "CHIHUAHUA"
+    state = "CHI"
+    zip_code = "31210"
+    interior_number = ""
+    exterior_number = "806"
+    municipality = "CHIHUAHUA"
+    neighborhood = "PANAMERICANA"
+    account_type = "PM"
+    trade_name="GRUPO LOPIC SA DE CV"
 
     #PFAE
-    rfc = "COPS611102S83"
-    basic_rfc = "COPS611102"
-    address = "IGNACIO LOPEZ RAYON"
-    city = "CIUDAD CUAUHTEMOC"
-    state = "CHI"
-    zip_code = "31530"
-    interior_number = ""
-    exterior_number = "1925"
-    municipality = "CUAUHTEMOC"
-    neighborhood = "CIUDAD CUAUHTEMOC"
-    account_type = "PF"
-    trade_name="SALVADOR CORRAL PEREZ"
+    # rfc = "COPS611102S83"
+    # basic_rfc = "COPS611102"
+    # address = "IGNACIO LOPEZ RAYON"
+    # city = "CIUDAD CUAUHTEMOC"
+    # state = "CHI"
+    # zip_code = "31530"
+    # interior_number = ""
+    # exterior_number = "1925"
+    # municipality = "CUAUHTEMOC"
+    # neighborhood = "CIUDAD CUAUHTEMOC"
+    # account_type = "PF"
+    # trade_name="SALVADOR CORRAL PEREZ"
 
 
     #if info_sat['hydra:member'][0]['company'].present?
