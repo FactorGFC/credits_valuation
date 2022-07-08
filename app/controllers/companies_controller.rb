@@ -285,14 +285,16 @@ class CompaniesController < ApplicationController
     @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
 
-    if @company.credit_bureaus.last.bureau_report['results'].present?
-      if @company.credit_bureaus.last.bureau_report['results'][0]['response'].present?
-        @report_result = @company.credit_bureaus.last.bureau_report['results'][0]
+    if @company.credit_bureaus.present?
+      if @company.credit_bureaus.last.bureau_report['results'].present?
+        if @company.credit_bureaus.last.bureau_report['results'][0]['response'].present?
+          @report_result = @company.credit_bureaus.last.bureau_report['results'][0]
+        else
+          @report_result = @company.credit_bureaus.last.bureau_report['results'][1]
+        end
       else
-        @report_result = @company.credit_bureaus.last.bureau_report['results'][1]
+        @report_result = @company.credit_bureaus.last.bureau_report
       end
-    else
-      @report_result = @company.credit_bureaus.last.bureau_report
     end
 
     @credit_bureau = @company.credit_bureaus.last
