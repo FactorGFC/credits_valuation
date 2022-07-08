@@ -931,7 +931,7 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge1 = "0"
                             span.total_p2 = "0"
-                            span.scale2.value-scale = @bs_scale
+                            span.scale2.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
@@ -942,7 +942,7 @@
 
                           td.full-input.total_p3.col-comp
                             span.total_p3 = "0"
-                            span.scale3.value-scale = @bs_scale
+                            span.scale3.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Utilidad Bruta'
@@ -960,18 +960,18 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge2 = "0"
                             span.total_p4 = "0"
-                            span.scale4.value-scale = @bs_scale
+                            span.scale4.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
                               span.td-value5 = income_calendar_detail_value(@company.id, y.calendar, 3, @ins_scale).to_s(:delimited)
-                              span.value-scale = @bs_scale
+                              span.value-scale = @ins_scale
 
                           td.full-input.total_p5.col-comp
                             span.total_p5 = "0"
-                            span.scale5.value-scale = @bs_scale
+                            span.scale5.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Gastos de operación'
@@ -989,18 +989,18 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge3 = "0"
                             span.total_p6 = "0"
-                            span.scale6.value-scale = @bs_scale
+                            span.scale6.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
                               span.text-table-concept = 'CAPTURA'
                               br
                               span.td-value7 = income_calendar_detail_value(@company.id, y.calendar, 4, @ins_scale).to_s(:delimited)
-                              span.value-scale = @bs_scale
+                              span.value-scale = @ins_scale
 
                           td.full-input.total_p7.col-comp
                             span.total_p7 = "0"
-                            span.scale7.value-scale = @bs_scale
+                            span.scale7.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Utilidad de operación'
@@ -1018,7 +1018,7 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge4 = "0"
                             span.total_p8 = "0"
-                            span.scale8.value-scale = @bs_scale
+                            span.scale8.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
@@ -1029,7 +1029,7 @@
 
                           td.full-input.total_p9.col-comp
                             span.total_p9 = "0"
-                            span.scale9.value-scale = @bs_scale
+                            span.scale9.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Resultado integral de financiamiento'
@@ -1047,7 +1047,7 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge5 = "0"
                             span.total_p10 = "0"
-                            span.scale10.value-scale = @bs_scale
+                            span.scale10.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
@@ -1058,7 +1058,7 @@
 
                           td.full-input.total_p11.col-comp
                             span.total_p11 = "0"
-                            span.scale11.value-scale = @bs_scale
+                            span.scale11.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Gasto financiero'
@@ -1076,7 +1076,7 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge6 = "0"
                             span.total_p12 = "0"
-                            span.scale12.value-scale = @bs_scale
+                            span.scale12.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
@@ -1087,7 +1087,7 @@
 
                           td.full-input.total_p13.col-comp
                             span.total_p13 = "0"
-                            span.scale13.value-scale = @bs_scale
+                            span.scale13.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Utilidad o perdida cambiaria'
@@ -1105,7 +1105,7 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge7 = "0"
                             span.total_p14 = "0"
-                            span.scale14.value-scale = @bs_scale
+                            span.scale14.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
@@ -1116,7 +1116,7 @@
 
                           td.full-input.total_p15.col-comp
                             span.total_p15 = "0"
-                            span.scale15.value-scale = @bs_scale
+                            span.scale15.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Otros gastos/ingresos'
@@ -1134,7 +1134,7 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge8 = "0"
                             span.total_p16 = "0"
-                            span.scale16.value-scale = @bs_scale
+                            span.scale16.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
@@ -1145,7 +1145,7 @@
 
                           td.full-input.total_p17.col-comp
                             span.total_p17 = "0"
-                            span.scale17.value-scale = @bs_scale
+                            span.scale17.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Utilidad antes de impuestos'
@@ -1174,7 +1174,7 @@
 
                           td.full-input.total_p19.col-comp
                             span.total_p19 = "0"
-                            span.scale19.value-scale = @bs_scale
+                            span.scale19.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'ISR'
@@ -1192,7 +1192,7 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge10 = "0"
                             span.total_p20 = "0"
-                            span.scale20.value-scale = @bs_scale
+                            span.scale20.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
@@ -1203,7 +1203,7 @@
 
                           td.full-input.total_p21.col-comp
                             span.total_p21 = "0"
-                            span.scale21.value-scale = @bs_scale
+                            span.scale21.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'PTU'
@@ -1221,7 +1221,7 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge11 = "0"
                             span.total_p22 = "0"
-                            span.scale22.value-scale = @bs_scale
+                            span.scale22.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
@@ -1232,7 +1232,7 @@
 
                           td.full-input.total_p23.col-comp
                             span.total_p23 = "0"
-                            span.scale23.value-scale = @bs_scale
+                            span.scale23.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Participacion subsidiarios'
@@ -1250,7 +1250,7 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge12 = "0"
                             span.total_p24 = "0"
-                            span.scale24.value-scale = @bs_scale
+                            span.scale24.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
@@ -1261,7 +1261,7 @@
 
                           td.full-input.total_p25.col-comp
                             span.total_p25 = "0"
-                            span.scale25.value-scale = @bs_scale
+                            span.scale25.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
                             span.text-left = 'Utilidad neta'
@@ -1279,7 +1279,7 @@
                             div.percentage-badge.blue-badge
                               span.tb-badge13 = "0"
                             span.total_p26 = "0"
-                            span.scale26.value-scale = @bs_scale
+                            span.scale26.value-scale = @ins_scale
                         tr.tr-rdata
                           - @calendar_periods_is.each do |y|
                             td.sum_input class="full-input col-#{y.id}"
@@ -1290,7 +1290,7 @@
 
                           td.full-input.total_p27.col-comp
                             span.total_p27 = "0"
-                            span.scale27.value-scale = @bs_scale
+                            span.scale27.value-scale = @ins_scale
                     - else
                       .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
                         .m-alert__icon
