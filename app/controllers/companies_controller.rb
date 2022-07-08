@@ -285,20 +285,22 @@ class CompaniesController < ApplicationController
     @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
 
-    if @company.credit_bureaus.last.bureau_report['results'].present?
-      if @company.credit_bureaus.last.bureau_report['results'][0]['response'].present?
-        @report_result = @company.credit_bureaus.last.bureau_report['results'][0]
+    if @company.credit_bureaus.present?
+      if @company.credit_bureaus.last.bureau_report['results'].present?
+        if @company.credit_bureaus.last.bureau_report['results'][0]['response'].present?
+          @report_result = @company.credit_bureaus.last.bureau_report['results'][0]
+        else
+          @report_result = @company.credit_bureaus.last.bureau_report['results'][1]
+        end
       else
-        @report_result = @company.credit_bureaus.last.bureau_report['results'][1]
+        @report_result = @company.credit_bureaus.last.bureau_report
       end
-    else
-      @report_result = @company.credit_bureaus.last.bureau_report
     end
 
     @credit_bureau = @company.credit_bureaus.last
 
     if @credit_bureau.present?
-      if @company.try(:client_type) == 'PM'
+      if @company.try(:client_type) == 'PF'
         @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
       end
       #@percentage = avg_gagement @credit_bureau
@@ -311,7 +313,7 @@ class CompaniesController < ApplicationController
     total = 0
     total_ones = 0
     if credit_bureau['bureau_report'].present?
-      credit_bureau['bureau_report']['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].pluck('HistoricoPagos').each do |credit|
+      credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].pluck('HistoricoPagos').each do |credit|
         credit.each_char do |char|
           total += 1
           if char == '1'
@@ -523,15 +525,16 @@ class CompaniesController < ApplicationController
   end
 
   def create_income_statement_cap
+    value_scale = params[:ins_request][:value_scale]
     #p '=entre'
     begin
       IncomeCalendarDetail.transaction do
         params[:b_sheet].each do |e|
           ic_detail = IncomeCalendarDetail.find_by(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], company_id: current_user.company_id)
           if ic_detail.present?
-            raise ActiveRecord::Rollback unless ic_detail.update(value: e[1][:value])
+            raise ActiveRecord::Rollback unless ic_detail.update(value: e[1][:value], value_scale: value_scale)
           else
-            raise ActiveRecord::Rollback unless IncomeCalendarDetail.new(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value], company_id: current_user.company_id).save
+            raise ActiveRecord::Rollback unless IncomeCalendarDetail.new(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value], company_id: current_user.company_id, value_scale: value_scale).save
           end
         end
       end

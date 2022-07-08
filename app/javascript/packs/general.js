@@ -55,10 +55,6 @@ $(document).on('turbolinks:load', function () {
                     type: 'GET',
                     dataType: 'json',
                     success: function (data) {
-
-                        console.log('Eventos');
-                        console.log(data);
-
                         let event = data;
                         $("#titleModalLabel").text('EDITAR EVENTO');
                         fillEventForm(event.id, event.title, event.description, event.start, event.event_type, event.location, event.url, event.user_ids,event.request_ids)
@@ -389,29 +385,28 @@ $(document).on('turbolinks:load', function () {
     });
     $("td:contains('1')").parent().addClass("one");
 
-    window.hide_show_table = function (col_name){
-        var checkbox_val=document.getElementById(col_name).value;
-        if(checkbox_val=="hide")
-        {
-            var all_col=document.getElementsByClassName(col_name);
-            for(var i=0;i<all_col.length;i++)
+    window.hide_show_table = function (col_name, table_id){
+        var checkbox_val = document.getElementById(col_name).value;
+
+        if(checkbox_val == "hide"){
+            var all_col = document.getElementsByClassName(col_name);
+            for(var i = 0;i < all_col.length; i++)
             {
                 all_col[i].style.display="none";
             }
             document.getElementById(col_name+"_head").style.display="none";
             document.getElementById(col_name).value="show";
-        }
-
-        else
-        {
-            var all_col=document.getElementsByClassName(col_name);
-            for(var i=0;i<all_col.length;i++)
+        }else{
+            var all_col = document.getElementsByClassName(col_name);
+            for(var i = 0;i < all_col.length; i++)
             {
                 all_col[i].style.display="table-cell";
             }
             document.getElementById(col_name+"_head").style.display="table-cell";
             document.getElementById(col_name).value="hide";
         }
+
+        calculate_comparative(table_id);
     };
 
 
@@ -443,6 +438,14 @@ $(document).on('turbolinks:load', function () {
 
         $('#period_selector').empty().append(array.join(''));
     });
+
+    //Tabla comparativa
+    if(document.getElementById("comparative_table_bs")){
+        calculate_comparative('comparative_table_bs');
+    }
+    window.display_table = function (table_id) {
+        calculate_comparative(table_id);
+    };
 });
 
 let readURL = (input) => {
@@ -520,7 +523,131 @@ let loadSelectPeriod = (period_type) => {
     $('#period_selector').empty().append(array.join(''));
 };
 
-function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers,eventRequests){
+function calculate_comparative(table_id){
+    //$("table#comparative_table").hide();
+    var colMax  = 0;
+    var all_col = document.getElementsByClassName('col-comp');
+    var titles  = [];
+    var noCols  = $("table#"+table_id+" tr.tr-rdata:first").children('td.sum_input').filter(function() {
+        return $(this).css('display') !== 'none';
+    }).length;
+
+    if(noCols !== 2){
+        for(var i = 0;i < all_col.length; i++)
+        {
+            all_col[i].style.display="none";
+        }
+        document.getElementById("col-comp_head_"+table_id).style.display="none";
+    }else{
+        $("table#"+table_id+" tr.tr-title").children('th.th-title').filter(function() {
+            return $(this).css('display') !== 'none';
+        }).each(function () {
+            titles.push($(this).text().split(" ")[0]);
+        });
+
+        //****Evalua si pertenecen al mismo periodo en base a la primera palabra del th***//
+        if(titles.every((val, ind, arr) => val === arr[0])){
+            if(titles[0].toLowerCase()  === 'anual'){
+                $('div.percentage-badge.blue-badge').show();
+            }else{
+                $('div.percentage-badge.blue-badge').hide();
+            }
+            for(var i = 0;i < all_col.length; i++)
+            {
+                all_col[i].style.display="table-cell";
+            }
+            document.getElementById("col-comp_head_"+table_id).style.display="table-cell";
+        }
+    }
+
+    $("table#"+table_id+" tr.tr-rdata").each(function(index, tb_row) {
+        var percent_values_array = [];
+        var max_num              = 0;
+        var min_num              = 0;
+        var percent_value        = 0;
+
+        var columns = $(tb_row).children('td.sum_input').filter(function() {
+            return $(this).css('display') !== 'none';
+        });
+        var rowTotal    = 0;
+
+        colMax = columns.length;
+
+        for (var col = 0; col < colMax; col++) {
+            if(columns.eq(col).css('display') !== 'none'){
+                var colData    = parseFloat(columns.eq(col).find('span.td-value'+index).text().replace(',', ''));
+                var colPercent = columns.eq(col).find('span.percent-value'+index).text().split(" ")[0];
+                percent_values_array.push(colPercent);
+
+                if(!isNaN(colData)){
+                    if(col === 0){
+                        rowTotal = colData;
+                    }else{
+                        rowTotal -= colData;
+                    }
+                }else{
+                    rowTotal = null;
+                    break;
+                }
+            }
+        };
+
+        max_num = Math.max(...percent_values_array);
+        min_num = Math.min(...percent_values_array);
+        percent_value = ((max_num - min_num)/min_num)*100;
+
+        if(Number.isFinite(percent_value) && percent_value){
+            $('span.percent_t'+index).text(percent_value.toFixed(2) + ' %');
+        }else{
+            $('span.percent_t'+index).text('+100 %');
+        }
+
+        if(rowTotal !== null){
+            console.log();
+
+            $('span.total_p'+index).text(rowTotal.toLocaleString());
+            $('span.percent_t'+index).show();
+            $('span.scale'+index).show();
+            $('span.total_p'+index).closest('td').removeClass( "bg-lines" );
+        }else{
+            $('span.total_p'+index).text('');
+            if(titles.length > 0){
+                if(titles[0].toLowerCase() != 'anual'){
+                    $('span.total_p'+index).closest('td').addClass( "bg-lines" );
+                }
+            }
+            $('span.scale'+index).hide();
+            $('span.percent_t'+index).hide();
+        }
+    });
+
+    var rowMax = ($("table#"+table_id+" tr.tr-rdata").length)/2;
+
+    for(var row = 0; row < rowMax; row ++){
+        var values_array  = [];
+        var max_num       = 0;
+        var min_num       = 0;
+        var percent_value = 0;
+        var rowData       = '';
+
+        for (var col = 0; col < colMax; col++) {
+            if($('span#'+table_id+'.percent-bdg'+row+'-'+col).closest('td.sum_input').css('display') !== 'none'){
+                rowData = $('span#'+table_id+'.percent-bdg'+row+'-'+col).text();
+                values_array.push(parseFloat(rowData));
+            }
+        }
+
+        max_num = Math.max(...values_array);
+        min_num = Math.min(...values_array);
+        percent_value = ((max_num - min_num)/min_num)*100;
+
+        $('span.tb-badge'+row).text(percent_value.toFixed(2) + ' %');
+    }
+
+    //$("table#comparative_table").show();
+}
+
+function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers){
     $(".modal-body #event_id").val(eventId);
     $(".modal-body #title_input").val(eventTitle);
     $(".modal-body #event_description").val(eventDesc);
@@ -534,8 +661,5 @@ function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType,
 
     validateData();
 }
-
-
-
 
 export {cascadeSelects, fillEventForm};

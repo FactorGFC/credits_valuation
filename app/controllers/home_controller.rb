@@ -86,8 +86,8 @@ class HomeController < ApplicationController
                                          main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
                                          client_type: client_type)
 
-                        #@bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
-                        @bureau_report = BuroCredito.get_report_by_id 95999#4450 60368
+                        @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
+                        # @bureau_report = BuroCredito.get_report_by_id 95999#4450 60368
 
 
                         # @bureau_report = BuroCredito.get_report_by_id 12468
@@ -237,19 +237,19 @@ class HomeController < ApplicationController
     # neighborhood = info_sat['hydra:member'][0]['address']['neighborhood']
 
     #PF
-    # rfc = "HEMG4812162Q2"
-    # address = "CLL SA CATARINA"
-    # city = "CHIHUAHUA"
-    # state = "CHI"
-    # zip_code = "31215"
-    # interior_number = ""
-    # exterior_number = "3206"
-    # municipality = "CHIHUAHUA"
-    # neighborhood = ""
-    # account_type = "PF"
-    # first_name = "GUSTAVO"
-    # first_last_name = "HERNANDEZ"
-    # second_last_name = 'MONROY'
+    rfc = "HEMG4812162Q2"
+    address = "CLL SA CATARINA"
+    city = "CHIHUAHUA"
+    state = "CHI"
+    zip_code = "31215"
+    interior_number = ""
+    exterior_number = "3206"
+    municipality = "CHIHUAHUA"
+    neighborhood = ""
+    account_type = "PF"
+    first_name = "GUSTAVO"
+    first_last_name = "HERNANDEZ"
+    second_last_name = 'MONROY'
 
     #PM
     # rfc = "GLO0605033G2"
@@ -266,18 +266,18 @@ class HomeController < ApplicationController
     # trade_name="GRUPO LOPIC SA DE CV"
 
     #PFAE
-    rfc = "COPS611102S83"
-    basic_rfc = "COPS611102"
-    address = "IGNACIO LOPEZ RAYON"
-    city = "CIUDAD CUAUHTEMOC"
-    state = "CHI"
-    zip_code = "31530"
-    interior_number = ""
-    exterior_number = "1925"
-    municipality = "CUAUHTEMOC"
-    neighborhood = "CIUDAD CUAUHTEMOC"
-    account_type = "PF"
-    trade_name="SALVADOR CORRAL PEREZ"
+    # rfc = "COPS611102S83"
+    # basic_rfc = "COPS611102"
+    # address = "IGNACIO LOPEZ RAYON"
+    # city = "CIUDAD CUAUHTEMOC"
+    # state = "CHI"
+    # zip_code = "31530"
+    # interior_number = ""
+    # exterior_number = "1925"
+    # municipality = "CUAUHTEMOC"
+    # neighborhood = "CIUDAD CUAUHTEMOC"
+    # account_type = "PF"
+    # trade_name="SALVADOR CORRAL PEREZ"
 
 
     #if info_sat['hydra:member'][0]['company'].present?
@@ -290,16 +290,16 @@ class HomeController < ApplicationController
     #  account_type = "PF"
     #end
 
-    # data = [accountType: account_type, firstName: first_name, middleName: "", rfc: rfc,
-    #         firstLastName: first_last_name, secondLastName: second_last_name, address: address, city: city,
-    #         state: state, zipCode: zip_code, exteriorNumber: exterior_number, interiorNumber: interior_number,
-    #         neighborhood: neighborhood, municipality: municipality,
-    #         nationality: "MX",phone: user_phone]
+    data = [accountType: account_type, firstName: first_name, middleName: "", rfc: rfc,
+            firstLastName: first_last_name, secondLastName: second_last_name, address: address, city: city,
+            state: state, zipCode: zip_code, exteriorNumber: exterior_number, interiorNumber: interior_number,
+            neighborhood: neighborhood, municipality: municipality,
+            nationality: "MX",phone: user_phone]
 
-    data = [accountType: account_type, tradeName: trade_name,  rfc: rfc,basicRFC: basic_rfc,
-            address: address, city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
-            interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality,
-            nationality: "MX", country: "MX"]
+    # data = [accountType: account_type, tradeName: trade_name,  rfc: rfc,basicRFC: basic_rfc,
+    #         address: address, city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
+    #         interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality,
+    #         nationality: "MX", country: "MX"]
 
 
     @buro = BuroCredito.create_client data
