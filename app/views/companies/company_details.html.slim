@@ -1891,7 +1891,7 @@ javascript:
                                         | Calificación cartera
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
                                       strong
-                                        = @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].present? ? @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].tr('0', '') : 'NA'
+                                        = @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].present? ? @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].tr('0', '') : 'N/D'
                                 - else
                                   .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
                                     .m-alert__icon
@@ -2178,7 +2178,7 @@ javascript:
                                               | Calificación de cartera
                                             - @report_result['response']['respuesta']['historia'].each do |historia|
                                               th
-                                                = number_to_currency historia['calificacioncartera']
+                                                = historia['calificacioncartera'].present? ? historia['calificacioncartera'] : 'N/D'
 
                               - else
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
