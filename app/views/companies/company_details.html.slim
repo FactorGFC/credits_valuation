@@ -2148,37 +2148,37 @@ javascript:
                                               | Vigente
                                             - @report_result['response']['respuesta']['historia'].each do |historia|
                                               th
-                                                = historia['saldoVigente']
+                                                = number_to_currency historia['saldoVigente']
                                           tr
                                             th
                                               | Vencido de 1 a 29 días
                                             - @report_result['response']['respuesta']['historia'].each do |historia|
                                               th
-                                                = historia['saldoVencidoA90Dias']
+                                                = number_to_currency historia['saldoVencidoA90Dias']
                                           tr
                                             th
                                               | Vencido de 30 a 59 días
                                             - @report_result['response']['respuesta']['historia'].each do |historia|
                                               th
-                                                = historia['saldoVencido1A29Dias']
+                                                = number_to_currency historia['saldoVencido1A29Dias']
                                           tr
                                             th
                                               | Vencido de 60 a 89 días
                                             - @report_result['response']['respuesta']['historia'].each do |historia|
                                               th
-                                                = historia['saldoVencido30A59Dias']
+                                                = number_to_currency historia['saldoVencido30A59Dias']
                                           tr
                                             th
                                               | Vencido de a mas de 89 días
                                             - @report_result['response']['respuesta']['historia'].each do |historia|
                                               th
-                                                = historia['saldoVencido60A89Dias']
+                                                = number_to_currency historia['saldoVencido60A89Dias']
                                           tr
                                             th
                                               | Calificación de cartera
                                             - @report_result['response']['respuesta']['historia'].each do |historia|
                                               th
-                                                = historia['calificacioncartera']
+                                                = number_to_currency historia['calificacioncartera']
 
                               - else
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
