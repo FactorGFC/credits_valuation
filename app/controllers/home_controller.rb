@@ -30,6 +30,8 @@ class HomeController < ApplicationController
 
   def create_sat_user
     @user = current_user
+
+
     @company = @user.company
 
     if params[:rfc].present? && params[:cer].nil? && params[:key].nil?
@@ -40,6 +42,7 @@ class HomeController < ApplicationController
           "rfc": params[:rfc],
           "password": params[:passsword_ciec]
       }
+
     elsif params[:cer].present? && params[:key].present?
       params_ciec = false
       cer_base_64 = Base64.encode64(File::read(params[:cer]))
@@ -58,7 +61,9 @@ class HomeController < ApplicationController
     respond_to do |format|
       if params_ciec
         if rfc_valid
+
           if @sat['hydra:title'] != 'An error occurred'
+
             @info = SatW.get_tax_status @user.try(:company).try(:rfc)
 
             if @info['hydra:member'][0]['company'].present?
@@ -149,8 +154,14 @@ class HomeController < ApplicationController
       else
         if @sat['hydra:title'] != 'An error occurred'
           @info = SatW.get_tax_status @user.try(:company).try(:rfc)
+
           if @info['@type'] != 'hydra:Error'
-            @buro = create_buro @info
+            if @info['hydra:member'][0]['company'].present?
+              client_type = "PM"
+            else
+              client_type = "PF"
+            end
+            @buro = create_buro @info,@user.try(:phone)
             if @buro
               @credential = SatW.get_credential @sat['id']
 
@@ -225,31 +236,30 @@ class HomeController < ApplicationController
 
   def create_buro info_sat, user_phone = nil
 
-    # rfc = info_sat['hydra:member'][0]['rfc']
-    # email = info_sat['hydra:member'][0]['email']
-    # address = info_sat['hydra:member'][0]['address']['streetName']
-    # city = info_sat['hydra:member'][0]['address']['locality']
-    # state = get_state info_sat['hydra:member'][0]['address']['state']
-    # zip_code = info_sat['hydra:member'][0]['address']['postalCode']
-    # interior_number = info_sat['hydra:member'][0]['address']['buildingNumber']
-    # exterior_number = info_sat['hydra:member'][0]['address']['streetNumber']
-    # municipality = info_sat['hydra:member'][0]['address']['municipality']
-    # neighborhood = info_sat['hydra:member'][0]['address']['neighborhood']
+    rfc = info_sat['hydra:member'][0]['rfc']
+    address = info_sat['hydra:member'][0]['address']['streetName']
+    city = info_sat['hydra:member'][0]['address']['locality']
+    state = get_state info_sat['hydra:member'][0]['address']['state']
+    zip_code = info_sat['hydra:member'][0]['address']['postalCode']
+    interior_number = info_sat['hydra:member'][0]['address']['buildingNumber']
+    exterior_number = info_sat['hydra:member'][0]['address']['streetNumber']
+    municipality = info_sat['hydra:member'][0]['address']['municipality']
+    neighborhood = info_sat['hydra:member'][0]['address']['neighborhood']
 
     #PF
-    rfc = "HEMG4812162Q2"
-    address = "CLL SA CATARINA"
-    city = "CHIHUAHUA"
-    state = "CHI"
-    zip_code = "31215"
-    interior_number = ""
-    exterior_number = "3206"
-    municipality = "CHIHUAHUA"
-    neighborhood = ""
-    account_type = "PF"
-    first_name = "GUSTAVO"
-    first_last_name = "HERNANDEZ"
-    second_last_name = 'MONROY'
+    # rfc = "HEMG4812162Q2"
+    # address = "CLL SA CATARINA"
+    # city = "CHIHUAHUA"
+    # state = "CHI"
+    # zip_code = "31215"
+    # interior_number = ""
+    # exterior_number = "3206"
+    # municipality = "CHIHUAHUA"
+    # neighborhood = ""
+    # account_type = "PF"
+    # first_name = "GUSTAVO"
+    # first_last_name = "HERNANDEZ"
+    # second_last_name = 'MONROY'
 
     #PM
     # rfc = "GLO0605033G2"
@@ -280,30 +290,26 @@ class HomeController < ApplicationController
     # trade_name="SALVADOR CORRAL PEREZ"
 
 
-    #if info_sat['hydra:member'][0]['company'].present?
-    #  account_type = "PM"
-    #  trade_name = ""
-    #else
-    #  first_name = info_sat['hydra:member'][0]['person']['firstName']
-    #  first_last_name = info_sat['hydra:member'][0]['person']['middleName']
-    #  second_last_name = info_sat['hydra:member'][0]['person']['lastName']
-    #  account_type = "PF"
-    #end
-
-    data = [accountType: account_type, firstName: first_name, middleName: "", rfc: rfc,
-            firstLastName: first_last_name, secondLastName: second_last_name, address: address, city: city,
-            state: state, zipCode: zip_code, exteriorNumber: exterior_number, interiorNumber: interior_number,
-            neighborhood: neighborhood, municipality: municipality,
-            nationality: "MX",phone: user_phone]
-
-    # data = [accountType: account_type, tradeName: trade_name,  rfc: rfc,basicRFC: basic_rfc,
-    #         address: address, city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
-    #         interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality,
-    #         nationality: "MX", country: "MX"]
-
+    if info_sat['hydra:member'][0]['company'].present?
+     account_type = "PM"
+     trade_name = info_sat['hydra:member'][0]['company']['tradeName']
+     basic_rfc = rfc.first(9)
+     data = [accountType: account_type, tradeName: trade_name,  rfc: rfc, basicRFC: basic_rfc, address: address,
+             city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
+             interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality, nationality: "MX",
+             country: "MX"]
+    else
+     first_name = info_sat['hydra:member'][0]['person']['firstName']
+     first_last_name = info_sat['hydra:member'][0]['person']['middleName']
+     second_last_name = info_sat['hydra:member'][0]['person']['lastName']
+     account_type = "PF"
+     data = [accountType: account_type, firstName: first_name, middleName: "", rfc: rfc, firstLastName: first_last_name,
+             secondLastName: second_last_name, address: address, city: city, state: state, zipCode: zip_code,
+             exteriorNumber: exterior_number, interiorNumber: interior_number, neighborhood: neighborhood,
+             municipality: municipality, nationality: "MX",phone: user_phone]
+    end
 
     @buro = BuroCredito.create_client data
-
 
     if @buro['result'].present?
       response = @buro['result']
@@ -317,67 +323,67 @@ class HomeController < ApplicationController
   end
 
   def get_state state
-    if state == 'Aguascalientes' || state == 'aguascalientes'
+    if state == 'Aguascalientes' || state == 'aguascalientes' || state == 'AGUASCALIENTES'
       new_state = 'AGS'
-    elsif state == 'Baja California Norte' || state == 'baja california norte'
+    elsif state == 'Baja California Norte' || state == 'baja california norte' || state == 'BAJA CALIFORNIA NORTE'
       new_state = 'BCN'
-    elsif state == 'Baja California Sur' || state == 'baja california sur'
+    elsif state == 'Baja California Sur' || state == 'baja california sur' || state == 'BAJA CALIFORNIA SUR'
       new_state = 'BCS'
-    elsif state == 'Campeche' || state == 'campeche'
+    elsif state == 'Campeche' || state == 'campeche' || state == 'CAMPECHE'
       new_state = 'CAM'
-    elsif state == 'Chiapas' || state == 'chiapas'
+    elsif state == 'Chiapas' || state == 'chiapas' || state == 'CHIAPAS'
       new_state = 'CHS'
-    elsif state == 'Chihuahua' || state == 'chihuahua'
+    elsif state == 'Chihuahua' || state == 'chihuahua' || state == 'CHIHUAHUA'
       new_state = 'CHI'
-    elsif state == 'Coahuila' || state == 'coahuila'
+    elsif state == 'Coahuila' || state == 'coahuila' || state == 'COAHUILA'
       new_state = 'COA'
-    elsif state == 'Colima' || state == 'colima'
+    elsif state == 'Colima' || state == 'colima' || state == 'COLIMA'
       new_state = 'COL'
-    elsif state == 'Durango' || state == 'durango'
+    elsif state == 'Durango' || state == 'durango' || state == 'DURANGO'
       new_state = 'DGO'
-    elsif state == 'Estado de Mexico' || state == 'estado de mexico' || state == 'Estado De Mexico'
+    elsif state == 'Estado de Mexico' || state == 'estado de mexico' || state == 'Estado De Mexico' || state == 'ESTADO DE MEXICO'
       new_state = 'EM'
-    elsif state == 'Guanajuato' || state == 'guanajuato'
+    elsif state == 'Guanajuato' || state == 'guanajuato' || state == 'GUANAJUATO'
       new_state = 'GTO'
-    elsif state == 'Guerrero' || state == 'guerrero'
+    elsif state == 'Guerrero' || state == 'guerrero' || state == 'GUERRERO'
       new_state = 'GRO'
-    elsif state == 'Hidalgo' || state == 'hidalgo'
+    elsif state == 'Hidalgo' || state == 'hidalgo' || state == 'HIDALGO'
       new_state = 'HGO'
-    elsif state == 'Jalisco' || state == 'jalisco'
+    elsif state == 'Jalisco' || state == 'jalisco' || state == 'JALISCO'
       new_state = 'JAL'
-    elsif state == 'Michoacan' || state == 'michoacan'
+    elsif state == 'Michoacan' || state == 'michoacan' || state == 'MICHOACAN'
       new_state = 'MICH'
-    elsif state == 'Morelia' || state == 'morelia'
+    elsif state == 'Morelia' || state == 'morelia' || state == 'MORELIA'
       new_state = 'MOR'
-    elsif state == 'Nayarit' || state == 'nayarit'
+    elsif state == 'Nayarit' || state == 'nayarit' || state == 'NAYARIT'
       new_state = 'NAY'
-    elsif state == 'Nuevo Leon' || state == 'nuevo leon'
+    elsif state == 'Nuevo Leon' || state == 'nuevo leon' || state == 'NUEVO LEON'
       new_state = 'NL'
-    elsif state == 'Oaxaca' || state == 'oaxaca'
+    elsif state == 'Oaxaca' || state == 'oaxaca' || state == 'OAXACA'
       new_state = 'OAX'
-    elsif state == 'Puebla' || state == 'puebla'
+    elsif state == 'Puebla' || state == 'puebla' || state == 'PUEBLA'
       new_state = 'PUE'
-    elsif state == 'Quintana Roo' || state == 'quintana roo'
+    elsif state == 'Quintana Roo' || state == 'quintana roo' || state == 'QUINTANA ROO'
       new_state = 'QRO'
-    elsif state == 'Queretaro' || state == 'queretaro'
+    elsif state == 'Queretaro' || state == 'queretaro' || state == 'QUERETARO'
       new_state = 'QR'
-    elsif state == 'San Luis Potosi' || state == 'san luis potosi'
+    elsif state == 'San Luis Potosi' || state == 'san luis potosi' || state == 'SAN LUIS POTOSI'
       new_state = 'SLP'
-    elsif state == 'Sinaloa' || state == 'sinaloa'
+    elsif state == 'Sinaloa' || state == 'sinaloa' || state == 'SINALOA'
       new_state = 'SIN'
-    elsif state == 'Sonora' || state == 'sonora'
+    elsif state == 'Sonora' || state == 'sonora' || state == 'SONORA'
       new_state = 'SON'
-    elsif state == 'Tabasco' || state == 'tabasco'
+    elsif state == 'Tabasco' || state == 'tabasco' || state == 'TABASCO'
       new_state = 'TAB'
-    elsif state == 'Tamaulipas' || state == 'tamaulipas'
+    elsif state == 'Tamaulipas' || state == 'tamaulipas' || state == 'TAMAULIPAS'
       new_state = 'TAM'
-    elsif state == 'Tlaxcala' || state == 'tlaxcala'
+    elsif state == 'Tlaxcala' || state == 'tlaxcala' || state == 'TLAXCALA'
       new_state = 'TLAX'
-    elsif state == 'Veracruz' || state == 'veracruz'
+    elsif state == 'Veracruz' || state == 'veracruz' || state == 'VERACRUZ'
       new_state = 'VER'
-    elsif state == 'Yucatan' || state == 'yucatan'
+    elsif state == 'Yucatan' || state == 'yucatan' || state == 'YUCATAN'
       new_state = 'YUC'
-    elsif state == 'Zacatecas' || state == 'zacatecas'
+    elsif state == 'Zacatecas' || state == 'zacatecas' || state == 'ZACATECAS'
       new_state = 'ZAC'
     end
 
@@ -444,17 +450,38 @@ class HomeController < ApplicationController
   def create_financial_institutions credit_bureau, company_id
     response = false
     if credit_bureau['results'].present?
-      if credit_bureau['results'][1]['response'].present?
+      if credit_bureau['results'][0]['response'].present?
 
-        credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
+        if credit_bureau['results'][0]['response'].present?
 
-          if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
-                                         type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
-            response = true
-          else
-            response = false
+          if credit_bureau['results'][0]['response']['return'].present?
+            credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
 
+              if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
+                                             type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
+                response = true
+              else
+                response = false
+
+              end
+            end
           end
+        else
+          if credit_bureau['results'][1]['response']['return'].presnet?
+
+            credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
+
+              if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
+                                             type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
+                response = true
+              else
+                response = false
+
+              end
+
+            end
+          end
+
 
         end
       end

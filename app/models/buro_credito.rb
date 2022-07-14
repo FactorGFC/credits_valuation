@@ -60,7 +60,7 @@ class BuroCredito < ApplicationRecord
   end
 
 
-  def self.get_buro_report id,info_sat = nil
+  def self.get_buro_report id, info_sat = nil
     # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/profiles/#{id}/query")
     # token = ENV['TOKEN_BURO_DEVELOP']
 
@@ -71,21 +71,16 @@ class BuroCredito < ApplicationRecord
     account_type_pm_b = false
 
 
-    # if info_sat['hydra:member'][0]['company'].present?
-     # account_type = "PM"
-    # account_type_pm_b = true
-    #else
-    #  first_name = info_sat['hydra:member'][0]['person']['firstName']
-    #  first_last_name = info_sat['hydra:member'][0]['person']['middleName']
-    #  second_last_name = info_sat['hydra:member'][0]['person']['lastName']
-    #  account_type = "PF"
-    # account_type_pf_b = true
-    #end
+    if info_sat['hydra:member'][0]['company'].present?
+    account_type_pm_b = true
+    else
+    account_type_pf_b = true
+    end
 
     
     data = {
-        bureauPM: false,
-        bureauPF: true,
+        bureauPM: account_type_pm_b,
+        bureauPF: account_type_pf_b,
         satBlackList: false,
         satRFC: true
     }

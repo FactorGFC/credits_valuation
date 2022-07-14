@@ -1744,7 +1744,7 @@
                                     strong
                                       | Aún no se encuentran consultas.
 
-                      - elsif @credit_bureau.present? and @company.try(:client_type).eql?('PM') || @credit_bureau.present? and @company.try(:client_type).eql?('PFAE')
+                      - elsif (@credit_bureau.present? and @company.try(:client_type).eql?('PM')) || (@credit_bureau.present? and @company.try(:client_type).eql?('PFAE'))
                         .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                           .m-demo__preview
                             h3.m-portlet__head-text
@@ -1757,7 +1757,7 @@
                                         | Calificación cartera
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
                                       strong
-                                        = @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].tr('0', '')
+                                        = @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].present? ? @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].tr('0', '') : 'NA'
                                 - else
                                   .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
                                     .m-alert__icon
@@ -2101,14 +2101,6 @@
                           .m-alert__text
                             strong
                               | Aún no se le ha asignado el buro de crédito.
-
-
-
-
-
-
-
-
 
           .tab-pane id="info_sat"
             .col-xl-12
