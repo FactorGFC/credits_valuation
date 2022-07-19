@@ -285,6 +285,29 @@ class CompaniesController < ApplicationController
     @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
 
+    if @company.try(:info_company).present?
+      if @company.try(:info_company)['hydra:member'].present?
+        if @company.try(:info_company)['hydra:member'][0]['company'].present?
+          @company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+        else
+          @company_name = @company.try(:name)
+        end
+        if @company.try(:info_company)['hydra:member'][0]['address'].present?
+          @company_address = @company.try(:info_company)['hydra:member'][0]['address']['streetName'] +
+              @company.try(:info_company)['hydra:member'][0]['address']['streetNumber'] + ', COL. ' + @company.try(:info_company)['hydra:member'][0]['address']['neighborhood']
+          @company_state_municipality = @company.try(:info_company)['hydra:member'][0]['address']['state'] + ' / ' +
+              @company.try(:info_company)['hydra:member'][0]['address']['municipality']
+        else
+          @company_address = @company.try(:address)
+        end
+      else
+        @company_name = @company.try(:name)
+      end
+    else
+      @company_name = @company.try(:name)
+    end
+
+
     if @company.credit_bureaus.present?
       if @company.credit_bureaus.last.bureau_report['results'].present?
         if @company.credit_bureaus.last.bureau_report['results'][0]['response'].present?

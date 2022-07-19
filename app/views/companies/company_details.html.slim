@@ -148,12 +148,14 @@ javascript:
         i.fa.fa-id-card.fa-4x style="position: relative;"
       .d-flex.flex-column.col-md-12.mb-2
         .col-md-12
-          span.port-title = @company.name
+          span.port-title = @company_name
           span = @company.rfc
       .d-flex.col-md-12
         .col-md-6
+          span.port-subtitle = 'Estado / Municipio'
+          span = @company_state_municipality
           span.port-subtitle = 'Dirección'
-          span = @company.address
+          span = @company_address
           span.port-subtitle = 'Estatus'
           span.status-pill class="#{render_status_by_class(@company.try(:status_company).try(:key))}"
             = @company.try(:status_company).present? ? @company.try(:status_company).try(:name): 'PENDIENTE DE REVISIÓN X FACTOR'
