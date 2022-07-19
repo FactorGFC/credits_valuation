@@ -161,10 +161,11 @@ module CompaniesHelper
     first_month = account['FechaMasAntiguaHistoricoPagos'][2,2]
     if account['FechaMasRecienteHistoricoPagos'].present?
       last_date = account['FechaMasRecienteHistoricoPagos'].last(4).to_i
+      last_month = account['FechaMasRecienteHistoricoPagos'][2,2]
     else
       last_date = DateTime.now.year
+      last_month = DateTime.now.month
     end
-    last_month = account['FechaMasRecienteHistoricoPagos'][2,2]
     total_year = (last_date - first_date) + 1
 
     payment_history = account['HistoricoPagos']
