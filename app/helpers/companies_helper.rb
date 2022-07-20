@@ -478,11 +478,17 @@ module CompaniesHelper
 
 
   def get_pm_birthdate date
-    day = date.first(2)
-    month = get_month date[2,2]
-    year = date.last(4)
-    
-    return day + '-' + month + '-' + year
+    if date.present?
+
+      day = date.first(2)
+      month = get_month date[2,2]
+      year = date.last(4)
+      new_date = day + '-' + month + '-' + year
+    else
+      new_date = 'N/D'
+    end
+
+    return new_date
   end
 
   def get_month month
