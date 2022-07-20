@@ -2384,7 +2384,7 @@ javascript:
                                   | Referencias de calles
                               .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
                                 - @company.info_company['hydra:member'].try(:first)['address']['streetReferences'].each do |references|
-                                  = references + ' '
+                                  = references.to_s + ' '
                               .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                 strong
                                   | Número exterior
