@@ -58,6 +58,13 @@ class HomeController < ApplicationController
 
     @sat = SatW.create_sat_ws data
 
+
+    p "@sat ------------------------------------------------------------------"
+    p @sat
+
+    Rails.logger.info "@sat looogessrr ------------------------------------------------"
+    Rails.logger.info @sat
+
     respond_to do |format|
       if params_ciec
         if rfc_valid
