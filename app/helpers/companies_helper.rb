@@ -161,6 +161,7 @@ module CompaniesHelper
 
     Rails.logger.info "account logger ------------------------------------------------------------"
     Rails.logger.info account
+    array = {}
 
     if account['FechaMasAntiguaHistoricoPagos'].present?
 
@@ -179,7 +180,7 @@ module CompaniesHelper
 
       months = (1..12).to_a
 
-      array = {}
+
 
       new_date = first_date
       total_year.times do |year|
@@ -221,8 +222,8 @@ module CompaniesHelper
 
       end
 
-      return array
     end
+    return array
 
   end
 
