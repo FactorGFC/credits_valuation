@@ -156,6 +156,11 @@ module CompaniesHelper
   end
 
   def get_history_payments account
+    p "account ------------------------------------------------------------"
+    p account
+
+    Rails.logger.info "account logger ------------------------------------------------------------"
+    Rails.logger.info account
 
     first_date = account['FechaMasAntiguaHistoricoPagos'].last(4).to_i
     first_month = account['FechaMasAntiguaHistoricoPagos'][2,2]
