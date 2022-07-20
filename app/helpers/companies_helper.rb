@@ -162,64 +162,67 @@ module CompaniesHelper
     Rails.logger.info "account logger ------------------------------------------------------------"
     Rails.logger.info account
 
-    first_date = account['FechaMasAntiguaHistoricoPagos'].last(4).to_i
-    first_month = account['FechaMasAntiguaHistoricoPagos'][2,2]
-    if account['FechaMasRecienteHistoricoPagos'].present?
-      last_date = account['FechaMasRecienteHistoricoPagos'].last(4).to_i
-      last_month = account['FechaMasRecienteHistoricoPagos'][2,2]
-    else
-      last_date = DateTime.now.year
-      last_month = DateTime.now.month
-    end
-    total_year = (last_date - first_date) + 1
+    if account['FechaMasAntiguaHistoricoPagos'].present?
 
-    payment_history = account['HistoricoPagos']
+      first_date = account['FechaMasAntiguaHistoricoPagos'].last(4).to_i
+      first_month = account['FechaMasAntiguaHistoricoPagos'][2,2]
+      if account['FechaMasRecienteHistoricoPagos'].present?
+        last_date = account['FechaMasRecienteHistoricoPagos'].last(4).to_i
+        last_month = account['FechaMasRecienteHistoricoPagos'][2,2]
+      else
+        last_date = DateTime.now.year
+        last_month = DateTime.now.month
+      end
+      total_year = (last_date - first_date) + 1
 
-    months = (1..12).to_a
+      payment_history = account['HistoricoPagos']
 
-    array = {}
+      months = (1..12).to_a
 
-    new_date = first_date
-    total_year.times do |year|
-      array["#{new_date}"] = []
+      array = {}
 
-      months.each do |month|
+      new_date = first_date
+      total_year.times do |year|
+        array["#{new_date}"] = []
+
+        months.each do |month|
 
 
-        if new_date == first_date && month <= first_month.to_i
-          array["#{new_date}"].push({"value": 0})
-        elsif new_date == first_date && month >= first_month.to_i
-          if payment_history[0].present?
-            array["#{new_date}"].push({"value": payment_history[0]})
-            payment_history.slice!(0)
-          else
+          if new_date == first_date && month <= first_month.to_i
             array["#{new_date}"].push({"value": 0})
+          elsif new_date == first_date && month >= first_month.to_i
+            if payment_history[0].present?
+              array["#{new_date}"].push({"value": payment_history[0]})
+              payment_history.slice!(0)
+            else
+              array["#{new_date}"].push({"value": 0})
 
-          end
+            end
 
-        elsif new_date == last_month && month <= last_month.to_i
-          if payment_history[0].present?
-            array["#{new_date}"].push({"value": payment_history[0]})
-            payment_history.slice!(0)
+          elsif new_date == last_month && month <= last_month.to_i
+            if payment_history[0].present?
+              array["#{new_date}"].push({"value": payment_history[0]})
+              payment_history.slice!(0)
+            else
+              array["#{new_date}"].push({"value": 0})
+            end
           else
-            array["#{new_date}"].push({"value": 0})
-          end
-        else
-          if payment_history[0].present?
-            array["#{new_date}"].push({"value": payment_history[0]})
-            payment_history.slice!(0)
-          else
-            array["#{new_date}"].push({"value": 0})
+            if payment_history[0].present?
+              array["#{new_date}"].push({"value": payment_history[0]})
+              payment_history.slice!(0)
+            else
+              array["#{new_date}"].push({"value": 0})
+            end
           end
         end
+
+        new_date = new_date.to_i + 1
+
+
       end
 
-      new_date = new_date.to_i + 1
-
-
+      return array
     end
-
-    return array
 
   end
 
