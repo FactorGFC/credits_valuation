@@ -54,7 +54,10 @@ javascript:
 
                 for (var col = 0; col < colMax; col++) {
                     if (columns.eq(col).css('display') !== 'none') {
-                        var colData = parseFloat(columns.eq(col).find('span.td-value' + index).text().replace(',', ''));
+                        var colData = parseFloat(columns.eq(col).find('span.td-value' + index).text());
+
+                        console.log(colData);
+
                         var colPercent = columns.eq(col).find('span.percent-value' + index).text().split(" ")[0];
                         percent_values_array.push(colPercent);
                         if (!isNaN(colData)) {
