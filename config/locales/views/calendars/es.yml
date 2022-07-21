@@ -6,6 +6,7 @@ es:
       period_type: Tipo de periodo
       year: Año
       period: Periodo
+      inflation: Inflación
       count_table:
         one: 1 Periodo de calendario
         other: '%{count} Periodos de calendario'

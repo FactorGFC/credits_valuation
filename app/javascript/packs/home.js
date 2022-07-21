@@ -38,6 +38,24 @@ $(document).on('turbolinks:load', function () {
 
     });
 
+    /*Modal para cambiar estatus de captura*/
+    $(document).on("click", ".open-modal-cstatus", function () {
+        var companyId           = $(this).data('id');
+        var captureType         = $(this).data('type');
+
+        console.log(companyId)
+        console.log(captureType)
+
+        if(captureType === 'balance_sheet'){
+            $("h5#titleModalLabel").text('Habilitar captura de Balance Financiero' );
+        }else{
+            $("h5#titleModalLabel").text('Habilitar captura de Estado de Resultados' );
+        }
+
+        $(".modal-body #companyId").val(companyId);
+        $(".modal-body #captureType").val(captureType);
+    });
+
     /*Modal en request comments*/
     $(document).on("click", ".open-modal2", function () {
         var requestId        = $(this).data('request');

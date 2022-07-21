@@ -38,6 +38,7 @@
                   th = t('.period_type')
                   th = t('.year')
                   th = t('.period')
+                  th = t('.inflation')
                   th.actions-3.text-center = t 'helpers.actions'
               tbody
                 - @calendars.each do |calendar|
@@ -48,6 +49,8 @@
                     td = calendar.year.split('_').map(&:capitalize).join(' ')
 
                     td = calendar.period ? calendar.period.split('_').map(&:capitalize).join(' ') : ''
+
+                    td = calendar.inflation
 
                     td.actions-3.text-center
                       = link_item_block edit_calendar_path(calendar), data: {title: (t('helpers.show_and_edit')), placement: 'top',

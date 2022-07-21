@@ -590,6 +590,11 @@ function calculate_comparative(table_id){
                     rowTotal = null;
                     break;
                 }
+                
+                console.log('colData');
+                console.log(colData);
+                console.log('rowTotal');
+                console.log(rowTotal);
             }
         };
 
@@ -604,7 +609,6 @@ function calculate_comparative(table_id){
         }
 
         if(rowTotal !== null){
-            console.log();
 
             $('span.total_p'+index).text(rowTotal.toLocaleString());
             $('span.percent_t'+index).show();

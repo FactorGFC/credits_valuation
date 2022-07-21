@@ -22,6 +22,7 @@ module CompaniesHelper
   def balance_calendar_detail_value(company_id, calendar, number_key, value_scale)
     balance_cd = BalanceCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, balance_concept_key: number_key).try(:first).try(:value)
     if balance_cd.present?
+=begin
       if value_scale === 'millones'
         return (balance_cd/1000000).round(2)
       elsif value_scale === 'miles'
@@ -29,6 +30,8 @@ module CompaniesHelper
       else
         return balance_cd.round(2)
       end
+=end
+      return balance_cd.round(2)
     else
       return 0
     end
@@ -62,6 +65,7 @@ module CompaniesHelper
   def income_calendar_detail_value(company_id, calendar, number_key, value_scale)
     income_cs = IncomeCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, income_statement_concept_key: number_key).try(:first).try(:value)
     if income_cs.present?
+=begin
       if value_scale === 'millones'
         return (income_cs/1000000).round(2)
       elsif value_scale === 'miles'
@@ -69,6 +73,8 @@ module CompaniesHelper
       else
         return income_cs.round(2)
       end
+=end
+      return income_cs.round(2)
     else
       return 0
     end
@@ -114,12 +120,556 @@ module CompaniesHelper
   #Calcula sumatoria de valores capturados
   def bs_capture_sum company_id, bs_keys_array, calendar_id, value_scale
     total = BalanceCalendarDetail.where(company_id: company_id, balance_concept_key: bs_keys_array, calendar_id: calendar_id).sum(:value)
+=begin
     if value_scale === 'millones'
       total/1000000
     elsif value_scale === 'miles'
       total/1000
     else
       total
+    end
+=end
+    return total.round(2)
+  end
+
+  #Calcula sumatoria para activo fijo
+  def bs_activo_fijo company_id, bs_keys_array, calendar_id, value_scale
+    total = BalanceCalendarDetail.where(company_id: company_id, balance_concept_key: bs_keys_array, calendar_id: calendar_id).sum(:value)
+    depreciacion = BalanceCalendarDetail.where(company_id: company_id, balance_concept_key: 7, calendar_id: calendar_id).first.try(:value)
+=begin
+    if value_scale === 'millones'
+      total/1000000
+    elsif value_scale === 'miles'
+      total/1000
+    else
+      total
+    end
+=end
+
+    return ((total.nil? ? 0 : total)-(depreciacion.nil? ? 0 : total)).round(2)
+  end
+
+  #Calcula sumatoria para activo fijo
+  def bs_activo_fijo_sat company_id, bs_keys_array, calendar, value_scale
+    total = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: bs_keys_array, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f)
+    depreciacion = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: 7, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f)
+=begin
+    if value_scale === 'millones'
+      total/1000000
+    elsif value_scale === 'miles'
+      total/1000
+    else
+      total
+    end
+=end
+    return (total-depreciacion).round(2)
+  end
+
+  #Operacion de prueba para razónes fiscales
+  def calcular_crecimiento_ventas period, income_year1, income_year0, inflation, income_scale
+    if income_year0 != 0 and income_year0
+      #Año 1 es referente al año del row actual, el 0 es del año anterior
+      if period == 'anual'
+        months = 12
+      elsif period === 'trimestral'
+        months = 3
+      else
+        months = 1
+      end
+
+      if income_scale === 'millones'
+        income_year1 = income_year1*1000000
+        income_year0 = income_year0*1000000
+      elsif income_scale === 'miles'
+        income_year1 = income_year1*1000
+        income_year0 = income_year0*1000
+      else
+        income_year1 = income_year1
+        income_year0 = income_year0
+      end
+
+      if income_year0.nil?
+        value = 0.0
+      else
+        if inflation.present?
+          value = ((income_year1*(12/months))/ (income_year0*(1+(inflation/100))))-1
+        else
+          value = ((income_year1*(12/months))/ income_year0 )-1
+        end
+        value = 0 if value.nan?
+      end
+
+      return (value*100).round(1)
+    else
+      return 0
+    end
+  end
+
+  def calcular_rotacion_activos period, income_year1, total_active1, total_active0, income_scale, balance_scale
+    if total_active0
+      #Año 1 es referente al año del row actual, el 0 es del año anterior
+      if period == 'anual'
+        months = 12
+      elsif period === 'trimestral'
+        months = 3
+      else
+        months = 1
+      end
+
+      if income_scale === 'millones'
+        income_year1 = income_year1*1000000
+      elsif income_scale === 'miles'
+        income_year1 = income_year1*1000
+      else
+        income_year1 = income_year1
+      end
+
+      if balance_scale === 'millones'
+        total_active1 = total_active1*1000000
+        total_active0 = total_active0*1000000
+      elsif balance_scale === 'miles'
+        total_active1 = total_active1*1000
+        total_active0 = total_active0*1000
+      else
+        total_active1 = total_active1
+        total_active0 = total_active0
+      end
+
+      value = ((income_year1/months)*12)/((total_active1+total_active0)/2)
+      return value.round(2)
+    else
+      return 0
+    end
+  end
+
+  def calcular_margen_operativo total_active, gross_profit, income_scale, balance_scale
+    if total_active and total_active != 0
+      if income_scale === 'millones'
+        gross_profit = gross_profit*1000000
+      elsif income_scale === 'miles'
+        gross_profit = gross_profit*1000
+      else
+        gross_profit = gross_profit
+      end
+
+      if balance_scale === 'millones'
+        total_active = total_active*1000000
+      elsif balance_scale === 'miles'
+        total_active = total_active*1000
+      else
+        total_active = total_active
+      end
+
+      value = total_active > 0 ? gross_profit/total_active : 0
+      return (value*100).round(1)
+    else
+      return 0.0
+    end
+  end
+
+  def calcular_rentabilidad_base_capital period, net_profit, total_capital0, total_capital1, income_scale, balance_scale
+    if total_capital0
+      #1 es referente al año del row actual, el 0 es del año anterior
+      if period == 'anual'
+        months = 12
+      elsif period === 'trimestral'
+        months = 3
+      else
+        months = 1
+      end
+
+      if income_scale === 'millones'
+        net_profit = net_profit*1000000
+      elsif income_scale === 'miles'
+        net_profit = net_profit*1000
+      else
+        net_profit = net_profit
+      end
+
+      if balance_scale === 'millones'
+        total_capital0 = total_capital0*1000000
+        total_capital1 = total_capital1*1000000
+      elsif balance_scale === 'miles'
+        total_capital0 = total_capital0*1000
+        total_capital1 = total_capital1*1000
+      else
+        total_capital0 = total_capital0
+        total_capital1 = total_capital1
+      end
+
+      value = ((net_profit/months)*12)/((total_capital0+total_capital1)/2)
+      return (value*100).round(1)
+    else
+      return 0
+    end
+  end
+
+  def calcular_margen_neto period, net_profit, total_active, income_scale, balance_scale
+    if total_active != 0
+      #1 es referente al año del row actual, el 0 es del año anterior
+      if period == 'anual'
+        months = 12
+      elsif period === 'trimestral'
+        months = 3
+      else
+        months = 1
+      end
+
+      if income_scale === 'millones'
+        net_profit = net_profit*1000000
+      elsif income_scale === 'miles'
+        net_profit = net_profit*1000
+      else
+        net_profit = net_profit
+      end
+
+      if balance_scale === 'millones'
+        total_active = total_active*1000000
+      elsif balance_scale === 'miles'
+        total_active = total_active*1000
+      else
+        total_active = total_active
+      end
+
+      value = (net_profit/total_active)
+      return (value*100).round(1)
+    else
+      return 0
+    end
+  end
+
+  def calcular_razon_circulante period, activo_circulante, pasivo_circ, income_scale, balance_scale
+    if pasivo_circ != 0
+      #pasivo_circ se está obteniento del pasivo total
+      if balance_scale === 'millones'
+        activo_circulante = activo_circulante*1000000
+        pasivo_circ = pasivo_circ*1000000
+      elsif balance_scale === 'miles'
+        activo_circulante = activo_circulante*1000
+        pasivo_circ = pasivo_circ*1000
+      else
+        activo_circulante = activo_circulante
+        pasivo_circ = pasivo_circ
+      end
+
+      value = activo_circulante/pasivo_circ
+      return (value).round(2)
+    else
+      return 0
+    end
+  end
+
+  def calcular_prueba_acido period, activo_circulante, pasivo_circ, inventarios, income_scale, balance_scale
+    if pasivo_circ != 0
+      #pasivo_circ se está obteniento del pasivo total
+      if balance_scale === 'millones'
+        activo_circulante = activo_circulante*1000000
+        pasivo_circ = pasivo_circ*1000000
+        inventarios = inventarios*1000000
+      elsif balance_scale === 'miles'
+        activo_circulante = activo_circulante*1000
+        pasivo_circ = pasivo_circ*1000
+        inventarios = inventarios*1000
+      else
+        activo_circulante = activo_circulante
+        pasivo_circ = pasivo_circ
+        inventarios = inventarios
+      end
+
+      value = (activo_circulante-inventarios)/pasivo_circ
+      return (value).round(2)
+    else
+      return 0
+    end
+  end
+
+  def calcular_pasTotal_capContable total_pasive, total_capital, balance_scale
+    if total_pasive != 0
+      if balance_scale === 'millones'
+        total_pasive = total_pasive*1000000
+        total_capital = total_capital*1000000
+      elsif balance_scale === 'miles'
+        total_pasive = total_pasive*1000
+        total_capital = total_capital*1000
+      else
+        total_pasive = total_pasive
+        total_capital = total_capital
+      end
+
+      value = (total_pasive)/total_capital
+      return (value).round(2)
+    else
+      return 0
+    end
+  end
+
+  def calcular_client_days period, clients, income_vts, income_scale, balance_scale
+    if income_vts != 0
+      if period == 'anual'
+        months = 12
+      elsif period === 'trimestral'
+        months = 3
+      else
+        months = 1
+      end
+
+      if income_scale === 'millones'
+        income_vts = income_vts*1000000
+      elsif income_scale === 'miles'
+        income_vts = income_vts*1000
+      else
+        income_vts = income_vts
+      end
+
+      if balance_scale === 'millones'
+        clients = clients*1000000
+      elsif balance_scale === 'miles'
+        clients = clients*1000
+      else
+        clients = clients
+      end
+
+      value = (clients/income_vts)*(months*30)
+      return value.round
+    else
+      return 0
+    end
+  end
+
+  def calcular_inventory_days period, inventory, sales_costs, income_scale, balance_scale
+    if sales_costs != 0
+      if period == 'anual'
+        months = 12
+      elsif period === 'trimestral'
+        months = 3
+      else
+        months = 1
+      end
+
+      if income_scale === 'millones'
+        sales_costs = sales_costs*1000000
+      elsif income_scale === 'miles'
+        sales_costs = sales_costs*1000
+      else
+        sales_costs = sales_costs
+      end
+
+      if balance_scale === 'millones'
+        inventory = inventory*1000000
+      elsif balance_scale === 'miles'
+        inventory = inventory*1000
+      else
+        inventory = inventory
+      end
+
+      value = (inventory*30*months)/sales_costs
+      return value
+    else
+      return 0
+    end
+  end
+
+  def calcular_provider_days period, providers, payable_conts_fop, sales_costs, income_scale, balance_scale
+    if sales_costs != 0
+      if period == 'anual'
+        months = 12
+      elsif period === 'trimestral'
+        months = 3
+      else
+        months = 1
+      end
+
+      if income_scale === 'millones'
+        sales_costs = sales_costs*1000000
+      elsif income_scale === 'miles'
+        sales_costs = sales_costs*1000
+      else
+        sales_costs = sales_costs
+      end
+
+      if balance_scale === 'millones'
+        providers = providers*1000000
+        payable_conts_fop = payable_conts_fop*1000000
+      elsif balance_scale === 'miles'
+        providers = providers*1000
+        payable_conts_fop = payable_conts_fop*1000
+      else
+        providers = providers
+        payable_conts_fop = payable_conts_fop
+      end
+
+      value = ((providers+payable_conts_fop)/sales_costs)*(months*30)
+      return value.round(1)
+    else
+      return 0
+    end
+  end
+
+  def calculate_financial_cycle client_days, inventory_days, provider_days
+    value = client_days + inventory_days - provider_days
+    return value.round(1)
+  end
+
+  def calculate_investment_in_work clients, ctas_x_cob_fop, inventory, providers, ctas_x_pag_fop, balance_scale
+    if balance_scale === 'millones'
+      clients = clients*1000000
+      ctas_x_cob_fop = ctas_x_cob_fop*1000000
+      inventory = inventory*1000000
+      providers = providers*1000000
+      ctas_x_pag_fop = ctas_x_pag_fop*1000000
+    elsif balance_scale === 'miles'
+      clients = clients*1000
+      ctas_x_cob_fop = ctas_x_cob_fop*1000
+      inventory = inventory*1000
+      providers = providers*1000
+      ctas_x_pag_fop = ctas_x_pag_fop*1000
+    else
+      providers = providers
+      clients = clients
+      ctas_x_cob_fop = ctas_x_cob_fop
+      inventory = inventory
+      providers = providers
+      ctas_x_pag_fop = ctas_x_pag_fop
+    end
+
+    value = clients + ctas_x_cob_fop + inventory - providers - ctas_x_pag_fop
+    return value.round
+  end
+
+  def calculate_interest_coverage utility_op, dep_y_amort, financial_expense, income_scale
+    if income_scale === 'millones'
+      utility_op = utility_op*1000000
+      dep_y_amort = dep_y_amort*1000000
+      financial_expense = financial_expense*1000000
+    elsif income_scale === 'miles'
+      utility_op = utility_op*1000
+      dep_y_amort = dep_y_amort*1000
+      financial_expense = financial_expense*1000
+    else
+      utility_op = utility_op
+      dep_y_amort = dep_y_amort
+      financial_expense = financial_expense
+    end
+
+    if financial_expense == 0
+      financial_expense = 1
+    end
+    value = (utility_op+dep_y_amort)/financial_expense
+    return value.round(2)
+  end
+
+  def calculate_debt_coverage utility_op, porc_circl_y_otros_pas, financial_expense, income_scale, balance_scale
+    if income_scale === 'millones'
+      utility_op = utility_op*1000000
+      financial_expense = financial_expense*1000000
+    elsif income_scale === 'miles'
+      utility_op = utility_op*1000
+      financial_expense = financial_expense*1000
+    else
+      utility_op = utility_op
+      financial_expense = financial_expense
+    end
+
+    if balance_scale === 'millones'
+      porc_circl_y_otros_pas = porc_circl_y_otros_pas*1000000
+    elsif balance_scale === 'miles'
+      porc_circl_y_otros_pas = porc_circl_y_otros_pas*1000
+    else
+      porc_circl_y_otros_pas = porc_circl_y_otros_pas
+    end
+
+    if financial_expense == 0 and porc_circl_y_otros_pas == 0
+      sum2_div = 1
+    else
+      sum2_div = financial_expense + porc_circl_y_otros_pas
+    end
+    value = utility_op/sum2_div
+    return value.round(1)
+  end
+
+  def calculate_finantial_lp period, utility_op, dep_y_amort, bancos_lp_otros_pas, other_pas, income_scale, balance_scale
+    if period == 'anual'
+      months = 12
+    elsif period === 'trimestral'
+      months = 3
+    else
+      months = 1
+    end
+
+    if income_scale === 'millones'
+      utility_op = utility_op*1000000
+      dep_y_amort = dep_y_amort*1000000
+    elsif income_scale === 'miles'
+      utility_op = utility_op*1000
+      dep_y_amort = dep_y_amort*1000
+    else
+      utility_op = utility_op
+      dep_y_amort = dep_y_amort
+    end
+
+    if balance_scale === 'millones'
+      bancos_lp_otros_pas = bancos_lp_otros_pas*1000000
+      other_pas = other_pas*1000000
+    elsif balance_scale === 'miles'
+      bancos_lp_otros_pas = bancos_lp_otros_pas*1000
+      other_pas = other_pas*1000
+    else
+      bancos_lp_otros_pas = bancos_lp_otros_pas
+      other_pas = other_pas
+    end
+
+    sum2_div = utility_op + dep_y_amort
+
+    if sum2_div < 0
+      return 'UAFIRDA Neg.'
+    elsif sum2_div == 0
+      return 0
+    else
+      value = (bancos_lp_otros_pas+other_pas)/(((utility_op+dep_y_amort)/months)*12)
+      return value.round(2)
+    end
+  end
+
+  def calculate_finantial_total period, utility_op, dep_y_amort, bancos_lp_otros_pas, other_pas, income_scale, balance_scale
+    if period == 'anual'
+      months = 12
+    elsif period === 'trimestral'
+      months = 3
+    else
+      months = 1
+    end
+
+    if income_scale === 'millones'
+      utility_op = utility_op*1000000
+      dep_y_amort = dep_y_amort*1000000
+    elsif income_scale === 'miles'
+      utility_op = utility_op*1000
+      dep_y_amort = dep_y_amort*1000
+    else
+      utility_op = utility_op
+      dep_y_amort = dep_y_amort
+    end
+
+    if balance_scale === 'millones'
+      bancos_lp_otros_pas = bancos_lp_otros_pas*1000000
+      other_pas = other_pas*1000000
+    elsif balance_scale === 'miles'
+      bancos_lp_otros_pas = bancos_lp_otros_pas*1000
+      other_pas = other_pas*1000
+    else
+      bancos_lp_otros_pas = bancos_lp_otros_pas
+      other_pas = other_pas
+    end
+
+    sum2_div = utility_op + dep_y_amort
+
+    if sum2_div < 0
+      return 'UAFIRDA Neg.'
+    elsif sum2_div == 0
+      return 0
+    else
+      value = (bancos_lp_otros_pas+other_pas)/(((utility_op+dep_y_amort)/months)*12)
+      return value.round(2)
     end
   end
 

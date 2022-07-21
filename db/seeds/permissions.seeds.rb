@@ -52,7 +52,6 @@ after :initialize_permissions do
     #{name: "Vista de  petición de balance financiero", description: "Vista de  petición de balance financiero", action: "balance_sheet_request", controller: "Companies"},
     {name: "Ver vista comparativa de balance financiero", description: "Ver vista comparativa de balance financiero", action: "balance_sheet_comparative", controller: "Companies"},
     {name: 'Mostar lista de blogs', description: 'Ver lista de blogs', action: 'index', controller: 'Blog' },
-    {name: "Finalizar captura", description: "Permite finalizar una captura de parte de la compañia", action: "end_capture", controller: "Companies"},
     {name: 'Ver vista de detalles de la compañia', description: 'Permite entrar a la vista de los detalles de compañia', action: 'company_details', controller: 'Companies'},
     {name: 'Mostar vista de buro de crédito', description: 'Permite ver la vista del resumen de buro de crédito', action: 'index', controller: 'CreditBureaus' },
     {name: 'Mostar vista de reporte buro de crédito', description: 'Permite ver la vista del reporte del buro de crédito', action: 'show', controller: 'CreditBureaus' },
