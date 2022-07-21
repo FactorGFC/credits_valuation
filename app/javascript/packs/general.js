@@ -590,6 +590,11 @@ function calculate_comparative(table_id){
                     rowTotal = null;
                     break;
                 }
+                
+                console.log('colData');
+                console.log(colData);
+                console.log('rowTotal');
+                console.log(rowTotal);
             }
         };
 
