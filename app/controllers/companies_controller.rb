@@ -277,8 +277,9 @@ class CompaniesController < ApplicationController
   def company_details
     sort_order = %w(anual trimestral mensual)
     @periods             = Calendar.all.order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.period_type) }
-    @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
-    @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @calendar_fr         = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
     @request             = Request.find_by(company_id: params[:id])
     @request_comments    = RequestComment.where(request_id: @request.try(:id)).order(:created_at).limit(5)
     @financial_inst      = @company.financial_institutions
@@ -497,7 +498,7 @@ class CompaniesController < ApplicationController
 
     @company = current_user.company
     @balance_concepts = BalanceConcept.where(ancestry: nil, active: true)
-    @calendar_periods = CompanyCalendarDetail.where(company_id: current_user.try(:company_id), assign_to: 'balance_sheet').joins(:calendar).order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @calendar_periods = CompanyCalendarDetail.where(company_id: current_user.try(:company_id), assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
   end
 
   def income_statement_capture
@@ -505,7 +506,7 @@ class CompaniesController < ApplicationController
 
     @company = current_user.company
     @concepts = IncomeStatementConcept.where(ancestry: nil, active: true)
-    @calendar_periods = CompanyCalendarDetail.where(company_id: current_user.try(:company_id), assign_to: 'income_statement').joins(:calendar).order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @calendar_periods = CompanyCalendarDetail.where(company_id: current_user.try(:company_id), assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
   end
 
   def balance_sheet_comparative
@@ -527,7 +528,10 @@ class CompaniesController < ApplicationController
   end
 
   def create_balance_sheet_request
+    @company    = current_user.company
     value_scale = params[:bs_request][:value_scale]
+    submit_type = params[:button]
+
     begin
       BalanceCalendarDetail.transaction do
         params[:b_sheet].each do |e|
@@ -539,49 +543,67 @@ class CompaniesController < ApplicationController
           end
         end
       end
-      redirect_to '/balance_sheet_request', notice: "Creado correctamente."
+
+      if submit_type == 'finalize'
+        @company.update(balance_sheet_finished: true)
+        redirect_to '/login', notice: "Finalizado y enviado correctamente."
+      else
+        redirect_to '/balance_sheet_request', notice: "Guardado correctamente."
+      end
+
     rescue StandardError => e
       p "Error: #{e}"
     end
-
   end
 
   def create_income_statement_cap
+    @company    = current_user.company
     value_scale = params[:ins_request][:value_scale]
+    submit_type = params[:button]
     #p '=entre'
     begin
       IncomeCalendarDetail.transaction do
         params[:b_sheet].each do |e|
           ic_detail = IncomeCalendarDetail.find_by(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], company_id: current_user.company_id)
           if ic_detail.present?
+            p true
+            p value_scale
             raise ActiveRecord::Rollback unless ic_detail.update(value: e[1][:value], value_scale: value_scale)
           else
+            p false
+            p value_scale
             raise ActiveRecord::Rollback unless IncomeCalendarDetail.new(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value], company_id: current_user.company_id, value_scale: value_scale).save
           end
         end
       end
-      redirect_to '/income_statement_capture', notice: "Creado correctamente."
+
+      if submit_type == 'finalize'
+        @company.update(income_statement_finished: true)
+        redirect_to '/login', notice: "Finalizado y enviado correctamente."
+      else
+        redirect_to '/income_statement_capture', notice: "Guardado correctamente."
+      end
     rescue StandardError => e
       p "Error: #{e}"
     end
   end
 
-  def end_capture
-    @company = current_user.company
+  def change_capture_status
+    company = Company.find(params[:id])
     if params[:capture_type] === 'balance_sheet'
       respond_to do |format|
-        if @company.update(balance_sheet_finished: true)
-          format.html { redirect_to '/login', notice: "Company was successfully updated." }
+        if company.update(balance_sheet_finished: false)
+          format.html { redirect_to "/company_details/#{company.id}", notice: "Captura de BALANCE FINANCIERO habilitada." }
         else
-          format.json { render json: @company.errors, status: :unprocessable_entity }
+          format.json { render json: company.errors, status: :unprocessable_entity }
         end
       end
     else
       respond_to do |format|
-        if @company.update(income_statement_finished: true)
-          format.html { redirect_to '/login', notice: "Company was successfully updated." }
+        if company.update(income_statement_finished: false)
+          format.html { redirect_to "/company_details/#{company.id}", notice: "Captura de ESTADO DE RESULTADOS habilitada." }
         else
-          format.json { render json: @company.errors, status: :unprocessable_entity }
+          format.json { render json: company.errors, status: :unprocessable_entity }
         end
       end
     end

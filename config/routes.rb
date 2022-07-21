@@ -68,7 +68,6 @@ Rails.application.routes.draw do
 
     get 'balance_sheet_comparative/:id'  => 'companies#balance_sheet_comparative', as: :balance_sheet_comparative
     get 'income_statement_comparative/:id'  => 'companies#income_statement_comparative', as: :income_statement
-    post 'end_capture/:capture_type'  => 'companies#end_capture', as: :end_capture
 
     get 'company_balance_sheet/:id'  => 'companies#company_balance_sheet', as: :company_balance_sheet
     get 'company_income_statement/:id'  => 'companies#company_income_statement', as: :company_income_statement
@@ -109,6 +108,7 @@ Rails.application.routes.draw do
 
       #validate companies
       put 'validate_company' => 'companies#validate_company', as: :validate_company
+      put 'change_capture_status' => 'companies#change_capture_status', as: :change_capture_status
 
       #Asign Calendar to companies
       put 'asign_calendar' => 'companies#asign_calendar', as: :asign_calendar

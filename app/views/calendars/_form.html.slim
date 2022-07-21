@@ -12,6 +12,10 @@
       = f.label :periodo, class: 'col-sm-2 col-form-label'
       .col-sm-10
         = f.select(:period, options_for_select([]), {prompt: 'Selecciona un periodo'}, {class: 'form-control', id: 'period_selector'})
+    .form-group.m-form__group.row
+      = f.label 'Inflación %', class: 'col-sm-2 col-form-label'
+      .col-sm-10
+        = f.number_field :inflation, class: 'form-control m-input', min: 0
   .m-portlet__foot.m-portlet__no-border.m-portlet__foot--fit
     .m-form__actions.m-form__actions--solid
       .row

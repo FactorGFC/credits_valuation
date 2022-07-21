@@ -346,6 +346,9 @@ javascript:
               a.nav-link data-toggle="tab" href="#income_statement" onclick="calculate_comparative('comparative_table_is')"
                 | ESTADO DE RESULTADOS
             li.nav-item
+              a.nav-link data-toggle="tab" href="#financial_reasons"
+                | RAZÓNES FINANCIERAS
+            li.nav-item
               a.nav-link data-toggle="tab" href="#credit_bureau"
                 | BURO DE CRÉDITO
             li.nav-item
@@ -359,6 +362,9 @@ javascript:
                 .m-portlet__body
                   .m-section.mb-0
                     .m-section__content.table-responsive.text-center
+                      - if @company.balance_sheet_finished
+                        button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="balance_sheet"
+                          = "Habilitar Captura"
                     - if @company.company_calendar_details.where(assign_to: 'balance_sheet').present?
                       #wrapper
                         #checkbox_div
@@ -532,7 +538,7 @@ javascript:
                               - if y.calendar.period_type == 'anual'
                                 span.text-table-concept = 'SUM. SAT'
                                 br
-                                span = company_balance_sheet_value(@company.id, y.calendar, ['5','6','7','8','9'], @bs_scale).to_s(:delimited)
+                                span = bs_activo_fijo_sat(@company.id, ['5','6','8','9'], y.calendar, @bs_scale).to_s(:delimited)
                                 span.value-scale = @bs_scale
                           td.col-comp
                         tr
@@ -540,7 +546,7 @@ javascript:
                             td class="full-input col-#{y.id}"
                               span.text-table-concept = 'SUM. CAPTURA'
                               br
-                              span = bs_capture_sum(@company.id, ['5','6','7','8','9'], y.calendar.id, @bs_scale).to_s(:delimited)
+                              span = bs_activo_fijo(@company.id, ['5','6','8','9'], y.calendar.id, @bs_scale).to_s(:delimited)
                               span.value-scale = @bs_scale
                           td.col-comp
                         tr.tr-rdata
@@ -1002,6 +1008,9 @@ javascript:
                 .m-portlet__body
                   .m-section.mb-0
                     .m-section__content.table-responsive.text-center
+                      - if @company.income_statement_finished
+                        button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="income_statement_finished"
+                          = "Habilitar Captura"
                     - if @company.company_calendar_details.where(assign_to: 'income_statement').present?
                       #wrapper
                         #checkbox_div
@@ -1400,6 +1409,7 @@ javascript:
                             span.scale25.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            // 14: UTILIDAD NETA
                             span.text-left = 'Utilidad neta'
                           - @calendar_periods_is.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
@@ -1435,6 +1445,377 @@ javascript:
                         .m-alert__text
                           strong
                             | Aún no se le han asignado fechas para captura.
+
+
+          .tab-pane id="financial_reasons"
+            .col-xl-12
+              .m-portlet
+                .m-portlet__body
+                  .m-section.mb-0
+                    .m-section__content.table-responsive.text-center
+                    - if @company.company_calendar_details.where(assign_to: 'income_statement').present?
+                      table.table.table-bordered.input-focusable-table#comparative_table_is
+                        tr.tr-title
+                          th
+                          - @calendar_fr.each do |y|
+                            th.th-title
+                              = y.calendar.period_name
+                              br
+                              = y.calendar.inflation.present? ? "Inflación: #{(y.calendar.inflation)} %" : "Inflación: 0 %"
+                        tr.tr-title
+                          th.th-title colspan="#{@calendar_fr.length+1}"
+                            = 'VENTAS'
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'CRECIMIENTO NOM. VENTAS'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept  = 'SAT'
+                                br
+                                span.td-value0
+                                  = "#{calcular_crecimiento_ventas(calendar.calendar.period_type, company_income_stat_value(@company.id, calendar.calendar, 1, @ins_scale), (calendar_index-1 < 0 ? nil : company_income_stat_value(@company.id, @calendar_fr[calendar_index-1].calendar, 1, @ins_scale)), nil, @ins_scale)} %"
+
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value1
+                                = "#{calcular_crecimiento_ventas(calendar.calendar.period_type, income_calendar_detail_value(@company.id, calendar.calendar, 1, @ins_scale), (calendar_index-1 < 0 ? nil : income_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 1, @ins_scale)), nil, @ins_scale)} %"
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'CRECIMIENTO REAL VENTAS'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept  = 'SAT'
+                                br
+                                span.td-value0
+                                  = "#{calcular_crecimiento_ventas(calendar.calendar.period_type, company_income_stat_value(@company.id, calendar.calendar, 1, @ins_scale), (calendar_index-1 < 0 ? nil : company_income_stat_value(@company.id, @calendar_fr[calendar_index-1].calendar, 1, @ins_scale)), calendar.calendar.inflation, @ins_scale)} %"
+
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value1
+                                = "#{calcular_crecimiento_ventas(calendar.calendar.period_type, income_calendar_detail_value(@company.id, calendar.calendar, 1, @ins_scale), (calendar_index-1 < 0 ? nil : income_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 1, @ins_scale)), calendar.calendar.inflation, @ins_scale)} %"
+                        tr.tr-title
+                          th.th-title colspan="#{@calendar_fr.length+1}"
+                            = 'RENTABILIDAD'
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'ROTACION DE ACTIVOS'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept  = 'SAT'
+                                br
+                                span.td-value0
+                                  = calcular_rotacion_activos(calendar.calendar.period_type, company_income_stat_value(@company.id, calendar.calendar, 1, @ins_scale), (company_balance_sheet_value(@company.id, calendar.calendar, ['1','2','3','4'], @bs_scale)+ bs_activo_fijo(@company.id, ['5','6','8','9'], calendar.calendar.id, @bs_scale)), (calendar_index-1 < 0 ? nil : (company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, ['1','2','3','4'], @bs_scale) + company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, ['5','6','7','8','9'], @bs_scale))), @ins_scale, @bs_scale)
+
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = calcular_rotacion_activos(calendar.calendar.period_type, income_calendar_detail_value(@company.id, calendar.calendar, 1, @ins_scale), (bs_capture_sum(@company.id, ['1','2','3','4'], calendar.calendar.id, @bs_scale) + bs_activo_fijo(@company.id, ['5','6','8','9'], calendar.calendar.id, @bs_scale)), (calendar_index-1 < 0 ? nil : ( bs_capture_sum(@company.id, ['1','2','3','4'], @calendar_fr[calendar_index - 1].calendar.id, @bs_scale) + bs_activo_fijo(@company.id, ['5','6','8','9'], @calendar_fr[calendar_index - 1].calendar.id, @bs_scale))), @ins_scale, @bs_scale)
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'MARGEN OPERATIVO'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept  = 'SAT'
+                                br
+                                span.td-value0
+                                  = "#{calcular_margen_operativo(company_income_stat_value(@company.id, calendar.calendar, 1, @ins_scale), company_income_stat_value(@company.id, calendar.calendar, 5, @ins_scale), @ins_scale, @bs_scale)} %"
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = "#{calcular_margen_operativo(income_calendar_detail_value(@company.id, calendar.calendar, 1, @ins_scale), income_calendar_detail_value(@company.id, calendar.calendar, 5, @ins_scale), @ins_scale, @bs_scale)} %"
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'RENTABILIDAD BASE CAPITAL (ROE)'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept  = 'SAT'
+                                br
+                                span.td-value0
+                                  = "#{calcular_rentabilidad_base_capital(calendar.calendar.period_type, company_income_stat_value(@company.id, calendar.calendar, 14, @ins_scale), (calendar_index-1 < 0 ? nil : company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, ['14','15','16','17'], @bs_scale)), company_balance_sheet_value(@company.id, calendar.calendar, ['14','15','16','17'], @bs_scale), @ins_scale, @bs_scale)} %"
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = "#{calcular_rentabilidad_base_capital(calendar.calendar.period_type, income_calendar_detail_value(@company.id, calendar.calendar, 14, @ins_scale), (calendar_index-1 < 0 ? nil : bs_capture_sum(@company.id, ['14','15','16','17'], @calendar_fr[calendar_index-1].calendar.id, @bs_scale)), bs_capture_sum(@company.id, ['14','15','16','17'], calendar.calendar.id, @bs_scale), @ins_scale, @bs_scale)} %"
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'MARGEN NETO'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept  = 'SAT'
+                                br
+                                span.td-value0
+                                  = "#{calcular_margen_neto(calendar.calendar.period_type, company_income_stat_value(@company.id, calendar.calendar, 14, @ins_scale), company_income_stat_value(@company.id, calendar.calendar, 1, @ins_scale), @ins_scale, @bs_scale)} %"
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = "#{calcular_margen_neto(calendar.calendar.period_type, income_calendar_detail_value(@company.id, calendar.calendar, 14, @ins_scale), income_calendar_detail_value(@company.id, calendar.calendar, 1, @ins_scale), @ins_scale, @bs_scale)} %"
+                        tr.tr-title
+                          th.th-title colspan="#{@calendar_fr.length+ 1}"
+                            = 'ESTRUCTURA'
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'RAZÓN CIRCULANTE'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SAT'
+                                br
+                                span.td-value0
+                                  = calcular_razon_circulante(calendar.calendar.period_type, company_balance_sheet_value(@company.id, calendar.calendar, ['1','2','3','4'], @bs_scale), company_balance_sheet_value(@company.id, calendar.calendar, ['10','11','12','13'], @bs_scale), @ins_scale, @bs_scale)
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = calcular_razon_circulante(calendar.calendar.period_type, bs_capture_sum(@company.id, ['1','2','3','4'], calendar.calendar.id, @bs_scale), bs_capture_sum(@company.id, ['10','11','12','13'], calendar.calendar.id, @bs_scale), @ins_scale, @bs_scale)
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'PRUEBA DEL ACIDO'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SAT'
+                                br
+                                span.td-value0
+                                  = calcular_prueba_acido(calendar.calendar.period_type, company_balance_sheet_value(@company.id, calendar.calendar, ['1','2','3','4'], @bs_scale), company_balance_sheet_value(@company.id, calendar.calendar, ['10','11','12','13'], @bs_scale), company_balance_sheet_value(@company.id, calendar.calendar, 3, @bs_scale), @ins_scale, @bs_scale)
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = calcular_prueba_acido(calendar.calendar.period_type, bs_capture_sum(@company.id, ['1','2','3','4'], calendar.calendar.id, @bs_scale), bs_capture_sum(@company.id, ['10','11','12','13'], calendar.calendar.id, @bs_scale), balance_calendar_detail_value(@company.id, calendar.calendar, 3, @bs_scale), @ins_scale, @bs_scale)
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'PASIVO TOTAL / CAPITAL CONTABLE'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SAT'
+                                br
+                                span.td-value0
+                                  = calcular_pasTotal_capContable(company_balance_sheet_value(@company.id, calendar.calendar, ['10','11','12','13'], @bs_scale), company_balance_sheet_value(@company.id, calendar.calendar, ['14','15','16','17'], @bs_scale),@bs_scale)
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = calcular_pasTotal_capContable(bs_capture_sum(@company.id, ['10','11','12','13'], calendar.calendar.id, @bs_scale), bs_capture_sum(@company.id, ['14','15','16','17'], calendar.calendar.id, @bs_scale), @bs_scale)
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'TOTAL PASIVO FINANCIERO'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SAT'
+                                br
+                                span.td-value0
+                                  /= calcular_pasTotal_capContable(company_balance_sheet_value(@company.id, calendar.calendar, ['10','11','12','13'], @bs_scale), company_balance_sheet_value(@company.id, calendar.calendar, ['14','15','16','17'], @bs_scale),@bs_scale)
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                /= calcular_pasTotal_capContable(bs_capture_sum(@company.id, ['10','11','12','13'], calendar.calendar.id, @bs_scale), bs_capture_sum(@company.id, ['14','15','16','17'], calendar.calendar.id, @bs_scale), @bs_scale)
+                        tr.tr-title
+                          th.th-title colspan="#{@calendar_fr.length+ 1}"
+                            = 'CICLO FINANCIERO'
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'DIAS CLIENTES'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SAT'
+                                br
+                                span.td-value0
+                                  = calcular_client_days(calendar.calendar.period_type, company_balance_sheet_value(@company.id, calendar.calendar, 2, @bs_scale), company_income_stat_value(@company.id, calendar.calendar, 1, @ins_scale), @ins_scale, @bs_scale)
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = calcular_client_days(calendar.calendar.period_type, balance_calendar_detail_value(@company.id, calendar.calendar, 2, @bs_scale), income_calendar_detail_value(@company.id, calendar.calendar, 1, @ins_scale), @ins_scale, @bs_scale)
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'DIAS INVENTARIO'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SAT'
+                                br
+                                span.td-value0
+                                  = calcular_inventory_days(calendar.calendar.period_type, company_balance_sheet_value(@company.id, calendar.calendar, 3, @bs_scale), company_income_stat_value(@company.id, calendar.calendar, 2, @ins_scale), @ins_scale, @bs_scale)
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = calcular_inventory_days(calendar.calendar.period_type, balance_calendar_detail_value(@company.id, calendar.calendar, 3, @bs_scale), income_calendar_detail_value(@company.id, calendar.calendar, 2, @ins_scale), @ins_scale, @bs_scale)
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'DIAS PROVEEDORES'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SAT'
+                                br
+                                span.td-value0
+                                  = calcular_provider_days(calendar.calendar.period_type, company_balance_sheet_value(@company.id, calendar.calendar, 10, @bs_scale), 0, company_income_stat_value(@company.id, calendar.calendar, 2, @ins_scale), @ins_scale, @bs_scale)
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = calcular_provider_days(calendar.calendar.period_type, balance_calendar_detail_value(@company.id, calendar.calendar, 10, @bs_scale), 0, income_calendar_detail_value(@company.id, calendar.calendar, 2, @ins_scale), @ins_scale, @bs_scale)
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'CICLO FINANCIERO'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SAT'
+                                br
+                                span.td-value0
+                                  = calculate_financial_cycle(calcular_client_days(calendar.calendar.period_type, company_balance_sheet_value(@company.id, calendar.calendar, 2, @bs_scale), company_income_stat_value(@company.id, calendar.calendar, 1, @ins_scale), @ins_scale, @bs_scale), calcular_inventory_days(calendar.calendar.period_type, company_balance_sheet_value(@company.id, calendar.calendar, 3, @bs_scale), company_income_stat_value(@company.id, calendar.calendar, 2, @ins_scale), @ins_scale, @bs_scale), calcular_provider_days(calendar.calendar.period_type, company_balance_sheet_value(@company.id, calendar.calendar, 10, @bs_scale), 0, company_income_stat_value(@company.id, calendar.calendar, 2, @ins_scale), @ins_scale, @bs_scale))
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = calculate_financial_cycle(calcular_client_days(calendar.calendar.period_type, balance_calendar_detail_value(@company.id, calendar.calendar, 2, @bs_scale), income_calendar_detail_value(@company.id, calendar.calendar, 1, @ins_scale), @ins_scale, @bs_scale), calcular_inventory_days(calendar.calendar.period_type, balance_calendar_detail_value(@company.id, calendar.calendar, 3, @bs_scale), income_calendar_detail_value(@company.id, calendar.calendar, 2, @ins_scale), @ins_scale, @bs_scale), calcular_provider_days(calendar.calendar.period_type, balance_calendar_detail_value(@company.id, calendar.calendar, 10, @bs_scale), 0, income_calendar_detail_value(@company.id, calendar.calendar, 2, @ins_scale), @ins_scale, @bs_scale))
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'INVERSION EN TRABAJO'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SAT'
+                                br
+                                span.td-value0
+                                  = calculate_investment_in_work(company_balance_sheet_value(@company.id, calendar.calendar, 2, @bs_scale), 0, company_balance_sheet_value(@company.id, calendar.calendar, 3, @bs_scale), company_balance_sheet_value(@company.id, calendar.calendar, 10, @bs_scale), 0, @bs_scale)
+                        tr.tr-rdata
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input class="full-input col-#{calendar.id}"
+                              span.text-table-concept = 'CAPTURA'
+                              br
+                              span.td-value0
+                                = calculate_investment_in_work(balance_calendar_detail_value(@company.id, calendar.calendar, 10, @bs_scale), 0, balance_calendar_detail_value(@company.id, calendar.calendar, 3, @bs_scale), balance_calendar_detail_value(@company.id, calendar.calendar, 10, @bs_scale), 0, @bs_scale)
+                        tr.tr-title
+                          th.th-title colspan="#{@calendar_fr.length+ 1}"
+                            = 'COBERTURAS'
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'COBERTURA DE INTERESES (DEP)'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SAT'
+                                br
+                                span.td-value0
+                                  = calculate_interest_coverage(company_income_stat_value(@company.id, calendar.calendar, 5, @ins_scale), 0, company_income_stat_value(@company.id, calendar.calendar, 7, @ins_scale), @ins_scale)
+                          tr.tr-rdata
+                            - @calendar_fr.each_with_index do |calendar, calendar_index|
+                              td.sum_input class="full-input col-#{calendar.id}"
+                                span.text-table-concept = 'CAPTURA'
+                                br
+                                span.td-value0
+                                  = calculate_interest_coverage(income_calendar_detail_value(@company.id, calendar.calendar, 5, @ins_scale), 0, income_calendar_detail_value(@company.id, calendar.calendar, 7, @ins_scale), @ins_scale)
+                        tr.tr-rdata
+                          td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                            span.text-left = 'COBERTURA DE DEUDA'
+                          - @calendar_fr.each_with_index do |calendar, calendar_index|
+                            td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                              - if calendar.calendar.period_type == 'anual'
+                                span.text-table-concept = 'SAT'
+                                br
+                                span.td-value0
+                                  = calculate_debt_coverage(company_income_stat_value(@company.id, calendar.calendar, 5, @ins_scale), 0, company_income_stat_value(@company.id, calendar.calendar, 7, @ins_scale), @ins_scale, @bs_scale)
+                          tr.tr-rdata
+                            - @calendar_fr.each_with_index do |calendar, calendar_index|
+                              td.sum_input class="full-input col-#{calendar.id}"
+                                span.text-table-concept = 'CAPTURA'
+                                br
+                                span.td-value0
+                                  = calculate_debt_coverage(income_calendar_detail_value(@company.id, calendar.calendar, 5, @ins_scale), 0, income_calendar_detail_value(@company.id, calendar.calendar, 7, @ins_scale), @ins_scale, @bs_scale)
+                          tr.tr-title
+                            th.th-title colspan="#{@calendar_fr.length+ 1}"
+                              = 'HORIZONTE DE DEUDA'
+                          tr.tr-rdata
+                            td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                              span.text-left = 'DEUDA FINANCIERA LP / UAFIRDA'
+                            - @calendar_fr.each_with_index do |calendar, calendar_index|
+                              td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                                - if calendar.calendar.period_type == 'anual'
+                                  span.text-table-concept = 'SAT'
+                                  br
+                                  span.td-value0
+                                    = calculate_finantial_lp(calendar.calendar.period_type, company_income_stat_value(@company.id, calendar.calendar, 5, @ins_scale), 0, 0, company_balance_sheet_value(@company.id, calendar.calendar, 13, @bs_scale), @ins_scale, @bs_scale)
+                            tr.tr-rdata
+                              - @calendar_fr.each_with_index do |calendar, calendar_index|
+                                td.sum_input class="full-input col-#{calendar.id}"
+                                  span.text-table-concept = 'CAPTURA'
+                                  br
+                                  span.td-value0
+                                    = calculate_finantial_lp(calendar.calendar.period_type, income_calendar_detail_value(@company.id, calendar.calendar, 5, @ins_scale), 0, 0, balance_calendar_detail_value(@company.id, calendar.calendar, 13, @bs_scale), @ins_scale, @bs_scale)
+                            tr.tr-rdata
+                              td style=" font-weight: 800; font-size: 18px" rowspan="2"
+                                span.text-left = 'DEUDA FINANCIERA LP / UAFIRDA'
+                              - @calendar_fr.each_with_index do |calendar, calendar_index|
+                                td.sum_input.sat_value class="full-input col-#{calendar.id}"
+                                  - if calendar.calendar.period_type == 'anual'
+                                    span.text-table-concept = 'SAT'
+                                    br
+                                    span.td-value0
+                                      = calculate_finantial_total(calendar.calendar.period_type, company_income_stat_value(@company.id, calendar.calendar, 5, @ins_scale), 0, 0, company_balance_sheet_value(@company.id, calendar.calendar, 13, @bs_scale), @ins_scale, @bs_scale)
+                              tr.tr-rdata
+                                - @calendar_fr.each_with_index do |calendar, calendar_index|
+                                  td.sum_input class="full-input col-#{calendar.id}"
+                                    span.text-table-concept = 'CAPTURA'
+                                    br
+                                    span.td-value0
+                                      = calculate_finantial_total(calendar.calendar.period_type, income_calendar_detail_value(@company.id, calendar.calendar, 5, @ins_scale), 0, 0, balance_calendar_detail_value(@company.id, calendar.calendar, 13, @bs_scale), @ins_scale, @bs_scale)
+
+                    - else
+                      .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                        .m-alert__icon
+                          i.flaticon-exclamation-1
+                          span
+                        .m-alert__text
+                          strong
+                            | Aún no se le han asignado fechas para captura.
+
 
           .tab-pane id="credit_bureau"
             .col-xl-12
@@ -2551,6 +2932,26 @@ javascript:
           input type="hidden" name="approved" id="companyApproved" value=""
           p#textModal
             | Se va a validar la compañia para que pueda acceder al sistema.
+        .modal-footer
+          button.btn.btn-secondary data-dismiss="modal" type="button"
+            | Cerrar
+          button#idBtn.btn.btn-success type="submit"
+            | Validar
+
+#m_modal_capture_status.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog role="document" style="margin-top: 0%;"
+    .modal-content
+      .modal-header
+        h5#titleModalLabel.modal-title
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"
+            | \&times;
+      = form_for current_user, url: change_capture_status_path, method: 'PUT',class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
+        .modal-body
+          input type="hidden" name="id"           id="companyId"   value=""
+          input type="hidden" name="capture_type" id="captureType" value=""
+          p#textModal
+            | Se va a habilitar esta captura para la compañia.
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar

@@ -604,7 +604,6 @@ function calculate_comparative(table_id){
         }
 
         if(rowTotal !== null){
-            console.log();
 
             $('span.total_p'+index).text(rowTotal.toLocaleString());
             $('span.percent_t'+index).show();
