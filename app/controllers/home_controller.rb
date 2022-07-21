@@ -79,25 +79,16 @@ class HomeController < ApplicationController
             Rails.logger.info "@@info looogessrr ------------------------------------------------"
             Rails.logger.info @info
 
-            p "@info['hydra:member'][0] -------------------------------------------------------------------------------------"
-            p @info['hydra:member'][0]
 
-            Rails.logger.info "@info['hydra:member'][0] -------------------------------------------------------------------------------------"
-            Rails.logger.info @info['hydra:member'][0]
-
-            p "@@info['hydra:member'][0]['company'] -------------------------------------------------------------------------------------"
-            p @info['hydra:member'][0]['company']
-
-            Rails.logger.info "@info['hydra:member'][0]['company'] -------------------------------------------------------------------------------------"
-            Rails.logger.info @info['hydra:member'][0]['company']
-
-            if @info['hydra:member'][0]['company'].present?
-             client_type = "PM"
-            else
-             client_type = "PF"
-            end
 
             if @info['@type'] != 'hydra:Error'
+
+              if @info['hydra:member'][0]['company'].present?
+               client_type = "PM"
+              else
+               client_type = "PF"
+              end
+
               @buro = create_buro @info, @user.try(:phone)
 
               if @buro
