@@ -162,7 +162,7 @@ class HomeController < ApplicationController
               format.html { redirect_to companies_url, alert: '(14)Hubo un error favor volver a intentar' }
             end
           else
-            format.html { redirect_to companies_url, alert: 'El RFC no es valido.' }
+            format.html { redirect_to companies_url, alert: 'El RFC o la contraseña no son validas.' }
           end
         else
           format.html { redirect_to companies_url, alert: 'El RFC debe ser el mismo que el de la compañia.' }
@@ -310,6 +310,7 @@ class HomeController < ApplicationController
      account_type = "PM"
      trade_name = info_sat['hydra:member'][0]['company']['tradeName']
      basic_rfc = rfc.first(9)
+     
      data = [accountType: account_type, tradeName: trade_name,  rfc: rfc, basicRFC: basic_rfc, address: address,
              city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
              interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality, nationality: "MX",
