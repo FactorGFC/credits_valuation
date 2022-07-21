@@ -84,6 +84,9 @@ class BuroCredito < ApplicationRecord
         satRFC: true
     }
 
+    Rails.logger.info "data bureau report ------------------------------------------------------------------------"
+    Rails.logger.info  data
+
     request = Net::HTTP::Post.new(uri.request_uri)
 
     request.content_type = "application/json"

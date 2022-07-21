@@ -81,6 +81,7 @@ class HomeController < ApplicationController
 
 
 
+
             if @info['@type'] != 'hydra:Error'
 
               if @info['hydra:member'][0]['company'].present?
@@ -90,6 +91,12 @@ class HomeController < ApplicationController
               end
 
               @buro = create_buro @info, @user.try(:phone)
+
+
+              Rails.logger.info "@buro ---------------------------------------------------------------------------------------------------"
+              Rails.logger.info @buro
+
+
 
               if @buro
                 @credential = SatW.get_credential @sat['id']
@@ -325,6 +332,10 @@ class HomeController < ApplicationController
              exteriorNumber: exterior_number, interiorNumber: interior_number, neighborhood: neighborhood,
              municipality: municipality, nationality: "MX",phone: user_phone]
     end
+
+
+    Rails.logger.info "data CREate buro ----------------------------------------------------------------------------------------------------"
+    Rails.logger.info data
 
     @buro = BuroCredito.create_client data
 
