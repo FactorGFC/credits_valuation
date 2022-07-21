@@ -3,6 +3,7 @@
 # Table name: calendars
 #
 #  id          :bigint           not null, primary key
+#  inflation   :float
 #  period      :string
 #  period_type :string
 #  year        :string
