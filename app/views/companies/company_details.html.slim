@@ -1963,33 +1963,33 @@ javascript:
                                     strong
                                       | Calle y número
                                   .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                    = @report_result['response']['respuesta']['datosGenerales']['direccion1']
+                                    = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['direccion1'] : 'N/D'
                                   .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                     strong
                                       | Colonia
                                   .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                    = @report_result['response']['respuesta']['datosGenerales']['coloniaPoblacion']
+                                    = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['coloniaPoblacion'] : 'N/D'
                                   .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                     strong
                                       | Del / Mpio
                                   .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                    = @report_result['response']['respuesta']['datosGenerales']['delegacionMunicipio']
+                                    = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['delegacionMunicipio'] : 'N/D'
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                   .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                     strong
                                       | Estado
                                   .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                    = @report_result['response']['respuesta']['datosGenerales']['estado']
+                                    = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['estado'] : 'N/D'
                                   .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                     strong
                                       | C.P
                                   .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                    = @report_result['response']['respuesta']['datosGenerales']['codigoPostal']
+                                    = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['codigoPostal'] : 'N/D'
                                   .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                     strong
                                       | Teléfono
                                   .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                    = @report_result['response']['respuesta']['datosGenerales']['telefono']
+                                    = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['telefono'] : 'N/D'
                                 br
                               - else
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
