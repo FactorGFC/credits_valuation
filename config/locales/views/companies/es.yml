@@ -2,6 +2,9 @@ es:
   account_type:
     I: 'Pagos fijos'
     R: 'Revolvente'
+    M: 'Hipotecas'
+    O: 'Sin Límite Pre-establecido'
+    B: 'Bimestral'
   contract_type:
     AF: 'Aparatos /Muebles'
     AG: 'Agropecuario (PFAE)'
