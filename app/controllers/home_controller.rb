@@ -69,7 +69,7 @@ class HomeController < ApplicationController
       if params_ciec
         if rfc_valid
 
-          if @sat['hydra:title'] == 'An error occurred'
+          if @sat['hydra:title'] != 'An error occurred'
 
             @info = SatW.get_tax_status @user.try(:company).try(:rfc)
 
@@ -81,7 +81,7 @@ class HomeController < ApplicationController
 
 
 
-            if @info['@type'] == 'hydra:Error'
+            if @info['@type'] != 'hydra:Error'
 
               if @info['hydra:member'][0]['company'].present?
                client_type = "PM"
@@ -162,7 +162,7 @@ class HomeController < ApplicationController
               format.html { redirect_to companies_url, alert: '(14)Hubo un error favor volver a intentar' }
             end
           else
-            format.html { redirect_to companies_url, alert: 'El RFC no es valido.' }
+            format.html { redirect_to companies_url, alert: 'El RFC o la contraseña no son validas.' }
           end
         else
           format.html { redirect_to companies_url, alert: 'El RFC debe ser el mismo que el de la compañia.' }
