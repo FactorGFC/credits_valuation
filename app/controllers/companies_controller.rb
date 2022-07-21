@@ -307,26 +307,25 @@ class CompaniesController < ApplicationController
       @company_name = @company.try(:name)
     end
 
+    credit_bureaus = @company.try(:credit_bureaus).try(:last)
 
-    if @company.credit_bureaus.present?
-      if @company.credit_bureaus.last.bureau_report['results'].present?
-        if @company.credit_bureaus.last.bureau_report['results'][0]['response'].present?
-          @report_result = @company.credit_bureaus.last.bureau_report['results'][0]
+    if credit_bureaus.present?#@company.credit_bureaus.present?
+      if credit_bureaus.bureau_report['results'].present?
+        if credit_bureaus.bureau_report['results'][0]['response'].present?
+          @report_result = credit_bureaus.bureau_report['results'][0]
         else
-          @report_result = @company.credit_bureaus.last.bureau_report['results'][1]
+          @report_result = credit_bureaus.bureau_report['results'][1]
         end
       else
-        @report_result = @company.credit_bureaus.last.bureau_report
+        @report_result = credit_bureaus.bureau_report
       end
-    end
 
-    @credit_bureau = @company.credit_bureaus.last
+      @credit_bureau = credit_bureaus
 
-    if @credit_bureau.present?
       if @company.try(:client_type) == 'PF'
         @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
       end
-      #@percentage = avg_gagement @credit_bureau
+
     end
 
   end

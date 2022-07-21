@@ -1496,7 +1496,7 @@ javascript:
                             h3.m-portlet__head-text
                               | Datos Generales
                             .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                              - if @credit_bureau.bureau_report.present?
+                              - if @credit_bureau.present?
 
                                 - if @report_result['response'].present?
                                   .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
@@ -1534,7 +1534,7 @@ javascript:
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Resumen de Creditos (M.N.)
-                            - if @credit_bureau.bureau_report.present?
+                            - if @credit_bureau.present?
                               - if @report_result['response'].present?
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                   .m-section
@@ -1598,7 +1598,7 @@ javascript:
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Domicilios registrados
-                            - if @credit_bureau.bureau_report.present?
+                            - if @credit_bureau.present?
                               - if @report_result['response'].present?
                                 - @report_result['response']['return']['Personas']['Persona'][0]['Domicilios']['Domicilio'].each do |address|
                                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
@@ -1657,7 +1657,7 @@ javascript:
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Domicilio(s) de empleo(s) registrado(s)
-                            - if @credit_bureau.bureau_report.present?
+                            - if @credit_bureau.present?
                               - if @report_result['response'].present?
                                 - @report_result['response']['return']['Personas']['Persona'][0]['Empleos']['Empleo'].each do |job|
                                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
@@ -1718,7 +1718,7 @@ javascript:
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Cuentas
-                            - if @credit_bureau.bureau_report.present?
+                            - if @credit_bureau.present?
                               - if @report_result['response'].present?
                                 - @report_result['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
                                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
@@ -1857,7 +1857,7 @@ javascript:
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Consultas
-                            - if @credit_bureau.bureau_report.present?
+                            - if @credit_bureau.present?
                               - @credit_bureau['bureau_report']['results'].each do |bureau_report|
                                 - if bureau_report['status']
                                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
@@ -1885,7 +1885,7 @@ javascript:
                           .m-demo__preview
                             h3.m-portlet__head-text
                             .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                              - if @credit_bureau.bureau_report.present?
+                              - if @credit_bureau.present?
                                 - if @report_result['query'].present?
                                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
@@ -1915,7 +1915,7 @@ javascript:
                             h3.m-portlet__head-text
                               | Datos Generales
                             .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                              - if @credit_bureau.bureau_report.present?
+                              - if @credit_bureau.present?
                                 - if @report_result['query'].present?
                                   .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                     strong
@@ -1951,7 +1951,7 @@ javascript:
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Domicilio registrado
-                            - if @credit_bureau.bureau_report.present?
+                            - if @credit_bureau.present?
                               - if @report_result['query'].present?
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                   .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
@@ -2008,7 +2008,7 @@ javascript:
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Creditos activos
-                            - if @credit_bureau.bureau_report.present?
+                            - if @credit_bureau.present?
                               - if @report_result['response'].present?
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                   .m-section
@@ -2132,7 +2132,7 @@ javascript:
                           .m-demo__preview
                             h3.m-portlet__head-text
                               | Historia
-                            - if @credit_bureau.bureau_report.present?
+                            - if @credit_bureau.present?
                               - if @report_result['response'].present?
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                   .m-section
