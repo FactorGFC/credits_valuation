@@ -73,21 +73,22 @@ class BuroCredito < ApplicationRecord
 
     if info_sat['hydra:member'][0]['company'].present?
       account_type_pm_b = true
+      data = {
+          bureauPM: true,
+          bureauPF: false,
+          satBlackList: false,
+          satRFC: true
+      }
     else
       account_type_pf_b = true
+      data = {
+          bureauPM: false,
+          bureauPF: true,
+          satBlackList: false,
+          satRFC: true
+      }
     end
 
-    Rails.logger.info "account_type_pm_b ------------------------------------------------------------"
-    Rails.logger.info account_type_pm_b
-    Rails.logger.info "account_type_pf_b ----------------------------------------------------------------"
-    Rails.logger.info account_type_pf_b
-
-    data = {
-        bureauPM: account_type_pm_b,
-        bureauPF: account_type_pf_b,
-        satBlackList: false,
-        satRFC: true
-    }
 
     request = Net::HTTP::Post.new(uri.request_uri)
 
