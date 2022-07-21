@@ -73,6 +73,24 @@ class HomeController < ApplicationController
 
             @info = SatW.get_tax_status @user.try(:company).try(:rfc)
 
+            p "@@info ------------------------------------------------------------------"
+            p @info
+
+            Rails.logger.info "@@info looogessrr ------------------------------------------------"
+            Rails.logger.info @info
+
+            p "@info['hydra:member'][0] -------------------------------------------------------------------------------------"
+            p @info['hydra:member'][0]
+
+            Rails.logger.info "@info['hydra:member'][0] -------------------------------------------------------------------------------------"
+            Rails.logger.info @info['hydra:member'][0]
+
+            p "@@info['hydra:member'][0]['company'] -------------------------------------------------------------------------------------"
+            p @info['hydra:member'][0]['company']
+
+            Rails.logger.info "@info['hydra:member'][0]['company'] -------------------------------------------------------------------------------------"
+            Rails.logger.info @info['hydra:member'][0]['company']
+
             if @info['hydra:member'][0]['company'].present?
              client_type = "PM"
             else
