@@ -57,9 +57,8 @@ javascript:
                         var colData = parseFloat(columns.eq(col).find('span.td-value' + index).text().replace(',', ''));
                         var colPercent = columns.eq(col).find('span.percent-value' + index).text().split(" ")[0];
                         percent_values_array.push(colPercent);
-
                         if (!isNaN(colData)) {
-                            if (col === 0) {
+                            if (col === 0){
                                 rowTotal = colData;
                             } else {
                                 rowTotal -= colData;
@@ -68,6 +67,11 @@ javascript:
                             rowTotal = null;
                             break;
                         }
+
+                        console.log('colData');
+                        console.log(colData);
+                        console.log('rowTotal');
+                        console.log(rowTotal);
                     }
                 }
                 ;
