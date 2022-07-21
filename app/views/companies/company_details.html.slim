@@ -1892,8 +1892,13 @@ javascript:
                                       strong
                                         | Calificación cartera
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      strong
-                                        = @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].present? ? @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].tr('0', '') : 'N/D'
+                                      - if @report_result['response']['respuesta']['datosGenerales'].present?
+                                        strong
+                                          = @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].present? ? @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].tr('0', '') : 'N/D'
+                                      - else
+                                        strong
+                                          | N/D
+
                                 - else
                                   .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
                                     .m-alert__icon
