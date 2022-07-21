@@ -70,6 +70,12 @@ class BuroCredito < ApplicationRecord
     account_type_pf_b = false
     account_type_pm_b = false
 
+    Rails.logger.info "info_sat ----------------------------------------------------------------------"
+    Rails.logger.info info_sat
+
+    Rails.logger.info "info_sat['hydra:member'][0]['company'] ------------------------------------------------"
+    Rails.logger.info info_sat['hydra:member'][0]['company']
+
 
     if info_sat['hydra:member'][0]['company'].present?
       account_type_pm_b = true
