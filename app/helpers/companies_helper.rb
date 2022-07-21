@@ -145,7 +145,8 @@ module CompaniesHelper
       total
     end
 =end
-    return (total-depreciacion).round(2)
+
+    return ((total.nil? ? 0 : total)-(depreciacion.nil? ? 0 : total)).round(2)
   end
 
   #Calcula sumatoria para activo fijo
