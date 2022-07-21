@@ -114,8 +114,14 @@ class HomeController < ApplicationController
                                          main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
                                          client_type: client_type)
 
-                        @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
-                        # @bureau_report = BuroCredito.get_report_by_id 95999#4450 60368
+                        if @user.try(:company).try(:rfc) == 'FGL190102DH6'
+
+                          @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
+                        else
+                          @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
+
+                        end
+
 
 
                         # @bureau_report = BuroCredito.get_report_by_id 12468
