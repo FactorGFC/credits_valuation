@@ -310,6 +310,7 @@ class HomeController < ApplicationController
      account_type = "PM"
      trade_name = info_sat['hydra:member'][0]['company']['tradeName']
      basic_rfc = rfc.first(9)
+     
      data = [accountType: account_type, tradeName: trade_name,  rfc: rfc, basicRFC: basic_rfc, address: address,
              city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
              interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality, nationality: "MX",
