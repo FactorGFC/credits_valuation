@@ -2650,265 +2650,281 @@ javascript:
                         .col-6.per-page-container
 
                     - if @company.info_company.present?
-                      .m-section__content
-                        .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                      - if @company.info_company['hydra:member'].present?
+                        .m-section__content
+                          .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
 
-                          - if @company.info_company['hydra:member'].try(:first)['person'].present?
-                            .m-demo__preview
-                              h3.m-portlet__head-text
-                                | Contribuyente
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | R.F.C
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['rfc']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | CIF
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['cif']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Estatus
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['status']
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Inició operaciones en
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['startedOperationsAt']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Estado actualizado en
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | CURP
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['person']['curp']
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Nombre
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['person']['firstName']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Apellido Paterno
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['person']['middleName']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Apellido Materno
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['person']['lastName']
-                          - else
-                            .m-demo__preview
-                              h3.m-portlet__head-text
-                                | Contribuyente
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | R.F.C
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['rfc']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | CIF
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['cif']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Estatus
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['status']
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--center.m-stack__item--middle
-                                  strong
-                                    | Inició operaciones en
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['startedOperationsAt']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Estado actualizado en
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt']
-                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                  strong
-                                    | Nombre legal
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['company']['legalName']
-                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                .m-stack__item.header-info-company.m-stack__item--center.m-stack__item--middle
-                                  strong
-                                    | Tipo de entidad
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['company']['entityType']
-                                .m-stack__item.header-info-company.m-stack__item--center.m-stack__item--middle
-                                  strong
-                                    | Nombre comercial
-                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                  = @company.info_company['hydra:member'].try(:first)['company']['tradeName']
+                            - if @company.info_company['hydra:member'].try(:first)['person'].present?
+                              .m-demo__preview
+                                h3.m-portlet__head-text
+                                  | Contribuyente
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | R.F.C
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['rfc']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | CIF
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['cif']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Estatus
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['status']
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Inició operaciones en
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['startedOperationsAt']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Estado actualizado en
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | CURP
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['person']['curp']
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Nombre
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['person']['firstName']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Apellido Paterno
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['person']['middleName']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Apellido Materno
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['person']['lastName']
+                            - else
+                              .m-demo__preview
+                                h3.m-portlet__head-text
+                                  | Contribuyente
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | R.F.C
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['rfc']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | CIF
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['cif']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Estatus
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['status']
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--center.m-stack__item--middle
+                                    strong
+                                      | Inició operaciones en
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['startedOperationsAt']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Estado actualizado en
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt']
+                                  .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                    strong
+                                      | Nombre legal
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['company']['legalName']
+                                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                  .m-stack__item.header-info-company.m-stack__item--center.m-stack__item--middle
+                                    strong
+                                      | Tipo de entidad
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['company']['entityType']
+                                  .m-stack__item.header-info-company.m-stack__item--center.m-stack__item--middle
+                                    strong
+                                      | Nombre comercial
+                                  .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                    = @company.info_company['hydra:member'].try(:first)['company']['tradeName']
 
-                        .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
-                          .m-demo__preview
-                            h3.m-portlet__head-text
-                              | Dirección
-                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Código postal
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @company.info_company['hydra:member'].try(:first)['address']['postalCode']
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Tipo de calle
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @company.info_company['hydra:member'].try(:first)['address']['streetType']
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Nombre de la calle
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @company.info_company['hydra:member'].try(:first)['address']['streetName']
-                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Referencias de calles
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                - @company.info_company['hydra:member'].try(:first)['address']['streetReferences'].each do |references|
-                                  = references.to_s + ' '
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Número exterior
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @company.info_company['hydra:member'].try(:first)['address']['streetNumber']
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Número interior
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @company.info_company['hydra:member'].try(:first)['address']['buildingNumber']
-                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Vecindario
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @company.info_company['hydra:member'].try(:first)['address']['neighborhood']
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Localidad
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @company.info_company['hydra:member'].try(:first)['address']['locality']
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Municipio
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @company.info_company['hydra:member'].try(:first)['address']['municipality']
-                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Estado
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @company.info_company['hydra:member'].try(:first)['address']['state']
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Email
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @company.info_company['hydra:member'].try(:first)['email']
-                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                                strong
-                                  | Teléfono
-                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                = @company.info_company['hydra:member'].try(:first)['phone']
-
-                        .m-section
                           .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                             .m-demo__preview
                               h3.m-portlet__head-text
-                                | Actividades económicas
-                              .m-section__content
-                                table.table
-                                  thead.thead-default.thead-custom
-                                    tr style="text-align: center;"
-                                      th
-                                        | Orden
-                                      th
-                                        | Actividad económica
-                                      th
-                                        | Porcentaje
-                                      th
-                                        | Fecha inicial
-                                      th
-                                        | Fecha final
-                                  tbody
-                                    - @company.info_company['hydra:member'].try(:first)['economicActivities'].each do |economic_activities|
-                                      tr
-                                        td
-                                          = economic_activities['order']
-                                        td
-                                          = economic_activities['name']
-                                        td
-                                          = economic_activities['percentage']
-                                        td
-                                          = economic_activities['startDate']
-                                        td
-                                          = economic_activities['endDate']
-                        .m-section
-                          .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
-                            .m-demo__preview
-                              h3.m-portlet__head-text
-                                | Regímenes
-                              .m-section__content
-                                table.table
-                                  thead.thead-default.thead-custom
-                                    tr style="text-align: center;"
-                                      th
-                                        | Régimen
-                                      th
-                                        | Fecha inicial
-                                      th
-                                        | Fecha final
-                                  tbody
-                                    - @company.info_company['hydra:member'].try(:first)['taxRegimes'].each do |regime|
-                                      tr
-                                        td
-                                          = regime['name']
-                                        td
-                                          = regime['startDate']
-                                        td
-                                          = regime['endDate']
+                                | Dirección
+                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Código postal
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @company.info_company['hydra:member'].try(:first)['address']['postalCode']
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Tipo de calle
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @company.info_company['hydra:member'].try(:first)['address']['streetType']
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Nombre de la calle
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @company.info_company['hydra:member'].try(:first)['address']['streetName']
+                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Referencias de calles
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  - @company.info_company['hydra:member'].try(:first)['address']['streetReferences'].each do |references|
+                                    = references.to_s + ' '
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Número exterior
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @company.info_company['hydra:member'].try(:first)['address']['streetNumber']
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Número interior
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @company.info_company['hydra:member'].try(:first)['address']['buildingNumber']
+                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Vecindario
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @company.info_company['hydra:member'].try(:first)['address']['neighborhood']
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Localidad
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @company.info_company['hydra:member'].try(:first)['address']['locality']
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Municipio
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @company.info_company['hydra:member'].try(:first)['address']['municipality']
+                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Estado
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @company.info_company['hydra:member'].try(:first)['address']['state']
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Email
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @company.info_company['hydra:member'].try(:first)['email']
+                                .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                  strong
+                                    | Teléfono
+                                .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                  = @company.info_company['hydra:member'].try(:first)['phone']
 
-                        .m-section
-                          .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
-                            .m-demo__preview
-                              h3.m-portlet__head-text
-                                | Obligaciones
-                              .m-section__content
-                                table.table
-                                  thead.thead-default.thead-custom
-                                    tr style="text-align: center;"
-                                      th
-                                        | Descripción de la obligación
-                                      th
-                                        | Fecha de vencimiento
-                                      th
-                                        | Fecha inicial
-                                      th
-                                        | Fecha final
-                                  tbody
-                                    - @company.info_company['hydra:member'].try(:first)['obligations'].each do |obligation|
-                                      tr
-                                        td
-                                          = obligation['description']
-                                        td
-                                          = obligation['dueDate']
-                                        td
-                                          = obligation['startDate']
-                                        td
-                                          = obligation['endDate']
+                          .m-section
+                            .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                              .m-demo__preview
+                                h3.m-portlet__head-text
+                                  | Actividades económicas
+                                .m-section__content
+                                  table.table
+                                    thead.thead-default.thead-custom
+                                      tr style="text-align: center;"
+                                        th
+                                          | Orden
+                                        th
+                                          | Actividad económica
+                                        th
+                                          | Porcentaje
+                                        th
+                                          | Fecha inicial
+                                        th
+                                          | Fecha final
+                                    tbody
+                                      - @company.info_company['hydra:member'].try(:first)['economicActivities'].each do |economic_activities|
+                                        tr
+                                          td
+                                            = economic_activities['order']
+                                          td
+                                            = economic_activities['name']
+                                          td
+                                            = economic_activities['percentage']
+                                          td
+                                            = economic_activities['startDate']
+                                          td
+                                            = economic_activities['endDate']
+                          .m-section
+                            .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                              .m-demo__preview
+                                h3.m-portlet__head-text
+                                  | Regímenes
+                                .m-section__content
+                                  table.table
+                                    thead.thead-default.thead-custom
+                                      tr style="text-align: center;"
+                                        th
+                                          | Régimen
+                                        th
+                                          | Fecha inicial
+                                        th
+                                          | Fecha final
+                                    tbody
+                                      - @company.info_company['hydra:member'].try(:first)['taxRegimes'].each do |regime|
+                                        tr
+                                          td
+                                            = regime['name']
+                                          td
+                                            = regime['startDate']
+                                          td
+                                            = regime['endDate']
 
+                          .m-section
+                            .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                              .m-demo__preview
+                                h3.m-portlet__head-text
+                                  | Obligaciones
+                                .m-section__content
+                                  table.table
+                                    thead.thead-default.thead-custom
+                                      tr style="text-align: center;"
+                                        th
+                                          | Descripción de la obligación
+                                        th
+                                          | Fecha de vencimiento
+                                        th
+                                          | Fecha inicial
+                                        th
+                                          | Fecha final
+                                    tbody
+                                      - @company.info_company['hydra:member'].try(:first)['obligations'].each do |obligation|
+                                        tr
+                                          td
+                                            = obligation['description']
+                                          td
+                                            = obligation['dueDate']
+                                          td
+                                            = obligation['startDate']
+                                          td
+                                            = obligation['endDate']
+                      - else
+                        .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                          .m-alert__icon
+                            i.flaticon-exclamation-1
+                            span
+                          .m-alert__text
+                            strong
+                              | Aún no se le ha asignado información del SAT.
+                    - else
+                      .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                        .m-alert__icon
+                          i.flaticon-exclamation-1
+                          span
+                        .m-alert__text
+                          strong
+                            | Aún no se le ha asignado información del SAT.
 #m_modal_1.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"
     .modal-content
