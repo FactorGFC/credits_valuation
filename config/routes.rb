@@ -168,6 +168,9 @@ Rails.application.routes.draw do
   get 'blog_details/:id', to: 'landing#blog_details', as: :blog_details
   get 'company_blog/:id', to: 'landing#company_blog', as: :company_blog
 
+  get 'get_info_sat/:rfc', to: 'api#get_info_sat' #,:defaults => {:format => 'json'}
+  get 'get_bureau_report/:rfc', to: 'api#get_bureau_report' #,:defaults => {:format => 'json'}
+
 
 
 end

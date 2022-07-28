@@ -10,6 +10,7 @@
 #  client_type               :string
 #  complete                  :boolean
 #  credential_company        :jsonb
+#  customers                 :jsonb
 #  group_company             :boolean
 #  has_clients               :boolean
 #  has_providers             :boolean
@@ -20,6 +21,7 @@
 #  main_activity             :string
 #  main_products             :string
 #  name                      :string
+#  providers                 :jsonb
 #  rfc                       :string
 #  sat_password              :string
 #  step_five                 :boolean
