@@ -576,7 +576,8 @@ function calculate_comparative(table_id){
 
         for (var col = 0; col < colMax; col++) {
             if(columns.eq(col).css('display') !== 'none'){
-                var colData    = parseFloat(columns.eq(col).find('span.td-value'+index).text());
+                var colData    = parseFloat(columns.eq(col).find('span.td-value'+index).text().split(',').join(''));
+
                 var colPercent = columns.eq(col).find('span.percent-value'+index).text().split(" ")[0];
                 percent_values_array.push(colPercent);
 
@@ -590,13 +591,14 @@ function calculate_comparative(table_id){
                     rowTotal = null;
                     break;
                 }
+
             }
         };
 
         max_num = Math.max(...percent_values_array);
         min_num = Math.min(...percent_values_array);
         percent_value = ((max_num - min_num)/min_num)*100;
-        if(min_num == 0){
+        if(min_num === 0){
             percent_value = ((max_num - min_num) / 1) * 100;
         }else{
             percent_value = ((max_num - min_num) / min_num) * 100;

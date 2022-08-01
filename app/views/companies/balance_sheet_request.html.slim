@@ -44,10 +44,10 @@
                 - @calendar_periods.each do |y|
                   th = y.calendar.period_name
               tr
-                td style="font-weight: 800"
+                td.concept-header style="font-weight: 800"
                   span.text-left = 'Activo circulante'
                 - @calendar_periods.each do |y|
-                  td
+                  td.concept-header
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Caja / Inversiones'
@@ -82,10 +82,10 @@
                     input type="number" step=0.001 name="b_sheet[#{y.id}.4][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 4, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
 
               tr
-                td style="font-weight: 800"
+                td.concept-header style="font-weight: 800"
                   span.text-left = 'Activo fijo'
                 - @calendar_periods.each do |y|
-                  td
+                  td.concept-header
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Terrenos y Construcciones'
@@ -128,10 +128,10 @@
                     input type="number" step=0.001 name="b_sheet[#{y.id}.9][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 9, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
 
               tr
-                td style="font-weight: 800"
+                td.concept-header style="font-weight: 800"
                   span.text-left = 'Pasivo total'
                 - @calendar_periods.each do |y|
-                  td
+                  td.concept-header
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Proveedores'
@@ -166,10 +166,10 @@
                     input type="number" step=0.001 name="b_sheet[#{y.id}.13][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 13, calendar_id: y.calendar_id, company_id: current_user.company_id).try(:value)}"
 
               tr
-                td style="font-weight: 800"
+                td.concept-header style="font-weight: 800"
                   span.text-left = 'Capital Total'
                 - @calendar_periods.each do |y|
-                  td
+                  td.concept-header
               tr
                 td style="font-weight: 600"
                   span.text-left = 'Capital social'

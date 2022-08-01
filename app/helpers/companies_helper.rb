@@ -268,6 +268,7 @@ module CompaniesHelper
   end
 
   def calcular_rentabilidad_base_capital period, net_profit, total_capital0, total_capital1, income_scale, balance_scale
+    value = 0
     if total_capital0
       #1 es referente al año del row actual, el 0 es del año anterior
       if period == 'anual'
@@ -298,9 +299,10 @@ module CompaniesHelper
       end
 
       value = ((net_profit/months)*12)/((total_capital0+total_capital1)/2)
-      return (value*100).round(1)
+
+      return (value*100).round(2)
     else
-      return 0
+      return 0.0
     end
   end
 
@@ -470,6 +472,7 @@ module CompaniesHelper
   end
 
   def calcular_provider_days period, providers, payable_conts_fop, sales_costs, income_scale, balance_scale
+    value = 0
     if sales_costs != 0
       if period == 'anual'
         months = 12
@@ -499,6 +502,7 @@ module CompaniesHelper
       end
 
       value = ((providers+payable_conts_fop)/sales_costs)*(months*30)
+
       return value.round(1)
     else
       return 0
@@ -588,6 +592,7 @@ module CompaniesHelper
   end
 
   def calculate_finantial_lp period, utility_op, dep_y_amort, bancos_lp_otros_pas, other_pas, income_scale, balance_scale
+    value = 0
     if period == 'anual'
       months = 12
     elsif period === 'trimestral'
@@ -620,6 +625,18 @@ module CompaniesHelper
 
     sum2_div = utility_op + dep_y_amort
 
+    p '=======CONTROLLER=========='
+    p '=======CONTROLLER=========='
+    p '=======CONTROLLER=========='
+    p utility_op
+    p dep_y_amort
+    p bancos_lp_otros_pas
+    p sum2_div
+    p other_pas
+    p ((bancos_lp_otros_pas+other_pas)/(((utility_op+dep_y_amort)/months)*12)).round(2)
+    p '================='
+    p '================='
+    p '================='
     if sum2_div < 0
       return 'UAFIRDA Neg.'
     elsif sum2_div == 0

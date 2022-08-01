@@ -326,4 +326,214 @@ class Company < ApplicationRecord
     end
   end
 
+  #Calcula numero de meses según periodo
+  def self.calculate_months period
+    if period == 'anual'
+      months = 12
+    elsif period === 'trimestral'
+      months = 3
+    else
+      months = 1
+    end
+    return months
+  end
+
+  #Convierte las cantidades a pesos para manejarlos valores en la misma escala
+  def self.convert_value_to_units scale, value
+    if value
+      if scale === 'millones'
+        value = value*1000000
+      elsif scale === 'miles'
+        value = value*1000
+      else
+        value = value
+      end
+    else
+      value = nil
+    end
+
+    return value
+  end
+
+  #OPERACIONES
+  def self.calculate_crecimiento_nom_ventas income_year0, income_year1, months, inflation
+    if income_year0.nil? or income_year0 == 0
+      value = 0.0
+    else
+      if inflation.present?
+        value = ((income_year1*(12/months))/ (income_year0*(1+(inflation/100))))-1
+      else
+        value = ((income_year1*(12/months))/ income_year0)-1
+      end
+      value = 0 if value.nan?
+    end
+    return value
+  end
+
+  def self.calculate_rotacion_activos income_year1, total_active0, total_active1, months
+    if (total_active1+total_active0) != 0
+      value = ((income_year1/months)*12)/((total_active1+total_active0)/2)
+    else
+      value = 0.0
+    end
+    return value
+  end
+
+  def self.calculate_margen_operativo total_active, gross_profit
+    if total_active and total_active != 0
+      value = total_active > 0 ? gross_profit/total_active : 0
+      value = (value*100).round(1)
+    else
+      value = 0.0
+    end
+    return value
+  end
+
+  def self.calculate_rentabilidad_base_capital net_profit, total_capital0, total_capital1, months, kind
+    value = 0.0
+    if total_capital0
+      #1 es referente al año del row actual, el 0 es del año anterior
+      value = ((net_profit/months)*12)/((total_capital0+total_capital1)/2)
+      value = (value*100).round(1)
+    else
+      value = 0.0
+    end
+
+    return value
+  end
+
+  def self.calculate_margen_neto net_profit, total_active
+    if total_active != 0
+      value = (net_profit/total_active)
+      value = (value*100).round(1)
+    else
+      value = 0.0
+    end
+    return value
+  end
+
+  def self.calculate_razon_circulante activo_circulante, pasivo_circ
+    if pasivo_circ != 0
+      #pasivo_circ se está obteniento del pasivo total
+      value = activo_circulante/pasivo_circ
+      value = (value).round(2)
+    else
+      value = 0.0
+    end
+    return value
+  end
+
+  def self.calculate_prueba_acido activo_circulante, pasivo_circ, inventarios
+    if pasivo_circ != 0
+      #pasivo_circ se está obteniento del pasivo total
+      value = (activo_circulante-inventarios)/pasivo_circ
+      value = (value).round(2)
+    else
+      value = 0.0
+    end
+    return value
+  end
+
+  def self.calculate_pasTotal_capContable total_pasive, total_capital
+    if total_pasive != 0
+      value = (total_pasive)/total_capital
+      value = (value).round(2)
+    else
+      value = 0.0
+    end
+    return value
+  end
+
+  def self.calculate_client_days clients, income_vts, months
+    if income_vts != 0
+      value = (clients/income_vts)*(months*30)
+      value = value.round
+    else
+      value = 0
+    end
+    return value
+  end
+
+  def self.calculate_inventory_days inventory, sales_costs, months
+    if sales_costs != 0
+      value = (inventory*30*months)/sales_costs
+      value = value
+    else
+      value = 0.0
+    end
+    return value
+  end
+
+  def self.calculate_provider_days providers, payable_conts_fop, sales_costs, months
+    if sales_costs != 0
+      value = ((providers+payable_conts_fop)/sales_costs)*(months*30)
+      value = value.round(1)
+    else
+      value = 0.0
+    end
+    return value
+  end
+
+  def self.calculate_financial_cycle client_days, inventory_days, provider_days
+    value = client_days + inventory_days - provider_days
+    value = value.round(1)
+    return value
+  end
+
+  def self.calculate_investment_in_work clients, ctas_x_cob_fop, inventory, providers, ctas_x_pag_fop
+    value = clients + ctas_x_cob_fop + inventory - providers - ctas_x_pag_fop
+    value = value.round
+    return value
+  end
+
+  def self.calculate_interest_coverage utility_op, dep_y_amort, financial_expense
+    if financial_expense == 0
+      financial_expense = 1
+    end
+    value = (utility_op+dep_y_amort)/financial_expense
+    value = value.round(2)
+    return value
+  end
+
+  def self.calculate_debt_coverage utility_op, porc_circl_y_otros_pas, financial_expense
+    if financial_expense == 0 and porc_circl_y_otros_pas == 0
+      sum2_div = 1
+    else
+      sum2_div = financial_expense + porc_circl_y_otros_pas
+    end
+    value = utility_op/sum2_div
+    value = value.round(1)
+    return value
+  end
+
+
+  def self.calculate_finantial_lp utility_op, dep_y_amort, bancos_lp_otros_pas, other_pas, months
+    sum2_div = utility_op + dep_y_amort
+
+    if sum2_div < 0
+      value = -0#'UAFIRDA Neg.'
+    elsif sum2_div == 0
+      value = 0
+    else
+      value = (bancos_lp_otros_pas+other_pas)/(((utility_op+dep_y_amort)/months)*12)
+      value = value.round(2)
+    end
+    return value
+  end
+
+  def self.calculate_finantial_total utility_op, dep_y_amort, bancos_lp_otros_pas, other_pas, months
+    #ESTE PROCESO LE FALTAN DATOS DEL DESGLOCE DE PASIVO ESTE CÓDIGO PERTENECE A EL CALCULO ANTERIOR.
+    sum2_div = utility_op + dep_y_amort
+
+    if sum2_div < 0
+      value = -0#'UAFIRDA Neg.'
+    elsif sum2_div == 0
+      value = 0
+    else
+      value = (bancos_lp_otros_pas+other_pas)/(((utility_op+dep_y_amort)/months)*12)
+      value = value.round(2)
+    end
+
+    return value
+  end
 end

@@ -17,6 +17,10 @@
     z-index:          10;
   }
 
+  tr > th.sub-th{
+    top:  125px;;
+  }
+
   td{
     border:         1px solid #3b3e52;
     vertical-align: middle;
@@ -90,6 +94,18 @@
 
 .text-table-concept{
   color: #2d51b2;
+}
+
+.concept-header{
+  color:            white !important;
+  background-color: #2d51b2 !important;
+}
+
+.th-scale{
+  background:     white;
+  padding:        2px 15px;
+  border-radius:  5px;
+  color:          #57241a;
 }
 
 .value-scale{
