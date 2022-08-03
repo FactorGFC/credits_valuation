@@ -1,23 +1,4 @@
 <!-- -*- encoding : utf-8 -*- -->
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-  </head>
-  <body>
-    <div>
-      <h1>Hola <%= @user.first_name.upcase %> <%= @user.last_name.upcase %></h1>
-      <h2>Se han agregado los siguientes periodos para su captura:</h2>
-      <% @calendar_ids.each do |calendar_id| %>
-        <%= Calendar.find(calendar_id).period_name %>
-        <br>
-      <% end %>
-      <h4>¡Gracias!</h4>
-    </div>
-  </body>
-</html>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
