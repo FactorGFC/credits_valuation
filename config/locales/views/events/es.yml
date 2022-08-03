@@ -26,5 +26,6 @@ es:
       opinion: Dictamen
       status: Estatus
       comment: Comentario
+      credit_requests: Solicitudes de crédito
   breadcrumbs:
     requests: Eventos

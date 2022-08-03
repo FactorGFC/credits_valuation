@@ -429,6 +429,8 @@ class CompaniesController < ApplicationController
           CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'balance_sheet')
           CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'income_statement')
         end
+        
+        CreditRequestMailer.calendar_assigned_mail(request_data: {user:  Company.find(params[:company_id]).user, company: Company.find(params[:company_id])}).deliver
       end
 
       redirect_to "/company_details/#{params[:company_id]}", notice: records_exists ? "Creado. Algunos calendarios no se pudieron eliminar ya que existen registros." : "Creado exitosamente."

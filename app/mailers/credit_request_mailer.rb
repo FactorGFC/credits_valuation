@@ -4,7 +4,7 @@ class CreditRequestMailer < ApplicationMailer
   def new_credit_request_email
     @request_data = params[:request_data]
 
-    mail(to: "#{@request_data[:user][:email]}", subject: "¡Recibimos tu solicitud de crédito!")
+    mail(to: "#{@request_data[:user][:email]}", subject: "¡Recibimos tu solicitud de registro!")
   end
 
 
@@ -12,13 +12,17 @@ class CreditRequestMailer < ApplicationMailer
     @request_data = params[:request_data]
 
 
-    mail(to: "#{@request_data[:user][:email]}", subject: "¡Tu solicitud de crédito ha sido aprobada!")
+    mail(to: "#{@request_data[:user][:email]}", subject: "¡Tu solicitud de registro ha sido aprobada!")
   end
 
   def credit_request_refused
     @request_data = params[:request_data]
 
-    mail(to: "#{@request_data[:user][:email]}", subject: "Tu solicitud de creéito ha sido rechazada")
+    mail(to: "#{@request_data[:user][:email]}", subject: "Tu solicitud de registro ha sido rechazada")
   end
 
+  def calendar_assigned_mail
+    @request_data = params[:request_data]
+    mail(to: "#{@request_data[:user][:email]}", subject: "Solicitud de captura de información financiera.")
+  end
 end

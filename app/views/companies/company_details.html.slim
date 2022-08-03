@@ -142,7 +142,7 @@ javascript:
       a.m-nav__link.m-nav__link--icon.mx-2.pb-2 href="/login" style="font-size: 20px;"
         i.fa.fa-chevron-circle-left
       h3.m-subheader__title.m-subheader__title--separator
-        | Compañias
+        | Compañías
 
 .col-xl-12.mt-20
   .portlet-profile.d-flex.justify-content-end
@@ -278,7 +278,7 @@ javascript:
             .btns-card
               .subtitle-icon.d-flex.justify-content-center.align-items-center
                 i.fa.fa-sync.fa-lg.m--font-primary
-              h5.h5.subtitle = 'Información faltante de compañia'
+              h5.h5.subtitle = 'Información faltante de compañía'
               - if @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present?
                 span.text-center
                   | Todo en orden.
@@ -298,7 +298,7 @@ javascript:
                     = "Info. Buró de crédito"
                 - unless @company.try(:credit_bureaus).last.try(:bureau_report).present?
                   = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
-                    = "Reporte del buro de crédito"
+                    = "Reporte del buró de crédito"
 
           .col-md-3
             .btns-card
@@ -353,7 +353,7 @@ javascript:
                 | RAZÓNES FINANCIERAS
             li.nav-item
               a.nav-link data-toggle="tab" href="#credit_bureau"
-                | BURO DE CRÉDITO
+                | BURÓ DE CRÉDITO
             li.nav-item
               a.nav-link data-toggle="tab" href="#info_sat"
                 | INFORMACIÓN DEL SAT
@@ -904,7 +904,7 @@ javascript:
                             span.float-percent.percent_t27 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
-                            span.text-left = 'Utilidad/Perdida acumulada'
+                            span.text-left = 'Utilidad/Pérdida acumulada'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
@@ -935,7 +935,7 @@ javascript:
                             span.float-percent.percent_t29 = "0 %"
                         tr.tr-rdata
                           td style="font-weight: 600" rowspan="2"
-                            span.text-left = 'Utilidad/Perdida ejercicio'
+                            span.text-left = 'Utilidad/Pérdida ejercicio'
                           - @calendar_periods_bs.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
@@ -1238,7 +1238,7 @@ javascript:
                             span.scale13.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'Utilidad o perdida cambiaria'
+                            span.text-left = 'Utilidad o pérdida cambiaria'
                           - @calendar_periods_is.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
@@ -1383,7 +1383,7 @@ javascript:
                             span.scale23.value-scale = @ins_scale
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'Participacion subsidiarios'
+                            span.text-left = 'Participación subsidiarios'
                           - @calendar_periods_is.each_with_index do |y, y_index|
                             td.sum_input class="full-input col-#{y.id}"
                               - if y.calendar.period_type == 'anual'
@@ -1516,7 +1516,7 @@ javascript:
                             = 'RENTABILIDAD'
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'ROTACION DE ACTIVOS'
+                            span.text-left = 'ROTACIÓN DE ACTIVOS'
                           - @calendar_fr.each_with_index do |calendar, calendar_index|
                             td.sum_input.sat_value class="full-input col-#{calendar.id}"
                               - if calendar.calendar.period_type == 'anual'
@@ -1658,7 +1658,7 @@ javascript:
                             = 'CICLO FINANCIERO'
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'DIAS CLIENTES'
+                            span.text-left = 'DÍAS CLIENTES'
                           - @calendar_fr.each_with_index do |calendar, calendar_index|
                             td.sum_input.sat_value class="full-input col-#{calendar.id}"
                               - if calendar.calendar.period_type == 'anual'
@@ -1675,7 +1675,7 @@ javascript:
                                 = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_clientes').try(:id)).first.try(:value)
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'DIAS INVENTARIO'
+                            span.text-left = 'DÍAS INVENTARIO'
                           - @calendar_fr.each_with_index do |calendar, calendar_index|
                             td.sum_input.sat_value class="full-input col-#{calendar.id}"
                               - if calendar.calendar.period_type == 'anual'
@@ -1692,7 +1692,7 @@ javascript:
                                 = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_inventario').try(:id)).first.try(:value)
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'DIAS PROVEEDORES'
+                            span.text-left = 'DÍAS PROVEEDORES'
                           - @calendar_fr.each_with_index do |calendar, calendar_index|
                             td.sum_input.sat_value class="full-input col-#{calendar.id}"
                               - if calendar.calendar.period_type == 'anual'
@@ -1726,7 +1726,7 @@ javascript:
                                 = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'ciclo_financiero').try(:id)).first.try(:value)
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'INVERSION EN TRABAJO'
+                            span.text-left = 'INVERSIÓN EN TRABAJO'
                           - @calendar_fr.each_with_index do |calendar, calendar_index|
                             td.sum_input.sat_value class="full-input col-#{calendar.id}"
                               - if calendar.calendar.period_type == 'anual'
@@ -1874,7 +1874,7 @@ javascript:
                             = 'RENTABILIDAD'
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'ROTACION DE ACTIVOS'
+                            span.text-left = 'ROTACIÓN DE ACTIVOS'
                           - @calendar_fr.each_with_index do |calendar, calendar_index|
                             td.sum_input.sat_value class="full-input col-#{calendar.id}"
                               - if calendar.calendar.period_type == 'anual'
@@ -2017,7 +2017,7 @@ javascript:
                             = 'CICLO FINANCIERO'
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'DIAS CLIENTES'
+                            span.text-left = 'DÍAS CLIENTES'
                           - @calendar_fr.each_with_index do |calendar, calendar_index|
                             td.sum_input.sat_value class="full-input col-#{calendar.id}"
                               - if calendar.calendar.period_type == 'anual'
@@ -2034,7 +2034,7 @@ javascript:
                                 = calcular_client_days(calendar.calendar.period_type, balance_calendar_detail_value(@company.id, calendar.calendar, 2, @bs_scale), income_calendar_detail_value(@company.id, calendar.calendar, 1, @ins_scale), @ins_scale, @bs_scale)
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'DIAS INVENTARIO'
+                            span.text-left = 'DÍAS INVENTARIO'
                           - @calendar_fr.each_with_index do |calendar, calendar_index|
                             td.sum_input.sat_value class="full-input col-#{calendar.id}"
                               - if calendar.calendar.period_type == 'anual'
@@ -2051,7 +2051,7 @@ javascript:
                                 = calcular_inventory_days(calendar.calendar.period_type, balance_calendar_detail_value(@company.id, calendar.calendar, 3, @bs_scale), income_calendar_detail_value(@company.id, calendar.calendar, 2, @ins_scale), @ins_scale, @bs_scale)
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'DIAS PROVEEDORES'
+                            span.text-left = 'DÍAS PROVEEDORES'
                           - @calendar_fr.each_with_index do |calendar, calendar_index|
                             td.sum_input.sat_value class="full-input col-#{calendar.id}"
                               - if calendar.calendar.period_type == 'anual'
@@ -2085,7 +2085,7 @@ javascript:
                                 = calculate_financial_cycle(calcular_client_days(calendar.calendar.period_type, balance_calendar_detail_value(@company.id, calendar.calendar, 2, @bs_scale), income_calendar_detail_value(@company.id, calendar.calendar, 1, @ins_scale), @ins_scale, @bs_scale), calcular_inventory_days(calendar.calendar.period_type, balance_calendar_detail_value(@company.id, calendar.calendar, 3, @bs_scale), income_calendar_detail_value(@company.id, calendar.calendar, 2, @ins_scale), @ins_scale, @bs_scale), calcular_provider_days(calendar.calendar.period_type, balance_calendar_detail_value(@company.id, calendar.calendar, 10, @bs_scale), 0, income_calendar_detail_value(@company.id, calendar.calendar, 2, @ins_scale), @ins_scale, @bs_scale))
                         tr.tr-rdata
                           td style=" font-weight: 800; font-size: 18px" rowspan="2"
-                            span.text-left = 'INVERSION EN TRABAJO'
+                            span.text-left = 'INVERSIÓN EN TRABAJO'
                           - @calendar_fr.each_with_index do |calendar, calendar_index|
                             td.sum_input.sat_value class="full-input col-#{calendar.id}"
                               - if calendar.calendar.period_type == 'anual'
@@ -2282,7 +2282,7 @@ javascript:
                         .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                           .m-demo__preview
                             h3.m-portlet__head-text
-                              | Resumen de Creditos (M.N.)
+                              | Resumen de Créditos (M.N.)
                             - if @credit_bureau.bureau_report.present?
                               - if @report_result['response'].present?
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
@@ -2412,7 +2412,7 @@ javascript:
                                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                       strong
-                                        | Compañia
+                                        | Compañía
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
                                       = job['NombreEmpresa']
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
@@ -2505,7 +2505,7 @@ javascript:
                                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                       strong
-                                        | Crédito maximo
+                                        | Crédito máximo
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
                                       = number_to_currency account['CreditoMaximo']
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
@@ -2762,7 +2762,7 @@ javascript:
                         .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                           .m-demo__preview
                             h3.m-portlet__head-text
-                              | Creditos activos
+                              | Créditos activos
                             - if @credit_bureau.bureau_report.present?
                               - if @report_result['response'].present?
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
@@ -2991,7 +2991,7 @@ javascript:
                             span
                           .m-alert__text
                             strong
-                              | Aún no se le ha asignado el buro de crédito.
+                              | Aún no se le ha asignado el buró de crédito.
 
           .tab-pane id="info_sat"
             .col-xl-12
@@ -3298,7 +3298,7 @@ javascript:
           input type="hidden" name="id" id="companyId" value=""
           input type="hidden" name="approved" id="companyApproved" value=""
           p#textModal
-            | Se va a validar la compañia para que pueda acceder al sistema.
+            | Se va a validar la compañía para que pueda acceder al sistema.
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar
@@ -3318,7 +3318,7 @@ javascript:
           input type="hidden" name="id"           id="companyId"   value=""
           input type="hidden" name="capture_type" id="captureType" value=""
           p#textModal
-            | Se va a habilitar esta captura para la compañia.
+            | Se va a habilitar esta captura para la compañía.
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar

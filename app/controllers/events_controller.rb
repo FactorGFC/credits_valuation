@@ -43,20 +43,19 @@ class EventsController < ApplicationController
   def save_event
     event_params  = params[:event]
     users_ids     = params[:users].present? ? params[:users].map(&:to_i) : []
-    requests_ids     = params[:requests].present? ? params[:requests].map(&:to_i) : []
+    requests_ids  = params[:requests].present? ? params[:requests].map(&:to_i) : []
 
     #Validar si ya existe
     if event_params[:id].present?
       event = Event.where(id: event_params[:id]).try(:first)
       event.update(title:  event_params[:title], description: event_params[:description], start_date: event_params[:date_time], event_type: event_params[:event_type], url: event_params[:url], location: event_params[:location])
 
-      event_users = EventDetail.where(event_id: event.id).pluck(:user_id)
-
+      event_users       = EventDetail.where(event_id: event.id).pluck(:user_id)
       new_records       = (users_ids - event_users)
       destroy_records   = (event_users - users_ids)
 
-      event_request_ids = EventRequest.where(event_id: event.id).pluck(:request_id)
-      new_event_requests       = (requests_ids - event_request_ids)
+      event_request_ids       = EventRequest.where(event_id: event.id).pluck(:request_id)
+      new_event_requests      = (requests_ids - event_request_ids)
       destroy_event_requests  = (event_request_ids - requests_ids)
 
       begin
@@ -77,9 +76,9 @@ class EventsController < ApplicationController
 
 
         #Send email confirmation
-        #users_ids.each do |id|
-        #  EventMailer.update_event_email(event, User.find(id)).deliver
-        #end
+        users_ids.each do |id|
+          EventMailer.update_event_email(event, User.find(id)).deliver
+        end
 
 
         redirect_to "/events", notice: "Evento actualizado correctamente."

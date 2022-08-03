@@ -7,23 +7,12 @@
   </head>
   <body>
     <div>
-      <h1>Hola <%= @user.full_name %></h1>
-      <h2>Se actualizarón los datos de el evento:</h2>
-      <p>
-        Evento: <%= @event.title %>
+      <h1>Hola <%= @user.first_name.upcase %> <%= @user.last_name.upcase %></h1>
+      <h2>Se han agregado los siguientes periodos para su captura:</h2>
+      <% @calendar_ids.each do |calendar_id| %>
+        <%= Calendar.find(calendar_id).period_name %>
         <br>
-        Descripción: <%= @event.description %>
-        <br>
-        Fecha y Hora: <%= @event.start_date.strftime("%d/%m%Y %I:%M%p")%>
-        <br>
-        Se llevará a cabo de forma <strong><%= @event.event_type %></strong>
-        <br>
-        <% if @event.event_type === 'PRESENCIAL' %>
-          Ubicación: <%= @event.location %>
-        <% else %>
-          URL: <%= @event.url %>
-        <% end %>
-      </p>
+      <% end %>
       <h4>¡Gracias!</h4>
     </div>
   </body>
@@ -121,7 +110,7 @@
                                       <tr>
                                         <td align="left" class="textContent">
                                           <div style="font-family:'Poppins', 'Roboto', sans-serif;font-size:13px;color:rgba(0, 0, 0, 0.84);text-align:center;line-height:120%;">
-                                            ¡Tu solicitud de registro ha sido aprobada!
+                                            Solicitud de captura de información financiera.
                                           </div>
                                         </td>
                                       </tr>
@@ -194,33 +183,13 @@
                                       <tr>
                                         <td align="left" valign="top" class="textContent">
                                           <p style="text-align:start;font-weight:200;font-family:'Poppins', 'Roboto', sans-serif;font-size:16px;margin-bottom:10px;color:rgba(0,0,0,.84);line-height:135%;">
-                                            Hola <strong> <%= @user.full_name %></strong>
+                                            Hola <strong><%= @request_data[:user][:first_name].upcase %> <%= @request_data[:user][:last_name].upcase %></strong>
                                           </p>
                                           <p style="text-align:start;font-weight:200;font-family:'Poppins', 'Roboto', sans-serif;font-size:16px;margin-bottom:10px;color:rgba(0,0,0,.84);line-height:135%;">
-                                            Se actualizaron los datos del evento:
+                                            Un ejecutivo de <strong><%= @request_data[:company][:name].upcase %></strong>, solicita que captures información financiera para continuar con el análisis de tu empresa.
                                           </p>
-                                          <p>
-                                            Evento: <%= @event.title %>
-                                            <br>
-                                            Descripción: <%= @event.description %>
-                                            <br>
-                                            Fecha y Hora: <%= @event.start_date.strftime("%d/%m%Y %I:%M%p")%>
-                                            <br>
-                                            Se llevará a cabo de forma <strong><%= @event.event_type %></strong>
-                                            <br>
-                                            Se analizarán las siguientes empresas:
-                                            <ul>
-                                              <% @requests.each do |event_request| %>
-                                                <li><%= event_request.try(:request).try(:factor_credit).try(:name) %></li>
-                                              <% end %>
-                                            </ul>
-                                            <br>
-                                            <br>
-                                            <% if @event.event_type === 'PRESENCIAL' %>
-                                              Ubicación: <%= @event.location %>
-                                            <% else %>
-                                              URL: <%= @event.url %>
-                                            <% end %>
+                                          <p style="text-align:start;font-weight:200;font-family:'Poppins', 'Roboto', sans-serif;font-size:16px;margin-bottom:10px;color:rgba(0,0,0,.84);line-height:135%;">
+                                            En necesario ingresar al enlace: <a href="https://analisisfg.com/login">https://analisisfg.com/login</a> con tus credenciales.</h2>
                                           </p>
                                           <p style="text-align:center;font-weight:200;font-family:'Poppins', 'Roboto', sans-serif;font-size:16px;margin-bottom:10px;color:rgba(0,0,0,.84);line-height:135%;">
                                             ¡Gracias!
