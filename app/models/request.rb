@@ -32,4 +32,5 @@ class Request < ApplicationRecord
   belongs_to :factor_credit
   belongs_to :process_status
   belongs_to :user
+  belongs_to :analist, :class_name => 'User', foreign_key: 'analyst_id'
 end

@@ -263,6 +263,21 @@ javascript:
               /button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_analyst" data-toggle="modal" type="button" data-id="#{@company.id}"
                 i.fab.fa-facebook-f.left
                 | Facebook
+              .m-section__content.table-responsive
+                table.table.m-table.m-table--head-separator-brand.table-custom
+                  thead.thead-default.thead-custom
+                    tr style="text-align: center;"
+                      th
+                        | Analista
+                      th
+                        | Crédito
+                    tbody
+                      - @requests.each do |request|
+                        tr
+                          td
+                            = request.analist.full_name
+                          td
+                            = request.factor_credit.name
 
           .col-md-3
             .btns-card
@@ -3387,11 +3402,13 @@ javascript:
           p#textModal
             | Asignar Analista
           .col-xl-12 style="display: grid;"
-            = select("request", "analyst_id", User.all.where(role_id: Role.find_by(key:'analyst').try(:id)).collect {|p| [ p.full_name, p.id ] }, { include_blank: 'Selecciona analista', selected: @request.try(:analyst_id) }, {class: "form-control m-input"})
+            / = select("request", "analyst_id", User.all.where(role_id: Role.find_by(key:'analyst').try(:id)).collect {|p| [ p.full_name, p.id ] }, { include_blank: 'Selecciona analista', selected: @request.try(:analyst_id) }, {class: "form-control m-input"})
+            = select("request", "analyst_id", User.all.where(role_id: Role.find_by(key:'analyst').try(:id)).collect {|p| [ p.full_name, p.id ] }, { include_blank: 'Selecciona analista' }, {class: "form-control m-input"})
           p#textModal
             | Asignar Tipo de Crédito
           .col-xl-12 style="display: grid;"
-            = select("request", "factor_credit_id",FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito', selected: @request.try(:factor_credit_id)}, {class: "form-control m-input"})
+            / = select("request", "factor_credit_id",FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito', selected: @request.try(:factor_credit_id)}, {class: "form-control m-input"})
+            = select("request", "factor_credit_id", FactorCredit.where.not(id:@requests.pluck(:factor_credit_id)).collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input"})
           - if @request.try(:order).present?
             - if @request.try(:order) >= 2
               p#textModal

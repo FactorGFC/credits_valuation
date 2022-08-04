@@ -286,6 +286,7 @@ class CompaniesController < ApplicationController
     @financial_inst      = @company.financial_institutions
     @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
+    @requests            = Request.where(company_id: params[:id])
 
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
@@ -440,7 +441,7 @@ class CompaniesController < ApplicationController
   end
 
   def assign_details_to_request
-    request         = Request.find_by(company_id: params[:company_id])
+    request         = Request.find_by(company_id: params[:company_id], factor_credit_id: params[:request][:factor_credit_id])
     request_params  = params[:request]
     request_params[:process_status_id] = ProcessStatus.first_step unless request_params[:process_status_id].present?
     if request
