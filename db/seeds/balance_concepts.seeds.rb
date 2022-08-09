@@ -74,4 +74,11 @@ BalanceConcept.create!([
     {name: 'Insuficiencia en la actualización del capital', key: 'Insuficiencia en la actualización del capital', number_key: 15, name_key: 'insuficiencia_en_la_actualizacion_del_capital', active: true, capturable: true, parent_id: 52}, #63
     {name: 'Actualización del capital contable', key: 'Actualización del capital contable', number_key: 15, name_key: 'actualizacion_del_capital_contable', active: true, capturable: true, parent_id: 52}, #64
 
+    #SEEDS PARA CAMPOS EXTRA REQUERIDOS PARA CALCULAR RAZÓNES FINANCIERAS
+    {name: 'Pago de capital', key: 'pago_de_capital', number_key: nil, name_key: 'pago_de_capital', active: true, capturable: true, parent_id: nil}, #65
+    {name: 'Bancos corto plazo', key: 'bancos_cp', number_key: nil, name_key: 'bancos_cp', active: true, capturable: true, parent_id: nil}, #66
+    {name: 'Otros pasivos fin. (C.P.).', key: 'otros_pasivos_fin_cp', number_key: nil, name_key: 'otros_pasivos_fin_cp', active: true, capturable: true, parent_id: nil}, #67
+    {name: 'Otros pasivos (circulante)', key: 'otros_pasivos_circulante', number_key: nil, name_key: 'otros_pasivos_circulante', active: true, capturable: true, parent_id: nil}, #68
+    {name: 'Bancos largo plazo', key: 'bancos_lp', number_key: nil, name_key: 'bancos_lp', active: true, capturable: true, parent_id: nil}, #69
+    {name: 'Otros pasivos (L.P.)', key: 'otros_pasivos_lp', number_key: nil, name_key: 'otros_pasivos_lp', active: true, capturable: true, parent_id: nil}, #70
 ])

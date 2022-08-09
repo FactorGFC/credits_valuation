@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :flow_concepts
+  resources :conciliation_concepts
   resources :f_reasons_concepts
   resources :factor_credits
   #resources :request_comments
@@ -60,6 +62,12 @@ Rails.application.routes.draw do
     put 'sat_balance_sheet/:id' => 'companies#sat_balance_sheet', as: :sat_balance_sheet
     put 'credit_bureau_info/:id' => 'companies#credit_bureau_info', as: :credit_bureau_info
     put 'credit_bureau_report/:id' => 'companies#credit_bureau_report', as: :credit_bureau_report
+=begin
+    put 'save_data_crec_sost' => 'companies#save_data_crec_sost', as: :save_extra_data_cs
+    put 'save_data_cobertura_deuda' => 'companies#save_data_cobertura_deuda', as: :save_data_cobertura_deuda
+    put 'save_data_deuda_fin_lp' => 'companies#save_data_deuda_fin_lp', as: :save_data_deuda_fin_lp
+=end
+    put 'save_extra_data' => 'companies#save_extra_data', as: :save_extra_data
 
     get 'request_steps'  => 'companies#request_steps', as: :request_steps
     get 'balance_sheet_request'  => 'companies#balance_sheet_request', as: :balance_sheet_request

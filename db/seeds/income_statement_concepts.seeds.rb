@@ -124,4 +124,7 @@ IncomeStatementConcept.create!([
                            {name: 'Utilidad neta', key: 'Utilidad neta', number_key: 14, name_key: 'utilidad_neta', active: true, capturable: true, parent_id: nil}, #111
                            {name: 'Utilidad neta', key: 'Utilidad neta', number_key: 14, name_key: 'utilidad_neta', active: true, capturable: true, parent_id: 111}, #112
                            {name: 'Pérdida neta', key: 'Pérdida neta', number_key: 14, name_key: 'utilidad_neta', active: true, capturable: true, parent_id: 111}, #113
+
+                           #SEEDS PARA CAMPOS EXTRA REQUERIDOS PARA CALCULAR RAZÓNES FINANCIERAS
+                           {name: 'Depreciación y amortización', key: 'dep_and_amort', number_key: nil, name_key: 'dep_and_amort', active: true, capturable: true, parent_id: nil}, #114
 ])

@@ -136,32 +136,15 @@ module CompaniesHelper
   def bs_activo_fijo company_id, bs_keys_array, calendar_id, value_scale
     total = BalanceCalendarDetail.where(company_id: company_id, balance_concept_key: bs_keys_array, calendar_id: calendar_id).sum(:value)
     depreciacion = BalanceCalendarDetail.where(company_id: company_id, balance_concept_key: 7, calendar_id: calendar_id).first.try(:value)
-=begin
-    if value_scale === 'millones'
-      total/1000000
-    elsif value_scale === 'miles'
-      total/1000
-    else
-      total
-    end
-=end
 
-    return ((total.nil? ? 0 : total)-(depreciacion.nil? ? 0 : total)).round(2)
+    return ((total.nil? ? 0 : total)-(depreciacion.nil? ? 0 : depreciacion)).round(2)
   end
 
   #Calcula sumatoria para activo fijo
   def bs_activo_fijo_sat company_id, bs_keys_array, calendar, value_scale
     total = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: bs_keys_array, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f)
     depreciacion = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: 7, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f)
-=begin
-    if value_scale === 'millones'
-      total/1000000
-    elsif value_scale === 'miles'
-      total/1000
-    else
-      total
-    end
-=end
+
     return (total-depreciacion).round(2)
   end
 

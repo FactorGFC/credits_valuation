@@ -58,6 +58,7 @@ class Company < ApplicationRecord
   has_many :balance_calendar_details
   has_many :company_calendar_details
   has_many :income_calendar_details
+  has_many :company_conciliations
   has_many :company_income_statements
   has_many :company_balance_sheets
   has_many :credit_bureaus
@@ -355,6 +356,23 @@ class Company < ApplicationRecord
     return value
   end
 
+  #Convierte las cantidades a miles para manejarlos valores en razones financieras
+  def self.convert_value_to_miles scale, value
+    if value
+      if scale === 'millones'
+        value = value*1000000
+      elsif scale === 'pesos'
+        value = value/1000
+      else
+        value = value
+      end
+    else
+      value = nil
+    end
+
+    return value
+  end
+
   #OPERACIONES
   def self.calculate_crecimiento_nom_ventas income_year0, income_year1, months, inflation
     if income_year0.nil? or income_year0 == 0
@@ -370,13 +388,33 @@ class Company < ApplicationRecord
     return value
   end
 
+  def self.calculate_crecimiento_sostenible net_margin, pas_tot_cap_cont, asset_turnover, dividends_paid_in_cash, net_profit
+    #Se convierte porcentaje a cantidad de net_margin
+    if asset_turnover.nil? or asset_turnover != 0
+      net_margin = net_margin/100
+      value = ((net_margin)*(1-(dividends_paid_in_cash/net_profit))*(1+pas_tot_cap_cont))/((1/asset_turnover)-(net_margin*(1-(dividends_paid_in_cash/net_profit))*(1+pas_tot_cap_cont)))
+    else
+      value = 0.0
+    end
+
+    return value*100
+  end
+
+  def self.calculate_total_pas_fin banks_st, other_pas_circ, principal_payment, banks_lt, other_pas_lp
+    value = (banks_st + other_pas_circ + principal_payment + banks_lt + other_pas_lp).round(2)
+
+    return value
+  end
+
   def self.calculate_rotacion_activos income_year1, total_active0, total_active1, months
+
     if (total_active1+total_active0) != 0
       value = ((income_year1/months)*12)/((total_active1+total_active0)/2)
     else
       value = 0.0
     end
-    return value
+
+    return value.round(2)
   end
 
   def self.calculate_margen_operativo total_active, gross_profit
@@ -412,10 +450,12 @@ class Company < ApplicationRecord
     return value
   end
 
-  def self.calculate_razon_circulante activo_circulante, pasivo_circ
-    if pasivo_circ != 0
+  def self.calculate_razon_circulante activo_circulante, providers, contributions_payable, advance_customers, banks_st, other_pas_cp, principal_payment, other_pas_circ
+    pasivo_circulante = providers + contributions_payable + advance_customers + banks_st + other_pas_cp + principal_payment + other_pas_circ
+
+    if pasivo_circulante != 0
       #pasivo_circ se está obteniento del pasivo total
-      value = activo_circulante/pasivo_circ
+      value = activo_circulante/pasivo_circulante
       value = (value).round(2)
     else
       value = 0.0
@@ -423,14 +463,32 @@ class Company < ApplicationRecord
     return value
   end
 
-  def self.calculate_prueba_acido activo_circulante, pasivo_circ, inventarios
-    if pasivo_circ != 0
+  def self.calculate_prueba_acido activo_circulante, inventarios, providers, contributions_payable, advance_customers, banks_st, other_pas_cp, principal_payment, other_pas_circ
+    pasivo_circulante = providers + contributions_payable + advance_customers + banks_st + other_pas_cp + principal_payment + other_pas_circ
+
+    if pasivo_circulante != 0
       #pasivo_circ se está obteniento del pasivo total
-      value = (activo_circulante-inventarios)/pasivo_circ
+      value = (activo_circulante-inventarios)/pasivo_circulante
       value = (value).round(2)
     else
       value = 0.0
     end
+    p '=============='
+    p '=========='
+    p '======'
+    p '=============='
+    p '=========='
+    p '======'
+    p activo_circulante
+    p inventarios
+    p pasivo_circulante
+    p value
+    p '======'
+    p '=========='
+    p '=============='
+    p '======'
+    p '=========='
+    p '=============='
     return value
   end
 
@@ -441,6 +499,7 @@ class Company < ApplicationRecord
     else
       value = 0.0
     end
+
     return value
   end
 
@@ -482,7 +541,7 @@ class Company < ApplicationRecord
 
   def self.calculate_investment_in_work clients, ctas_x_cob_fop, inventory, providers, ctas_x_pag_fop
     value = clients + ctas_x_cob_fop + inventory - providers - ctas_x_pag_fop
-    value = value.round
+    value = (value/1000).round #Convertir a miles
     return value
   end
 
@@ -490,6 +549,7 @@ class Company < ApplicationRecord
     if financial_expense == 0
       financial_expense = 1
     end
+
     value = (utility_op+dep_y_amort)/financial_expense
     value = value.round(2)
     return value
@@ -506,31 +566,50 @@ class Company < ApplicationRecord
     return value
   end
 
+  def self.calculate_flujo_neto_pas_fin net_flow, pas_fin_total
+    if pas_fin_total != 0
+      value = net_flow/pas_fin_total
+    else
+      value = 0
+    end
+    return (value*100).round(1)
+  end
 
-  def self.calculate_finantial_lp utility_op, dep_y_amort, bancos_lp_otros_pas, other_pas, months
-    sum2_div = utility_op + dep_y_amort
+  def self.calculate_flujo_neto_pas_total net_flow, pas_total
+    if pas_fin_total != 0
+      value = net_flow/pas_total
+    else
+      value = 0
+    end
 
+    return (value*100).round(1)
+  end
+
+  def self.calculate_finantial_lp banks_lt, other_passives, dep_and_amort, utility_operation, months
+    sum2_div = utility_operation + dep_and_amort
+    other_passives = 0
     if sum2_div < 0
       value = -0#'UAFIRDA Neg.'
     elsif sum2_div == 0
       value = 0
     else
-      value = (bancos_lp_otros_pas+other_pas)/(((utility_op+dep_y_amort)/months)*12)
+      value = (banks_lt+other_passives)/(((utility_operation+dep_and_amort)/months)*12)
       value = value.round(2)
     end
     return value
   end
 
-  def self.calculate_finantial_total utility_op, dep_y_amort, bancos_lp_otros_pas, other_pas, months
+  def self.calculate_finantial_total utility_operation, dep_and_amort, banks_st, banks_lt, other_passives, months
     #ESTE PROCESO LE FALTAN DATOS DEL DESGLOCE DE PASIVO ESTE CÓDIGO PERTENECE A EL CALCULO ANTERIOR.
-    sum2_div = utility_op + dep_y_amort
+    sum2_div = utility_operation + dep_and_amort
+    #other_passives -= (banks_st+banks_lt)
 
     if sum2_div < 0
       value = -0#'UAFIRDA Neg.'
     elsif sum2_div == 0
       value = 0
     else
-      value = (bancos_lp_otros_pas+other_pas)/(((utility_op+dep_y_amort)/months)*12)
+      value = (other_passives)/(((sum2_div)/months)*12)
       value = value.round(2)
     end
 
