@@ -1134,22 +1134,22 @@ class CompaniesController < ApplicationController
 
       BalanceCalendarDetail.transaction do
         data_bs.each do |e|
-          bs_detail = BalanceCalendarDetail.find_by(balance_concept_id: e[1][:concept_id], calendar_id: e[1][:period], company_id: @company.id)
+          bs_detail = BalanceCalendarDetail.find_by(balance_concept_id: e[1][:concept_id], calendar_id: e[1][:period], company_id: @company.id, extra_data: true)
           if bs_detail.present?
             raise ActiveRecord::Rollback unless bs_detail.update(value: e[1][:value].present? ? e[1][:value] : 0, value_scale: bs_scale)
           else
-            raise ActiveRecord::Rollback unless BalanceCalendarDetail.new(balance_concept_id: e[1][:concept_id], calendar_id: e[1][:period], value: e[1][:value].present? ? e[1][:value] : 0, balance_type: 'FACTOR', company_id: @company.id, value_scale: bs_scale).save
+            raise ActiveRecord::Rollback unless BalanceCalendarDetail.new(balance_concept_id: e[1][:concept_id], calendar_id: e[1][:period], value: e[1][:value].present? ? e[1][:value] : 0, balance_type: 'FACTOR', company_id: @company.id, value_scale: bs_scale, extra_data: true).save
           end
         end
       end
 
       IncomeCalendarDetail.transaction do
         data_is.each do |e|
-          ic_detail = IncomeCalendarDetail.find_by(income_statement_concept_id: e[1][:concept_id], calendar_id: e[1][:period], company_id: @company.id)
+          ic_detail = IncomeCalendarDetail.find_by(income_statement_concept_id: e[1][:concept_id], calendar_id: e[1][:period], company_id: @company.id, extra_data: true)
           if ic_detail.present?
             raise ActiveRecord::Rollback unless ic_detail.update(value: e[1][:value], value_scale: ins_scale)
           else
-            raise ActiveRecord::Rollback unless IncomeCalendarDetail.new(income_statement_concept_id: e[1][:concept_id], calendar_id: e[1][:period], value: e[1][:value], company_id: @company.id, value_scale: ins_scale).save
+            raise ActiveRecord::Rollback unless IncomeCalendarDetail.new(income_statement_concept_id: e[1][:concept_id], calendar_id: e[1][:period], value: e[1][:value], company_id: @company.id, value_scale: ins_scale, extra_data: true).save
           end
         end
       end

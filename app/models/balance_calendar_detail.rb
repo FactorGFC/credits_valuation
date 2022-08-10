@@ -5,6 +5,7 @@
 #  id                  :bigint           not null, primary key
 #  balance_concept_key :string
 #  balance_type        :string
+#  extra_data          :boolean
 #  value               :float
 #  value_scale         :string
 #  balance_concept_id  :integer

@@ -3,6 +3,7 @@
 # Table name: income_calendar_details
 #
 #  id                           :bigint           not null, primary key
+#  extra_data                   :boolean
 #  income_statement_concept_key :string
 #  value                        :float
 #  value_scale                  :string
