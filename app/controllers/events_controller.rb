@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   protect_from_forgery
 
   def index
-    @users            = User.all
+    @users            = User.where(role_id: Role.find_by(key:'committee').try(:id))
     @next_events      = Event.where('start_date >= ?', Date.today()).order(:start_date)
     @pending_events   = Event.where(event_finished: [false, nil]).order(:start_date)
     @finished_events  = Event.where(event_finished: true).order(:start_date)

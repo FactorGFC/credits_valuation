@@ -132,8 +132,9 @@
           section
             button.btn.btn-secondary.mx-2 data-dismiss="modal" type="button"
               | Cerrar
-            button.btn.btn-success.btn-section-disabled type="submit" id="request_btn"
-              | Guardar
+            - unless current_user.committee?
+              button.btn.btn-success.btn-section-disabled type="submit" id="request_btn"
+                | Guardar
           button.btn.btn-danger#btn-event-delete type="button" onclick="deleteEvent(event_id)"
             i.fa.fa-trash-alt.mx-2
             | Eliminar
