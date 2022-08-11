@@ -80,12 +80,6 @@ class HomeController < ApplicationController
     @sat = SatW.create_sat_ws data
 
 
-    p "@sat ------------------------------------------------------------------"
-    p @sat
-
-    Rails.logger.info "@sat looogessrr ------------------------------------------------"
-    Rails.logger.info @sat
-
     respond_to do |format|
       if params_ciec
         if rfc_valid
@@ -93,15 +87,6 @@ class HomeController < ApplicationController
           if @sat['hydra:title'] != 'An error occurred'
 
             @info = SatW.get_tax_status @user.try(:company).try(:rfc)
-
-            p "@@info ------------------------------------------------------------------"
-            p @info
-
-            Rails.logger.info "@@info looogessrr ------------------------------------------------"
-            Rails.logger.info @info
-
-
-
 
             if @info['@type'] != 'hydra:Error'
 
@@ -114,11 +99,6 @@ class HomeController < ApplicationController
               @buro = create_buro @info, @user.try(:phone)
 
 
-              Rails.logger.info "@buro ---------------------------------------------------------------------------------------------------"
-              Rails.logger.info @buro
-
-
-
               if @buro
                 @credential = SatW.get_credential @sat['id']
 
@@ -129,11 +109,17 @@ class HomeController < ApplicationController
                     @balance_sheet = SatW.get_balance_sheet @user.try(:company).try(:rfc)
 
                     if !@balance_sheet.first[0].present?
+                      @cash_flow = SatW.get_cash_flow @user.try(:company).try(:rfc)
+                      providers = SatW.get_suppliers_concentration @user.try(:company).try(:rfc)
+                      customers = SatW.get_customer_concentration @user.try(:company).try(:rfc)
+
+
                       if @company.update(info_company: @info, credential_company: @credential, sat_id: @sat['id'],
                                          income_statment: @income_statment, buro_id: @buro.first['id'],
                                          sat_password: params[:passsword_ciec], balance_sheet: @balance_sheet,
                                          main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
-                                         client_type: client_type)
+                                         client_type: client_type, providers: providers, customers: customers,
+                                         cash_flow: @cash_flow)
 
                         if @user.try(:company).try(:rfc) == 'FGL190102DH6'
 
@@ -221,11 +207,15 @@ class HomeController < ApplicationController
                 if !@income_statment.first[0].present?
                   @balance_sheet = SatW.get_balance_sheet @user.try(:company).try(:rfc)
                   if !@balance_sheet.first[0].present?
+                    @cash_flow = SatW.get_cash_flow @user.try(:company).try(:rfc)
+                    providers = SatW.get_suppliers_concentration @user.try(:company).try(:rfc)
+                    customers = SatW.get_customer_concentration @user.try(:company).try(:rfc)
                     if @company.update(info_company: @info, credential_company: @credential, sat_id: @sat['id'],
                                        sat_password: params[:passsword_firma], key_encoded: key_base_64, cer_encoded: cer_base_64,
                                        buro_id: @buro.first['id'], balance_sheet: @balance_sheet,
                                        main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
-                                       client_type: client_type)
+                                       client_type: client_type, providers: providers, customers: customers,
+                                       cash_flow: cash_flow)
                       @bureau_report = BuroCredito.get_buro_report @buro.first['id']
                       @bureau_info = BuroCredito.get_buro_info @buro.first['id']
 
