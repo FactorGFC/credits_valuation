@@ -14,4 +14,5 @@ Role.create!([
   {name: 'Analista', key: 'analyst', description: 'Rol de Analista de crédito.', scope: 'owner'},
   {name: 'Empresa', key: 'enterprise', description: 'Rol de Empresa que solicitara un crédito.', scope: 'owner'},
   {name: 'Aprobador', key: 'approver', description: 'Rol de Aprobador.', scope: 'owner'},
+  {name: 'Comité', key: 'committee', description: 'Rol de Comité.', scope: 'owner'},
 ])
