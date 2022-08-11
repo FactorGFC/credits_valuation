@@ -77,6 +77,9 @@ class User < ApplicationRecord
     role_key.eql?('analyst')
   end
 
+  def committee?
+    role_key.eql?('committee')
+  end
 
   def has_total_scope?
     role_scope.eql?('total')
