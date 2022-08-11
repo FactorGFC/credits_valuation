@@ -2668,17 +2668,26 @@ javascript:
                                           th
                                             | Acciones
                                       tbody
-                                        - @company.try(:providers)['data'].each do |provider|
-                                          tr style="text-align: center;"
-                                            td
-                                              = provider['rfc']
-                                            td
-                                              = provider['name']
-                                            td
-                                              = number_to_currency provider['total']
-                                            td
-                                              button type="button" class="btn btn-primary" data-toggle="modal" data-transactions="#{provider['transactions'].to_json}" data-target="#modal_providers"
-                                                | Ver transacciones
+                                        -if @company.try(:providers).present?
+                                          - @company.try(:providers)['data'].each do |provider|
+                                            tr style="text-align: center;"
+                                              td
+                                                = provider['rfc']
+                                              td
+                                                = provider['name']
+                                              td
+                                                = number_to_currency provider['total']
+                                              td
+                                                button type="button" class="btn btn-primary" data-toggle="modal" data-transactions="#{provider['transactions'].to_json}" data-target="#modal_providers"
+                                                  | Ver transacciones
+                                        - else
+                                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                            .m-alert__icon
+                                              i.flaticon-exclamation-1
+                                              span
+                                            .m-alert__text
+                                              strong
+                                                | Aún no se le han asignado proveedores a la compañía.
                           .tab-pane.active id="customers"
                             .col-xl-12
                               .m-portlet
@@ -2696,17 +2705,26 @@ javascript:
                                           th
                                             | Acciones
                                       tbody
-                                        - @company.try(:customers)['data'].each do |customer|
-                                          tr style="text-align: center;"
-                                            td
-                                              = customer['rfc']
-                                            td
-                                              = customer['name']
-                                            td
-                                              = number_to_currency customer['total']
-                                            td
-                                              button type="button" class="btn btn-primary" data-toggle="modal" data-transactions="#{customer['transactions'].to_json}" data-target="#modal_customers"
-                                                | Ver transacciones
+                                        - if  @company.try(:customers).present?
+                                          - @company.try(:customers)['data'].each do |customer|
+                                            tr style="text-align: center;"
+                                              td
+                                                = customer['rfc']
+                                              td
+                                                = customer['name']
+                                              td
+                                                = number_to_currency customer['total']
+                                              td
+                                                button type="button" class="btn btn-primary" data-toggle="modal" data-transactions="#{customer['transactions'].to_json}" data-target="#modal_customers"
+                                                  | Ver transacciones
+                                        - else
+                                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                            .m-alert__icon
+                                              i.flaticon-exclamation-1
+                                              span
+                                            .m-alert__text
+                                              strong
+                                                | Aún no se le han asignado clientes a la compañía.
 
           .tab-pane id="cash_flow"
             .col-xl-12
