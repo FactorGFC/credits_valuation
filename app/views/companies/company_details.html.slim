@@ -163,6 +163,8 @@ javascript:
             = @company.try(:status_company).present? ? @company.try(:status_company).try(:name): 'PENDIENTE DE REVISIÓN X FACTOR'
         .vl
         .col-md-6
+          span.port-subtitle = 'Teléfono de contacto'
+          span = @company.user.phone
           span.port-subtitle = 'Actividad Principal'
           span = @company.main_activity
           span.port-subtitle = 'Principales Productos/Servicios'
