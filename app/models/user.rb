@@ -73,6 +73,10 @@ class User < ApplicationRecord
     role_key.eql?('enterprise')
   end
 
+  def analyst?
+    role_key.eql?('analyst')
+  end
+
 
   def has_total_scope?
     role_scope.eql?('total')

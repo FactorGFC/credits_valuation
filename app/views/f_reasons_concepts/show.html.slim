@@ -1,0 +1,24 @@
+.col-xl-12
+  .m-portlet
+    .m-portlet__head
+      .m-portlet__head-caption
+        .m-portlet__head-title
+          span.m-portlet__head-icon.m--hide
+            i.la.la-gear
+          h3.m-portlet__head-text = t('.title')
+    .m-portlet__body
+      .row
+        .col-lg-12
+          = "#{t('.name')}: #{@f_reasons_concept.name}"
+        .col-lg-12
+          = "#{t('.key')}: #{@f_reasons_concept.key}"
+        .col-lg-12
+          = "#{t('.formula')}: #{@f_reasons_concept.formula}"
+        .col-lg-12
+          = "#{t('.description')}: #{@f_reasons_concept.description}"
+    .m-portlet__foot
+      .m-form__actions.m-form__actions--solid
+        .row
+          .col-lg-12
+            =< link_to boards_path, class: 'btn btn-secondary'
+              = t('helpers.go_to', resource: t('.back_resource'))

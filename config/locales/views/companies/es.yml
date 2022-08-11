@@ -185,9 +185,9 @@ es:
       back_resource: usuarios
       log_out: Salir
     form:
-      title: Compañia
-      resource: compañia
-      back_resource: compañias
+      title: Compañía
+      resource: compañía
+      back_resource: compañías
   breadcrumbs:
     users: Usuarios
     change_password: Cambiar contraseña

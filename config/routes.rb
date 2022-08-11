@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  resources :flow_concepts
+  resources :conciliation_concepts
+  resources :f_reasons_concepts
   resources :factor_credits
   #resources :request_comments
   resources :requests
@@ -59,12 +62,19 @@ Rails.application.routes.draw do
     put 'sat_balance_sheet/:id' => 'companies#sat_balance_sheet', as: :sat_balance_sheet
     put 'credit_bureau_info/:id' => 'companies#credit_bureau_info', as: :credit_bureau_info
     put 'credit_bureau_report/:id' => 'companies#credit_bureau_report', as: :credit_bureau_report
+=begin
+    put 'save_data_crec_sost' => 'companies#save_data_crec_sost', as: :save_extra_data_cs
+    put 'save_data_cobertura_deuda' => 'companies#save_data_cobertura_deuda', as: :save_data_cobertura_deuda
+    put 'save_data_deuda_fin_lp' => 'companies#save_data_deuda_fin_lp', as: :save_data_deuda_fin_lp
+=end
+    put 'save_extra_data' => 'companies#save_extra_data', as: :save_extra_data
 
     get 'request_steps'  => 'companies#request_steps', as: :request_steps
     get 'balance_sheet_request'  => 'companies#balance_sheet_request', as: :balance_sheet_request
     post 'create_balance_sheet_request'  => 'companies#create_balance_sheet_request', as: :create_balance_sheet_request
     get 'income_statement_capture'  => 'companies#income_statement_capture', as: :income_statement_capture
     post 'create_income_statement_cap'  => 'companies#create_income_statement_cap', as: :create_income_statement_cap
+    get 'generate_financial_reasons/:id'  => 'companies#generate_financial_reasons', as: :generate_financial_reasons
 
     get 'balance_sheet_comparative/:id'  => 'companies#balance_sheet_comparative', as: :balance_sheet_comparative
     get 'income_statement_comparative/:id'  => 'companies#income_statement_comparative', as: :income_statement
@@ -110,11 +120,11 @@ Rails.application.routes.draw do
       put 'validate_company' => 'companies#validate_company', as: :validate_company
       put 'change_capture_status' => 'companies#change_capture_status', as: :change_capture_status
 
-      #Asign Calendar to companies
-      put 'asign_calendar' => 'companies#asign_calendar', as: :asign_calendar
+      #assign Calendar to companies
+      put 'assign_calendar' => 'companies#assign_calendar', as: :assign_calendar
 
-      #Asign Analyst to request
-      put 'asign_details_to_request' => 'companies#asign_details_to_request', as: :asign_details_to_request
+      #assign Analyst to request
+      put 'assign_details_to_request' => 'companies#assign_details_to_request', as: :assign_details_to_request
 
       #refuse companies
       put 'refuse_company' => 'companies#refuse_company', as: :refuse_company

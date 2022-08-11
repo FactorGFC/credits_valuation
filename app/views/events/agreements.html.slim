@@ -102,7 +102,7 @@
         - if @requests.empty?
           .m-section__content
             .no-results
-              = t('helpers.not_created_yet', resource: t('.other').downcase)
+              = t('helpers.not_created_yet', resource: t('.credit_requests').downcase)
         - else
           = form_tag '/update_event_agreement', method: 'PUT' do |f|
             input type="hidden" name="event_id" value="#{params[:id]}"

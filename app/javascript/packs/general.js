@@ -55,7 +55,7 @@ $(document).on('turbolinks:load', function () {
                     success: function (data) {
                         let event = data;
                         $("#titleModalLabel").text('EDITAR EVENTO');
-                        fillEventForm(event.id, event.title, event.description, event.start, event.event_type, event.location, event.url, event.user_ids,event.request_ids)
+                        fillEventForm(event.id, event.title, event.description, event.start, event.event_type, event.location, event.url, event.user_ids, event.request_ids)
                     },
                     error: function (error) {
                         var message = I18n.t('messages.try_again');
@@ -746,7 +746,8 @@ function calculate_comparative(table_id){
 
         for (var col = 0; col < colMax; col++) {
             if(columns.eq(col).css('display') !== 'none'){
-                var colData    = parseFloat(columns.eq(col).find('span.td-value'+index).text());
+                var colData    = parseFloat(columns.eq(col).find('span.td-value'+index).text().split(',').join(''));
+
                 var colPercent = columns.eq(col).find('span.percent-value'+index).text().split(" ")[0];
                 percent_values_array.push(colPercent);
 
@@ -760,13 +761,14 @@ function calculate_comparative(table_id){
                     rowTotal = null;
                     break;
                 }
+
             }
         };
 
         max_num = Math.max(...percent_values_array);
         min_num = Math.min(...percent_values_array);
         percent_value = ((max_num - min_num)/min_num)*100;
-        if(min_num == 0){
+        if(min_num === 0){
             percent_value = ((max_num - min_num) / 1) * 100;
         }else{
             percent_value = ((max_num - min_num) / min_num) * 100;
@@ -822,7 +824,7 @@ function calculate_comparative(table_id){
     //$("table#comparative_table").show();
 }
 
-function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers){
+function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType, eventLocation, eventUrl, eventUsers, eventRequests){
     $(".modal-body #event_id").val(eventId);
     $(".modal-body #title_input").val(eventTitle);
     $(".modal-body #event_description").val(eventDesc);
@@ -831,7 +833,6 @@ function fillEventForm(eventId, eventTitle, eventDesc, eventDatetime, eventType,
     $(".modal-body #event_location").val(eventLocation);
     $(".modal-body #event_url").val(eventUrl);
     $("#eventUsers").val(eventUsers).trigger('change');
-
     $("#eventRequests").val(eventRequests).trigger('change');
 
     validateData();

@@ -55,11 +55,19 @@ after :initialize_permissions do
     {name: 'Ver vista de detalles de la compañia', description: 'Permite entrar a la vista de los detalles de compañia', action: 'company_details', controller: 'Companies'},
     {name: 'Mostar vista de buro de crédito', description: 'Permite ver la vista del resumen de buro de crédito', action: 'index', controller: 'CreditBureaus' },
     {name: 'Mostar vista de reporte buro de crédito', description: 'Permite ver la vista del reporte del buro de crédito', action: 'show', controller: 'CreditBureaus' },
-    {name: 'Mostar vista de comentario de una solicitud de una solicitud', description: 'Permite ver la lista de comentarios de una solicitud', action: 'index', controller: 'RequestComments' }
+    {name: 'Mostar vista de comentario de una solicitud de una solicitud', description: 'Permite ver la lista de comentarios de una solicitud', action: 'index', controller: 'RequestComments' },
 
-
-
-
-                     ])
+    {name: 'Añadir comentarios de solicitud', description: 'Permite añadir comentarios en solicitud', action: 'add_comment_to_request', controller: 'RequestComments' },
+    {name: 'Ver eventos', description: 'Permite ver eventos', action: 'index', controller: 'Events' },
+    {name: 'Ver acuerdos en eventos', description: 'Permite entrar a vista sobre acuerdos para eventos.', action: 'agreements', controller: 'Events' },
+    {name: 'Crear eventos', description: 'Permite crear eventos.', action: 'save_event', controller: 'Events' },
+    {name: 'Eliminar eventos', description: 'Permite eliminar eventos.', action: 'delete', controller: 'Events' },
+    {name: 'Terminar eventos', description: 'Permite terminar eventos.', action: 'finish_event', controller: 'Events' },
+    {name: 'Obtener información de eventos', description: 'Permite obtener informacion de eventos.', action: 'get_event_info', controller: 'Events' },
+    {name: 'Consultar eventos', description: 'Permite consultar eventos.', action: 'get_events', controller: 'Events' },
+    {name: 'Crear acuerdo de eventos', description: 'Permite crear acuerdo de eventos.', action: 'save_event_agreement', controller: 'Events' },
+    {name: 'Actualizar eventos', description: 'Permite actualizar eventos.', action: 'update', controller: 'Events' },
+    {name: 'Actualizar acuerdos de  eventos', description: 'Permite actualizar acuerdos de eventos.', action: 'update_event_agreement', controller: 'Events' },
+  ])
   #
 end

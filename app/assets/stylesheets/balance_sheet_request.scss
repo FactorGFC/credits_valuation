@@ -17,6 +17,10 @@
     z-index:          10;
   }
 
+  tr > th.sub-th{
+    top:  125px;;
+  }
+
   td{
     border:         1px solid #3b3e52;
     vertical-align: middle;
@@ -24,6 +28,15 @@
 
   td.full-input{
     padding:        5px 50px;
+    font-size:      15px;
+    text-align:     center !important;
+    font-weight:    bold !important;
+    position:       relative;
+    vertical-align: middle;
+  }
+
+  td.full-input-psm{
+    padding:        5px;
     font-size:      15px;
     text-align:     center !important;
     font-weight:    bold !important;
@@ -79,6 +92,12 @@
   }
 }
 
+.input-focusable-table.unsticky-th{
+  tr > th{
+    position: static !important;
+  }
+}
+
 .highlightedRowColumn{
   background-color: rgba(0, 80, 178, 0.1);
 }
@@ -90,6 +109,18 @@
 
 .text-table-concept{
   color: #2d51b2;
+}
+
+.concept-header{
+  color:            white !important;
+  background-color: #2d51b2 !important;
+}
+
+.th-scale{
+  background:     white;
+  padding:        2px 15px;
+  border-radius:  5px;
+  color:          #57241a;
 }
 
 .value-scale{
@@ -111,3 +142,55 @@
   padding:          5px 8px;
   border-radius:    0 0 0 10px;
 }
+
+.tb-action-btn{
+  position: absolute;
+  right: 0;
+  width: 40px;
+  background: #4c4c17;
+  display: flex;
+  padding: 10px 15px;
+  border-radius: 0 0 0 15px;
+  top: 0;
+  color: white;
+}
+
+.tb-action-btn:hover{
+  color: white;
+}
+.tb-action-btn:hover > svg{
+  transform: scale(1.2);
+}
+
+.missing-data-btn{
+  padding: 10px 20px !important;
+}
+
+a.missing-data-btn > svg{
+  animation:  soft-shake 0.8s infinite;
+}
+
+@keyframes soft-shake{
+  0%{
+    transform: translateY(0);
+  }
+  20%{
+    transform: translateY(5px)
+  }
+  35%{
+    transform: rotate(20deg);
+  }
+  50%{
+    transform: rotate(-20deg);
+  }
+  60%{
+    transform: rotate(10deg);
+  }
+  85%{
+    transform: rotate(-10deg);
+  }
+  100%{
+    transform: translateY(0);
+  }
+}
+
