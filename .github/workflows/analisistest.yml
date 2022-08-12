@@ -1,8 +1,8 @@
-name: CI/CD - Nomina dev
+name: CI/CD - Analisis test
 on:  
   push:
     branches:
-      - dev
+      - test
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -67,8 +67,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.FG_AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.FG_AWS_SECRET_ACCESS_KEY }}
-          application_name: nomina
-          environment_name: nomina-dev-env
+          application_name: analisis
+          environment_name: analisis-test-env
           version_label: ${{ github.SHA }}
           version_description: ${{ github.event.head_commit.message }}
           region: us-east-1
