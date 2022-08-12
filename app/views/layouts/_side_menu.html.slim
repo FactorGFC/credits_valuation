@@ -1,13 +1,15 @@
 #m_aside_left.m-grid__item.m-aside-left.m-aside-left--skin-dark
   #m_ver_menu.m-aside-menu.m-aside-menu--skin-dark.m-aside-menu--submenu-skin-dark.m-scroller.ps.ps--active-y m-menu-dropdown-timeout="500" m-menu-scrollable="1" m-menu-vertical="1" style=("position: relative; height: 728px; overflow: hidden;")
     ul.m-menu__nav.m-menu__nav--dropdown-submenu-arrow
-      li class="m-menu__item #{'m-menu__item--active' if controller_name.eql?('home')}" aria-haspopup="true"
-        - home = current_user.enterprise? ? 'home_company' : 'login'
-        a.m-menu__link href="/#{home}"
-          i.m-menu__link-icon.flaticon-home-1
-          span.m-menu__link-title
-            span.m-menu__link-wrap
-              span.m-menu__link-text = t('.dashboard')
+      - unless current_user.committee?
+        li class="m-menu__item #{'m-menu__item--active' if controller_name.eql?('home')}" aria-haspopup="true"
+          - home = current_user.enterprise? ? 'home_company' : 'login'
+          a.m-menu__link href="/#{home}"
+            i.m-menu__link-icon.flaticon-home-1
+            span.m-menu__link-title
+              span.m-menu__link-wrap
+                span.m-menu__link-text = t('.dashboard')
+      - unless current_user.committee?
         li class="m-menu__item #{'m-menu__item--active' if controller_name.eql?('landing')}" aria-haspopup="true"
           - home = current_user.enterprise? ? 'home_company' : 'login'
           a.m-menu__link href="/" target='_blank'
@@ -15,7 +17,7 @@
             span.m-menu__link-title
               span.m-menu__link-wrap
                 span.m-menu__link-text = t('.landing')
-      - unless  current_user.enterprise?
+      - unless current_user.enterprise?
         li class="m-menu__item #{'m-menu__item--active' if controller_name.eql?('events')}" aria-haspopup="true"
           a.m-menu__link href="/events"
             i.m-menu__link-icon.flaticon-users

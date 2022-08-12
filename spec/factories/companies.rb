@@ -6,6 +6,7 @@
 #  address                   :string
 #  balance_sheet             :jsonb
 #  balance_sheet_finished    :boolean
+#  cash_flow                 :jsonb
 #  cer_encoded               :text
 #  client_type               :string
 #  complete                  :boolean
