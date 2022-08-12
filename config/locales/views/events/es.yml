@@ -27,5 +27,6 @@ es:
       status: Estatus
       comment: Comentario
       credit_requests: Solicitudes de crédito
+      not_assigned_yet: No se han asignado aún
   breadcrumbs:
     requests: Eventos

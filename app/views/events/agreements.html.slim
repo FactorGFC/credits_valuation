@@ -47,7 +47,7 @@
                   tr.tr-custom
                     th scope="row" = event.title
                     td = event.description
-                    td = "#{event.start_date.strftime('%d/%m/%Y')}"
+                    td = "#{ event.start_date.strftime('%d/%m/%Y') }"
                     td = event.event_type
                     td = event.event_type.eql?('PRESENCIAL') ? event.location : event.url
                     td = event.try(:event_finished).present? ? 'TERMINADO':'PENDIENTE'
@@ -66,10 +66,10 @@
           h3.m-portlet__head-text = t('.attendants')
     .m-portlet__body
       .m-section.mb-0
-        - if @attendants.empty?
+        - if true#@attendants.empty?
           .m-section__content
             .no-results
-              = t('helpers.not_created_yet', resource: t('.other').downcase)
+              = t('helpers.not_created_yet', resource: t('.attendants').downcase)
         - else
           .m-section__content.table-responsive
             table.table.m-table.m-table--head-separator-brand.table-custom
