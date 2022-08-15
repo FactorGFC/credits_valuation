@@ -10,7 +10,7 @@ class HomeController < ApplicationController
     if Role.where(key: ['god', 'analyst']).pluck(:id).include? current_user.role_id
       @search_companies = policy_scope(Company).ransack(params[:q])
       @companies = @search_companies.result.paginate(page: params[:page], per_page: get_pagination)
-    elsif Role.where(key: 'committee').pluck(:id).include? current_user.role_id
+    elsif Role.where(key: ['committee', 'credit_management', 'credit_area', 'promotion_area']).pluck(:id).include? current_user.role_id
       redirect_to '/events'
     else
       #redirect_to companies_path
