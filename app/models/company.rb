@@ -433,7 +433,7 @@ class Company < ApplicationRecord
 
   def self.calculate_rentabilidad_base_capital net_profit, total_capital0, total_capital1, months, kind
     value = 0.0
-    if total_capital0
+    if total_capital0 and (total_capital0+total_capital1)/2 != 0
       #1 es referente al año del row actual, el 0 es del año anterior
       value = ((net_profit/months)*12)/((total_capital0+total_capital1)/2)
       value = (value*100).round(1)

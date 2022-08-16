@@ -287,6 +287,11 @@ class CompaniesController < ApplicationController
     @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @requests            = Request.where(company_id: params[:id])
+    if @company.cash_flow.present?
+      @cash_flow = @company.cash_flow.group_by{|c| [c['date']]}
+    else
+      @cash_flow = []
+    end
 
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
@@ -447,6 +452,9 @@ class CompaniesController < ApplicationController
         end
         
         CreditRequestMailer.with(request_data: {user:  Company.find(params[:company_id]).user, company: Company.find(params[:company_id])}).calendar_assigned_mail.deliver_now
+      end
+      if new_records.length > 0
+        Company.find(params[:company_id]).update(income_statement_finished: false, balance_sheet_finished: false)
       end
 
       redirect_to "/company_details/#{params[:company_id]}", notice: records_exists ? "Creado. Algunos calendarios no se pudieron eliminar ya que existen registros." : "Creado exitosamente."

@@ -135,7 +135,7 @@
             table.table.m-table.m-table--head-separator-brand.table-custom
               thead
                 tr
-                  th.text-center = t('.process')
+                  th.text-center = t('.captured_periods')
                   th.text-center = t('.rfc')
                   th.text-center = t('.name')
                   th.text-center = t('.username')
@@ -149,7 +149,9 @@
                 - @companies.each do |company|
                   tr.tr-custom
                     td.text-center
-                      meter id="process#{company.id}" min="0" max="100" low="30" high="75" optimum="80" value="#{calculate_process_status(company)}"
+                      span = calculate_process_status(company)[1]
+                      br
+                      meter id="process#{company.id}" min="0" max="100" low="30" high="75" optimum="80" value="#{calculate_process_status(company)[0]}"
                     td.text-center = company.rfc
                     td.text-center = company.name
                     td.text-center = company.try(:user).try(:full_name)
