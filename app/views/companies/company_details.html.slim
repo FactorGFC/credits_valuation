@@ -164,11 +164,11 @@ javascript:
         .vl
         .col-md-4
           span.port-subtitle = 'Nombre de contacto'
-          span = @company.user.full_name
+          span = @company.try(:user).try(:full_name)
           span.port-subtitle = 'Teléfono de contacto'
-          span = @company.user.phone
+          span = @company.try(:user).try(:phone)
           span.port-subtitle = 'Correo de contacto'
-          span = @company.user.email
+          span = @company.try(:user).try(:email)
         .col-md-4
           span.port-subtitle = 'Actividad Principal'
           span = @company.main_activity
