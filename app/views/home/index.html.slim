@@ -6,7 +6,7 @@
           h3.m-portlet__head-text = t('.title')
       .m-portlet__head-tools
         ul.m-portlet__nav
-          li.m-portlet__nav-item
+          /li.m-portlet__nav-item
             = search_form_for @search_companies, url: url_for(controller: 'home', action: 'index') do |f|
               .form-group.mb-0
                 .input-group.input-search-group
@@ -28,6 +28,91 @@
                       data: {'title': (t('helpers.new')), placement: 'top', toggle: 'm-tooltip', 'skin': "dark"}
                 i.la.la-plus
     .m-portlet__body
+
+      .m-form.m-form--label-align-right.m--margin-bottom-30
+        = search_form_for @search_companies, url: url_for(controller: 'home', action: 'index') do |f|
+          .row.align-items-center.m--padding-10
+            .col-xl-12.order-2.order-xl-1
+              .form-group.m-form__group.row.align-items-center
+                .col-md-3
+                  .text-lg-left
+                    label RFC
+                  .m-input-icon.m-input
+                    = f.text_field :name_or_rfc, class: 'form-control m-input',
+                            placeholder: t('helpers.search')
+                      span.m-input-icon__icon.m-input-icon__icon--left
+                        span
+                          i.la.la-search
+                .col-md-3
+                  .text-lg-left
+                    label Nombre Compañia
+                  .m-input-icon.m-input
+                    = f.text_field :name_cont, class: 'form-control m-input',
+                            placeholder: t('helpers.search')
+                      span.m-input-icon__icon.m-input-icon__icon--left
+                        span
+                          i.la.la-search
+                .col-md-3
+                  .text-lg-left
+                    label Estatus
+                  .m-input-icon.m-input
+                    = f.select :status_company_id_eq, StatusCompany.all.map { |status| [status.name, status.id] },
+                            { include_blank: t('helpers.select.prompt') }, class: 'form-control'
+                    /= f.select :employee_status_id_eq, policy_scope(EmployeeStatus).map { |employee_status| [employee_status.name, employee_status.id] },
+                            { include_blank: t('helpers.select.prompt') }, class: 'form-control m-input selectpicker'
+                /.col-md-3
+                  .text-lg-left
+                    label Rol de Usuario
+                  .m-input-icon.m-input
+                    = f.select :role_id_eq, policy_scope(Role).map { |role| [role.name, role.id] },
+                            { include_blank: t('helpers.select.prompt') }, class: 'form-control m-input selectpicker'
+                /.col-md-3
+                  .text-lg-left
+                    label Núm Empleado
+                  .m-input-icon.m-input-icon--left
+                    = f.number_field :employee_number_cont, class: 'form-control m-input',
+                            placeholder: t('.employee_number')
+                    span.m-input-icon__icon.m-input-icon__icon--left
+                      span
+                        i.la.la-search
+                /.col-md-3
+                  .text-lg-left
+                    label Nombre
+                  .m-input-icon.m-input-icon--left
+                    = f.text_field :full_name_or_full_name_reversed_cont, class: 'form-control m-input',
+                            placeholder: t('.name_user')
+                    span.m-input-icon__icon.m-input-icon__icon--left
+                      span
+                        i.la.la-search
+          /.row.align-items-center.m--padding-10
+            .col-xl-12.order-2.order-xl-1
+              .form-group.m-form__group.row.align-items-center
+                .col-md-3
+                  .text-lg-left
+                    label Cuentas Verificadas
+                  .m-input-icon.m-input
+                    - val_select_verified = params[:q] ? (params[:q][:verified_account_true].eql?(true) ? 1 : params[:q][:verified_account_true].eql?(false) ? 2 : nil) : nil
+                    = f.select :verified_account_true,  options_for_select([['SI', 1], ['NO', 2]],
+                            (val_select_verified)),
+                            { include_blank: t('helpers.select.prompt') },
+                            class: "form-control m-input selectpicker"
+                .col-md-3
+                  .text-lg-left
+                    label Estatus del Socio
+                  .m-input-icon.m-input
+                    - val_active_unsuscribre = params[:q] ? (params[:q][:want_to_be_saver_true].eql?(true) ? 1 : params[:q][:unsubscribe_true].eql?(true) ? 2 : (params[:q][:unsubscribe_null].eql?(true) ? 3 : nil)) : nil
+                    = f.select :want_to_be_saver_true,  options_for_select([['ACTIVOS', 1], ['BAJA', 2], ['SOLICITUD AUTORIZADA', 3]],
+                            (val_active_unsuscribre)),
+                            { include_blank: t('helpers.select.prompt') },
+                            class: "form-control m-input selectpicker"
+          .row.align-items-center
+            .col-xl-12.order-2.order-xl-1
+              .form-group.m-form__group.row.align-items-center
+                .col-md-12
+                  = button_tag(type: 'submit', class: "btn btn-primary btn-block", autofocus: true) do
+                    span
+                      i.m-menu__link-icon.fas.fa.fa-search.pr-2
+                      span = t('helpers.search')
       .m-section.mb-0
         - if @companies.empty?
           .m-section__content
@@ -39,7 +124,7 @@
             .row.m-section__sub style="display: flex"
               .col-6.pl-0
                 = t('.count_table', count: @companies.count)
-              .col-6.per-page-container
+              /.col-6.per-page-container
                 span.per-page-text
                   = t('helpers.elements_per_page')
                 = search_form_for @search_companies, url: url_for(controller: 'users/registrations', action: 'index') do |f|
@@ -50,7 +135,7 @@
             table.table.m-table.m-table--head-separator-brand.table-custom
               thead
                 tr
-                  th.text-center = t('.process')
+                  th.text-center = t('.captured_periods')
                   th.text-center = t('.rfc')
                   th.text-center = t('.name')
                   th.text-center = t('.username')
@@ -64,7 +149,9 @@
                 - @companies.each do |company|
                   tr.tr-custom
                     td.text-center
-                      meter id="process#{company.id}" min="0" max="100" low="30" high="75" optimum="80" value="#{calculate_process_status(company)}"
+                      span = calculate_process_status(company)[1]
+                      br
+                      meter id="process#{company.id}" min="0" max="100" low="30" high="75" optimum="80" value="#{calculate_process_status(company)[0]}"
                     td.text-center = company.rfc
                     td.text-center = company.name
                     td.text-center = company.try(:user).try(:full_name)

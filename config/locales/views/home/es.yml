@@ -49,6 +49,8 @@ es:
       company_details: Ver a detalle
       status: Estatus
       rfc: R.F.C
+      process: Proceso
+      captured_periods: Periodos capturados
       count_table:
         one: 1 Compañia
         other: '%{count} Compañias'
