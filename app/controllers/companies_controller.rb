@@ -287,6 +287,11 @@ class CompaniesController < ApplicationController
     @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @requests            = Request.where(company_id: params[:id])
+    if @company.cash_flow.present?
+      @cash_flow = @company.cash_flow.group_by{|c| [c['date']]}
+    else
+      @cash_flow = []
+    end
 
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
