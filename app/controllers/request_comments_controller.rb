@@ -5,7 +5,7 @@ class RequestCommentsController < ApplicationController
   def index
     #@request_comments = RequestComment.all
     @company = Company.find(params[:company_id])
-    @request = Request.find_by(company_id: params[:company_id])
+    @request = Request.joins(:process_status).where(company_id: params[:company_id]).order('process_status.order DESC').first
     @request_comments = RequestComment.where(request_id: @request.try(:id))
   end
 

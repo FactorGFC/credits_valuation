@@ -14,11 +14,18 @@ $(document).on('turbolinks:load', function () {
         var analystId       = $(this).data('analyst-id');
         var factorCreditId  = $(this).data('factorcredit-id');
 
+        console.log($(".modal-body #request_analyst_id").find("option[value='12']").val());
+
         if(requestId){
             document.getElementById('input_credit_type').style.display = 'grid';
+        }else{
+            document.getElementById('input_credit_type').style.display = 'none';
         }
+
         if(processStatus['order'] > 2){
             document.getElementById('input_status_process').style.display = 'grid';
+        }else{
+            document.getElementById('input_status_process').style.display = 'none';
         }
 
         $(".modal-body #requestId").val(requestId);
@@ -26,6 +33,8 @@ $(document).on('turbolinks:load', function () {
         $(".modal-body #request_analyst_id").val(analystId).trigger('change');
         $(".modal-body #request_factor_credit_id").val(factorCreditId).trigger('change');
         $(".modal-body #request_process_status_id").val(processStatus['id']).trigger('change');
+        $(".modal-body #request_analyst_id").find("option[value='12']").prop('disabled',true)
+
     });
 
     window.emailValidate = function() {

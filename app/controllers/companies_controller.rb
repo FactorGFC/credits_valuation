@@ -453,6 +453,9 @@ class CompaniesController < ApplicationController
         
         CreditRequestMailer.with(request_data: {user:  Company.find(params[:company_id]).user, company: Company.find(params[:company_id])}).calendar_assigned_mail.deliver_now
       end
+      if new_records.length > 0
+        Company.find(params[:company_id]).update(income_statement_finished: false, balance_sheet_finished: false)
+      end
 
       redirect_to "/company_details/#{params[:company_id]}", notice: records_exists ? "Creado. Algunos calendarios no se pudieron eliminar ya que existen registros." : "Creado exitosamente."
     rescue StandardError => e
