@@ -146,7 +146,7 @@ class HomeController < ApplicationController
                             if @clients
                               @providers = get_providers_sat @user.try(:company)
                               if @providers
-                                @financial_institutions = create_financial_institutions @bureau_report, @company.id
+                                # @financial_institutions = create_financial_institutions @bureau_report, @company.id
                                 if @company.update(step_one: true)
                                   format.html { redirect_to companies_url, notice: t('notifications_masc.success.resource.updated',
                                                                                      resource: t('users.registrations.form.resource')) }
@@ -229,7 +229,7 @@ class HomeController < ApplicationController
                           if @clients
                             @providers = get_providers_sat @user.try(:company)
                             if @providers
-                              @financial_institutions = create_financial_institutions @bureau_report, @company.id
+                              # @financial_institutions = create_financial_institutions @bureau_report, @company.id
 
                               if @company.update(step_one: true)
                                 format.html { redirect_to companies_url, notice: t('notifications_masc.success.resource.updated',
