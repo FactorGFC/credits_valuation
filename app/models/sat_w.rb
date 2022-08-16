@@ -239,4 +239,32 @@ class SatW < ApplicationRecord
     return JSON.parse(response.body)
   end
 
+
+  def self.get_cash_flow id
+
+    # Desarrollo
+    # uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}insights/#{id}/supplier-concentration")
+    # api_key = ENV['API_KEY_SAT_DEVELOP']
+
+    # Produccion
+    uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}insights/#{id}/cash-flow")
+    api_key = ENV['API_KEY_SAT_PRODUCTION']
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+    request.content_type = "application/id+json"
+    request["X-API-Key"] = api_key
+    request["Cache-Control"] = "no-cache"
+
+    req_options = {
+        use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    return JSON.parse(response.body)
+  end
+
 end

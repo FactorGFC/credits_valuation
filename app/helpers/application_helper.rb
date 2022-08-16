@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def user_with_side_menu?
-    current_user.god?
+    current_user.god? || current_user.analyst? || current_user.committee? || current_user.try(:company).try(:complete)
   end
 
   def show_administration_panel?

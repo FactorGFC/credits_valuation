@@ -7,6 +7,26 @@ const emailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+
 const phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
 
 $(document).on('turbolinks:load', function () {
+    $(document).on("click", ".open-modal-request", function () {
+        var requestId       = $(this).data('id');
+        var companyId       = $(this).data('companyid');
+        var processStatus   = $(this).data('process-status');
+        var analystId       = $(this).data('analyst-id');
+        var factorCreditId  = $(this).data('factorcredit-id');
+
+        if(requestId){
+            document.getElementById('input_credit_type').style.display = 'grid';
+        }
+        if(processStatus['order'] > 2){
+            document.getElementById('input_status_process').style.display = 'grid';
+        }
+
+        $(".modal-body #requestId").val(requestId);
+        $(".modal-body #companyId").val(companyId);
+        $(".modal-body #request_analyst_id").val(analystId).trigger('change');
+        $(".modal-body #request_factor_credit_id").val(factorCreditId).trigger('change');
+        $(".modal-body #request_process_status_id").val(processStatus['id']).trigger('change');
+    });
 
     window.emailValidate = function() {
         var isValid = emailRegex.test($('#email_input').val());

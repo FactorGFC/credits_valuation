@@ -8,7 +8,9 @@
   <body>
     <div>
       <h1>Hola <%= @request_data[:user][:first_name].upcase %> <%= @request_data[:user][:last_name].upcase %></h1>
-      <h2>Tu solicitud de crédito para <strong><%= @request_data[:company][:name].upcase %></strong> ha sido rechazada</h2>
+      <h2>Tu solicitud de afiliación para <strong><%= @request_data[:company][:name].upcase %></strong> ha sido
+        rechazada, en un momento un ejecutivo se comunicará contigo para explicarte los motivos
+      </h2>
 
       <h4>¡Gracias!</h4>
     </div>

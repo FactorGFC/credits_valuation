@@ -35,8 +35,6 @@ $(document).on('turbolinks:load', function () {
     if(document.getElementById('calendar')) {
         var calendarEl  = document.getElementById('calendar');
 
-        //console.log('***');
-        //console.log(calendarEl);
         var calendar = new Calendar(calendarEl, {
             plugins: [ dayGridPlugin ],
             initialView: 'dayGridMonth',
@@ -443,6 +441,190 @@ $(document).on('turbolinks:load', function () {
     if(document.getElementById("comparative_table_bs")){
         calculate_comparative('comparative_table_bs');
     }
+
+    $( "#modal_providers" ).on('shown.bs.modal', function(e){
+        console.log("ENTRE");
+
+        var dollarUSLocale = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
+
+        var years = [];
+        $('#divTransactions').empty();
+        var transactions = $(e.relatedTarget).data('transactions');
+        console.log("transactions", transactions);
+
+
+        $('#divTransactions').html(
+            "<table id='tablaTransactions' class='table'>" +
+            "<thead class='thead-default thead-custom'>" +
+            "<tr>" +
+            "<th class='text-center'>Fecha</th> " +
+            "<th class='text-center'>Total</th> " +
+            "</thead>" +
+            "<tbody>" +
+            "</tbody>" +
+            "</table>"
+        ).appendTo('#divTransactions');
+
+        $.each(transactions, function (index, transaction) {
+            if(transaction.total !== 0){
+                console.log("transaction != 0", transaction);
+                years.push( transaction.date.substring(0, transaction.date. indexOf('-')));
+                $("#divTransactions tbody").append(
+                    "<tr>" +
+                    "<td class='text-center'>" + transaction.date + "</td>" +
+                    "<td class='text-center'>" + dollarUSLocale.format(transaction.total) + "</td>" +
+                    "</tr>"
+
+                )
+            }
+        });
+
+        var uniqueChars = [];
+        years.forEach((y) => {
+            if (!uniqueChars.includes(y)) {
+                uniqueChars.push(y);
+            }
+        });
+
+        var select = document.getElementById('selectProviders');
+        select.innerHTML = '';
+
+        var opt = document.createElement('option');
+        opt.innerHTML = 'Buscar por año';
+        select.appendChild(opt);
+
+        uniqueChars.forEach((uc)=>{
+            var opt = document.createElement('option');
+            opt.value = uc;
+            opt.innerHTML = uc;
+            select.appendChild(opt);
+        });
+
+
+        window.getTransactionsForYearProviders = function(transaction) {
+            $('#divTransactions tbody').empty();
+            transactions.forEach((tr) =>{
+                var year = tr.date.substring(0, tr.date. indexOf('-'));
+
+                if(tr.total !== 0 && year === transaction.value){
+                    $("#divTransactions tbody").append(
+                        "<tr>" +
+                        "<td class='text-center'>" + tr.date + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
+                        "</tr>"
+
+                    );
+                }else if(transaction.value === 'Buscar por año' && tr.total !== 0){
+                    $("#divTransactions tbody").append(
+                        "<tr>" +
+                        "<td class='text-center'>" + tr.date + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
+                        "</tr>"
+
+                    );
+                }
+
+            });
+
+
+        };
+
+    });
+
+    $( "#modal_customers" ).on('shown.bs.modal', function(e){
+        $('#divCustomersTransactions').empty();
+
+        var dollarUSLocale = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
+
+        var years = [];
+        var transactions = $(e.relatedTarget).data('transactions');
+
+
+        $('#divCustomersTransactions').html(
+            "<table id='tablaTransactions' class='table'>" +
+            "<thead class='thead-default thead-custom'>" +
+            "<tr>" +
+            "<th class='text-center'>Fecha</th> " +
+            "<th class='text-center'>Total</th> " +
+            "</thead>" +
+            "<tbody>" +
+            "</tbody>" +
+            "</table>"
+        ).appendTo('#divCustomersTransactions');
+
+        $.each(transactions, function (index, transaction) {
+            if(transaction.total !== 0){
+                years.push( transaction.date.substring(0, transaction.date. indexOf('-')));
+                $("#divCustomersTransactions tbody").append(
+                    "<tr>" +
+                    "<td class='text-center'>" + transaction.date + "</td>" +
+                    "<td class='text-center'>" + dollarUSLocale.format(transaction.total) + "</td>" +
+                    "</tr>"
+
+                )
+            }
+        });
+
+        var uniqueChars = [];
+        years.forEach((y) => {
+            if (!uniqueChars.includes(y)) {
+                uniqueChars.push(y);
+            };
+        });
+
+        var select = document.getElementById('selectProvidersCustomers');
+        select.innerHTML = '';
+
+        var opt = document.createElement('option');
+        opt.innerHTML = 'Buscar por año';
+        select.appendChild(opt);
+
+        uniqueChars.forEach((uc)=>{
+            var opt = document.createElement('option');
+            opt.value = uc;
+            opt.innerHTML = uc;
+            select.appendChild(opt);
+        });
+        
+        window.getTransactionsForYearCustomers = function(transaction) {
+            $('#divCustomersTransactions tbody').empty();
+
+            transactions.forEach((tr) => {
+                var year = tr.date.substring(0, tr.date.indexOf('-'));
+                if(tr.total !== 0 && year === transaction.value){
+                    $("#divCustomersTransactions tbody").append(
+                        "<tr>" +
+                        "<td class='text-center'>" + tr.date + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
+                        "</tr>"
+
+                    );
+                }else if(transaction.value === 'Buscar por año' && tr.total !== 0){
+                    $("#divCustomersTransactions tbody").append(
+                        "<tr>" +
+                        "<td class='text-center'>" + tr.date + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
+                        "</tr>"
+
+                    );
+                }
+            });
+
+
+
+        };
+
+    });
+
+
+
+
 
     //window.display_table = function (table_id) {
     //    calculate_comparative(table_id);

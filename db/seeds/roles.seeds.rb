@@ -14,4 +14,8 @@ Role.create!([
   {name: 'Analista', key: 'analyst', description: 'Rol de Analista de crédito.', scope: 'owner'},
   {name: 'Empresa', key: 'enterprise', description: 'Rol de Empresa que solicitara un crédito.', scope: 'owner'},
   {name: 'Aprobador', key: 'approver', description: 'Rol de Aprobador.', scope: 'owner'},
+  {name: 'Comité', key: 'committee', description: 'Rol de Comité.', scope: 'owner'},
+  {name: 'Gerencia de crédito', key: 'credit_management', description: 'Rol de gerencia de crédito.', scope: 'owner'},
+  {name: 'Área de crédito', key: 'credit_area', description: 'Rol de área de crédito.', scope: 'owner'},
+  {name: 'Área de promoción', key: 'promotion_area', description: 'Rol de área de promoción.', scope: 'owner'}
 ])

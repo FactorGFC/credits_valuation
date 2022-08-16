@@ -23,4 +23,5 @@
 #
 class RequestComment < ApplicationRecord
   belongs_to :process_status
+  belongs_to :request
 end
