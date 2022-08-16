@@ -50,6 +50,7 @@
             table.table.m-table.m-table--head-separator-brand.table-custom
               thead
                 tr
+                  th.text-center = t('.process')
                   th.text-center = t('.rfc')
                   th.text-center = t('.name')
                   th.text-center = t('.username')
@@ -62,6 +63,8 @@
               tbody
                 - @companies.each do |company|
                   tr.tr-custom
+                    td.text-center
+                      meter id="process#{company.id}" min="0" max="100" low="30" high="75" optimum="80" value="#{calculate_process_status(company)}"
                     td.text-center = company.rfc
                     td.text-center = company.name
                     td.text-center = company.try(:user).try(:full_name)
@@ -70,14 +73,14 @@
                     - if current_user.god?
                       td.text-center
                         - if company.status_company_id.eql?(StatusCompany.where(key: 'aprobada').first.id)
-                          button.btn.btn-info.open-modal1 data-target="#modal_validate_success" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="true"
+                          button.btn.btn-info.btn-block.open-modal1 data-target="#modal_validate_success" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="true"
                             i.fa.fa-check
                             = " Aprobada"
                         - elsif company.status_company_id == StatusCompany.where(key: 'pendiente').first.id
-                          button.btn.btn-success.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="true"
+                          button.btn.btn-success.btn-block.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="true"
                             i.fab.fa.fa-check-circle
                             = " Aprobar"
-                          button.btn.btn-danger.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="false"
+                          button.btn.btn-danger.btn-block.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="false"
                             i.fab.fa.fa-times-circle
                             = " Rechazar"
                     td.text-center

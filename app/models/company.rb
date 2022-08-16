@@ -80,6 +80,9 @@ class Company < ApplicationRecord
 
   acts_as_taggable_on :main_products
 
+  def self.approved?
+    self.status_company.key == 'aprobada'
+  end
 
   #Message and Comunication with Companies
   def self.send_msj_to_company company, user, step

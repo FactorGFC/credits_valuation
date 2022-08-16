@@ -10,7 +10,7 @@ class HomeController < ApplicationController
     if Role.where(key: ['god', 'analyst']).pluck(:id).include? current_user.role_id
       @search_companies = policy_scope(Company).ransack(params[:q])
       @companies = @search_companies.result.paginate(page: params[:page], per_page: get_pagination)
-    elsif Role.where(key: 'committee').pluck(:id).include? current_user.role_id
+    elsif Role.where(key: ['committee', 'credit_management', 'credit_area', 'promotion_area']).pluck(:id).include? current_user.role_id
       redirect_to '/events'
     else
       #redirect_to companies_path
@@ -502,30 +502,34 @@ class HomeController < ApplicationController
         if credit_bureau['results'][0]['response'].present?
 
           if credit_bureau['results'][0]['response']['return'].present?
-            credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
+            if credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
+              credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
 
-              if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
-                                             type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
-                response = true
-              else
-                response = false
+                if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
+                                               type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
+                  response = true
+                else
+                  response = false
 
+                end
               end
             end
           end
         else
           if credit_bureau['results'][1]['response']['return'].presnet?
 
-            credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
+            if credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
+              credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
 
-              if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
-                                             type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
-                response = true
-              else
-                response = false
+                if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
+                                               type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
+                  response = true
+                else
+                  response = false
+
+                end
 
               end
-
             end
           end
 

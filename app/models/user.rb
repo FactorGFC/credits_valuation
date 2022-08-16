@@ -81,6 +81,18 @@ class User < ApplicationRecord
     role_key.eql?('committee')
   end
 
+  def credit_management?
+    role_key.eql?('credit_management')
+  end
+
+  def credit_area?
+    role_key.eql?('credit_area')
+  end
+
+  def promotion_area?
+    role_key.eql?('promotion_area')
+  end
+
   def has_total_scope?
     role_scope.eql?('total')
   end

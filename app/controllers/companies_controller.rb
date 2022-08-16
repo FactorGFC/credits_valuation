@@ -326,7 +326,11 @@ class CompaniesController < ApplicationController
       @credit_bureau = credit_bureaus
 
       if @company.try(:client_type) == 'PF'
-        @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
+        if @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito'].present?
+          @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
+        else
+          @score = 0
+        end
       end
 
     end
@@ -400,7 +404,7 @@ class CompaniesController < ApplicationController
   #Metodo para asignar calendario a la compañia y eliminar registros de los calendarios eliminados de la selección
   def assign_calendar
     records_exists    = false
-    calendar_ids      = params[:periods].map(&:to_i)
+    calendar_ids      = params[:periods].present? ? params[:periods].map(&:to_i) : []
     company_calendars = CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'balance_sheet').pluck(:calendar_id)
 
     #TODO: Evaluar las que ya tengan captura para no eliminar.
@@ -441,17 +445,21 @@ class CompaniesController < ApplicationController
   end
 
   def assign_details_to_request
-    request         = Request.find_by(company_id: params[:company_id], factor_credit_id: params[:request][:factor_credit_id])
+    request         = params[:request_id].present? ? Request.find(params[:request_id]) : nil
     request_params  = params[:request]
-    request_params[:process_status_id] = ProcessStatus.first_step unless request_params[:process_status_id].present?
+    request_params[:company_id]         = params[:company_id]
+    request_params[:process_status_id]  = ProcessStatus.first_step unless request_params[:process_status_id].present?
+    request_params[:factor_credit_id]   = nil unless request_params[:factor_credit_id].present?
+    request_params[:user_id]            = current_user.id
+
     if request
-      if request.update(analyst_id: request_params[:analyst_id], process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
+      if request.update(analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
         redirect_to "/company_details/#{params[:company_id]}", notice: "Actualizado correctamente."
       else
         redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')
       end
     else
-      new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id], process_status_id: ProcessStatus.first_step, factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
+      new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: ProcessStatus.first_step, factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
 
       if new_request.save
         redirect_to "/company_details/#{params[:company_id]}", notice: "Guardado correctamente."

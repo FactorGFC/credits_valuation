@@ -53,6 +53,7 @@ after :initialize_permissions do
     {name: "Ver vista comparativa de balance financiero", description: "Ver vista comparativa de balance financiero", action: "balance_sheet_comparative", controller: "Companies"},
     {name: 'Mostar lista de blogs', description: 'Ver lista de blogs', action: 'index', controller: 'Blog' },
     {name: 'Ver vista de detalles de la compañia', description: 'Permite entrar a la vista de los detalles de compañia', action: 'company_details', controller: 'Companies'},
+    {name: 'Asignar detalles a solicitud', description: 'Permite asignar detalles a solicitud', action: 'assign_details_to_request', controller: 'Companies'},
     {name: 'Mostar vista de buro de crédito', description: 'Permite ver la vista del resumen de buro de crédito', action: 'index', controller: 'CreditBureaus' },
     {name: 'Mostar vista de reporte buro de crédito', description: 'Permite ver la vista del reporte del buro de crédito', action: 'show', controller: 'CreditBureaus' },
     {name: 'Mostar vista de comentario de una solicitud de una solicitud', description: 'Permite ver la lista de comentarios de una solicitud', action: 'index', controller: 'RequestComments' },
@@ -68,6 +69,8 @@ after :initialize_permissions do
     {name: 'Crear acuerdo de eventos', description: 'Permite crear acuerdo de eventos.', action: 'save_event_agreement', controller: 'Events' },
     {name: 'Actualizar eventos', description: 'Permite actualizar eventos.', action: 'update', controller: 'Events' },
     {name: 'Actualizar acuerdos de  eventos', description: 'Permite actualizar acuerdos de eventos.', action: 'update_event_agreement', controller: 'Events' },
+    {name: 'Generar razónes financieras', description: 'Permite generar razónes financieras.', action: 'generate_financial_reasons', controller: 'Companies' },
+    {name: 'Guardar datos extra para razónes financieras', description: 'Permite guardar datos extra para completar razónes financieras', action: 'save_extra_data', controller: 'Companies' }
   ])
   #
 end

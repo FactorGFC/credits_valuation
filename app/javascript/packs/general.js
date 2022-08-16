@@ -443,11 +443,17 @@ $(document).on('turbolinks:load', function () {
     }
 
     $( "#modal_providers" ).on('shown.bs.modal', function(e){
+        console.log("ENTRE");
+
+        var dollarUSLocale = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
 
         var years = [];
         $('#divTransactions').empty();
         var transactions = $(e.relatedTarget).data('transactions');
-        
+        console.log("transactions", transactions);
 
 
         $('#divTransactions').html(
@@ -464,11 +470,12 @@ $(document).on('turbolinks:load', function () {
 
         $.each(transactions, function (index, transaction) {
             if(transaction.total !== 0){
+                console.log("transaction != 0", transaction);
                 years.push( transaction.date.substring(0, transaction.date. indexOf('-')));
                 $("#divTransactions tbody").append(
                     "<tr>" +
                     "<td class='text-center'>" + transaction.date + "</td>" +
-                    "<td class='text-center'>" + transaction.total + "</td>" +
+                    "<td class='text-center'>" + dollarUSLocale.format(transaction.total) + "</td>" +
                     "</tr>"
 
                 )
@@ -506,7 +513,7 @@ $(document).on('turbolinks:load', function () {
                     $("#divTransactions tbody").append(
                         "<tr>" +
                         "<td class='text-center'>" + tr.date + "</td>" +
-                        "<td class='text-center'>" + tr.total + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
                         "</tr>"
 
                     );
@@ -514,7 +521,7 @@ $(document).on('turbolinks:load', function () {
                     $("#divTransactions tbody").append(
                         "<tr>" +
                         "<td class='text-center'>" + tr.date + "</td>" +
-                        "<td class='text-center'>" + tr.total + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
                         "</tr>"
 
                     );
@@ -529,6 +536,11 @@ $(document).on('turbolinks:load', function () {
 
     $( "#modal_customers" ).on('shown.bs.modal', function(e){
         $('#divCustomersTransactions').empty();
+
+        var dollarUSLocale = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
 
         var years = [];
         var transactions = $(e.relatedTarget).data('transactions');
@@ -552,7 +564,7 @@ $(document).on('turbolinks:load', function () {
                 $("#divCustomersTransactions tbody").append(
                     "<tr>" +
                     "<td class='text-center'>" + transaction.date + "</td>" +
-                    "<td class='text-center'>" + transaction.total + "</td>" +
+                    "<td class='text-center'>" + dollarUSLocale.format(transaction.total) + "</td>" +
                     "</tr>"
 
                 )
@@ -589,7 +601,7 @@ $(document).on('turbolinks:load', function () {
                     $("#divCustomersTransactions tbody").append(
                         "<tr>" +
                         "<td class='text-center'>" + tr.date + "</td>" +
-                        "<td class='text-center'>" + tr.total + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
                         "</tr>"
 
                     );
@@ -597,7 +609,7 @@ $(document).on('turbolinks:load', function () {
                     $("#divCustomersTransactions tbody").append(
                         "<tr>" +
                         "<td class='text-center'>" + tr.date + "</td>" +
-                        "<td class='text-center'>" + tr.total + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
                         "</tr>"
 
                     );

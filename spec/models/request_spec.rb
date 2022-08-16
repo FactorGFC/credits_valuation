@@ -7,7 +7,7 @@
 #  updated_at        :datetime         not null
 #  analyst_id        :bigint
 #  company_id        :bigint           not null
-#  factor_credit_id  :bigint           not null
+#  factor_credit_id  :bigint
 #  process_status_id :bigint           not null
 #  user_id           :bigint           not null
 #

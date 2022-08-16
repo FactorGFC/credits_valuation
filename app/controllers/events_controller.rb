@@ -2,7 +2,8 @@ class EventsController < ApplicationController
   protect_from_forgery
 
   def index
-    @users            = User.where(role_id: Role.find_by(key:'committee').try(:id))
+    @users            = User.where(role_id: Role.where(key:['committee', 'credit_management', 'credit_area', 'promotion_area']).pluck(:id))
+    @requests         = Request.where(process_status_id: ProcessStatus.find_by(key: ['credit_success','pending']).try(:id))
     @next_events      = Event.where('start_date >= ?', Date.today()).order(:start_date)
     @pending_events   = Event.where(event_finished: [false, nil]).order(:start_date)
     @finished_events  = Event.where(event_finished: true).order(:start_date)
