@@ -507,6 +507,8 @@ class HomeController < ApplicationController
             Rails.logger.info "credit_bureau['results'][0]['response']['return']['Personas']['Persona']"
             Rails.logger.info credit_bureau['results'][0]['response']['return']['Personas']['Persona']
 
+            p "credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas'] -------------------------"
+            p credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]
 
             credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
 
