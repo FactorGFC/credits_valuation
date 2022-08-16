@@ -1086,7 +1086,8 @@ module CompaniesHelper
   end
 
   def render_quantity_h number
-    number_to_human(number,format:'%n%u',units:{thousand:'K',million:'M',billion:'B'})
+    value = number_to_human(number,format:'%n%u',units:{thousand:'K',million:'M',billion:'B'})
+    return value.present? ? value : '0'
   end
 
   def generate_pdf_name type, company_id
