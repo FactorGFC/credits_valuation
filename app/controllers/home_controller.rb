@@ -502,6 +502,12 @@ class HomeController < ApplicationController
         if credit_bureau['results'][0]['response'].present?
 
           if credit_bureau['results'][0]['response']['return'].present?
+            Rails.logger.info "credit_bureau['results'][0]['response']['return']['Personas']"
+            Rails.logger.info credit_bureau['results'][0]['response']['return']['Personas']
+            Rails.logger.info "credit_bureau['results'][0]['response']['return']['Personas']['Persona']"
+            Rails.logger.info credit_bureau['results'][0]['response']['return']['Personas']['Persona']
+
+
             credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
 
               if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
