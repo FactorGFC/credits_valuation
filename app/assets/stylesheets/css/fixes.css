@@ -289,3 +289,27 @@ table{
 hr.dotted {
     border-top: 2px dotted #bbb;
 }
+
+.mt-20{
+    margin-top: 20px;
+}
+
+.mt-30{
+    margin-top: 30px;
+}
+
+.mr-10 {
+    margin-right: 10px;
+}
+
+.mx-5{
+    margin-right: 5px;
+}
+
+.align-vm{
+    vertical-align: middle !important;
+}
+
+.full-h{
+    height: 100%;
+}

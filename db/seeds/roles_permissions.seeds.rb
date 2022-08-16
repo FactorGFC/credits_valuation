@@ -35,13 +35,17 @@ after :permissions do
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Crear comentarios de solicitud').id},
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Generar razónes financieras').id},
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Guardar datos extra para razónes financieras').id},
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Asignar detalles a solicitud').id},
 
                             #Nuevos 8-2022
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Crear eventos').id},
-                            {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Crear eventos').id},
-                            {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Crear eventos').id},
+                            {role_id: Role.find_by_key('credit_area').id,       permission_id: Permission.find_by_name('Crear eventos').id},
+                            {role_id: Role.find_by_key('promotion_area').id,    permission_id: Permission.find_by_name('Crear eventos').id},
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Ver eventos').id},
-                            {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Ver eventos').id},
-                            {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Ver eventos').id}
+                            {role_id: Role.find_by_key('credit_area').id,       permission_id: Permission.find_by_name('Ver eventos').id},
+                            {role_id: Role.find_by_key('promotion_area').id,    permission_id: Permission.find_by_name('Ver eventos').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Asignar detalles a solicitud').id},
+                            {role_id: Role.find_by_key('credit_area').id,       permission_id: Permission.find_by_name('Asignar detalles a solicitud').id},
+                            {role_id: Role.find_by_key('promotion_area').id,    permission_id: Permission.find_by_name('Asignar detalles a solicitud').id}
   ])
 end

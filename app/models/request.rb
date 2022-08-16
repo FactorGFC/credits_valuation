@@ -7,7 +7,7 @@
 #  updated_at        :datetime         not null
 #  analyst_id        :bigint
 #  company_id        :bigint           not null
-#  factor_credit_id  :bigint           not null
+#  factor_credit_id  :bigint
 #  process_status_id :bigint           not null
 #  user_id           :bigint           not null
 #
@@ -29,8 +29,9 @@
 #
 class Request < ApplicationRecord
   belongs_to :company
-  belongs_to :factor_credit
+  belongs_to :factor_credit, optional: true
   belongs_to :process_status
   belongs_to :user
   belongs_to :analist, :class_name => 'User', foreign_key: 'analyst_id'
+  has_many :request_comments
 end
