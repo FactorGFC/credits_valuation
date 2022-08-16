@@ -443,6 +443,7 @@ $(document).on('turbolinks:load', function () {
     }
 
     $( "#modal_providers" ).on('shown.bs.modal', function(e){
+        console.log("ENTRE");
 
         var dollarUSLocale = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -452,7 +453,7 @@ $(document).on('turbolinks:load', function () {
         var years = [];
         $('#divTransactions').empty();
         var transactions = $(e.relatedTarget).data('transactions');
-        
+        console.log("transactions", transactions);
 
 
         $('#divTransactions').html(
@@ -469,6 +470,7 @@ $(document).on('turbolinks:load', function () {
 
         $.each(transactions, function (index, transaction) {
             if(transaction.total !== 0){
+                console.log("transaction != 0", transaction);
                 years.push( transaction.date.substring(0, transaction.date. indexOf('-')));
                 $("#divTransactions tbody").append(
                     "<tr>" +
