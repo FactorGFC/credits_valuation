@@ -78,6 +78,8 @@ Rails.application.routes.draw do
 
     get 'request_comments/:company_id' => 'request_comments#index'
 
+    get '/credit_bureau_pdf.pdf'  => 'companies#credit_bureau_pdf', as: :credit_bureau_pdf
+
     authenticate :user do
       # Shows all users.
       get '/users', to: 'users/registrations#index', as: :user_registrations

@@ -331,6 +331,17 @@ class CompaniesController < ApplicationController
 
     end
 
+    respond_to do |format|
+      format.html
+      # format.pdf { render  template: "companies/credit_bureau", pdf: "Reporte Buró de Crédito", type: "application/pdf" }   # Excluding ".pdf" extension.
+      format.pdf do
+        render pdf: "Reporte Buró de Crédito",
+               template: "companies/credit_bureau.html.slim",
+               type: "application/pdf",
+               disposition: "inline"
+      end
+    end
+
   end
 
 
@@ -1092,6 +1103,19 @@ class CompaniesController < ApplicationController
         format.html { redirect_to company_details_path, notice: 'La compañia se ha actualizado correctamente' }
       else
         format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+      end
+    end
+  end
+
+  def credit_bureau_pdf
+    respond_to do |format|
+      # format.html
+      # format.pdf { render  template: "companies/credit_bureau", pdf: "Reporte Buró de Crédito", type: "application/pdf" }   # Excluding ".pdf" extension.
+      format.pdf do
+        render pdf: "Reporte Buró de Crédito",
+               template: "companies/credit_bureau.html.slim",
+               type: "application/pdf",
+               disposition: "inline"
       end
     end
   end

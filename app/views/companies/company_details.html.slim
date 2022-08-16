@@ -2203,6 +2203,12 @@ javascript:
           .tab-pane id="credit_bureau"
             .col-xl-12
               .m-portlet
+                .m-portlet__head-tools
+                  .m-portlet__nav
+                    .m-portlet__nav-item
+                      .col-2.pl-0 style="text-align:right;"
+                        = link_to company_details_path(@company.id, format: :pdf), class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                          = "Generar PDF"
                 .m-portlet__body
                   .m-section.mb-0
                     - if !@credit_bureau.present?

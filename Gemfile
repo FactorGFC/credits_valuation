@@ -140,3 +140,6 @@ gem 'twilio-ruby'
 gem 'aws-sdk-core'
 gem 'aws-sdk', '~> 3'
 
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+gem 'wkhtmltopdf-binary-edge'
