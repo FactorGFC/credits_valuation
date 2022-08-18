@@ -9,7 +9,7 @@ class HomeController < ApplicationController
 
     if Role.where(key: ['god', 'analyst']).pluck(:id).include? current_user.role_id
       @search_companies = policy_scope(Company).ransack(params[:q])
-      @companies = @search_companies.result.paginate(page: params[:page], per_page: get_pagination)
+      @companies = @search_companies.result.order(:created_at, :updated_at).paginate(page: params[:page], per_page: get_pagination)
     elsif Role.where(key: ['committee', 'credit_management', 'credit_area', 'promotion_area']).pluck(:id).include? current_user.role_id
       redirect_to '/events'
     else
@@ -20,7 +20,7 @@ class HomeController < ApplicationController
 
   def home_company
     @user = current_user
-    @company = current_user.company
+    @company = current_user.companyBU
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
         if @company.try(:info_company)['hydra:member'][0]['company'].present?

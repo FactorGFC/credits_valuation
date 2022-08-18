@@ -1106,4 +1106,14 @@ module CompaniesHelper
       "#{company_id}.pdf"
     end
   end
+
+  def comment_type comment_type
+    if comment_type == 'balance_sheet'
+      'Balance Financiero'
+    elsif comment_type == 'income_statement'
+      'Estado de Resultados'
+    elsif comment_type == 'financial_reasons'
+      'Razónes financieras'
+    end
+  end
 end

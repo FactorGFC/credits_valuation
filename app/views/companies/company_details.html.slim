@@ -287,29 +287,15 @@ javascript:
     .m-portlet__body
       .m-section.mb-0
         .d-inline-flex.col-md-12
-          .col-md-6
+          .col-md-8
             .btns-card.full-h
               .subtitle-icon.d-flex.justify-content-center.align-items-center
                 i.fa.fa-building.fa-lg.m--font-primary
               h5.h5.subtitle = 'Detalles de solicitud'
-              /- if @company.status_company_id.eql?(StatusCompany.where(key: 'aprobada').first.id)
-                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2
-                  = "Estatus: Aprobada"
-              /- elsif @company.status_company_id == StatusCompany.where(key: 'pendiente').first.id
-                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{@company.name}" data-rfc="#{@company.rfc}" data-id="#{@company.id}" data-approved="true"
-                  i.fab.fa.fa-check-circle-o
-                  = "Estatus:  Aprobar"
-                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{@company.name}" data-rfc="#{@company.rfc}" data-id="#{@company.id}" data-approved="false"
-                  i.fab.fa.fa-times-circle
-                  = "Estatus:  Rechazar"
-              /- if has_policy(Company, %w(assign_details_to_request))
               - if (current_user.god? or current_user.credit_management? or current_user.credit_area? or current_user.promotion_area?)
                 button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{nil}" data-companyid="#{@company.id}" data-process-status="#{nil}" data-analyst-id="#{nil}" data-factorcredit-id="#{nil}"
                   i.fa.fa-plus.left.mr-10
                   = "Nueva solicitud"
-              /button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_analyst" data-toggle="modal" type="button" data-id="#{@company.id}"
-                i.fab.fa-facebook-f.left
-                | Facebook
               .m-section__content.table-responsive.max-h-card
                 table.table.m-table.m-table--head-separator-brand.table-custom
                   thead.thead-default.thead-custom
@@ -330,10 +316,12 @@ javascript:
                             = request.factor_credit.try(:name).present? ? request.factor_credit.try(:name) : 'Sin asignar'
                           td.align-vm
                             = request.process_status.try(:name)
-                          td
-                            button.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
-                              i.fa.fa-pencil-alt.right
-          .col-md-3
+                          td.d-inline-flex
+                            button.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.mr-10.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
+                              i.fa.fa-pencil-alt
+                            a.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.d-flex.justify-content-center.align-items-center href="/request_comments/#{request.id}"
+                              i.fa.fa-comment
+          .col-md-4
             .btns-card
               .subtitle-icon.d-flex.justify-content-center.align-items-center
                 i.fa.fa-calendar.fa-lg.m--font-primary
@@ -369,7 +357,8 @@ javascript:
                   = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                     = "Reporte del buró de crédito"
 
-          .col-md-3
+          ///////COMENTARIOS
+          /.col-md-3
             .btns-card.full-h
               .subtitle-icon.d-flex.justify-content-center.align-items-center
                 i.fa.fa-comment.fa-lg.m--font-primary
@@ -444,6 +433,9 @@ javascript:
                         - if @company.balance_sheet_finished
                           button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="balance_sheet"
                             = "Habilitar Captura"
+                        a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.btn-block href="/balance_sheet_request/#{@company.id}" target="_blank"
+                          .fa.fa-pencil-alt
+                          = "Editar Captura"
                       - if @company.company_calendar_details.where(assign_to: 'balance_sheet').present?
                         #wrapper
                           #checkbox_div
@@ -1081,6 +1073,41 @@ javascript:
                               | Aún no se le han asignado fechas para captura.
 
 
+
+                      .col-md-12.mt-30
+                        .btns-card.full-h
+                          .subtitle-icon.d-flex.justify-content-center.align-items-center
+                            i.fa.fa-comment.fa-lg.m--font-primary
+                          .d-flex.flex-column.justify-content-between
+                            h5.h5.subtitle = 'Comentarios'
+                            .max-h-card.m-widget3
+                              - if @bs_comments.length > 0
+                                - @bs_comments.each do |comment|
+                                  .m-widget3__item
+                                    .m-widget3__header
+                                      .m-widget3__info
+                                        span.m-widget3__username
+                                          = User.where(id: comment.user_id).try(:first).full_name
+                                          /br
+                                          /span.m--font-primary
+                                            = "#{comment.process_status.name}"
+                                        br
+                                        span.m-widget3__time
+                                          = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p')
+
+                                    .m-widget3__body
+                                      p.m-widget3__text
+                                        = comment.comment
+                              - else
+                                .m-widget3__item
+                                  .m-widget3__body
+                                    p.m-widget3__text
+                                      .text-center
+                                        | Aún no hay comentarios.
+                            a.btn.btn-block.btn-info href="/comments/#{@company.id}/balance_sheet" target="_blank"
+                              | IR A COMENTARIOS
+
+
             .tab-pane id="income_statement"
               .col-xl-12
                 .m-portlet
@@ -1090,6 +1117,9 @@ javascript:
                         - if @company.income_statement_finished
                           button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="income_statement_finished"
                             = "Habilitar Captura"
+                        a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.btn-block href="/income_statement_capture/#{@company.id}" target="_blank"
+                          .fa.fa-pencil-alt
+                          = "Editar Captura"
                       - if @company.company_calendar_details.where(assign_to: 'income_statement').present?
                         #wrapper
                           #checkbox_div
@@ -1526,6 +1556,41 @@ javascript:
                               | Aún no se le han asignado fechas para captura.
 
 
+
+
+                      .col-md-12.mt-30
+                        .btns-card.full-h
+                          .subtitle-icon.d-flex.justify-content-center.align-items-center
+                            i.fa.fa-comment.fa-lg.m--font-primary
+                          .d-flex.flex-column.justify-content-between
+                            h5.h5.subtitle = 'Comentarios'
+                            .max-h-card.m-widget3
+                              - if @is_comments.length > 0
+                                - @is_comments.each do |comment|
+                                  .m-widget3__item
+                                    .m-widget3__header
+                                      .m-widget3__info
+                                        span.m-widget3__username
+                                          = User.where(id: comment.user_id).try(:first).full_name
+                                          /br
+                                          /span.m--font-primary
+                                            = "#{comment.process_status.name}"
+                                        br
+                                        span.m-widget3__time
+                                          = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p')
+
+                                    .m-widget3__body
+                                      p.m-widget3__text
+                                        = comment.comment
+                              - else
+                                .m-widget3__item
+                                  .m-widget3__body
+                                    p.m-widget3__text
+                                      .text-center
+                                        | Aún no hay comentarios.
+                            a.btn.btn-block.btn-info href="/comments/#{@company.id}/income_statement" target="_blank"
+                              | IR A COMENTARIOS
+
             .tab-pane id="financial_reasons"
               .col-xl-12
                 .m-portlet
@@ -1545,6 +1610,39 @@ javascript:
                           .m-alert__text
                             strong
                               | Aún no se han generado las razónes financieras.
+
+                      .col-md-12.mt-30
+                        .btns-card.full-h
+                          .subtitle-icon.d-flex.justify-content-center.align-items-center
+                            i.fa.fa-comment.fa-lg.m--font-primary
+                          .d-flex.flex-column.justify-content-between
+                            h5.h5.subtitle = 'Comentarios'
+                            .max-h-card.m-widget3
+                              - if @fr_comments.length > 0
+                                - @fr_comments.each do |comment|
+                                  .m-widget3__item
+                                    .m-widget3__header
+                                      .m-widget3__info
+                                        span.m-widget3__username
+                                          = User.where(id: comment.user_id).try(:first).full_name
+                                          /br
+                                          /span.m--font-primary
+                                            = "#{comment.process_status.name}"
+                                        br
+                                        span.m-widget3__time
+                                          = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p')
+
+                                    .m-widget3__body
+                                      p.m-widget3__text
+                                        = comment.comment
+                              - else
+                                .m-widget3__item
+                                  .m-widget3__body
+                                    p.m-widget3__text
+                                      .text-center
+                                        | Aún no hay comentarios.
+                            a.btn.btn-block.btn-info href="/comments/#{@company.id}/financial_reasons" target="_blank"
+                              | IR A COMENTARIOS
 
 
             .tab-pane id="credit_bureau"

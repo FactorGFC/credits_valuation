@@ -70,9 +70,9 @@ Rails.application.routes.draw do
     put 'save_extra_data' => 'companies#save_extra_data', as: :save_extra_data
 
     get 'request_steps'  => 'companies#request_steps', as: :request_steps
-    get 'balance_sheet_request'  => 'companies#balance_sheet_request', as: :balance_sheet_request
+    get 'balance_sheet_request/:company_id'  => 'companies#balance_sheet_request', as: :balance_sheet_request
     post 'create_balance_sheet_request'  => 'companies#create_balance_sheet_request', as: :create_balance_sheet_request
-    get 'income_statement_capture'  => 'companies#income_statement_capture', as: :income_statement_capture
+    get 'income_statement_capture/:company_id'  => 'companies#income_statement_capture', as: :income_statement_capture
     post 'create_income_statement_cap'  => 'companies#create_income_statement_cap', as: :create_income_statement_cap
     get 'generate_financial_reasons/:id'  => 'companies#generate_financial_reasons', as: :generate_financial_reasons
 
@@ -83,8 +83,10 @@ Rails.application.routes.draw do
     get 'company_income_statement/:id'  => 'companies#company_income_statement', as: :company_income_statement
     get 'company_details/:id'  => 'companies#company_details', as: :company_details
     get 'open_pdf/:id/:file'  => 'companies#open_pdf', as: :open_pdf
+    get 'comments/:company_id/:assigned_to' => 'companies#comments'
+    put 'save_comment' => 'companies#save_comment', as: :save_comment
 
-    get 'request_comments/:company_id' => 'request_comments#index'
+    get 'request_comments/:request_id' => 'request_comments#index'
 
     get '/credit_bureau_pdf.pdf'  => 'companies#credit_bureau_pdf', as: :credit_bureau_pdf
 
