@@ -321,6 +321,11 @@ javascript:
                               i.fa.fa-pencil-alt
                             a.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.d-flex.justify-content-center.align-items-center href="/request_comments/#{request.id}"
                               i.fa.fa-comment
+                            button.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.mr-10.open-modal-file-request data-target="#m_modal_file_request" data-toggle="modal" type="button" data-id="#{request.id}"
+                              i.fa.fa-file-pdf
+                            - if request.try(:file_id).present?
+                              a.btn.btn-danger.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.mr-10.open-modal-file-request href="#{ENV['DOWNLOAD_FILES']}/#{request.try(:file_id)}/#{request.try(:file_name)}" target="_blank"
+                                i.fa.fa-eye
           .col-md-4
             .btns-card
               .subtitle-icon.d-flex.justify-content-center.align-items-center
@@ -3001,6 +3006,27 @@ javascript:
           button#idBtn.btn.btn-success type="submit"
             | Guardar
 
+#m_modal_file_request.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog role="document" style="margin-top: 0%;"
+    .modal-content
+      .modal-header
+        h5.modal-title
+          | Adjuntar Estudio de Crédito
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"
+            | \&times;
+      = form_for current_user, url: assign_pdf_to_request_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed',html: { multipart: true } do |f|
+        .modal-body
+          input type="hidden" name="request_id" id="requestIdFile" value=""
+          .col-xl-12 style="display: grid;"
+            = f.file_field :file_name, class: "custom-file-input", required: true,accept: "application/pdf"
+            label.custom-file-label Elige un archivo...
+            span.custom-file-control
+        .modal-footer
+          button.btn.btn-secondary data-dismiss="modal" type="button"
+            | Cerrar
+          button.btn.btn-success type="submit"
+            | Guardar
 
 #m_modal_financial_institutions.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"

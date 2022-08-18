@@ -35,6 +35,13 @@ $(document).on('turbolinks:load', function () {
 
     });
 
+    $(document).on("click", ".open-modal-file-request", function () {
+        var requestId       = $(this).data('id');
+
+        $(".modal-body #requestIdFile").val(requestId);
+
+    });
+
     window.emailValidate = function() {
         var isValid = emailRegex.test($('#email_input').val());
 

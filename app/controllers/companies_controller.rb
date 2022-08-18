@@ -491,6 +491,36 @@ class CompaniesController < ApplicationController
     end
   end
 
+  def assign_pdf_to_request
+    s3 = Aws::S3::Resource.new(access_key_id: 'AKIAWRCSQFXT4UEWO2PS' , region: 'us-east-1',
+                               secret_access_key:  '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')
+    bucket_name = 'analisisbucket'
+
+    request = params[:request_id].present? ? Request.find(params[:request_id]) : nil
+
+    if request
+      invoice_id_file = request.id.to_s + [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+      file_id_file = File.open(Rails.root.join(params[:user][:file_name]))
+      name_id_file = params[:user][:file_name].original_filename.gsub(/\s+/, "")
+
+      obj_id_file = s3.bucket(bucket_name).object("credits_valuation/#{invoice_id_file}/#{name_id_file}")
+      obj_id_file.put(
+          body: file_id_file,
+          acl: "public-read" # optional: makes the file readable/downloadable by anyone
+      )
+
+
+      file_id_file.close
+
+      if request.update(file_id: invoice_id_file, file_name: name_id_file)
+        redirect_to "/company_details/#{request.company_id}", notice: "Actualizado correctamente."
+      else
+        redirect_to "/company_details/#{request.company_id}", alert: request.errors.full_messages.join(' ')
+      end
+    end
+
+  end
+
   def translate_errors message
     if message == 'rfc: This value is not valid.'
       new_message = 'El R.F.C no es valido'

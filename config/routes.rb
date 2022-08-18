@@ -129,6 +129,7 @@ Rails.application.routes.draw do
 
       #assign Analyst to request
       put 'assign_details_to_request' => 'companies#assign_details_to_request', as: :assign_details_to_request
+      put 'assign_pdf_to_request' => 'companies#assign_pdf_to_request', as: :assign_pdf_to_request
 
       #refuse companies
       put 'refuse_company' => 'companies#refuse_company', as: :refuse_company
