@@ -19,21 +19,7 @@
               .step-icon
                 i.fa.fa-check aria-hidden='true'
             .indicator-line.active#ind3
-            - if !@company.has_clients
-              .step.completed#step4 style="opacity: 1"
-                .step-icon
-                  i.fa.fa-check aria-hidden='true'
-              .indicator-line.active#ind4 style="opacity: 1"
-            - if !@company.has_providers
-              .step.completed#step5 style="opacity: 1"
-                .step-icon
-                  i.fa.fa-check aria-hidden='true'
-              .indicator-line.active#ind5 style="opacity: 1"
-            .step.completed#step6 style="opacity: 1"
-              .step-icon
-                i.fa.fa-check aria-hidden='true'
-            .indicator-line.active#ind6 style="opacity: 1"
-            .step#step7 class="active" style="opacity: 1"
+            .step#step4 class="active" style="opacity: 1"
               .step-icon
                 i.fa.fa-file-alt
 
@@ -47,23 +33,12 @@
             .step-desc#stepDesc3
               span
               .title Número de colaboradores
-            - if !@company.has_clients
-              .step-desc#stepDesc4
-                span
-                .title Principales Clientes
-            - if !@company.has_providers
-              .step-desc#stepDesc5
-                span
-                .title Principales Proveedores
-            .step-desc#stepDesc6
-              span
-              .title Instituciones financieras
-            .step-desc.active#stepDesc7
+            .step-desc.active#stepDesc4
               span
               .title Archivos
     .step-content.col-9
       .nav-btns-container
-        button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('5','6')"
+        button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('2','3')"
           i.fa.fa-chevron-left
           | Regresar
       .step-page.m-animate-fade-in-up

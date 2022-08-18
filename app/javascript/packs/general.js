@@ -272,6 +272,7 @@ $(document).on('turbolinks:load', function () {
         if(idFile && constancyFile && financialStatementsOneFile && financialStatementsTwoFile
             && financialStatementsParcialFile){
             $('#filesBtn').attr('class', 'btn btn-primary col-xl-12');
+            $('#filesBtn').prop("disabled", false);
         }
 
     };
@@ -280,9 +281,8 @@ $(document).on('turbolinks:load', function () {
         var stepOne = document.getElementById("idStepOne").value;
         var stepTwo = document.getElementById("idStepTwo").value;
         var stepThree = document.getElementById("idStepThree").value;
-        var stepFour = document.getElementById("idStepFour").value;
-        var stepFive = document.getElementById("idStepFive").value;
-        var stepSix = document.getElementById("idStepSix").value;
+        $('#filesBtn').attr('class', 'btn btn-primary col-xl-12 disabled');
+        $('#filesBtn').prop("disabled", true);
 
     }
 
@@ -303,24 +303,9 @@ $(document).on('turbolinks:load', function () {
         $("#buttonTwo").hide();
     }
 
-    if (stepThree && !stepFour) {
+    if (stepThree) {
         $('#step-3').show();
         $("#buttonThree").hide();
-    }
-
-    if (stepFour && !stepFive) {
-        $('#step-4').show();
-        $("#buttonFour").hide();
-    }
-
-    if (stepFive && !stepSix) {
-        $('#step-5').show();
-        $("#buttonFive").hide();
-    }
-
-    if (stepSix) {
-        $('#step-6').show();
-        $('#filesBtn').attr('class', 'btn btn-primary col-xl-12 btn-section-disabled');
     }
 
 
