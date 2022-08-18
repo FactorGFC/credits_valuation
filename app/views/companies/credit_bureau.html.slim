@@ -11,6 +11,18 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
   body.m-page--fluid.m--skin-.m-content--skin-light2.m-header--fixed.m-header--fixed-mobile.m-aside-left--enabled.m-aside-left--skin-dark.m-aside-left--fixed.m-aside-left--offcanvas.m-footer--push.m-aside--offcanvas-default class="#{'m-brand--minimize m-aside-left--minimize' if cookies[:sidebar_toggle_state].eql?('on')}"
     .m-content
       .row
+        = wicked_pdf_image_tag asset_url('logo.png'), width: "auto"
+      .row
+        .portlet-profile.d-flex.justify-content-end
+          .info-profile-container
+            .icon-circle.d-flex.justify-content-end.align-items-center.px-5
+              i.fa.fa-id-card.fa-4x style="position: relative;"
+            .d-flex.flex-column.col-md-12.mb-2
+              .col-md-12
+                span.port-title = @company_name
+                span = @company.rfc
+    .m-content
+      .row
         .col-xl-12
           .m-portlet
             / .m-portlet__body

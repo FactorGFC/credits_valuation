@@ -1,4 +1,3 @@
-
 .col-xl-12
   .d-flex.align-items-center
     .mr-auto.d-flex.align-items-center
@@ -8,7 +7,7 @@
         | Detalles de compañia
 
 .col-xl-12.mt-20
-  .portlet-profile.d-flex.justify-content-end
+  .portlet-profile.d-flex.justify-content-end.mb-5
     .info-profile-container
       .icon-circle.d-flex.justify-content-end.align-items-center.px-5
         i.fa.fa-id-card.fa-4x style="position: relative;"
@@ -17,14 +16,23 @@
           span.port-title = @company.name
           span = @company.rfc
       .d-flex.col-md-12
-        .col-md-6
+        .col-md-4
+          span.port-subtitle = 'Estado / Municipio'
+          span = @company_state_municipality
           span.port-subtitle = 'Dirección'
-          span = @company.address
+          span = @company_address
           span.port-subtitle = 'Estatus'
           span.status-pill class="#{render_status_by_class(@company.try(:status_company).try(:key))}"
             = @company.try(:status_company).present? ? @company.try(:status_company).try(:name): 'PENDIENTE DE REVISIÓN X FACTOR'
         .vl
-        .col-md-6
+        .col-md-4
+          span.port-subtitle = 'Nombre de contacto'
+          span = @company.try(:user).try(:full_name)
+          span.port-subtitle = 'Teléfono de contacto'
+          span = @company.try(:user).try(:phone)
+          span.port-subtitle = 'Correo de contacto'
+          span = @company.try(:user).try(:email)
+        .col-md-4
           span.port-subtitle = 'Actividad Principal'
           span = @company.main_activity
           span.port-subtitle = 'Principales Productos/Servicios'
@@ -38,29 +46,32 @@
         .row.col-md-12.d-flex.justify-content-center.align-items-center
           .blog-comment
 
-            h3.text-black Comentarios
+            h3.text-black
+              = "Comentarios para "
+              strong = comment_type(@comment_type)
 
-            - if @request
-              .m-portlet__nav-item
-                button.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand.open-modal2 data-target="#m_modal_comment" data-toggle="modal" data-request="#{@request.id}" data-analyst="#{@request.analyst_id}" data-process="#{@request.process_status_id}"  data-current="#{current_user.id}" type="button" data-approved="false" style='position:absolute; right: 20px; top: 0;'
-                  i.la.la-plus
+            .m-portlet__nav-item
+              button.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand.open-modal2 data-target="#m_modal_comment" data-toggle="modal" type="button" style='position:absolute; right: 20px; top: 0;'
+                i.la.la-plus
+
+            - if @comments.length > 0
               ul.comments
-                - @request_comments.each do |request_comment|
+                - @comments.each do |comment|
                   li.clearfix
-                    = image_tag current_user.avatar_thumb, class:'avatar'
+                    = image_tag @company.user.avatar_thumb, class:'avatar'
                     .post-comments
                       p.meta
-                        a.user_name href="#" class="mx-2" #{User.find(request_comment.user_id).full_name}
-                        = request_comment.created_at.strftime('%d/%m/%Y,  %I:%M%p') + ':'
-                      span.m-btn--pill.btn-brand style='position:absolute; right: 20px; top: 10px; padding: 1px 10px; border-radius: 15px;'
-                        = request_comment.process_status.name
+                        a.user_name href="#" class="mx-2" #{User.find(comment.user_id).full_name}
+                        = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p') + ':'
+                      /span.m-btn--pill.btn-brand style='position:absolute; right: 20px; top: 10px; padding: 1px 10px; border-radius: 15px;'
+                        = comment.process_status.name
                       p
-                        = request_comment.comment
+                        = comment.comment
             - else
               .alert.alert-info role="alert"
                 strong.mx-2
                   | ¡UPS!
-                | Aún no has definido los detalles de la solicitud.
+                | Aún no has capturado comentarios.
 
 #m_modal_comment.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"
@@ -69,21 +80,15 @@
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true"
             | \&times;
-      = form_for current_user, url: add_comment_to_request_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
+      = form_for 'comment', url: save_comment_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
         .modal-body
-          input type="hidden" name="request_id" id="requestId" value=""
-          input type="hidden" name="analyst_id" id="analystId" value=""
-          input type="hidden" name="process_id" id="processId" value=""
-          input type="hidden" name="user_id"    id="currentUserId" value=""
-          p
-            | Escribe tu comentario
-          .col-xl-12 style="display: grid;"
-          = text_area_tag :comment,  nil, :size =>"10x10", class: 'form-control m-input'
+          = f.hidden_field :company_id, value: @company.id
+          = f.hidden_field :assigned_to, value: @comment_type
+          .col-xl-12
+            = f.label 'Escribe tu comentario', class: 'col-form-label'
+            = f.text_area :comment, :size =>"10x10", class: 'form-control m-input'
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cancelar
           button.btn.btn-success type="submit"
             | Guardar
-
-
-

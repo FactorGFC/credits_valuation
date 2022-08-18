@@ -1086,7 +1086,8 @@ module CompaniesHelper
   end
 
   def render_quantity_h number
-    number_to_human(number,format:'%n%u',units:{thousand:'K',million:'M',billion:'B'})
+    value = number_to_human(number,format:'%n%u',units:{thousand:'K',million:'M',billion:'B'})
+    return value.present? ? value : '0'
   end
 
   def generate_pdf_name type, company_id
@@ -1103,6 +1104,16 @@ module CompaniesHelper
       "Estados_Financieros_Cierre_parcial_#{company_id}.pdf"
     else
       "#{company_id}.pdf"
+    end
+  end
+
+  def comment_type comment_type
+    if comment_type == 'balance_sheet'
+      'Balance Financiero'
+    elsif comment_type == 'income_statement'
+      'Estado de Resultados'
+    elsif comment_type == 'financial_reasons'
+      'Razónes financieras'
     end
   end
 end
