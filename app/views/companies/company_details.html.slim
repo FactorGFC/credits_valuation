@@ -180,9 +180,10 @@ javascript:
   .portlet-profile.d-flex
     .col-md-12.d-flex
       .col-md-7
-        span.port-subtitle = 'INSTITUCIONES FINANCIERAS'
-        button.btn.btn-primary.btn-block.my-2.open-modal1 data-target="#m_modal_financial_institutions" data-toggle="modal" type="button"
-          = "Ver instituciones financieras"
+        - unless @company.try(:client_type).eql?('PM')
+          span.port-subtitle = 'INSTITUCIONES FINANCIERAS'
+          button.btn.btn-primary.btn-block.my-2.open-modal1 data-target="#m_modal_financial_institutions" data-toggle="modal" type="button"
+            = "Ver instituciones financieras"
 
         span.port-subtitle.mt-4 = 'COLABORADORES'
         ul.col-md-12.d-flex.justify-content-between.align-items-center.collab-list
