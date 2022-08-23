@@ -28,7 +28,7 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_nom_ventas').try(:id)).first.try(:value)} %"
+            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_nom_ventas').try(:id)).first.try(:value)} %"
 
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
@@ -36,7 +36,7 @@ table.table.table-bordered.input-focusable-table
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value1
-          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_nom_ventas').try(:id)).first.try(:value)} %"
+          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_nom_ventas').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'CRECIMIENTO REAL VENTAS'
@@ -46,14 +46,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept  = 'SAT'
           br
           span.td-value0
-            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_real_ventas').try(:id)).first.try(:value)} %"
+            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_real_ventas').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value1
-          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_real_ventas').try(:id)).first.try(:value)} %"
+          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_real_ventas').try(:id)).first.try(:value)} %"
 
 
   tr.tr-rdata
@@ -71,14 +71,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept  = 'SAT'
           br
           span.td-value0
-            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_sostenible').try(:id)).first.try(:value)} %"
+            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_sostenible').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value1
-          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_sostenible').try(:id)).first.try(:value)} %"
+          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_sostenible').try(:id)).first.try(:value)} %"
 
 
   tr.tr-title
@@ -93,14 +93,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept  = 'SAT'
           br
           span.td-value0
-            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'rotacion_de_activos').try(:id)).first.try(:value)} %"
+            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'rotacion_de_activos').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'rotacion_de_activos').try(:id)).first.try(:value)} %"
+          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'rotacion_de_activos').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'MARGEN OPERATIVO'
@@ -110,14 +110,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept  = 'SAT'
           br
           span.td-value0
-            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'margen_operativo').try(:id)).first.try(:value)} %"
+            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'margen_operativo').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'margen_operativo').try(:id)).first.try(:value)} %"
+          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'margen_operativo').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'RENTABILIDAD BASE CAPITAL (ROE)'
@@ -127,14 +127,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept  = 'SAT'
           br
           span.td-value0
-            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'rentabilidad_base_capital').try(:id)).first.try(:value)} %"
+            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'rentabilidad_base_capital').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'rentabilidad_base_capital').try(:id)).first.try(:value)} %"
+          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'rentabilidad_base_capital').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'MARGEN NETO'
@@ -144,14 +144,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept  = 'SAT'
           br
           span.td-value0
-            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'margen_neto').try(:id)).first.try(:value)} %"
+            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'margen_neto').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'margen_neto').try(:id)).first.try(:value)} %"
+          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'margen_neto').try(:id)).first.try(:value)} %"
   tr.tr-title
     th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
       = 'ESTRUCTURA'
@@ -164,14 +164,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'razon_circulante').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'razon_circulante').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'razon_circulante').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'razon_circulante').try(:id)).first.try(:value)
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'PRUEBA DEL ACIDO'
@@ -181,14 +181,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'prueba_del_acido').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'prueba_del_acido').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'prueba_del_acido').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'prueba_del_acido').try(:id)).first.try(:value)
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'PASIVO TOTAL / CAPITAL CONTABLE'
@@ -198,14 +198,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'pas_total_cap_contable').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'pas_total_cap_contable').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'pas_total_cap_contable').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'pas_total_cap_contable').try(:id)).first.try(:value)
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'TOTAL PASIVO FINANCIERO'
@@ -215,14 +215,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'total_pasivo_financiero').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'total_pasivo_financiero').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'total_pasivo_financiero').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'total_pasivo_financiero').try(:id)).first.try(:value)
   tr.tr-title
     th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
       = 'CICLO FINANCIERO'
@@ -235,14 +235,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_clientes').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_clientes').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_clientes').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_clientes').try(:id)).first.try(:value)
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'DÍAS INVENTARIO'
@@ -252,14 +252,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_inventario').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_inventario').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_inventario').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_inventario').try(:id)).first.try(:value)
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'DÍAS PROVEEDORES'
@@ -269,14 +269,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_proveedores').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_proveedores').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_proveedores').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'dias_proveedores').try(:id)).first.try(:value)
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'CICLO FINANCIERO'
@@ -286,14 +286,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'ciclo_financiero').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'ciclo_financiero').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'ciclo_financiero').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'ciclo_financiero').try(:id)).first.try(:value)
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'INVERSIÓN EN TRABAJO'
@@ -303,14 +303,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'inversion_en_trabajo').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'inversion_en_trabajo').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'inversion_en_trabajo').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'inversion_en_trabajo').try(:id)).first.try(:value)
   tr.tr-title
     th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
       = 'COBERTURAS'
@@ -323,14 +323,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_intereses').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_intereses').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_intereses').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_intereses').try(:id)).first.try(:value)
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px; position: relative;" rowspan="2"
       span.text-left = 'COBERTURA DE DEUDA'
@@ -340,14 +340,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_deuda').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_deuda').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_deuda').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_deuda').try(:id)).first.try(:value)
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px; position: relative;" rowspan="2"
       span.text-left = 'FLUJO NETO / TOTAL PASIVO FINANCIERO'
@@ -357,14 +357,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'flujo_total_pas_fin').try(:id)).first.try(:value)} %"
+            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'flujo_total_pas_fin').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'flujo_total_pas_fin').try(:id)).first.try(:value)} %"
+          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'flujo_total_pas_fin').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px; position: relative;" rowspan="2"
       span.text-left = 'FLUJO NETO / PASIVO TOTAL'
@@ -374,14 +374,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'flujo_total_pas_total').try(:id)).first.try(:value)} %"
+            = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'flujo_total_pas_total').try(:id)).first.try(:value)} %"
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'flujo_total_pas_total').try(:id)).first.try(:value)} %"
+          = "#{FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'flujo_total_pas_total').try(:id)).first.try(:value)} %"
   tr.tr-title
     th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
       = 'HORIZONTE DE DEUDA'
@@ -394,14 +394,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_lp').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_lp').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_lp').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_lp').try(:id)).first.try(:value)
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'DEUDA FINANCIERA TOTAL / UAFIRDA'
@@ -411,14 +411,14 @@ table.table.table-bordered.input-focusable-table
           span.text-table-concept = 'SAT'
           br
           span.td-value0
-            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_total').try(:id)).first.try(:value)
+            = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_total').try(:id)).first.try(:value)
   tr.tr-rdata
     - @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
         span.td-value0
-          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_total').try(:id)).first.try(:value)
+          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_total').try(:id)).first.try(:value)
 
 /#m_crecimiento_sost.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"
@@ -556,10 +556,10 @@ table.table.table-bordered.input-focusable-table
               th
               - @calendar_fr.each do |y|
                 th = y.calendar.period_name
-            tr.tr-title
+            /tr.tr-title
               th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
                 = 'FLUJO'
-            tr
+            /tr
               td style="font-weight: 800"
                 span.text-left = 'Flujo neto'
               - @calendar_fr.each do |y|

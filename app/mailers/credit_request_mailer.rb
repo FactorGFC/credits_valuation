@@ -25,4 +25,9 @@ class CreditRequestMailer < ApplicationMailer
     @request_data = params[:request_data]
     mail(to: "#{@request_data[:user][:email]}", subject: "Solicitud de captura de información financiera.")
   end
+
+  def request_analyst_assigned
+    @request_data = params[:request_data]
+    mail(to: "#{@request_data[:user][:email]}", subject: "¡Nueva solicitud de afiliación asignada!")
+  end
 end

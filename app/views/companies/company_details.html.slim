@@ -308,6 +308,7 @@ javascript:
                       th
                         | Estatus de Proceso
                       th
+                        | Acciones
                     tbody
                       - @requests.each do |request|
                         tr
@@ -320,7 +321,7 @@ javascript:
                           td.d-inline-flex
                             button.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.mr-10.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
                               i.fa.fa-pencil-alt
-                            a.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.d-flex.justify-content-center.align-items-center href="/request_comments/#{request.id}"
+                            a.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.d-flex.mr-10.justify-content-center.align-items-center href="/request_comments/#{request.id}"
                               i.fa.fa-comment
                             button.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.mr-10.open-modal-file-request data-target="#m_modal_file_request" data-toggle="modal" type="button" data-id="#{request.id}"
                               i.fa.fa-file-pdf
@@ -1603,8 +1604,17 @@ javascript:
                   .m-portlet__body
                     .m-section.mb-0
                       .m-section__content.table-responsive.text-center
-                        a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.open-modal-cstatus href="/generate_financial_reasons/#{@company.id}"
-                          = "Generar razónes financieras"
+                        - if CompanyFlow.where(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_neto').try(:id)).present?
+                          a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.open-modal-cstatus href="/generate_financial_reasons/#{@company.id}"
+                            = "Generar razónes financieras"
+                        - else
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              i.flaticon-exclamation-1
+                              span
+                            .m-alert__text
+                              strong
+                                | Es necesario generar FLUJO DE EFECTIVO para poder generar las RAZÓNES FINANCIERAS.
 
                       - if @company.company_calendar_details.where(assign_to: 'income_statement').present? and FReasonsCompany.where(company_id: @company.id).length > 0
                         = render 'financial_reasons'
@@ -2860,6 +2870,12 @@ javascript:
                 .m-portlet
                   .m-portlet__body
                     .m-section.mb-0
+                      .m-section__content.table-responsive.text-center
+                        a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.open-modal-cstatus href="/g/#{@company.id}"
+                          = "Generar flujo de efectivo"
+
+                      = render 'cash_flow'
+
                       .m-section__sub
                         .row.m-section__sub style="display: flex"
                           .col-xl-12.my-6
