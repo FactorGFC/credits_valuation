@@ -75,6 +75,7 @@ Rails.application.routes.draw do
     get 'income_statement_capture/:company_id'  => 'companies#income_statement_capture', as: :income_statement_capture
     post 'create_income_statement_cap'  => 'companies#create_income_statement_cap', as: :create_income_statement_cap
     get 'generate_financial_reasons/:id'  => 'companies#generate_financial_reasons', as: :generate_financial_reasons
+    get 'generate_cash_flow/:id'  => 'companies#generate_cash_flow', as: :generate_cash_flow
 
     get 'balance_sheet_comparative/:id'  => 'companies#balance_sheet_comparative', as: :balance_sheet_comparative
     get 'income_statement_comparative/:id'  => 'companies#income_statement_comparative', as: :income_statement

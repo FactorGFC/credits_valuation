@@ -3,6 +3,7 @@
 # Table name: company_flows
 #
 #  id              :bigint           not null, primary key
+#  capture_type    :integer
 #  value           :float
 #  value_scale     :string
 #  created_at      :datetime         not null

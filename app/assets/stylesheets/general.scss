@@ -734,7 +734,9 @@ table#comparative_table_is td:empty {
 .bg-lines{
   background: repeating-linear-gradient(45deg, #d0d3de70 0px, #b3b8c952 20px, #c3c7d682 20px, #e1d3d378 40px);
 }
-
+tr.disabled-row{
+  background: #e5e5e5;
+}
 ////ANIMATIONS
 
 @-webkit-keyframes fourspeed {

@@ -88,5 +88,46 @@ $(document).on('turbolinks:load', function () {
         }
     };
 
+    window.calculateGrossProfit = function(ingresos, costo_ventas, utilidad_bruta){
+        const ingreso_val   = $(`[name="${ingresos}"]`).val();
+        const costo_val     = $(`[name="${costo_ventas}"]`).val();
+        const gross_profit  = $(`[name="${utilidad_bruta}"]`);
 
+        gross_profit.val(parseFloat(ingreso_val) - parseFloat(costo_val)).change();
+    };
+
+    window.calculateUtilityOperation = function(utilidad_bruta, gastos_op, utilidad_operacion){
+        const utilidad_br_val   = $(`[name="${utilidad_bruta}"]`).val();
+        const gastos_val        = $(`[name="${gastos_op}"]`).val();
+        const utilidad_op       = $(`[name="${utilidad_operacion}"]`);
+
+        utilidad_op.val(parseFloat(utilidad_br_val) - parseFloat(gastos_val)).change();
+    };
+
+    window.calculateFinancingResult = function(gasto_fin, utilidad_perdida, resultado_fin){
+        const gasto_val     = $(`[name="${gasto_fin}"]`).val();
+        const utilidad_val  = $(`[name="${utilidad_perdida}"]`).val();
+        const res_int_fin   = $(`[name="${resultado_fin}"]`);
+
+        res_int_fin.val(parseFloat(gasto_val) + parseFloat(utilidad_val)).change();
+    };
+
+    window.calculateIncomeBeforeTaxes = function(utilidad_operacion, resultado_fin, otros_gastos_ing, utilidad_ai){
+        const utilidad_op_val       = $(`[name="${utilidad_operacion}"]`).val();
+        const resultado_fin_val     = $(`[name="${resultado_fin}"]`).val();
+        const otros_gastos_ing_val  = $(`[name="${otros_gastos_ing}"]`).val();
+        const utilidad_antes_imp    = $(`[name="${utilidad_ai}"]`);
+
+        utilidad_antes_imp.val(parseFloat(utilidad_op_val) - parseFloat(resultado_fin_val) - parseFloat(otros_gastos_ing_val)).change();
+    };
+
+    window.calculateNetIncome = function(utilidad_ai, isr, ptu, participacion_sub, utilidad_neta){
+        const utilidad_ai_val       = $(`[name="${utilidad_ai}"]`).val();
+        const isr_val               = $(`[name="${isr}"]`).val();
+        const ptu_val               = $(`[name="${ptu}"]`).val();
+        const participacion_sub_val = $(`[name="${participacion_sub}"]`).val();
+        const ut_neta               = $(`[name="${utilidad_neta}"]`);
+
+        ut_neta.val(parseFloat(utilidad_ai_val) - parseFloat(isr_val) - parseFloat(ptu_val) - parseFloat(participacion_sub_val)).change();
+    };
 });
