@@ -46,3 +46,27 @@ function validateData() {
         $('#request_btn').attr('class', '');
     }
 }
+
+function validateEmailExists(){
+    var email = $('#email_input').val();
+    
+    $.ajax({
+        url: "get_user_by_email.json",
+        type: "get", //send it through get method
+        data: {
+            emailAddress: email
+        },
+        success: function(response) {
+
+            if(response){
+                $('#emailExist').show();
+                $('#request_btn').attr('class', 'btn-section-disabled');
+            }else{
+                $('#emailExist').hide();
+            }
+        },
+        error: function(xhr) {
+            //Do Something to handle error
+        }
+    });
+}

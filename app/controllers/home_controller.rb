@@ -353,11 +353,6 @@ class HomeController < ApplicationController
     end
 
 
-    Rails.logger.info "data CREate buro ----------------------------------------------------------------------------------------------------"
-    Rails.logger.info data
-
-    @buro = BuroCredito.create_client data
-
     if @buro['result'].present?
       response = @buro['result']
     else

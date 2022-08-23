@@ -35,51 +35,58 @@ class LandingController < ApplicationController
 
     user    = User.find_by(email: request_data[:user][:email])
 
-    company = Company.new(request_data[:company])
-
-    if company['sat_id'].present?
-      sat_id = company['sat_id']
+    if user.present?
+      respond_to do |format|
+        format.html { redirect_to '/loan', notice: 'El email ' + request_data[:user][:email] + ' ya esta registrado' }
+      end
     else
-      sat_id = nil
-    end
-    user    ? user    : user    = User.new(request_data[:user])
-    new_password = [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+      company = Company.new(request_data[:company])
 
-    respond_to do |format|
-      if company.save
-        if user.id
-          user.company_id             = company.id
-          user.sat_id                 = sat_id
-        else
-          user.company_id             = company.id
-          user.role_id                = Role.find_by_key('enterprise').try(:id).present? ?   Role.find_by_key('enterprise').try(:id) : 4
-          user.password               = new_password
-          user.password_confirmation  = new_password
-          user.new_password           = new_password
-          user.sat_id                 = sat_id
-
-          user.skip_confirmation!
-        end
-
-
-        if user.save
-          #Envia corrro de confirmación
-          CreditRequestMailer.with(request_data: request_data).new_credit_request_email.deliver_now
-
-          #Envia mensaje de bienvenida al registrarse en el portal
-          #Company.send_msj_to_company  company, user,1
-
-          format.html { redirect_to '/', notice: t('notifications_masc.success.resource.created',
-                                                         resource: t('roles.form.resource')) }
-        else
-          p user.errors
-          format.html { redirect_to '/loan', notice: user.errors }
-        end
+      if company['sat_id'].present?
+        sat_id = company['sat_id']
       else
-        p company.errors
-        format.html { redirect_to '/loan', notice: company.errors }
+        sat_id = nil
+      end
+      user    ? user    : user    = User.new(request_data[:user])
+      new_password = [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+
+      respond_to do |format|
+        if company.save
+          if user.id
+            user.company_id             = company.id
+            user.sat_id                 = sat_id
+          else
+            user.company_id             = company.id
+            user.role_id                = Role.find_by_key('enterprise').try(:id).present? ?   Role.find_by_key('enterprise').try(:id) : 4
+            user.password               = new_password
+            user.password_confirmation  = new_password
+            user.new_password           = new_password
+            user.sat_id                 = sat_id
+
+            user.skip_confirmation!
+          end
+
+
+          if user.save
+            #Envia corrro de confirmación
+            CreditRequestMailer.with(request_data: request_data).new_credit_request_email.deliver_now
+
+            #Envia mensaje de bienvenida al registrarse en el portal
+            #Company.send_msj_to_company  company, user,1
+
+            format.html { redirect_to '/', notice: t('notifications_masc.success.resource.created',
+                                                           resource: t('roles.form.resource')) }
+          else
+            p user.errors
+            format.html { redirect_to '/loan', notice: user.errors }
+          end
+        else
+          p company.errors
+          format.html { redirect_to '/loan', notice: company.errors }
+        end
       end
     end
+
   end
 
   def blog_details
@@ -105,5 +112,17 @@ class LandingController < ApplicationController
           name: sdata.second['category'], data: sdata.second.except('category', 'children')
         }
     ]
+  end
+  
+  def get_user_by_email
+    response = false
+    user = User.where(email: params[:emailAddress])
+
+    if user.present?
+      response = true
+    end
+
+    render json: response
+
   end
 end

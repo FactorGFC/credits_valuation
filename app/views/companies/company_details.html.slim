@@ -2511,12 +2511,12 @@ javascript:
                                       strong
                                         | Inició operaciones en
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      = @company.info_company['hydra:member'].try(:first)['startedOperationsAt']
+                                      = @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].present? ? @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].to_datetime.strftime('%d-%m-%Y') :  ''
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                       strong
                                         | Estado actualizado en
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt']
+                                      = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].present? ? @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].to_datetime.strftime('%d-%m-%Y') :  ''
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                       strong
                                         | CURP
@@ -2563,12 +2563,12 @@ javascript:
                                       strong
                                         | Inició operaciones en
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      = @company.info_company['hydra:member'].try(:first)['startedOperationsAt']
+                                      = @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].present? ? @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].to_datetime.strftime('%d-%m-%Y') :  ''
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                       strong
                                         | Estado actualizado en
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt']
+                                      = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].present? ? @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].to_datetime.strftime('%d-%m-%Y') :  ''
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                       strong
                                         | Nombre legal

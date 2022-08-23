@@ -179,6 +179,7 @@ Rails.application.routes.draw do
 
   get  'loan', to: 'landing#loan', as: :loan
   post  'credit_request', to: 'landing#credit_request'
+  get  'get_user_by_email', to: 'landing#get_user_by_email'
 
   get 'blog_details/:id', to: 'landing#blog_details', as: :blog_details
   get 'company_blog/:id', to: 'landing#company_blog', as: :company_blog
