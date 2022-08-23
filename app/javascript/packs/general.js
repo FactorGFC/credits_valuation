@@ -287,6 +287,29 @@ $(document).on('turbolinks:load', function () {
     }
 
 
+    function setNumberCollaboratorsValues(){
+        if( $("#idOperative").val() === '') {
+            $("#idOperative").val(0);
+        }
+
+        if ($("#idAdministrativos").val() === '' ){
+            $("#idAdministrativos").val(0);
+        }
+        
+        if ($("#idSales").val() === '' ){
+            $("#idSales").val(0);
+        }
+        if ($("#idEventual").val() === '' ){
+            $("#idEventual").val(0);
+        }
+        if ($("#idUnionized").val() === '' ){
+            $("#idUnionized").val(0);
+        }
+        if ($("#totalId").val() === '' ){
+            $("#totalId").val(0);
+        }
+    };
+
 
     if (!stepOne) {
         $('#step-0').show();
@@ -301,6 +324,7 @@ $(document).on('turbolinks:load', function () {
     if (stepTwo && !stepThree) {
         $('#step-2').show();
         $("#buttonTwo").hide();
+        setNumberCollaboratorsValues();
     }
 
     if (stepThree) {
@@ -428,7 +452,6 @@ $(document).on('turbolinks:load', function () {
     }
 
     $( "#modal_providers" ).on('shown.bs.modal', function(e){
-        console.log("ENTRE");
 
         var dollarUSLocale = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -438,7 +461,6 @@ $(document).on('turbolinks:load', function () {
         var years = [];
         $('#divTransactions').empty();
         var transactions = $(e.relatedTarget).data('transactions');
-        console.log("transactions", transactions);
 
 
         $('#divTransactions').html(
@@ -455,7 +477,6 @@ $(document).on('turbolinks:load', function () {
 
         $.each(transactions, function (index, transaction) {
             if(transaction.total !== 0){
-                console.log("transaction != 0", transaction);
                 years.push( transaction.date.substring(0, transaction.date. indexOf('-')));
                 $("#divTransactions tbody").append(
                     "<tr>" +

@@ -4,7 +4,6 @@ import 'javascripts/i18n/translations';
 
 
 $(document).on('turbolinks:load', function () {
-    console.log("ENTRE");
 
     function prevPage(prev, current) {
         document.getElementById("page-"+ prev).style.display     = "block";
