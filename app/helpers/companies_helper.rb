@@ -1116,4 +1116,11 @@ module CompaniesHelper
       'Razónes financieras'
     end
   end
+  
+  def get_pdf_uuid rfc
+    tax_compliance = SatW.get_tax_compliance_checks rfc
+
+    return tax_compliance["hydra:member"][0]['file']['id']
+
+  end
 end

@@ -123,13 +123,13 @@ class HomeController < ApplicationController
                                          client_type: client_type, providers: providers, customers: customers,
                                          cash_flow: @cash_flow)
 
-                        if @user.try(:company).try(:rfc) == 'FGL190102DH6'
-
-                          @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
-                        else
+                        # if @user.try(:company).try(:rfc) == 'FGL190102DH6'
+                        #
+                        #   @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
+                        # else
                           @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
 
-                        end
+                        # end
 
 
 
@@ -352,6 +352,8 @@ class HomeController < ApplicationController
              municipality: municipality, nationality: "MX",phone: user_phone]
     end
 
+
+    @buro = BuroCredito.create_client data
 
     if @buro['result'].present?
       response = @buro['result']

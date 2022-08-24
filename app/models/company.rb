@@ -80,6 +80,19 @@ class Company < ApplicationRecord
 
   acts_as_taggable_on :main_products
 
+  def self.remove_company id
+    CompanyProvider.where(company_id: id).delete_all
+    CompanyFile.where( company_id: id ).delete_all
+    BalanceCalendarDetail.where( company_id: id ).delete_all
+    CompanyCalendarDetail.where( company_id: id ).delete_all
+    IncomeStatementFile.where( company_id: id ).delete_all
+    CompanyIncomeStatement.where( company_id: id ).delete_all
+    CompanyBalanceSheet.where( company_id: id ).delete_all
+    CreditBureau.where( company_id: id ).delete_all
+    Company.find(id).delete
+
+  end
+
   def self.approved?
     self.status_company.key == 'aprobada'
   end
