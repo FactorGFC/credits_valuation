@@ -88,8 +88,9 @@ class CompaniesController < ApplicationController
         status_company_id:  params[:company][:status_company_id]
     }
 
-    user    = User.find_by(email: user_params[:email])
-    user ? user : user = User.new(user_params)
+
+
+    user = User.new(user_params)
 
     company = Company.new(company_params)
 
@@ -100,40 +101,45 @@ class CompaniesController < ApplicationController
     end
 
     respond_to do |format|
-      if company.save
-        if user.id
-          user.company_id             = company.id
-          user.sat_id                 = sat_id
-        else
-          new_password = [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+      if User.find_by(email: user_params[:email]).present?
+        format.html { redirect_to new_company_path, alert: 'Correo '+ user_params[:email] +' ya registrado'}
+      else
 
-          user.company_id             = company.id
-          user.role_id                = Role.find_by_key('enterprise').try(:id).present? ?   Role.find_by_key('enterprise').try(:id) : 4
-          user.password               = new_password
-          user.password_confirmation  = new_password
-          user.new_password           = new_password
-          user.sat_id                 = sat_id
+        if company.save
+          if user.id
+            user.company_id             = company.id
+            user.sat_id                 = sat_id
+          else
+            new_password = [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
 
-          user.skip_confirmation!
-        end
+            user.company_id             = company.id
+            user.role_id                = Role.find_by_key('enterprise').try(:id).present? ?   Role.find_by_key('enterprise').try(:id) : 4
+            user.password               = new_password
+            user.password_confirmation  = new_password
+            user.new_password           = new_password
+            user.sat_id                 = sat_id
 
-        if user.save
-          #Envia correo
-          if company.status_company.key == 'aprobada'
-            CreditRequestMailer.with(request_data: {user: user, company: company}).credit_request_approved.deliver_now
-          elsif company.status_company.key == 'rechazada'
-            CreditRequestMailer.with(request_data: {user: user, company: company}).credit_request_refused.deliver_now
+            user.skip_confirmation!
           end
 
-          format.html { redirect_to companies_path, notice: t('notifications_masc.success.resource.created',
-                                                   resource: t('roles.form.resource')) }
+          if user.save
+            #Envia correo
+            if company.status_company.key == 'aprobada'
+              CreditRequestMailer.with(request_data: {user: user, company: company}).credit_request_approved.deliver_now
+            elsif company.status_company.key == 'rechazada'
+              CreditRequestMailer.with(request_data: {user: user, company: company}).credit_request_refused.deliver_now
+            end
+
+            format.html { redirect_to companies_path, notice: t('notifications_masc.success.resource.created',
+                                                     resource: t('roles.form.resource')) }
+          else
+            format.html { render :new, status: :unprocessable_entity }
+            format.json { render json: user.errors, status: :unprocessable_entity }
+          end
         else
           format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: user.errors, status: :unprocessable_entity }
+          format.json { render json: company.errors, status: :unprocessable_entity }
         end
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: company.errors, status: :unprocessable_entity }
       end
     end
   end
