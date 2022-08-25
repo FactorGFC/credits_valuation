@@ -14,11 +14,14 @@ $(document).on('turbolinks:load', function () {
         var analystId       = $(this).data('analyst-id');
         var factorCreditId  = $(this).data('factorcredit-id');
 
+        console.log(requestId)
 
-        if(requestId){
-            document.getElementById('input_credit_type').style.display = 'grid';
-        }else{
-            document.getElementById('input_credit_type').style.display = 'none';
+        if(document.getElementById('input_credit_type')){
+            if(requestId){
+                document.getElementById('input_credit_type').style.display = 'grid';
+            }else{
+                document.getElementById('input_credit_type').style.display = 'none';
+            }
         }
 
         if(processStatus['order'] > 2){

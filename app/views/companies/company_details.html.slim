@@ -562,7 +562,7 @@ javascript:
                       .m-section__content.table-responsive.text-center
                         .tabs-actions
                           - if BalanceCalendarDetail.where(company_id:  @company.id).present? and IncomeCalendarDetail.where(company_id:  @company.id).present?
-                            - if CompanyFlow.where(company_id: @company.id).try(:id)).present?
+                            - if CompanyFlow.where(company_id: @company.id).try(:id).present?
                               a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.open-modal-cstatus href="/generate_financial_reasons/#{@company.id}"
                                 .fa.fa-sync.mx-2
                                 = "Generar razones financieras"
@@ -1910,6 +1910,8 @@ javascript:
                             .tab-content.col-xl-12.mb-30
                               .m-portlet
                                 .m-portlet__body
+                                  h3.m-portlet__head-text
+                                    | Entradas y Salidas
                                   .m-section__content
                                     - if @cash_flow.present?
                                       table.table
