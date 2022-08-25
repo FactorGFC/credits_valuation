@@ -260,16 +260,6 @@ $(document).on('turbolinks:load', function () {
         }
     };
 
-    $(document).on("click", ".open-modal-file-request", function () {
-        var requestId       = $(this).data('id');
-
-        console.log("requestId -----------");
-        console.log(requestId);
-
-        $(".modal-body #requestIdFile").val(requestId);
-
-    });
-
     // $('#idFileEnlace').on("change", fileEnlace);
 
 

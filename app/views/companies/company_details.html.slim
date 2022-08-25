@@ -330,7 +330,7 @@ javascript:
                             button.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.mr-10.open-modal-file-request data-target="#m_modal_file_request" data-toggle="modal" type="button" data-id="#{request.id}"
                               i.fa.fa-file-pdf
                             - if request.try(:file_id).present?
-                              a.btn.btn-danger.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.mr-10.d-flex.justify-content-center.align-items-center.open-modal-file-request href="#{ENV['DOWNLOAD_FILES']}/#{request.try(:file_id)}/#{request.try(:file_name)}" target="_blank"
+                              a.btn.btn-danger.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.mr-10.d-flex.justify-content-center.align-items-center href="#{ENV['DOWNLOAD_FILES']}/#{request.try(:file_id)}/#{request.try(:file_name)}" target="_blank"
                                 i.fa.fa-eye
           .col-md-4
             .btns-card
