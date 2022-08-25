@@ -42,6 +42,10 @@ after :permissions do
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Finalizar captura').id},
                             #25-Ago-2022
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Generar flujo de efectivo').id},
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Ver vista de comentarios').id},
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Ver vista de comentarios').id},
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Crear comentarios para tabs').id},
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Subir documento a request en detalles de solicitud').id},
 
                             #Nuevos 8-2022
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Crear eventos').id},
