@@ -1,7 +1,9 @@
-- if @company.company_calendar_details.where(assign_to: 'income_statement').present? and FReasonsCompany.where(company_id: @company.id).length > 0
-  a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.btn-block data-target="#m_extra_data" data-toggle="modal" href="#m_extra_data"
-    i.fa.fa-pencil-alt
-    = 'DATOS EXTRAS'
+
+.tabs-actions
+  - if @company.company_calendar_details.where(assign_to: 'income_statement').present? and FReasonsCompany.where(company_id: @company.id).length > 0
+    a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.btn-block data-target="#m_extra_data" data-toggle="modal" href="#m_extra_data"
+      i.fa.fa-pencil-alt.mx-2
+      = 'DATOS EXTRAS'
 
 table.table.table-bordered.input-focusable-table
   tr.tr-title
@@ -10,7 +12,7 @@ table.table.table-bordered.input-focusable-table
         = "Escala en:"
       br
       span.th-scale
-          = 'MILES'
+        = 'MILES'
     - @calendar_fr.each do |y|
       th.th-title
         = y.calendar.period_name

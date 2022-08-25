@@ -291,6 +291,8 @@ class CompaniesController < ApplicationController
     @bs_comments         = Comment.where(company_id: @company.id, assigned_to: 'balance_sheet').order(:created_at).limit(5)
     @is_comments         = Comment.where(company_id: @company.id, assigned_to: 'income_statement').order(:created_at).limit(5)
     @fr_comments         = Comment.where(company_id: @company.id, assigned_to: 'financial_reasons').order(:created_at).limit(5)
+    @cb_comments         = Comment.where(company_id: @company.id, assigned_to: 'credit_bureau').order(:created_at).limit(5)
+    @cf_comments         = Comment.where(company_id: @company.id, assigned_to: 'cash_flow').order(:created_at).limit(5)
     @financial_inst      = @company.financial_institutions
     @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
@@ -1252,7 +1254,7 @@ class CompaniesController < ApplicationController
 
     respond_to do |format|
       if true
-        format.html { redirect_to "/company_details/#{@company.id}", notice: "Flujo de efectivo generadas exitosamente" }
+        format.html { redirect_to "/company_details/#{@company.id}", notice: "Flujo de efectivo generado exitosamente." }
       else
         #format.json { render json: company.errors, status: :unprocessable_entity }
       end

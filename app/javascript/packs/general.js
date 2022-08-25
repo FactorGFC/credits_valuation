@@ -765,10 +765,11 @@ function calculate_comparative(table_id){
         for (var col = 0; col < colMax; col++) {
             if(columns.eq(col).css('display') !== 'none'){
                 var colData    = parseFloat(columns.eq(col).find('span.td-value'+index).text().split(',').join(''));
-
                 var colPercent = columns.eq(col).find('span.percent-value'+index).text().split(" ")[0];
-                percent_values_array.push(colPercent);
 
+                percent_values_array.push(colPercent);
+                colData = Math.abs(colData);
+                //CALCULO DE COMPARATIVA, RESTA DE AÑO 1 - 2
                 if(!isNaN(colData)){
                     if(col === 0){
                         rowTotal = colData;
@@ -783,17 +784,17 @@ function calculate_comparative(table_id){
             }
         };
 
+        // CALCULO DE VARIACIÓN DE PORCENTAJES
         max_num = Math.max(...percent_values_array);
         min_num = Math.min(...percent_values_array);
         percent_value = ((max_num - min_num)/min_num)*100;
-        if(min_num === 0){
-            percent_value = ((max_num - min_num) / 1) * 100;
-        }else{
-            percent_value = ((max_num - min_num) / min_num) * 100;
-        }
 
-        if(Number.isFinite(percent_value) && percent_value){
-            $('span.percent_t'+index).text(percent_value.toFixed(2) + ' %');
+        if(Number.isFinite(percent_value) || percent_value){
+            if(percent_value > 100 || percent_value < 0){
+                $('span.percent_t'+index).text('+100 %');
+            }else{
+                $('span.percent_t'+index).text(percent_value.toFixed(2) + ' %');
+            }
         }else{
             $('span.percent_t'+index).text('+100 %');
         }
@@ -816,28 +817,33 @@ function calculate_comparative(table_id){
         }
     });
 
+    //======> CALCULO DE PORCENTAJE HORIZONTAL COLUMNA COMPARATIVA ENTRE PORCENTAJES DE DIFERENCIA ENTRE SAT Y CAPTURA
     var rowMax = ($("table#"+table_id+" tr.tr-rdata").length)/2;
 
-    for(var row = 0; row < rowMax; row ++){
-        var values_array  = [];
-        var max_num       = 0;
-        var min_num       = 0;
+    for(var row = 0; row < rowMax; row ++) {
+        var values_array = [];
+        var max_num = 0;
+        var min_num = 0;
         var percent_value = 0;
-        var rowData       = '';
+        var rowData = '';
 
         for (var col = 0; col < colMax; col++) {
-            if($('span#'+table_id+'.percent-bdg'+row+'-'+col).closest('td.sum_input').css('display') !== 'none'){
-                rowData = $('span#'+table_id+'.percent-bdg'+row+'-'+col).text();
+            if ($('span#' + table_id + '.percent-bdg' + row + '-' + col).closest('td.sum_input').css('display') !== 'none') {
+                rowData = $('span#' + table_id + '.percent-bdg' + row + '-' + col).text();
                 values_array.push(parseFloat(rowData));
             }
         }
 
         max_num = Math.max(...values_array);
         min_num = Math.min(...values_array);
-        percent_value = ((max_num - min_num)/min_num)*100;
-
-        $('span.tb-badge'+row).text(percent_value.toFixed(2) + ' %');
+        percent_value = ((max_num - min_num) / min_num) * 100;
+        if(percent_value > 100){
+            $('span.tb-badge'+row).text('+100 %');
+        }else{
+            $('span.tb-badge'+row).text(percent_value.toFixed(2) + ' %');
+        }
     }
+    ///=======>
 
     //$("table#comparative_table").show();
 }
