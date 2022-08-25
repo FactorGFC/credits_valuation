@@ -22,15 +22,6 @@ module CompaniesHelper
   def balance_calendar_detail_value(company_id, calendar, number_key, value_scale)
     balance_cd = BalanceCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, balance_concept_key: number_key).try(:first).try(:value)
     if balance_cd.present?
-=begin
-      if value_scale === 'millones'
-        return (balance_cd/1000000).round(2)
-      elsif value_scale === 'miles'
-        return (balance_cd/1000).round(2)
-      else
-        return balance_cd.round(2)
-      end
-=end
       return balance_cd.round(2)
     else
       return 0
@@ -65,15 +56,6 @@ module CompaniesHelper
   def income_calendar_detail_value(company_id, calendar, number_key, value_scale)
     income_cs = IncomeCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, income_statement_concept_key: number_key).try(:first).try(:value)
     if income_cs.present?
-=begin
-      if value_scale === 'millones'
-        return (income_cs/1000000).round(2)
-      elsif value_scale === 'miles'
-        return (income_cs/1000).round(2)
-      else
-        return income_cs.round(2)
-      end
-=end
       return income_cs.round(2)
     else
       return 0
@@ -84,30 +66,27 @@ module CompaniesHelper
   def calculate_percentage(type, company_id, calendar, number_key, value_scale)
     if type === 'balance_sheet'
       sat_value = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: number_key, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f).abs
-      fg_value  = BalanceCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, balance_concept_key: number_key).try(:first).try(:value).to_f.abs
+      fg_value  = BalanceCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, balance_concept_key: number_key).try(:first).try(:value).to_f#.abs
     else
       sat_value = CompanyIncomeStatement.where(company_id: company_id, year: calendar.year, income_statement_concept_id: IncomeStatementConcept.where(number_key: number_key, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f).abs
-      fg_value  = IncomeCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, income_statement_concept_key: number_key).try(:first).try(:value).to_f.abs
+      fg_value  = IncomeCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, income_statement_concept_key: number_key).try(:first).try(:value).to_f#.abs
     end
 
     if value_scale === 'millones'
       sat_value = sat_value/1000000
-      fg_value  = fg_value/1000000
     elsif value_scale === 'miles'
       sat_value = sat_value/1000
-      fg_value  = fg_value/1000
     end
 
     max_num = [sat_value, fg_value].max
     min_num = [sat_value, fg_value].min
-
     if max_num != 0 and min_num != 0
-      percent_value = ((max_num - min_num)/min_num).round(2)
-      if percent_value <= 15
+      percent_value = (((max_num - min_num)/min_num)*100).round(2)
+      if percent_value <= 15 and percent_value >= 0
         [percent_value, 'green-badge']
-      elsif percent_value > 15 and percent_value <= 30
+      elsif percent_value > 15 and percent_value <= 40
         [percent_value, 'yellow-badge']
-      elsif percent_value > 30 and percent_value <= 100
+      elsif percent_value > 40 and percent_value <= 100
         [percent_value, 'red-badge']
       else
         ['+100', 'red-badge']
@@ -120,15 +99,6 @@ module CompaniesHelper
   #Calcula sumatoria de valores capturados
   def bs_capture_sum company_id, bs_keys_array, calendar_id, value_scale
     total = BalanceCalendarDetail.where(company_id: company_id, balance_concept_key: bs_keys_array, calendar_id: calendar_id).sum(:value)
-=begin
-    if value_scale === 'millones'
-      total/1000000
-    elsif value_scale === 'miles'
-      total/1000
-    else
-      total
-    end
-=end
     return total.round(2)
   end
 
@@ -140,7 +110,7 @@ module CompaniesHelper
     return ((total.nil? ? 0 : total)-(depreciacion.nil? ? 0 : depreciacion)).round(2)
   end
 
-  #Calcula sumatoria para activo fijo
+  #Calcula sumatoria para activo fijo sat
   def bs_activo_fijo_sat company_id, bs_keys_array, calendar, value_scale
     total = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: bs_keys_array, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f)
     depreciacion = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: 7, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f)

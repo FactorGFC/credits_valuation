@@ -737,6 +737,21 @@ table#comparative_table_is td:empty {
 tr.disabled-row{
   background: #e5e5e5;
 }
+
+.tabs-actions{
+  display: flex;
+
+  .btn{
+    display:          flex;
+    justify-content:  center;
+    align-items:      center;
+    height:           80px;
+    margin-top:       0 !important;
+    font-size:        16px;
+    font-weight:      bold;
+  }
+}
+
 ////ANIMATIONS
 
 @-webkit-keyframes fourspeed {
