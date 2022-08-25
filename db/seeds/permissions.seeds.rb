@@ -77,3 +77,5 @@ after :initialize_permissions do
   ])
   #
 end
+
+Permission.create()

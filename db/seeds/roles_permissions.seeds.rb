@@ -55,3 +55,4 @@ after :permissions do
                             {role_id: Role.find_by_key('promotion_area').id,    permission_id: Permission.find_by_name('Asignar detalles a solicitud').id}
   ])
 end
+PermissionsRole.create()
