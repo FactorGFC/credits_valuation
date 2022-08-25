@@ -70,7 +70,7 @@ class RequestCommentsController < ApplicationController
 
     respond_to do |format|
       if request_comment.save
-        format.html { redirect_to "/request_comments/#{company_id}", notice: "Request comment was successfully updated." }
+        format.html { redirect_to "/request_comments/#{request_comment.request.id}", notice: "Comentario agregado exitosamente." }
       else
         #format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: request_comment.errors, status: :unprocessable_entity }

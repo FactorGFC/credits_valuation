@@ -46,6 +46,9 @@ after :permissions do
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Ver vista de comentarios').id},
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Crear comentarios para tabs').id},
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Subir documento a request en detalles de solicitud').id},
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Asignar periodos a compañia').id},
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Ver vista de captura de estado financiero').id},
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Crear Estado de resultados').id},
 
                             #Nuevos 8-2022
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Crear eventos').id},

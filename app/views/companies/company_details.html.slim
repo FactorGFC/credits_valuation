@@ -561,10 +561,19 @@ javascript:
                     .m-section.mb-0
                       .m-section__content.table-responsive.text-center
                         .tabs-actions
-                          - if CompanyFlow.where(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_neto').try(:id)).present?
-                            a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.open-modal-cstatus href="/generate_financial_reasons/#{@company.id}"
-                              .fa.fa-sync.mx-2
-                              = "Generar razones financieras"
+                          - if BalanceCalendarDetail.where(company_id:  @company.id).present? and IncomeCalendarDetail.where(company_id:  @company.id).present?
+                            - if CompanyFlow.where(company_id: @company.id).try(:id)).present?
+                              a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.open-modal-cstatus href="/generate_financial_reasons/#{@company.id}"
+                                .fa.fa-sync.mx-2
+                                = "Generar razones financieras"
+                            - else
+                              .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                .m-alert__icon
+                                  i.flaticon-exclamation-1
+                                  span
+                                .m-alert__text
+                                  strong
+                                    | Es necesario generar FLUJO DE EFECTIVO para poder generar las RAZONES FINANCIERAS.
                           - else
                             .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
                               .m-alert__icon
@@ -572,7 +581,8 @@ javascript:
                                 span
                               .m-alert__text
                                 strong
-                                  | Es necesario generar FLUJO DE EFECTIVO para poder generar las RAZONES FINANCIERAS.
+                                  | Es necesario contar con la captura de BALANCE FINANCIERO y ESTADO DE RESULTADOS para generar FLUJO DE EFECTIVO.
+
 
                       - if @company.company_calendar_details.where(assign_to: 'income_statement').present? and FReasonsCompany.where(company_id: @company.id).length > 0
                         = render 'financial_reasons_table'

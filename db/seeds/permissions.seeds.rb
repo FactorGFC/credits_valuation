@@ -76,7 +76,8 @@ after :initialize_permissions do
     {name: 'Generar flujo de efectivo', description: 'Permite generar flujo de efectivo', action: 'generate_cash_flow', controller: 'Companies'},
     {name: 'Ver vista de comentarios', description: 'Permite entrar a vista de comentarios', action: 'comments', controller: 'Companies'},
     {name: 'Crear comentarios para tabs', description: 'Permite crear los comentarios referentes a las tabs en la vista de compañia', action: 'save_comment', controller: 'Companies'},
-    {name: 'Subir documento a request en detalles de solicitud', description: 'Permite subir documento a request en detalles de solicitud', action: 'assign_pdf_to_request', controller: 'Companies'}
+    {name: 'Subir documento a request en detalles de solicitud', description: 'Permite subir documento a request en detalles de solicitud', action: 'assign_pdf_to_request', controller: 'Companies'},
+    {name: 'Asignar periodos a compañia', description: 'Permite asignar periodos a compañia', action: 'assign_calendar', controller: 'Companies'}
   ])
   #
 end
