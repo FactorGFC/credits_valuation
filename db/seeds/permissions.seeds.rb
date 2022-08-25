@@ -70,7 +70,10 @@ after :initialize_permissions do
     {name: 'Actualizar eventos', description: 'Permite actualizar eventos.', action: 'update', controller: 'Events' },
     {name: 'Actualizar acuerdos de  eventos', description: 'Permite actualizar acuerdos de eventos.', action: 'update_event_agreement', controller: 'Events' },
     {name: 'Generar razónes financieras', description: 'Permite generar razónes financieras.', action: 'generate_financial_reasons', controller: 'Companies' },
-    {name: 'Guardar datos extra para razónes financieras', description: 'Permite guardar datos extra para completar razónes financieras', action: 'save_extra_data', controller: 'Companies' }
+    {name: 'Guardar datos extra para razónes financieras', description: 'Permite guardar datos extra para completar razónes financieras', action: 'save_extra_data', controller: 'Companies' },
+
+    #25-Ago-2022
+    {name: 'Generar flujo de efectivo', description: 'Permite generar flujo de efectivo', action: 'generate_cash_flow', controller: 'Companies'}
   ])
   #
 end

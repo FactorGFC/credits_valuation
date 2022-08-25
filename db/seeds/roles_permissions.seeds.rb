@@ -40,7 +40,8 @@ after :permissions do
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Crear petición de balance financiero').id},
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Crear captura estado de resultados').id},
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Finalizar captura').id},
-
+                            #25-Ago-2022
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Generar flujo de efectivo').id},
 
                             #Nuevos 8-2022
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Crear eventos').id},
