@@ -1083,7 +1083,11 @@ module CompaniesHelper
     elsif comment_type == 'income_statement'
       'Estado de Resultados'
     elsif comment_type == 'financial_reasons'
-      'Razónes financieras'
+      'Razónes Financieras'
+    elsif comment_type == 'credit_bureau'
+      'Buró de Crédito'
+    elsif comment_type == 'cash_flow'
+      'Flujo de Efectivo'
     end
   end
   

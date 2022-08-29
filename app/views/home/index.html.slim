@@ -18,10 +18,11 @@
                   span.input-group-append
                     button.m-portlet__nav-link.btn.btn-brand.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle#searchInUsers type="submit"
                       i.la.la-search
-          li.m-portlet__nav-item
-            = link_item_block new_company_path, class: 'm-portlet__nav-link btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill rounded-circle',
-                    data: {'title': (t('helpers.new')), placement: 'top', toggle: 'm-tooltip', 'skin': "dark"}
-              i.la.la-plus
+          - if has_policy(Company, %w(new))
+            li.m-portlet__nav-item
+              = link_item_block new_company_path, class: 'm-portlet__nav-link btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill rounded-circle',
+                      data: {'title': (t('helpers.new')), placement: 'top', toggle: 'm-tooltip', 'skin': "dark"}
+                i.la.la-plus
           /- if has_policy('Companies::new', %w(new_company))
             li.m-portlet__nav-item
               = link_to new_company_path, class: 'm-portlet__nav-link btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill rounded-circle',

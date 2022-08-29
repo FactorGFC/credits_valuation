@@ -407,7 +407,7 @@ class CompaniesController < ApplicationController
         if approved_company == "true"
 
           #Send Mail to Company, is approved by FACTOR
-          CreditRequestMailer.with(request_data: request_data).credit_request_approved.deliver_now
+          CreditRequestMailer.with(request_data: request_data, company: company).credit_request_approved.deliver_now
           #Send MSG to Company, is approved by FACTOR
           Company.send_msj_to_company company, user, 2
 
@@ -721,6 +721,7 @@ class CompaniesController < ApplicationController
     if params[:capture_type] === 'balance_sheet'
       respond_to do |format|
         if company.update(balance_sheet_finished: false)
+          CreditRequestMailer.with(user: company.user, company: company).capture_enabled.deliver_now
           format.html { redirect_to "/company_details/#{company.id}", notice: "Captura de BALANCE FINANCIERO habilitada." }
         else
           format.json { render json: company.errors, status: :unprocessable_entity }
@@ -729,6 +730,7 @@ class CompaniesController < ApplicationController
     else
       respond_to do |format|
         if company.update(income_statement_finished: false)
+          CreditRequestMailer.with(user: company.user, company: company).capture_enabled.deliver_now
           format.html { redirect_to "/company_details/#{company.id}", notice: "Captura de ESTADO DE RESULTADOS habilitada." }
         else
           format.json { render json: company.errors, status: :unprocessable_entity }

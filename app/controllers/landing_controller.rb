@@ -69,7 +69,7 @@ class LandingController < ApplicationController
 
           if user.save
             #Envia corrro de confirmación
-            CreditRequestMailer.with(request_data: request_data).new_credit_request_email.deliver_now
+            CreditRequestMailer.with(request_data: request_data, company: company).new_credit_request_email.deliver_now
 
             #Envia mensaje de bienvenida al registrarse en el portal
             #Company.send_msj_to_company  company, user,1
