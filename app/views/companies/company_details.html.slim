@@ -343,7 +343,7 @@ javascript:
             .btns-card
               .subtitle-icon.d-flex.justify-content-center.align-items-center
                 i.fa.fa-calendar.fa-lg.m--font-primary
-              h5.h5.subtitle = "Asignación de periodos #{@can_assign_period}"
+              h5.h5.subtitle = "Asignación de periodos"
               - if @company.status_company.key == 'aprobada' and @can_assign_period
                 button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_periods" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
                   = "Asignar periodos"
@@ -378,39 +378,6 @@ javascript:
                   = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                     = "Reporte del buró de crédito"
 
-          ///////COMENTARIOS
-          /.col-md-3
-            .btns-card.full-h
-              .subtitle-icon.d-flex.justify-content-center.align-items-center
-                i.fa.fa-comment.fa-lg.m--font-primary
-              .d-flex.flex-column.justify-content-between
-                h5.h5.subtitle = 'Comentarios'
-                .max-h-card.m-widget3
-                  - if @request_comments.length > 0
-                    - @request_comments.each do |comment|
-                      .m-widget3__item
-                        .m-widget3__header
-                          .m-widget3__info
-                            span.m-widget3__username
-                              = User.where(id: comment.user_id).try(:first).full_name
-                              br
-                              span.m--font-primary
-                                = "#{comment.process_status.name}"
-                            br
-                            span.m-widget3__time
-                              = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p')
-
-                        .m-widget3__body
-                          p.m-widget3__text
-                            = comment.comment
-                  - else
-                    .m-widget3__item
-                      .m-widget3__body
-                        p.m-widget3__text
-                          .text-center
-                            | Aún no hay comentarios.
-                a.btn.btn-block.btn-info href="/request_comments/#{@company.id}"
-                  | IR A COMENTARIOS
   - if @company.income_calendar_details.present? or @company.balance_calendar_details.present?
     .m-portlet
       .m-portlet__head
