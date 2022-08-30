@@ -1097,4 +1097,16 @@ module CompaniesHelper
     return tax_compliance["hydra:member"][0]['file']['id']
 
   end
+
+  def can_assign_periods company
+    if current_user.analyst?
+      can_assign = company.requests.where(analyst_id: current_user.id, process_status_id: ProcessStatus.find_by(key: 'credit_validated').try(:id)).present?
+    elsif current_user.super_user?
+      can_assign = true
+    else
+      can_assign = false
+    end
+
+    can_assign
+  end
 end

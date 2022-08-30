@@ -38,4 +38,10 @@ class CreditRequestMailer < ApplicationMailer
     @company  = params[:company]
     mail(to: "#{@user[:email]}", subject: "¡Se ha habilitado de nuevo la captura de datos!")
   end
+
+  def denied_validated
+    @request_data = params[:request_data]
+    mail(to: "#{@request_data[:user][:email]}", subject: "¡La solicitud ha sido rechazada!")
+  end
+
 end

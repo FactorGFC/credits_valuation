@@ -287,7 +287,6 @@ class CompaniesController < ApplicationController
     @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
     @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
     @calendar_fr         = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
-    @request             = Request.find_by(company_id: params[:id])
     @bs_comments         = Comment.where(company_id: @company.id, assigned_to: 'balance_sheet').order(:created_at).limit(5)
     @is_comments         = Comment.where(company_id: @company.id, assigned_to: 'income_statement').order(:created_at).limit(5)
     @fr_comments         = Comment.where(company_id: @company.id, assigned_to: 'financial_reasons').order(:created_at).limit(5)
@@ -296,7 +295,14 @@ class CompaniesController < ApplicationController
     @financial_inst      = @company.financial_institutions
     @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
-    @requests            = Request.where(company_id: params[:id])
+
+    @requests            = policy_scope(Request).where(company_id: params[:id]).order(created_at: :desc)
+    @process_status      = policy_scope(ProcessStatus)
+    @can_assign_period   = can_assign_periods(@company)
+
+    if @company.balance_sheet_finished and @company.income_statement_finished
+      @process_status += ProcessStatus.where(key: ['denied_validated_period', 'success_validated_period'])
+    end
 
     if @company.cash_flow.present?
       @cash_flow = @company.cash_flow.group_by{|c| [c['date']]}
@@ -475,15 +481,24 @@ class CompaniesController < ApplicationController
   end
 
   def assign_details_to_request
+    company         = Company.find(params[:company_id])
     request         = params[:request_id].present? ? Request.find(params[:request_id]) : nil
     request_params  = params[:request]
+
     request_params[:company_id]         = params[:company_id]
     request_params[:process_status_id]  = ProcessStatus.first_step unless request_params[:process_status_id].present?
     request_params[:factor_credit_id]   = nil unless request_params[:factor_credit_id].present?
     request_params[:user_id]            = current_user.id
-    company = Company.find(request_params[:company_id])
+
     if request
+      tmp_analyst = request.analyst_id
       if request.update(analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
+        if ProcessStatus.find_by_id(request_params[:process_status_id]).try(:key) == 'denied_validated_period'
+          CreditRequestMailer.with(request_data: {user:  company.user, company: company}).denied_validated.deliver_now
+        end
+        if request.analyst_id != tmp_analyst
+          CreditRequestMailer.with(request_data: {user:  company.user, company: company}).request_analyst_assigned.deliver_now
+        end
         redirect_to "/company_details/#{params[:company_id]}", notice: "Actualizado correctamente."
       else
         redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')

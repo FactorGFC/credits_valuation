@@ -50,6 +50,7 @@ after :permissions do
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Crear Estado de resultados').id},
                             #29-Ago-2022
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Habilitar captura').id},
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Mostar vista de comentario de una solicitud de una solicitud').id},
 
                             #Nuevos 8-2022
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Crear eventos').id},

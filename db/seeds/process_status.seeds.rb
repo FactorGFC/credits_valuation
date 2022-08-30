@@ -29,3 +29,15 @@
     {name: 'Liberación', key: 'release', order: 11, active: true },
   ])
 
+=begin
+#UPDATE 29-AGO-2022
+ProcessStatus.find(3).update(key: 'credit_validated')
+ProcessStatus.find(4).update(name:'Rechazo en Captura de Periodos', key: 'denied_validated_period')
+ProcessStatus.find(5).update(name:'Validado en Captura de Periodos', key: 'success_validated_period')
+ProcessStatus.find(6).update(key: 'rejected_by_credit_area')
+ProcessStatus.find(7).update(key: 'success_by_credit_area')
+ProcessStatus.find(8).update(key: 'committee_approved')
+ProcessStatus.find(9).update(key: 'committee_rejected')
+ProcessStatus.find(10).update(key: 'committee_pending')
+=end
+
