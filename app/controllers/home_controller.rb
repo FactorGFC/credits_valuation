@@ -19,8 +19,14 @@ class HomeController < ApplicationController
   end
 
   def home_company
-    @user = current_user
-    @company = current_user.company
+    @user           = current_user
+    @company        = current_user.company
+
+    cc_details_bs = @company.company_calendar_details.where(assign_to: 'balance_sheet')
+    cc_details_is = @company.company_calendar_details.where(assign_to: 'income_statement')
+    @data_bs_captured  = cc_details_bs.count == cc_details_bs.where(capture_finished: true).count
+    @data_is_captured  = cc_details_is.count == cc_details_is.where(capture_finished: true).count
+
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
         if @company.try(:info_company)['hydra:member'][0]['company'].present?

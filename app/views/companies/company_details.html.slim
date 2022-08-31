@@ -420,10 +420,10 @@ javascript:
                     .m-section.mb-0
                       .m-section__content.table-responsive.text-center
                         .tabs-actions
-                          - if @company.balance_sheet_finished
-                            button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="balance_sheet"
-                              .fa.fa-check-square.mx-2
-                              = "Habilitar Captura"
+                          /- if @company.balance_sheet_finished
+                          button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="balance_sheet"
+                            .fa.fa-check-square.mx-2
+                            = "Habilitar Captura"
                           a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block href="/balance_sheet_request/#{@company.id}" target="_blank"
                             .fa.fa-pencil-alt.mx-2
                             = "Editar Captura"
@@ -479,10 +479,10 @@ javascript:
                     .m-section.mb-0
                       .m-section__content.table-responsive.text-center
                         .tabs-actions
-                          - if @company.income_statement_finished
-                            button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.mx-2.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="income_statement_finished"
-                              .fa.fa-check-square.mx-2
-                              = "Habilitar Captura"
+                          /- if @company.income_statement_finished
+                          button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.mx-2.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="income_statement_finished"
+                            .fa.fa-check-square.mx-2
+                            = "Habilitar Captura"
                           a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block.mx-2 href="/income_statement_capture/#{@company.id}" target="_blank"
                             .fa.fa-pencil-alt.mx-2
                             = "Editar Captura"
@@ -1998,7 +1998,7 @@ javascript:
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar
           button#idBtn.btn.btn-success type="submit"
-            | Validar
+            | Aceptar
 
 #m_modal_periods.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"

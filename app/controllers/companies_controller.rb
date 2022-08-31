@@ -462,7 +462,7 @@ class CompaniesController < ApplicationController
     begin
       CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'balance_sheet', calendar_id: destroy_records).destroy_all
       CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'income_statement', calendar_id: destroy_records).destroy_all
-      BalanceCalendarDetail.transaction do
+      CompanyCalendarDetail.transaction do
         new_records.each do |e|
           CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'balance_sheet')
           CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'income_statement')
@@ -599,9 +599,10 @@ class CompaniesController < ApplicationController
   def balance_sheet_request
     sort_order = %w(mensual trimestral anual)
 
-    @company          = Company.find(params[:company_id])
-    @balance_concepts = BalanceConcept.where(ancestry: nil, active: true)
-    @calendar_periods = CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
+    @company            = Company.find(params[:company_id])
+    @balance_concepts   = BalanceConcept.where(ancestry: nil, active: true)
+    @calendar_periods   = CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
+    @data_captured      = @calendar_periods.length == CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'balance_sheet', capture_finished: true).count
 
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
@@ -632,6 +633,7 @@ class CompaniesController < ApplicationController
     @company          = Company.find(params[:company_id])
     @concepts         = IncomeStatementConcept.where(ancestry: nil, active: true)
     @calendar_periods = CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
+    @data_captured    = @calendar_periods.length == CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'income_statement', capture_finished: true).count
 
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
@@ -692,7 +694,7 @@ class CompaniesController < ApplicationController
       end
 
       if submit_type == 'finalize'
-        @company.update(balance_sheet_finished: true)
+        @company.company_calendar_details.where(assign_to: 'balance_sheet').update(capture_finished: true)
         redirect_to '/login', notice: "Finalizado y enviado correctamente."
       else
         redirect_to "/balance_sheet_request/#{@company.id}", notice: "Guardado correctamente."
@@ -721,7 +723,7 @@ class CompaniesController < ApplicationController
       end
 
       if submit_type == 'finalize'
-        @company.update(income_statement_finished: true)
+        @company.company_calendar_details.where(assign_to: 'income_statement').update(capture_finished: true)
         redirect_to '/login', notice: "Finalizado y enviado correctamente."
       else
         redirect_to "/income_statement_capture/#{@company.id}", notice: "Guardado correctamente."
@@ -733,9 +735,10 @@ class CompaniesController < ApplicationController
 
   def change_capture_status
     company = Company.find(params[:id])
+
     if params[:capture_type] === 'balance_sheet'
       respond_to do |format|
-        if company.update(balance_sheet_finished: false)
+        if company.company_calendar_details.where(assign_to: 'balance_sheet').update(capture_finished: false)
           CreditRequestMailer.with(user: company.user, company: company).capture_enabled.deliver_now
           format.html { redirect_to "/company_details/#{company.id}", notice: "Captura de BALANCE FINANCIERO habilitada." }
         else
@@ -744,7 +747,7 @@ class CompaniesController < ApplicationController
       end
     else
       respond_to do |format|
-        if company.update(income_statement_finished: false)
+        if company.company_calendar_details.where(assign_to: 'income_statement').update(capture_finished: false)
           CreditRequestMailer.with(user: company.user, company: company).capture_enabled.deliver_now
           format.html { redirect_to "/company_details/#{company.id}", notice: "Captura de ESTADO DE RESULTADOS habilitada." }
         else

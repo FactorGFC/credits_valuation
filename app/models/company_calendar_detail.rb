@@ -2,12 +2,13 @@
 #
 # Table name: company_calendar_details
 #
-#  id          :bigint           not null, primary key
-#  assign_to   :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  calendar_id :bigint           not null
-#  company_id  :bigint           not null
+#  id               :bigint           not null, primary key
+#  assign_to        :string
+#  capture_finished :boolean
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  calendar_id      :bigint           not null
+#  company_id       :bigint           not null
 #
 # Indexes
 #
