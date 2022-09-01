@@ -281,8 +281,12 @@ javascript:
     .m-portlet__head
       .m-portlet__head-caption
         .m-portlet__head-title
-          h3.m-portlet__head-text
-            | Configuraciones
+          .col-md-8
+            h3.m-portlet__head-text
+              | Configuraciones
+          .col-md-4 style= "text-align:right;"
+            = link_to dictamen_report_path(@company.id, format: :pdf), class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block' do
+              = "Dictamen"
 
     .m-portlet__body
       .m-section.mb-0
