@@ -1833,8 +1833,8 @@ class CompaniesController < ApplicationController
       format.html
       # format.pdf { render  template: "companies/credit_bureau", pdf: "Reporte Buró de Crédito", type: "application/pdf" }   # Excluding ".pdf" extension.
       format.pdf do
-        render pdf: "Reporte Buró de Crédito",
-               template: "companies/credit_bureau.html.slim",
+        render pdf: "Dictámen",
+               template: "companies/dictamen_report.html.slim",
                type: "application/pdf",
                disposition: "inline"
       end
