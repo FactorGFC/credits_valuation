@@ -1,7 +1,7 @@
 class CompaniesController < ApplicationController
   require 'base64'
   include CompaniesHelper
-  before_action :set_company, only: %i[ show edit update destroy company_details open_pdf generate_financial_reasons generate_cash_flow save_data_crec_sost save_data_cobertura_deuda save_data_deuda_fin_lp save_extra_data]
+  before_action :set_company, only: %i[ show edit update destroy company_details open_pdf generate_financial_reasons save_data_crec_sost save_data_cobertura_deuda save_data_deuda_fin_lp save_extra_data dictamen_report generate_cash_flow]
   helper_method :translate_errors, :get_company_info, :get_payments_frecuency, :method_payment
 
   # GET /companies or /companies.json
@@ -1759,6 +1759,87 @@ class CompaniesController < ApplicationController
                disposition: "inline"
       end
     end
+  end
+
+  def dictamen_report
+    sort_order = %w(anual trimestral mensual)
+    @periods             = Calendar.all.order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.period_type) }
+    @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @calendar_fr         = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @request             = Request.find_by(company_id: params[:id])
+    @bs_comments         = Comment.where(company_id: @company.id, assigned_to: 'balance_sheet').order(:created_at).limit(5)
+    @is_comments         = Comment.where(company_id: @company.id, assigned_to: 'income_statement').order(:created_at).limit(5)
+    @fr_comments         = Comment.where(company_id: @company.id, assigned_to: 'financial_reasons').order(:created_at).limit(5)
+    @financial_inst      = @company.financial_institutions
+    @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
+    @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
+    @requests            = Request.where(company_id: params[:id])
+
+    if @company.cash_flow.present?
+      @cash_flow = @company.cash_flow.group_by{|c| [c['date']]}
+    else
+      @cash_flow = []
+    end
+
+    if @company.try(:info_company).present?
+      if @company.try(:info_company)['hydra:member'].present?
+        if @company.try(:info_company)['hydra:member'][0]['company'].present?
+          @company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+        else
+          @company_name = @company.try(:name)
+        end
+        if @company.try(:info_company)['hydra:member'][0]['address'].present?
+          @company_address = @company.try(:info_company)['hydra:member'][0]['address']['streetName'] +
+            @company.try(:info_company)['hydra:member'][0]['address']['streetNumber'] + ', COL. ' + @company.try(:info_company)['hydra:member'][0]['address']['neighborhood']
+          @company_state_municipality = @company.try(:info_company)['hydra:member'][0]['address']['state'] + ' / ' +
+            @company.try(:info_company)['hydra:member'][0]['address']['municipality']
+        else
+          @company_address = @company.try(:address)
+        end
+      else
+        @company_name = @company.try(:name)
+      end
+    else
+      @company_name = @company.try(:name)
+    end
+
+    credit_bureaus = @company.try(:credit_bureaus).try(:last)
+
+    if credit_bureaus.present?#@company.credit_bureaus.present?
+      if credit_bureaus.bureau_report['results'].present?
+        if credit_bureaus.bureau_report['results'][0]['response'].present?
+          @report_result = credit_bureaus.bureau_report['results'][0]
+        else
+          @report_result = credit_bureaus.bureau_report['results'][1]
+        end
+      else
+        @report_result = credit_bureaus.bureau_report
+      end
+
+      @credit_bureau = credit_bureaus
+
+      if @company.try(:client_type) == 'PF'
+        if @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito'].present?
+          @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
+        else
+          @score = 0
+        end
+      end
+
+    end
+
+    respond_to do |format|
+      format.html
+      # format.pdf { render  template: "companies/credit_bureau", pdf: "Reporte Buró de Crédito", type: "application/pdf" }   # Excluding ".pdf" extension.
+      format.pdf do
+        render pdf: "Reporte Buró de Crédito",
+               template: "companies/credit_bureau.html.slim",
+               type: "application/pdf",
+               disposition: "inline"
+      end
+    end
+
   end
 
   private
