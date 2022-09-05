@@ -199,6 +199,11 @@ table{
     font-weight: 500;
 }
 
+.status-completed{
+    background-color: darkseagreen !important;
+    color:            white !important;
+}
+
 .btn-list-opt:link{
     text-decoration: none;
 }
@@ -211,7 +216,7 @@ table{
 .btn-list-opt:active{
     text-decoration: none;
 }
-
+/*
 .btn-list-large-opt:link{
     text-decoration: none;
 }
@@ -224,6 +229,7 @@ table{
 .btn-list-large-opt:active{
     text-decoration: none;
 }
+*/
 
 .btn-list-opt svg{
     font-size: 40px;
@@ -238,7 +244,7 @@ table{
     transition: all .2s ease-in-out 0s;
     -webkit-transform: all .2s ease-in-out 0s;
 }
-
+/*
 .btn-list-large-opt{
     width: 100%;
     padding: 25px;
@@ -268,7 +274,7 @@ table{
     transform: scale(1.5);
     transition: all .2s ease-in-out 0s;
     -webkit-transform: all .2s ease-in-out 0s;
-}
+}*/
 .btn-details{
     width: 180px;
 }

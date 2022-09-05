@@ -3,8 +3,8 @@ class RequestPolicy < ApplicationPolicy
     def resolve
       if @user.god?
         scope.all
-      elsif @user.role_key.eql? 'cancelation_employees'
-
+      elsif @user.role_key.eql? 'analyst'
+        scope.where(analyst_id: @user.id)
       end
     end
   end

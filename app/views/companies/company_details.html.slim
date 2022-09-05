@@ -292,8 +292,12 @@ javascript:
     .m-portlet__head
       .m-portlet__head-caption
         .m-portlet__head-title
-          h3.m-portlet__head-text
-            | Configuraciones
+          .col-md-8
+            h3.m-portlet__head-text
+              | Configuraciones
+          .col-md-4 style= "text-align:right;"
+            = link_to dictamen_report_path(@company.id, format: :pdf), class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block' do
+              = "Dictamen"
 
     .m-portlet__body
       .m-section.mb-0
@@ -318,36 +322,46 @@ javascript:
                       th
                         | Estatus de Proceso
                       th
+                        | Archivos
+                      th
                         | Acciones
                     tbody
                       - @requests.each do |request|
-                        tr
+                        tr valign="middle"
                           td.align-vm
                             = request.analist.try(:full_name)
                           td.align-vm
                             = request.factor_credit.try(:name).present? ? request.factor_credit.try(:name) : 'Sin asignar'
                           td.align-vm
                             = request.process_status.try(:name)
-                          td.d-inline-flex
-                            button.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.mr-10.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
-                              i.fa.fa-pencil-alt
-                            a.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.d-flex.mr-10.justify-content-center.align-items-center href="/request_comments/#{request.id}"
-                              i.fa.fa-comment
-                            button.btn.btn-primary.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.mr-10.open-modal-file-request data-target="#m_modal_file_request" data-toggle="modal" type="button" data-id="#{request.id}"
-                              i.fa.fa-file-pdf
+                          td style="vertical-align:middle;"
+                            button.btn.btn-primary.btn-block.mb-1.open-modal-file-request data-target="#m_modal_file_request" data-toggle="modal" type="button" data-id="#{request.id}"
+                              i.fa.fa-file-pdf.mx-2
+                              = "Subir"
                             - if request.try(:file_id).present?
-                              a.btn.btn-danger.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle.mr-10.d-flex.justify-content-center.align-items-center href="#{ENV['DOWNLOAD_FILES']}/#{request.try(:file_id)}/#{request.try(:file_name)}" target="_blank"
-                                i.fa.fa-eye
+                              a.btn.btn-danger.d-flex.justify-content-between.align-items-center.btn-block href="#{ENV['DOWNLOAD_FILES']}/#{request.try(:file_id)}/#{request.try(:file_name)}" target="_blank"
+                                i.fa.fa-eye.mx-2
+                                = "Ver"
+                          td
+                            button.btn.btn-primary.btn-block.mb-1.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
+                              /i.fa.fa-pencil-alt.position-absolute.float-left
+                              = "Detalles"
+                            a.btn.btn-primary.d-flex.justify-content-between.align-items-center.btn-block href="/request_comments/#{request.id}"
+                              /i.fa.fa-comment.mx-2
+                              = "Comentarios"
           .col-md-4
             .btns-card
               .subtitle-icon.d-flex.justify-content-center.align-items-center
                 i.fa.fa-calendar.fa-lg.m--font-primary
-              h5.h5.subtitle = 'Asignación de periodos'
-              - if @company.status_company.key == 'aprobada'
+              h5.h5.subtitle = "Asignación de periodos"
+              - if @company.status_company.key == 'aprobada' and @can_assign_period
                 button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_periods" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
                   = "Asignar periodos"
-                    /button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_income" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="income_statement" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
-                    /  = "Estado Resultados"
+              - else
+                span.text-center
+                  | Es necesario validar la solicitud.
+                /button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_income" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="income_statement" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
+                /  = "Estado Resultados"
 
             .btns-card.mt-30
               .subtitle-icon.d-flex.justify-content-center.align-items-center
@@ -374,39 +388,6 @@ javascript:
                   = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                     = "Reporte del buró de crédito"
 
-  ///////COMENTARIOS
-  /.col-md-3
-            .btns-card.full-h
-              .subtitle-icon.d-flex.justify-content-center.align-items-center
-                i.fa.fa-comment.fa-lg.m--font-primary
-              .d-flex.flex-column.justify-content-between
-                h5.h5.subtitle = 'Comentarios'
-                .max-h-card.m-widget3
-                  - if @request_comments.length > 0
-                    - @request_comments.each do |comment|
-                      .m-widget3__item
-                        .m-widget3__header
-                          .m-widget3__info
-                            span.m-widget3__username
-                              = User.where(id: comment.user_id).try(:first).full_name
-                              br
-                              span.m--font-primary
-                                = "#{comment.process_status.name}"
-                            br
-                            span.m-widget3__time
-                              = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p')
-
-                        .m-widget3__body
-                          p.m-widget3__text
-                            = comment.comment
-                  - else
-                    .m-widget3__item
-                      .m-widget3__body
-                        p.m-widget3__text
-                          .text-center
-                            | Aún no hay comentarios.
-                a.btn.btn-block.btn-info href="/request_comments/#{@company.id}"
-                  | IR A COMENTARIOS
   - if @company.income_calendar_details.present? or @company.balance_calendar_details.present?
     .m-portlet
       .m-portlet__head
@@ -449,10 +430,10 @@ javascript:
                     .m-section.mb-0
                       .m-section__content.table-responsive.text-center
                         .tabs-actions
-                          - if @company.balance_sheet_finished
-                            button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="balance_sheet"
-                              .fa.fa-check-square.mx-2
-                              = "Habilitar Captura"
+                          /- if @company.balance_sheet_finished
+                          button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="balance_sheet"
+                            .fa.fa-check-square.mx-2
+                            = "Habilitar Captura"
                           a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block href="/balance_sheet_request/#{@company.id}" target="_blank"
                             .fa.fa-pencil-alt.mx-2
                             = "Editar Captura"
@@ -508,10 +489,10 @@ javascript:
                     .m-section.mb-0
                       .m-section__content.table-responsive.text-center
                         .tabs-actions
-                          - if @company.income_statement_finished
-                            button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.mx-2.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="income_statement_finished"
-                              .fa.fa-check-square.mx-2
-                              = "Habilitar Captura"
+                          /- if @company.income_statement_finished
+                          button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.mx-2.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="income_statement_finished"
+                            .fa.fa-check-square.mx-2
+                            = "Habilitar Captura"
                           a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block.mx-2 href="/income_statement_capture/#{@company.id}" target="_blank"
                             .fa.fa-pencil-alt.mx-2
                             = "Editar Captura"
@@ -2565,7 +2546,7 @@ javascript:
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar
           button#idBtn.btn.btn-success type="submit"
-            | Validar
+            | Aceptar
 
 #m_modal_periods.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"
@@ -2618,11 +2599,11 @@ javascript:
                   /= select("request", "factor_credit_id", FactorCredit.where.not(id:@requests.pluck(:factor_credit_id)).collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input"})
           /- if @request.try(:order).present?
             - if @request.try(:order) >= 2
-          .col-xl-12#input_status_process style="display: none;"
+          .col-xl-12 id="#{current_user.super_user? ? '' : 'input_status_process'}"
             p.mt-20#textModal
               | Asignar Status del Proceso
             div style="display: grid;"
-              = select("request", "process_status_id", ProcessStatus.all.collect { |p| [p.name, p.id] }, {include_blank: false, selected: @request.try(:process_status_id)}, {class: "form-control m-input"})
+              = select("request", "process_status_id", @process_status.collect {|p| [ p.name, p.id ] }, { include_blank: false }, {class: "form-control m-input"})
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar

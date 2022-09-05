@@ -1,7 +1,7 @@
 class CompaniesController < ApplicationController
   require 'base64'
   include CompaniesHelper
-  before_action :set_company, only: %i[ show edit update destroy company_details open_pdf generate_financial_reasons generate_cash_flow save_data_crec_sost save_data_cobertura_deuda save_data_deuda_fin_lp save_extra_data]
+  before_action :set_company, only: %i[ show edit update destroy company_details open_pdf generate_financial_reasons save_data_crec_sost save_data_cobertura_deuda save_data_deuda_fin_lp save_extra_data dictamen_report generate_cash_flow]
   helper_method :translate_errors, :get_company_info, :get_payments_frecuency, :method_payment
 
   # GET /companies or /companies.json
@@ -287,7 +287,6 @@ class CompaniesController < ApplicationController
     @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
     @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
     @calendar_fr         = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
-    @request             = Request.find_by(company_id: params[:id])
     @bs_comments         = Comment.where(company_id: @company.id, assigned_to: 'balance_sheet').order(:created_at).limit(5)
     @is_comments         = Comment.where(company_id: @company.id, assigned_to: 'income_statement').order(:created_at).limit(5)
     @fr_comments         = Comment.where(company_id: @company.id, assigned_to: 'financial_reasons').order(:created_at).limit(5)
@@ -296,7 +295,14 @@ class CompaniesController < ApplicationController
     @financial_inst      = @company.financial_institutions
     @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
-    @requests            = Request.where(company_id: params[:id])
+
+    @requests            = policy_scope(Request).where(company_id: params[:id]).order(created_at: :desc)
+    @process_status      = policy_scope(ProcessStatus)
+    @can_assign_period   = can_assign_periods(@company)
+
+    if @company.balance_sheet_finished and @company.income_statement_finished
+      @process_status += ProcessStatus.where(key: ['denied_validated_period', 'success_validated_period'])
+    end
 
     if @company.cash_flow.present?
       @cash_flow = @company.cash_flow.group_by{|c| [c['date']]}
@@ -456,7 +462,7 @@ class CompaniesController < ApplicationController
     begin
       CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'balance_sheet', calendar_id: destroy_records).destroy_all
       CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'income_statement', calendar_id: destroy_records).destroy_all
-      BalanceCalendarDetail.transaction do
+      CompanyCalendarDetail.transaction do
         new_records.each do |e|
           CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'balance_sheet')
           CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'income_statement')
@@ -475,15 +481,24 @@ class CompaniesController < ApplicationController
   end
 
   def assign_details_to_request
+    company         = Company.find(params[:company_id])
     request         = params[:request_id].present? ? Request.find(params[:request_id]) : nil
     request_params  = params[:request]
+
     request_params[:company_id]         = params[:company_id]
     request_params[:process_status_id]  = ProcessStatus.first_step unless request_params[:process_status_id].present?
     request_params[:factor_credit_id]   = nil unless request_params[:factor_credit_id].present?
     request_params[:user_id]            = current_user.id
-    company = Company.find(request_params[:company_id])
+
     if request
+      tmp_analyst = request.analyst_id
       if request.update(analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
+        if ProcessStatus.find_by_id(request_params[:process_status_id]).try(:key) == 'denied_validated_period'
+          CreditRequestMailer.with(request_data: {user:  company.user, company: company}).denied_validated.deliver_now
+        end
+        if request.analyst_id != tmp_analyst
+          CreditRequestMailer.with(request_data: {user:  company.user, company: company}).request_analyst_assigned.deliver_now
+        end
         redirect_to "/company_details/#{params[:company_id]}", notice: "Actualizado correctamente."
       else
         redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')
@@ -584,9 +599,10 @@ class CompaniesController < ApplicationController
   def balance_sheet_request
     sort_order = %w(mensual trimestral anual)
 
-    @company          = Company.find(params[:company_id])
-    @balance_concepts = BalanceConcept.where(ancestry: nil, active: true)
-    @calendar_periods = CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
+    @company            = Company.find(params[:company_id])
+    @balance_concepts   = BalanceConcept.where(ancestry: nil, active: true)
+    @calendar_periods   = CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
+    @data_captured      = @calendar_periods.length == CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'balance_sheet', capture_finished: true).count
 
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
@@ -617,6 +633,7 @@ class CompaniesController < ApplicationController
     @company          = Company.find(params[:company_id])
     @concepts         = IncomeStatementConcept.where(ancestry: nil, active: true)
     @calendar_periods = CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
+    @data_captured    = @calendar_periods.length == CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'income_statement', capture_finished: true).count
 
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
@@ -677,7 +694,7 @@ class CompaniesController < ApplicationController
       end
 
       if submit_type == 'finalize'
-        @company.update(balance_sheet_finished: true)
+        @company.company_calendar_details.where(assign_to: 'balance_sheet').update(capture_finished: true)
         redirect_to '/login', notice: "Finalizado y enviado correctamente."
       else
         redirect_to "/balance_sheet_request/#{@company.id}", notice: "Guardado correctamente."
@@ -706,7 +723,7 @@ class CompaniesController < ApplicationController
       end
 
       if submit_type == 'finalize'
-        @company.update(income_statement_finished: true)
+        @company.company_calendar_details.where(assign_to: 'income_statement').update(capture_finished: true)
         redirect_to '/login', notice: "Finalizado y enviado correctamente."
       else
         redirect_to "/income_statement_capture/#{@company.id}", notice: "Guardado correctamente."
@@ -718,9 +735,10 @@ class CompaniesController < ApplicationController
 
   def change_capture_status
     company = Company.find(params[:id])
+
     if params[:capture_type] === 'balance_sheet'
       respond_to do |format|
-        if company.update(balance_sheet_finished: false)
+        if company.company_calendar_details.where(assign_to: 'balance_sheet').update(capture_finished: false)
           CreditRequestMailer.with(user: company.user, company: company).capture_enabled.deliver_now
           format.html { redirect_to "/company_details/#{company.id}", notice: "Captura de BALANCE FINANCIERO habilitada." }
         else
@@ -729,7 +747,7 @@ class CompaniesController < ApplicationController
       end
     else
       respond_to do |format|
-        if company.update(income_statement_finished: false)
+        if company.company_calendar_details.where(assign_to: 'income_statement').update(capture_finished: false)
           CreditRequestMailer.with(user: company.user, company: company).capture_enabled.deliver_now
           format.html { redirect_to "/company_details/#{company.id}", notice: "Captura de ESTADO DE RESULTADOS habilitada." }
         else
@@ -1741,6 +1759,87 @@ class CompaniesController < ApplicationController
                disposition: "inline"
       end
     end
+  end
+
+  def dictamen_report
+    sort_order = %w(anual trimestral mensual)
+    @periods             = Calendar.all.order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.period_type) }
+    @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @calendar_fr         = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @request             = Request.find_by(company_id: params[:id])
+    @bs_comments         = Comment.where(company_id: @company.id, assigned_to: 'balance_sheet').order(:created_at).limit(5)
+    @is_comments         = Comment.where(company_id: @company.id, assigned_to: 'income_statement').order(:created_at).limit(5)
+    @fr_comments         = Comment.where(company_id: @company.id, assigned_to: 'financial_reasons').order(:created_at).limit(5)
+    @financial_inst      = @company.financial_institutions
+    @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
+    @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
+    @requests            = Request.where(company_id: params[:id])
+
+    if @company.cash_flow.present?
+      @cash_flow = @company.cash_flow.group_by{|c| [c['date']]}
+    else
+      @cash_flow = []
+    end
+
+    if @company.try(:info_company).present?
+      if @company.try(:info_company)['hydra:member'].present?
+        if @company.try(:info_company)['hydra:member'][0]['company'].present?
+          @company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+        else
+          @company_name = @company.try(:name)
+        end
+        if @company.try(:info_company)['hydra:member'][0]['address'].present?
+          @company_address = @company.try(:info_company)['hydra:member'][0]['address']['streetName'] +
+            @company.try(:info_company)['hydra:member'][0]['address']['streetNumber'] + ', COL. ' + @company.try(:info_company)['hydra:member'][0]['address']['neighborhood']
+          @company_state_municipality = @company.try(:info_company)['hydra:member'][0]['address']['state'] + ' / ' +
+            @company.try(:info_company)['hydra:member'][0]['address']['municipality']
+        else
+          @company_address = @company.try(:address)
+        end
+      else
+        @company_name = @company.try(:name)
+      end
+    else
+      @company_name = @company.try(:name)
+    end
+
+    credit_bureaus = @company.try(:credit_bureaus).try(:last)
+
+    if credit_bureaus.present?#@company.credit_bureaus.present?
+      if credit_bureaus.bureau_report['results'].present?
+        if credit_bureaus.bureau_report['results'][0]['response'].present?
+          @report_result = credit_bureaus.bureau_report['results'][0]
+        else
+          @report_result = credit_bureaus.bureau_report['results'][1]
+        end
+      else
+        @report_result = credit_bureaus.bureau_report
+      end
+
+      @credit_bureau = credit_bureaus
+
+      if @company.try(:client_type) == 'PF'
+        if @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito'].present?
+          @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
+        else
+          @score = 0
+        end
+      end
+
+    end
+
+    respond_to do |format|
+      format.html
+      # format.pdf { render  template: "companies/credit_bureau", pdf: "Reporte Buró de Crédito", type: "application/pdf" }   # Excluding ".pdf" extension.
+      format.pdf do
+        render pdf: "Dictámen",
+               template: "companies/dictamen_report.html.slim",
+               type: "application/pdf",
+               disposition: "inline"
+      end
+    end
+
   end
 
   private

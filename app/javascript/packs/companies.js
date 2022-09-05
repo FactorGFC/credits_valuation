@@ -22,8 +22,6 @@ $(document).on('turbolinks:load', function () {
         var analystId       = $(this).data('analyst-id');
         var factorCreditId  = $(this).data('factorcredit-id');
 
-        console.log(requestId)
-
         if(document.getElementById('input_credit_type')){
             if(requestId){
                 document.getElementById('input_credit_type').style.display = 'grid';
@@ -32,10 +30,17 @@ $(document).on('turbolinks:load', function () {
             }
         }
 
-        if(processStatus['order'] > 2){
-            document.getElementById('input_status_process').style.display = 'grid';
+        console.log(processStatus['key']);
+        //Evalua si fue rechazado
+        if(processStatus['key'] == 'denied_validated_period'){
+            if(document.getElementById('input_status_process')){
+
+                document.getElementById('input_status_process').style.display = 'none';
+            }
         }else{
-            document.getElementById('input_status_process').style.display = 'none';
+            if(document.getElementById('input_status_process')){
+                document.getElementById('input_status_process').style.display = 'grid';
+            }
         }
 
         $(".modal-body #requestId").val(requestId);
@@ -49,8 +54,6 @@ $(document).on('turbolinks:load', function () {
     $(document).on("click", ".open-modal-file-request", function () {
         var requestId       = $(this).data('id');
 
-        console.log("requestId -----------");
-        console.log(requestId);
 
         $(".modal-body #requestIdFile").val(requestId);
 
