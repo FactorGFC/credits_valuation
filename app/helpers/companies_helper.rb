@@ -815,7 +815,7 @@ module CompaniesHelper
                                 one_eighty: 0}
 
     banco_linea_credito = {otorgante:'BANCO',tipo_credito: 'LINEA DE CRÉDITO' , cuentas_abiertas: 0, cuentas_mxp: 0,
-                           cuentas_usd: 0, otras_monedas: 0, original: 0, saldo_actual: 0, vigente: 0, one:0, thirty: 0, 
+                           cuentas_usd: 0, otras_monedas: 0, original: 0, saldo_actual: 0, vigente: 0, one:0, thirty: 0,
                            sixty: 0,ninety: 0,one_twenty: 0, one_eighty: 0}
 
     banco_credito_empresarial = {otorgante:'BANCO',tipo_credito: 'T. CRED. EMPRESARIAL-CORPORATIVA',cuentas_abiertas: 0,
@@ -823,6 +823,10 @@ module CompaniesHelper
                                  vigente: 0, one:0, thirty: 0, sixty: 0,ninety: 0,one_twenty: 0, one_eighty: 0}
 
     otras_financieras = {otorgante:'OTRAS FINANCIERAS',tipo_credito: 'O.C. GARANTIA INMOB' , cuentas_abiertas: 0,
+                                     cuentas_mxp: 0, cuentas_usd: 0, otras_monedas: 0, original: 0, saldo_actual: 0,
+                                     vigente: 0, one:0, thirty: 0, sixty: 0,ninety: 0,one_twenty: 0, one_eighty: 0}
+
+    arrendadora = {otorgante:'ARRENDADORA',tipo_credito: 'ARRENDAD' , cuentas_abiertas: 0,
                                      cuentas_mxp: 0, cuentas_usd: 0, otras_monedas: 0, original: 0, saldo_actual: 0,
                                      vigente: 0, one:0, thirty: 0, sixty: 0,ninety: 0,one_twenty: 0, one_eighty: 0}
 
@@ -886,6 +890,19 @@ module CompaniesHelper
         otras_financieras[:ninety] += active_credit['saldoVencidoDe90a119Dias'].to_f
         otras_financieras[:one_twenty] += active_credit['saldoVencidoDe120a179Dias'].to_f
         otras_financieras[:one_eighty] += active_credit['saldoVencidoDe180DiasOMas'].to_f
+      elsif active_credit['tipoUsuario'] == 'ARRENDADORA' && !active_credit['pagoCierre'].present?
+
+        arrendadora[:cuentas_abiertas] += 1
+        arrendadora[:cuentas_mxp] += 1
+        arrendadora[:original] += active_credit['saldoInicial'].to_i / 1000
+        arrendadora[:saldo_actual] += active_credit['saldoVigente'].to_i / 1000
+        arrendadora[:vigente] += active_credit['saldoVigente'].to_i / 1000
+        arrendadora[:one] += active_credit['saldoVencidoDe1a29Dias'].to_f
+        arrendadora[:thirty] += active_credit['saldoVencidoDe30a59Dias'].to_f
+        arrendadora[:sixty] += active_credit['saldoVencidoDe60a89Dias'].to_f
+        arrendadora[:ninety] += active_credit['saldoVencidoDe90a119Dias'].to_f
+        arrendadora[:one_twenty] += active_credit['saldoVencidoDe120a179Dias'].to_f
+        arrendadora[:one_eighty] += active_credit['saldoVencidoDe180DiasOMas'].to_f
 
       end
     end
@@ -894,6 +911,7 @@ module CompaniesHelper
     @actives_credits.push(banco_linea_credito)
     @actives_credits.push(banco_credito_empresarial)
     @actives_credits.push(otras_financieras)
+    @actives_credits.push(arrendadora)
 
     return @actives_credits
 
@@ -910,7 +928,8 @@ module CompaniesHelper
 
 
     actives_credits.each do |active_credit|
-      
+      unless active_credit['pagoCierre']
+
         otras_financieras_simple[:cuentas_abiertas] += 1
         otras_financieras_simple[:cuentas_mxp] += 1
         otras_financieras_simple[:original] += active_credit['saldoInicial'].to_i / 1000
@@ -922,6 +941,87 @@ module CompaniesHelper
         otras_financieras_simple[:ninety] += active_credit['saldoVencidoDe90a119Dias'].to_f
         otras_financieras_simple[:one_twenty] += active_credit['saldoVencidoDe120a179Dias'].to_f
         otras_financieras_simple[:one_eighty] += active_credit['saldoVencidoDe180DiasOMas'].to_f
+      end
+
+
+
+    end
+
+    total_actives_credits.push(otras_financieras_simple)
+
+    return total_actives_credits
+
+  end
+
+  def get_closed_credits credits
+
+    otras_financieras_quirog = {otorgante:'OTRAS FINANCIERAS',tipo_credito: 'QUIROG' , cuentas_abiertas: 0,
+                                cuentas_mxp: 0, cuentas_usd: 0, otras_monedas: 0, original: 0, quita: 0, dacion: 0,
+                                pago:0, quebranto: 0}
+
+    otras_financieras_simple = {otorgante:'OTRAS FINANCIERAS',tipo_credito: 'SIMPLE' , cuentas_abiertas: 0,
+                                cuentas_mxp: 0, cuentas_usd: 0, otras_monedas: 0, original: 0, quita: 0, dacion: 0,
+                                pago:0, quebranto: 0}
+
+
+    @actives_credits = []
+
+
+    credits.each do |credit|
+      if credit['pagoCierre'].present?
+        
+        if credit['tipoCredito'] == '1302'
+
+          otras_financieras_quirog[:cuentas_abiertas] += 1
+          otras_financieras_quirog[:cuentas_mxp] += 1
+          otras_financieras_quirog[:original] += credit['saldoInicial'].to_i / 1000
+          otras_financieras_quirog[:quita] += credit['quita'].to_i / 1000
+          otras_financieras_quirog[:dacion] += credit['dacion'].to_i / 1000
+          otras_financieras_quirog[:pago] += credit['pagoCierre'].to_f
+          otras_financieras_quirog[:quebranto] += credit['quebranto'].to_f
+
+        elsif credit['tipoCredito'] == '1305'
+          otras_financieras_simple[:cuentas_abiertas] += 1
+          otras_financieras_simple[:cuentas_mxp] += 1
+          otras_financieras_simple[:original] += credit['saldoInicial'].to_i / 1000
+          otras_financieras_simple[:quita] += credit['quita'].to_i / 1000
+          otras_financieras_simple[:dacion] += credit['dacion'].to_i / 1000
+          otras_financieras_simple[:pago] += credit['pagoCierre'].to_f
+          otras_financieras_simple[:quebranto] += credit['quebranto'].to_f
+
+        end
+      end
+    end
+
+
+    @actives_credits.push(otras_financieras_quirog)
+    @actives_credits.push(otras_financieras_simple)
+
+    return @actives_credits
+
+  end
+
+  def get_total_closed_credits credits
+
+    otras_financieras_simple = {cuentas_abiertas: 0, cuentas_mxp: 0, cuentas_usd: 0, otras_monedas: 0, original: 0,
+                                quita: 0, dacion: 0, pago:0, quebranto: 0}
+
+
+    total_actives_credits = []
+
+
+    credits.each do |credit|
+      if credit['pagoCierre']
+
+        otras_financieras_simple[:cuentas_abiertas] += 1
+        otras_financieras_simple[:cuentas_mxp] += 1
+        otras_financieras_simple[:original] += credit['saldoInicial'].to_i / 1000
+        otras_financieras_simple[:quita] += credit['quita'].to_i / 1000
+        otras_financieras_simple[:dacion] += credit['dacion'].to_i / 1000
+        otras_financieras_simple[:pago] += credit['pagoCierre'].to_f
+        otras_financieras_simple[:quebranto] += credit['quebranto'].to_f
+      end
+
 
 
     end
@@ -940,15 +1040,15 @@ module CompaniesHelper
   end
 
   def get_ur_credits credits
-    ur_credits = {mop: 'UR', cuentas_abiertas: 0, limite_abiertas: 0, maximo_abiertas: 0, saldo_actual: 0, 
-                  saldo_vencido: 0, pago_realizar: 0, cuentas_cerradas: 0, limite_cerradas: 0, maximo_cerradas: 0, 
+    ur_credits = {mop: 'UR', cuentas_abiertas: 0, limite_abiertas: 0, maximo_abiertas: 0, saldo_actual: 0,
+                  saldo_vencido: 0, pago_realizar: 0, cuentas_cerradas: 0, limite_cerradas: 0, maximo_cerradas: 0,
                   saldo_cerradas: 0, monto_cerradas: 0}
 
-    credits_01 = {mop: '01',cuentas_abiertas: 0, limite_abiertas: 0, maximo_abiertas: 0, saldo_actual: 0, saldo_vencido: 0, 
-                  pago_realizar: 0, cuentas_cerradas: 0, limite_cerradas: 0, maximo_cerradas: 0, saldo_cerradas: 0, 
+    credits_01 = {mop: '01',cuentas_abiertas: 0, limite_abiertas: 0, maximo_abiertas: 0, saldo_actual: 0, saldo_vencido: 0,
+                  pago_realizar: 0, cuentas_cerradas: 0, limite_cerradas: 0, maximo_cerradas: 0, saldo_cerradas: 0,
                   monto_cerradas: 0}
 
-    
+
     all_credits = []
 
 
@@ -970,7 +1070,7 @@ module CompaniesHelper
         credits_01[:maximo_cerradas] += credit['CreditoMaximo'].to_i
         credits_01[:saldo_cerradas] += credit['SaldoActual'].to_i
         credits_01[:monto_cerradas] += credit['MontoPagar'].to_i
-        
+
       elsif !credit['FechaCierreCuenta'].present? && credit['FormaPagoActual'] == 'UR'
 
         ur_credits[:cuentas_abiertas] += 1
@@ -1090,7 +1190,7 @@ module CompaniesHelper
       'Flujo de Efectivo'
     end
   end
-  
+
   def get_pdf_uuid rfc
     tax_compliance = SatW.get_tax_compliance_checks rfc
 

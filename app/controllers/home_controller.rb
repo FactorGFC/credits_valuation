@@ -123,13 +123,15 @@ class HomeController < ApplicationController
                                          client_type: client_type, providers: providers, customers: customers,
                                          cash_flow: @cash_flow)
 
-                        # if @user.try(:company).try(:rfc) == 'FGL190102DH6'
-                        #
-                        #   @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
-                        # else
-                          @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
+                        if @user.try(:company).try(:rfc) == 'FGL190102DH6'
 
-                        # end
+                          @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
+                        else
+                          @bureau_report = BuroCredito.get_buro_report 60742,@info #4450 60368
+                          p "@bureau_report ---------------------------------------------------------------------------------------------------------------------"
+                          p @bureau_report
+
+                        end
 
 
 

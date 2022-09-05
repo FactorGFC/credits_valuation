@@ -23,7 +23,8 @@ javascript:
             });
 
             //****Evalua si pertenecen al mismo periodo en base a la primera palabra del th***//
-            if (titles.every((val, ind, arr) => val === arr[0])) {
+            if (titles.every((val, ind, arr) = > val === arr[0]))
+            {
                 if (titles[0].toLowerCase() === 'anual') {
                     $('div.percentage-badge.blue-badge').show();
                 } else {
@@ -73,8 +74,12 @@ javascript:
             ;
 
             // CALCULO DE VARIACIÓN DE PORCENTAJES
-            max_num = Math.max(...percent_values_array);
-            min_num = Math.min(...percent_values_array);
+            max_num = Math.max(...percent_values_array
+        )
+            ;
+            min_num = Math.min(...percent_values_array
+        )
+            ;
             percent_value = ((max_num - min_num) / min_num) * 100;
 
             if (Number.isFinite(percent_value) || percent_value) {
@@ -122,8 +127,12 @@ javascript:
                 }
             }
 
-            max_num = Math.max(...values_array);
-            min_num = Math.min(...values_array);
+            max_num = Math.max(...values_array
+        )
+            ;
+            min_num = Math.min(...values_array
+        )
+            ;
             percent_value = ((max_num - min_num) / min_num) * 100;
             if (percent_value > 100) {
                 $('span.tb-badge' + row).text('+100 %');
@@ -135,9 +144,6 @@ javascript:
 
         //$("table#comparative_table").show();
     }
-
-
-
 
 
 .col-xl-12
@@ -213,7 +219,7 @@ javascript:
               strong = 'SINDICALIZADOS'
         ul.d-flex.justify-content-center.collab-list
           h3
-            strong = "TOTAL:  #{ @company.try(:number_collaborator).present?  ? @company.try(:number_collaborator).try(:total).to_s(:delimited) : 0 }"
+            strong = "TOTAL:  #{ @company.try(:number_collaborator).present? ? @company.try(:number_collaborator).try(:total).to_s(:delimited) : 0 }"
 
       .col-md-5
         span.port-subtitle = 'ARCHIVOS'
@@ -340,8 +346,8 @@ javascript:
               - if @company.status_company.key == 'aprobada'
                 button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_periods" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
                   = "Asignar periodos"
-                /button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_income" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="income_statement" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
-                /  = "Estado Resultados"
+                    /button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_income" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="income_statement" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
+                    /  = "Estado Resultados"
 
             .btns-card.mt-30
               .subtitle-icon.d-flex.justify-content-center.align-items-center
@@ -368,8 +374,8 @@ javascript:
                   = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                     = "Reporte del buró de crédito"
 
-          ///////COMENTARIOS
-          /.col-md-3
+  ///////COMENTARIOS
+  /.col-md-3
             .btns-card.full-h
               .subtitle-icon.d-flex.justify-content-center.align-items-center
                 i.fa.fa-comment.fa-lg.m--font-primary
@@ -475,8 +481,8 @@ javascript:
                                       .m-widget3__info
                                         span.m-widget3__username
                                           = User.where(id: comment.user_id).try(:first).full_name
-                                          /br
-                                          /span.m--font-primary
+                                        /br
+                                        /span.m--font-primary
                                             = "#{comment.process_status.name}"
                                         br
                                         span.m-widget3__time
@@ -535,8 +541,8 @@ javascript:
                                       .m-widget3__info
                                         span.m-widget3__username
                                           = User.where(id: comment.user_id).try(:first).full_name
-                                          /br
-                                          /span.m--font-primary
+                                        /br
+                                        /span.m--font-primary
                                             = "#{comment.process_status.name}"
                                         br
                                         span.m-widget3__time
@@ -600,8 +606,8 @@ javascript:
                                       .m-widget3__info
                                         span.m-widget3__username
                                           = User.where(id: comment.user_id).try(:first).full_name
-                                          /br
-                                          /span.m--font-primary
+                                        /br
+                                        /span.m--font-primary
                                             = "#{comment.process_status.name}"
                                         br
                                         span.m-widget3__time
@@ -662,12 +668,12 @@ javascript:
                                         .number
                                           = @score
                                         .status-face
-                                        /= image_tag calculate_face(@score)
+                                  /= image_tag calculate_face(@score)
 
                                   .d-inline-flex.justify-content-center
                                     .d-flex.flex-column.justify-content-between.align-items-center.status-container
                                       span.text-center
-                                        strong  = 'BAJA, MENOR A 550 PUNTOS'
+                                        strong = 'BAJA, MENOR A 550 PUNTOS'
                                       = image_tag 'face-bad.png'
                                     .d-flex.flex-column.justify-content-between.align-items-center.status-container
                                       span.text-center
@@ -881,7 +887,7 @@ javascript:
                                           strong
                                             | Fecha de contratación
                                         .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                          =  get_pm_birthdate job['FechaContratacion']
+                                          = get_pm_birthdate job['FechaContratacion']
 
                                       br
                                   - else
@@ -926,7 +932,7 @@ javascript:
                                           strong
                                             | Tipo de cuenta
                                         .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                          =  I18n.t("account_type.#{account['TipoCuenta']}")
+                                          = I18n.t("account_type.#{account['TipoCuenta']}")
                                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                         .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                           strong
@@ -942,7 +948,7 @@ javascript:
                                           strong
                                             | Tipo de contrato
                                         .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                          =  I18n.t("contract_type.#{account['TipoContrato']}")
+                                          = I18n.t("contract_type.#{account['TipoContrato']}")
                                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                         .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                           strong
@@ -958,7 +964,7 @@ javascript:
                                           strong
                                             | Frecuencia de pagos
                                         .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                          =  I18n.t("payments_frecuency.#{account['FrecuenciaPagos']}")
+                                          = I18n.t("payments_frecuency.#{account['FrecuenciaPagos']}")
                                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
                                         .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
                                           h4.strong
@@ -1054,7 +1060,7 @@ javascript:
                                         .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                           .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                             / =  I18n.t("report_type.#{bureau_report['metadata']['reportType']}")
-                                            =  bureau_report['metadata']['reportType']
+                                            = bureau_report['metadata']['reportType']
                                           .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                             = bureau_report['status']
                                           .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
@@ -1080,6 +1086,125 @@ javascript:
                                       .m-alert__text
                                         strong
                                           | Aún no se encuentran consultas.
+                            .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                              .m-demo__preview
+                                button onclick="showMorePFInfo()"
+                                  | Ver mas
+                                button onclick="showLessPFInfo()"
+                                  | Ver menos
+                            div id="moreInfoPF"
+                              .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                                .m-demo__preview
+                                  h3.m-portlet__head-text
+                                    | Información de HAWK BD
+                                  - if @credit_bureau.bureau_report.present?
+                                    - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD'].present?
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-section
+                                          .m-section__content
+                                            table.table style="display: block;overflow-x: auto;"
+                                              thead.thead-default
+                                                tr
+                                                  th
+                                                    | Núm
+                                                  th
+                                                    | Fecha de
+                                                  th
+                                                    | Clave
+                                                  th
+                                                    | Institución
+                                                  th
+                                                    | Mensaje
+
+                                              tbody
+                                                - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk, index|
+                                                  tr
+                                                    th
+                                                      = index + 1
+                                                    th
+                                                      = hawk['FechaReporte']
+                                                    th
+                                                      = hawk['CodigoClave']
+                                                    th
+                                                      = hawk['TipoInstitucion']
+                                                    th
+                                                      = hawk['Mensaje']
+
+
+                                    - else
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                          .m-alert__icon
+                                            i.flaticon-exclamation-1
+                                            span
+                                          .m-alert__text
+                                            strong
+                                              | Aún no se encuentra Información de HAWK.
+                                  - else
+                                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                      .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                        .m-alert__icon
+                                          i.flaticon-exclamation-1
+                                          span
+                                        .m-alert__text
+                                          strong
+                                            | Aún no se encuentra Información de HAWK.
+                              .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                                .m-demo__preview
+                                  h3.m-portlet__head-text
+                                    | Información de HAWK Consulta
+                                  - if @credit_bureau.bureau_report.present?
+                                    - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD'].present?
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-section
+                                          .m-section__content
+                                            table.table style="display: block;overflow-x: auto;"
+                                              thead.thead-default
+                                                tr
+                                                  th
+                                                    | Núm
+                                                  th
+                                                    | Fecha de
+                                                  th
+                                                    | Clave
+                                                  th
+                                                    | Institución
+                                                  th
+                                                    | Mensaje
+
+                                              tbody
+                                                - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertConsulta']['HawkAlertC'].each_with_index do |hawk, index|
+                                                  tr
+                                                    th
+                                                      = index + 1
+                                                    th
+                                                      = hawk['FechaReporte']
+                                                    th
+                                                      = hawk['CodigoClave']
+                                                    th
+                                                      = hawk['TipoInstitucion']
+                                                    th
+                                                      = hawk['Mensaje']
+
+
+                                    - else
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                          .m-alert__icon
+                                            i.flaticon-exclamation-1
+                                            span
+                                          .m-alert__text
+                                            strong
+                                              | Aún no se encuentra Información de HAWK.
+                                  - else
+                                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                      .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                        .m-alert__icon
+                                          i.flaticon-exclamation-1
+                                          span
+                                        .m-alert__text
+                                          strong
+                                            | Aún no se encuentra Información de HAWK.
 
                           - elsif (@credit_bureau.present? and @company.try(:client_type).eql?('PM')) || (@credit_bureau.present? and @company.try(:client_type).eql?('PFAE'))
 
@@ -1088,7 +1213,7 @@ javascript:
                                 h3.m-portlet__head-text
                                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                   - if @credit_bureau.present?
-                                    - if @report_result['query'].present?
+                                    - if @report_result['response'].present?
                                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                         .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                           strong
@@ -1135,7 +1260,7 @@ javascript:
                                           | R.F.C
                                       .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
                                         strong
-                                          =  @report_result['query']['consulta']['persona']['rfc']
+                                          = @report_result['query']['consulta']['persona']['rfc']
 
                                     - else
                                       .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
@@ -1214,7 +1339,7 @@ javascript:
                             .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                               .m-demo__preview
                                 h3.m-portlet__head-text
-                                  | Créditos activos
+                                  | Resumen de créditos activos
                                 - if @credit_bureau.bureau_report.present?
                                   - if @report_result['response'].present?
                                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
@@ -1273,7 +1398,7 @@ javascript:
                                                   th
                                                     = number_to_currency active_credit[:saldo_actual]
                                                   th
-                                                    = number_to_currency  active_credit[:vigente]
+                                                    = number_to_currency active_credit[:vigente]
                                                   th
                                                     = active_credit[:one]
                                                   th
@@ -1437,6 +1562,425 @@ javascript:
                                       .m-alert__text
                                         strong
                                           | Aún no se encuentran consultas.
+                            .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                              .m-demo__preview
+                                button onclick="showMoreInfo()"
+                                  | Ver mas
+                                button onclick="showLessInfo()"
+                                  | Ver menos
+                            div id="moreInfo"
+                              .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                                .m-demo__preview
+                                  h3.m-portlet__head-text
+                                    | Información de HAWK
+                                  - if @credit_bureau.bureau_report.present?
+                                    - if @credit_bureau['bureau_report']['results'].present?
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-section
+                                          .m-section__content
+                                            table.table style="display: block;overflow-x: auto;"
+                                              thead.thead-default
+                                                tr
+                                                  th
+                                                    | Núm
+                                                  th
+                                                    | Fecha de
+                                                  th
+                                                    | Clave
+                                                  th
+                                                    | Descripción
+                                                  th
+                                                    | Responsabilidad
+                                                  th
+                                                    | Reportado por
+                                                  th
+                                                    | Mensaje
+                                                  th
+                                                    | Coincidenciapor datos de
+
+                                              tbody
+                                                tr
+                                                  th
+                                                    | 1
+                                                  th
+                                                    = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['hawkHr']['fechaMensajeHawk']
+                                                  th
+                                                    = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['hawkHr']['codigoHawk']
+                                                  th
+                                                  th
+                                                  th
+                                                  th
+                                                    = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['hawkHr']['descripcionPrevencionHawk']
+                                                  th
+                                                    | COINCIDENCIA POR EXPEDIENTE
+
+                                    - else
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                          .m-alert__icon
+                                            i.flaticon-exclamation-1
+                                            span
+                                          .m-alert__text
+                                            strong
+                                              | Aún no se encuentra Información de HAWK.
+                                  - else
+                                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                      .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                        .m-alert__icon
+                                          i.flaticon-exclamation-1
+                                          span
+                                        .m-alert__text
+                                          strong
+                                            | Aún no se encuentra Información de HAWK.
+
+                              .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                                .m-demo__preview
+                                  h3.m-portlet__head-text
+                                    | Accionistas
+                                  - if @credit_bureau.bureau_report.present?
+                                    - if @credit_bureau['bureau_report']['results'].present?
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-section
+                                          .m-section__content
+                                            table.table style="display: block;overflow-x: auto;"
+                                              thead.thead-default
+                                                tr
+                                                  th
+                                                    | RFC
+                                                  th
+                                                    | Nombre Accionista
+                                                  th
+                                                    | Porcentaje
+                                              tbody
+                                                tr
+                                                  th
+                                                    = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['rfc']
+                                                  th
+                                                    = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['nombreAccionista'] + ' ' + @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['segundoNombre'] + ' ' + @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['apellidoPaterno'] + ' ' + @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['apellidoMaterno']
+                                                  th
+                                                    = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['porcentaje'] + '%'
+
+
+                                    - else
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                          .m-alert__icon
+                                            i.flaticon-exclamation-1
+                                            span
+                                          .m-alert__text
+                                            strong
+                                              | Aún no se encuentran accionistas.
+                                  - else
+                                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                      .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                        .m-alert__icon
+                                          i.flaticon-exclamation-1
+                                          span
+                                        .m-alert__text
+                                          strong
+                                            | Aún no se encuentran accionistas.
+                              .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                                .m-demo__preview
+                                  h3.m-portlet__head-text
+                                    | Créditos activos:
+                                  - if @credit_bureau.bureau_report.present?
+                                    - if @credit_bureau['bureau_report']['results'].present?
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-section
+                                          .m-section__content
+                                            table.table style="display: block;overflow-x: auto;"
+                                              thead.thead-default
+                                                tr
+                                                  th
+                                                    | Contrtato
+                                                  th
+                                                    | Tipo de Otorgante
+                                                  th
+                                                    | Tipo de Crédito
+                                                  th
+                                                    | Moneda
+                                                  th
+                                                    | Otorgado en
+                                                  th
+                                                    | Plazo
+                                                  th
+                                                    | Original
+                                                  th
+                                                    | Vigente
+                                                  th
+                                                    | 1-29 días
+                                                  th
+                                                    | 30-59 días
+                                                  th
+                                                    | 60-89 días
+                                                  th
+                                                    | 90-119 días
+                                                  th
+                                                    | 120-179 días
+                                                  th
+                                                    | 180+ días
+                                                  th
+                                                    | Días de atraso
+                                                  th
+                                                    | Historico de Pagos Claves de Observación
+                                                  th
+                                                    | Actualizado en
+
+                                              tbody
+                                                - @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['creditoFinanciero'].each do |creditos|
+                                                  - unless creditos['fechaCierre'].present?
+                                                    tr
+                                                      th
+                                                        = creditos['numeroCuenta']
+                                                      th
+                                                        = creditos['tipoUsuario']
+                                                      th
+                                                        = I18n.t("credits_type.#{creditos['tipoCredito']}")
+                                                      th
+                                                        = I18n.t("moneda.#{creditos['moneda']}") + '$' + creditos['tipoCambio']
+                                                      th
+                                                        = creditos['apertura']
+                                                      th
+                                                        = creditos['plazo']
+                                                      th
+                                                        = creditos['saldoInicial']
+                                                      th
+                                                        = creditos['saldoVigente']
+                                                      th
+                                                        = creditos['saldoVencidoDe1a29Dias']
+                                                      th
+                                                        = creditos['saldoVencidoDe30a59Dias']
+                                                      th
+                                                        = creditos['saldoVencidoDe60a89Dias']
+                                                      th
+                                                        = creditos['saldoVencidoDe90a119Dias']
+                                                      th
+                                                        = creditos['saldoVencidoDe120a179Dias']
+                                                      th
+                                                        = creditos['saldoVencidoDe180DiasOMas']
+                                                      th
+                                                        = creditos['atrasoMayor']
+                                                      th
+                                                        = creditos['historicoPagos']
+                                                      th
+                                                        = creditos['ultimoPeriodoActualizado']
+
+                                    - else
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                          .m-alert__icon
+                                            i.flaticon-exclamation-1
+                                            span
+                                          .m-alert__text
+                                            strong
+                                              | Aún no se encuentran créditos activos.
+                                  - else
+                                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                      .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                        .m-alert__icon
+                                          i.flaticon-exclamation-1
+                                          span
+                                        .m-alert__text
+                                          strong
+                                            | Aún no se créditos activos
+                              .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                                .m-demo__preview
+                                  h3.m-portlet__head-text
+                                    | Créditos liquidados:
+                                  - if @credit_bureau.bureau_report.present?
+                                    - if @credit_bureau['bureau_report']['results'].present?
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-section
+                                          .m-section__content
+                                            table.table style="display: block;overflow-x: auto;"
+                                              thead.thead-default
+                                                tr
+                                                  th
+                                                    | Contrtato
+                                                  th
+                                                    | Tipo de Otorgante
+                                                  th
+                                                    | Tipo de Crédito
+                                                  th
+                                                    | Moneda
+                                                  th
+                                                    | Otorgado en
+                                                  th
+                                                    | Plazo
+                                                  th
+                                                    | Original
+                                                  th
+                                                    | Días de atraso
+                                                  th
+                                                    | Historico de Pagos Claves de Observación
+                                                  th
+                                                    | Liquidado en
+                                                  th
+                                                    | Quita
+                                                  th
+                                                    | Dación
+                                                  th
+                                                    | Pago
+                                                  th
+                                                    | Quebranto
+                                                  th
+                                                    | Actualizado en
+
+                                              tbody
+                                                - @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['creditoFinanciero'].each do |creditos|
+                                                  - if creditos['fechaCierre'].present?
+                                                    tr
+                                                      th
+                                                        = creditos['numeroCuenta']
+                                                      th
+                                                        = creditos['tipoUsuario']
+                                                      th
+                                                        = I18n.t("credits_type.#{creditos['tipoCredito']}")
+                                                      th
+                                                        = I18n.t("moneda.#{creditos['moneda']}") + '$' + creditos['tipoCambio']
+                                                      th
+                                                        = creditos['apertura']
+                                                      th
+                                                        = creditos['plazo']
+                                                      th
+                                                        = creditos['saldoInicial']
+                                                      th
+                                                        = creditos['atrasoMayor']
+                                                      th
+                                                        = creditos['historicoPagos']
+                                                      th
+                                                        = creditos['fechaCierre']
+                                                      th
+                                                        = creditos['quita']
+                                                      th
+                                                        = creditos['dacion']
+                                                      th
+                                                        = creditos['pagoCierre']
+                                                      th
+                                                        = creditos['quebranto']
+                                                      th
+                                                        = creditos['ultimoPeriodoActualizado']
+
+                                    - else
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                          .m-alert__icon
+                                            i.flaticon-exclamation-1
+                                            span
+                                          .m-alert__text
+                                            strong
+                                              | Aún no se encuentran créditos liquidados.
+                                  - else
+                                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                      .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                        .m-alert__icon
+                                          i.flaticon-exclamation-1
+                                          span
+                                        .m-alert__text
+                                          strong
+                                            | Aún no se encuentran créditos liquidados.
+                              .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                                .m-demo__preview
+                                  h3.m-portlet__head-text
+                                    | Resumen de créditos liquidados
+                                  - if @credit_bureau.bureau_report.present?
+                                    - if @report_result['response'].present?
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-section
+                                          .m-section__content
+                                            table.table style="display: block;overflow-x: auto;"
+                                              thead.thead-default
+                                                tr
+                                                  th
+                                                    | Tipo de Otorgante
+                                                  th
+                                                    | Tipo de Crédito
+                                                  th
+                                                    | Cuentas Cerradas
+                                                  th
+                                                    | Cuentas en MXP
+                                                  th
+                                                    | Cuentas en USD
+                                                  th
+                                                    | Otras Monedas
+                                                  th
+                                                    | Original
+                                                  th
+                                                    | Quita
+                                                  th
+                                                    | Dación
+                                                  th
+                                                    | Pago
+                                                  th
+                                                    | Quebranto
+                                              tbody
+                                                - get_closed_credits(@report_result['response']['respuesta']['creditoFinanciero']).each do |active_credit|
+                                                  tr
+                                                    th
+                                                      = active_credit[:otorgante]
+                                                    th
+                                                      = active_credit[:tipo_credito]
+                                                    th
+                                                      = active_credit[:cuentas_abiertas]
+                                                    th
+                                                      = active_credit[:cuentas_mxp]
+                                                    th
+                                                      = active_credit[:cuentas_usd]
+                                                    th
+                                                      = active_credit[:otras_monedas]
+                                                    th
+                                                      = number_to_currency active_credit[:original]
+                                                    th
+                                                      = number_to_currency active_credit[:quita]
+                                                    th
+                                                      = number_to_currency active_credit[:dacion]
+                                                    th
+                                                      = number_to_currency active_credit[:pago]
+                                                    th
+                                                      = number_to_currency active_credit[:quebranto]
+
+
+                                                - get_total_closed_credits(@report_result['response']['respuesta']['creditoFinanciero']).each do |active_credit|
+                                                  tr
+                                                    th colspan="2"
+                                                      | Total
+                                                    th
+                                                      = active_credit[:cuentas_abiertas]
+                                                    th
+                                                      = active_credit[:cuentas_mxp]
+                                                    th
+                                                      = active_credit[:cuentas_usd]
+                                                    th
+                                                      = active_credit[:otras_monedas]
+                                                    th
+                                                      = number_to_currency active_credit[:original]
+                                                    th
+                                                      = number_to_currency active_credit[:quita]
+                                                    th
+                                                      = number_to_currency active_credit[:dacion]
+                                                    th
+                                                      = number_to_currency active_credit[:pago]
+                                                    th
+                                                      = number_to_currency active_credit[:quebranto]
+
+                                    - else
+                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                        .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                          .m-alert__icon
+                                            i.flaticon-exclamation-1
+                                            span
+                                          .m-alert__text
+                                            strong
+                                              | Aún no se encuentran creditos liquidados.
+                                  - else
+                                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                      .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                        .m-alert__icon
+                                          i.flaticon-exclamation-1
+                                          span
+                                        .m-alert__text
+                                          strong
+                                            | Aún no se encuentran creditos liquidados.
                           - else
                             .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
                               .m-alert__icon
@@ -1527,12 +2071,12 @@ javascript:
                                       strong
                                         | Inició operaciones en
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      = @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].present? ? @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].to_datetime.strftime('%d-%m-%Y') :  ''
+                                      = @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].present? ? @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].to_datetime.strftime('%d-%m-%Y') : ''
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                       strong
                                         | Estado actualizado en
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].present? ? @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].to_datetime.strftime('%d-%m-%Y') :  ''
+                                      = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].present? ? @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].to_datetime.strftime('%d-%m-%Y') : ''
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                       strong
                                         | CURP
@@ -1579,12 +2123,12 @@ javascript:
                                       strong
                                         | Inició operaciones en
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      = @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].present? ? @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].to_datetime.strftime('%d-%m-%Y') :  ''
+                                      = @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].present? ? @company.info_company['hydra:member'].try(:first)['startedOperationsAt'].to_datetime.strftime('%d-%m-%Y') : ''
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                       strong
                                         | Estado actualizado en
                                     .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
-                                      = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].present? ? @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].to_datetime.strftime('%d-%m-%Y') :  ''
+                                      = @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].present? ? @company.info_company['hydra:member'].try(:first)['statusUpdatedAt'].to_datetime.strftime('%d-%m-%Y') : ''
                                     .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                       strong
                                         | Nombre legal
@@ -1802,7 +2346,7 @@ javascript:
                                 .m-portlet
                                   .m-portlet__body
                                     .m-section__content
-                                      -if @company.try(:providers).present?
+                                      - if @company.try(:providers).present?
                                         table.table
                                           thead.thead-default.thead-custom
                                             tr style="text-align: center;"
@@ -1840,7 +2384,7 @@ javascript:
                                 .m-portlet
                                   .m-portlet__body
                                     .m-section__content
-                                      - if  @company.try(:customers).present?
+                                      - if @company.try(:customers).present?
                                         table.table
                                           thead.thead-default.thead-custom
                                             tr style="text-align: center;"
@@ -1934,7 +2478,7 @@ javascript:
                                                 = number_to_currency(cash_flow[1].try(:first)['amount'].present? ? cash_flow[1].try(:first)['amount'] : 0)
                                               td
                                                 - if cash_flow[1].count > 1
-                                                  =  number_to_currency(cash_flow[1].try(:last)['amount'].present? ? cash_flow[1].try(:last)['amount'] : 0)
+                                                  = number_to_currency(cash_flow[1].try(:last)['amount'].present? ? cash_flow[1].try(:last)['amount'] : 0)
                                                 - else
                                                   = number_to_currency 0
                                               td
@@ -1991,7 +2535,7 @@ javascript:
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true"
             | \&times;
-      = form_for current_user, url: validate_company_path, method: 'PUT',class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
+      = form_for current_user, url: validate_company_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
         .modal-body
           input type="hidden" name="id" id="companyId" value=""
           input type="hidden" name="approved" id="companyApproved" value=""
@@ -2011,9 +2555,9 @@ javascript:
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true"
             | \&times;
-      = form_for current_user, url: change_capture_status_path, method: 'PUT',class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
+      = form_for current_user, url: change_capture_status_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
         .modal-body
-          input type="hidden" name="id"           id="companyId"   value=""
+          input type="hidden" name="id" id="companyId" value=""
           input type="hidden" name="capture_type" id="captureType" value=""
           p#textModal
             | Se va a habilitar esta captura para la compañía.
@@ -2063,7 +2607,7 @@ javascript:
           .col-xl-12 style="display: grid;"
             p#textModal
               | Asignar Analista
-            = select("request", "analyst_id", User.where(role_id: Role.find_by(key:'analyst').try(:id)).collect {|p| [ p.full_name, p.id ] }, { include_blank: 'Selecciona analista' }, {class: "form-control m-input", disabled: (current_user.god? or current_user.credit_management? or current_user.credit_area? or current_user.promotion_area?) ? false : true })
+            = select("request", "analyst_id", User.where(role_id: Role.find_by(key: 'analyst').try(:id)).collect { |p| [p.full_name, p.id] }, {include_blank: 'Selecciona analista'}, {class: "form-control m-input", disabled: (current_user.god? or current_user.credit_management? or current_user.credit_area? or current_user.promotion_area?) ? false : true})
 
           - if @company.company_calendar_details.present?
             .col-xl-12#input_credit_type style="display: none;"
@@ -2071,14 +2615,14 @@ javascript:
                 | Asignar Tipo de Crédito
               div style="display: grid;"
                 = select("request", "factor_credit_id", FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input"})
-                /= select("request", "factor_credit_id", FactorCredit.where.not(id:@requests.pluck(:factor_credit_id)).collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input"})
+                  /= select("request", "factor_credit_id", FactorCredit.where.not(id:@requests.pluck(:factor_credit_id)).collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input"})
           /- if @request.try(:order).present?
             - if @request.try(:order) >= 2
           .col-xl-12#input_status_process style="display: none;"
             p.mt-20#textModal
               | Asignar Status del Proceso
             div style="display: grid;"
-              = select("request", "process_status_id", ProcessStatus.all.collect {|p| [ p.name, p.id ] }, { include_blank: false, selected: @request.try(:process_status_id) }, {class: "form-control m-input"})
+              = select("request", "process_status_id", ProcessStatus.all.collect { |p| [p.name, p.id] }, {include_blank: false, selected: @request.try(:process_status_id)}, {class: "form-control m-input"})
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar
@@ -2094,11 +2638,11 @@ javascript:
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true"
             | \&times;
-      = form_for current_user, url: assign_pdf_to_request_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed',html: { multipart: true } do |f|
+      = form_for current_user, url: assign_pdf_to_request_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed', html: {multipart: true} do |f|
         .modal-body
           input type="hidden" name="request_id" id="requestIdFile" value=""
           .col-xl-12 style="display: grid;"
-            = f.file_field :file_name, class: "custom-file-input", required: true,accept: "application/pdf"
+            = f.file_field :file_name, class: "custom-file-input", required: true, accept: "application/pdf"
             label.custom-file-label Elige un archivo...
             span.custom-file-control
         .modal-footer
@@ -2136,8 +2680,8 @@ javascript:
                   span = fin_inst.authorized_line
                 .col-sm-6.d-flex.justify-content-between
                   span
-                    strong.mr-2 =  'Saldo'
-                  span =  fin_inst.balance
+                    strong.mr-2 = 'Saldo'
+                  span = fin_inst.balance
               .row
                 .col-sm-6.d-flex.justify-content-between
                   span

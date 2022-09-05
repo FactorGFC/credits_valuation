@@ -60,6 +60,12 @@ es:
     bureau_pf: 'Listas negras'
     sat_1: 'RFC'
     sat_rfc: 'RFC'
+  credits_type:
+    1305: 'SIMPLE'
+    1322: 'ARREND'
+    1302: 'SIMPLE'
+  moneda:
+    '001': 'MXP'
 
 
   companies:

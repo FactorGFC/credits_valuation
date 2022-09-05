@@ -83,15 +83,29 @@ class Company < ApplicationRecord
   acts_as_taggable_on :main_products
 
   def self.remove_company id
+    company = Company.find(id)
+    if company.user.present?
+      company.user.delete
+    end
+    p "company.number_collaborator.present? --------------------------------------------------------"
+    p company.number_collaborator.present?
+    if company.number_collaborator.present?
+
+      company.number_collaborator.delete
+    end
+    CompanyClient.where(company_id: id).delete_all
     CompanyProvider.where(company_id: id).delete_all
     CompanyFile.where( company_id: id ).delete_all
+    FinancialInstitution.where(company_id: id).delete_all
+    IncomeCalendarDetail.where(company_id: id).delete_all
     BalanceCalendarDetail.where( company_id: id ).delete_all
     CompanyCalendarDetail.where( company_id: id ).delete_all
     IncomeStatementFile.where( company_id: id ).delete_all
     CompanyIncomeStatement.where( company_id: id ).delete_all
     CompanyBalanceSheet.where( company_id: id ).delete_all
     CreditBureau.where( company_id: id ).delete_all
-    Company.find(id).delete
+    Request.where(company_id: id).delete_all
+    company.delete
 
   end
 
