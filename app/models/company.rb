@@ -104,6 +104,8 @@ class Company < ApplicationRecord
     CompanyIncomeStatement.where( company_id: id ).delete_all
     CompanyBalanceSheet.where( company_id: id ).delete_all
     CreditBureau.where( company_id: id ).delete_all
+    FReasonsCompany.where( company_id: id ).delete_all
+    CompanyFlow.where( company_id: id ).delete_all
     Request.where(company_id: id).delete_all
     company.delete
 

@@ -676,11 +676,6 @@ module CompaniesHelper
   end
 
   def get_history_payments account
-    p "account ------------------------------------------------------------"
-    p account
-
-    Rails.logger.info "account logger ------------------------------------------------------------"
-    Rails.logger.info account
     array = {}
 
     if account['FechaMasAntiguaHistoricoPagos'].present?
@@ -1209,4 +1204,26 @@ module CompaniesHelper
 
     can_assign
   end
+
+  def format_date date
+
+    day = date.first(2)
+    month = date[2,2]
+    year = date.last(4)
+    
+    return day.to_s + '-' + month.to_s + '-' + year.to_s
+
+  end
+
+  def format_date_updated_at date
+
+    year = date.first(4)
+    month = date.last(2)
+
+    return month.to_s + '-' + year.to_s
+
+  end
+
+  
+  
 end
