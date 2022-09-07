@@ -7,14 +7,7 @@ const emailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+
 const phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
 
 $(document).on('turbolinks:load', function () {
-    var moreInfo = document.getElementById("moreInfo");
-    if(moreInfo){
-        moreInfo.style.display = "none";
-    }
-    var moreInfoPF = document.getElementById("moreInfoPF");
-    if(moreInfoPF){
-        moreInfoPF.style.display = "none";
-    }
+
     $(document).on("click", ".open-modal-request", function () {
         var requestId       = $(this).data('id');
         var companyId       = $(this).data('companyid');
@@ -71,25 +64,7 @@ $(document).on('turbolinks:load', function () {
         }
     };
 
-    window.showMoreInfo = function() {
-        var moreInfo = document.getElementById("moreInfo");
-        moreInfo.style.display = "inline";
-    };
-
-    window.showLessInfo = function() {
-        var moreInfo = document.getElementById("moreInfo");
-        moreInfo.style.display = "none";
-    };
-
-    window.showMorePFInfo = function() {
-        var moreInfo = document.getElementById("moreInfoPF");
-        moreInfo.style.display = "inline";
-    };
-
-    window.showLessPFInfo = function() {
-        var moreInfo = document.getElementById("moreInfoPF");
-        moreInfo.style.display = "none";
-    };
+    
 
     window.phoneValidate = function() {
         var isValid = phoneRegex.test($('#phone_input').val());

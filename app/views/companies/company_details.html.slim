@@ -1,5 +1,33 @@
 = stylesheet_pack_tag 'application'
 javascript:
+    var moreInfo = document.getElementById("moreInfo");
+    if (moreInfo) {
+        moreInfo.style.display = "none";
+    }
+    var moreInfoPF = document.getElementById("moreInfoPF");
+    if (moreInfoPF) {
+        moreInfoPF.style.display = "none";
+    }
+
+    function showMoreInfo() {
+        var moreInfo = document.getElementById("moreInfo");
+        moreInfo.style.display = "inline";
+    };
+
+    function showLessInfo() {
+        var moreInfo = document.getElementById("moreInfo");
+        moreInfo.style.display = "none";
+    };
+
+    function showMorePFInfo() {
+        var moreInfo = document.getElementById("moreInfoPF");
+        moreInfo.style.display = "inline";
+    };
+
+    function showLessPFInfo() {
+        var moreInfo = document.getElementById("moreInfoPF");
+        moreInfo.style.display = "none";
+    };
 
     function calculate_comparative(table_id) {
         //$("table#comparative_table").hide();
@@ -9,6 +37,7 @@ javascript:
         var noCols = $("table#" + table_id + " tr.tr-rdata:first").children('td.sum_input').filter(function () {
             return $(this).css('display') !== 'none';
         }).length;
+
 
         if (noCols !== 2) {
             for (var i = 0; i < all_col.length; i++) {
@@ -144,6 +173,7 @@ javascript:
 
         //$("table#comparative_table").show();
     }
+
 
 
 .col-xl-12
