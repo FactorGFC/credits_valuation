@@ -1,56 +1,6 @@
 
 javascript:
-    window.onload = function () {
-        var moreInfo = document.getElementById("moreInfo");
-        if (moreInfo) {
-            moreInfo.style.display = "none";
-        }
-        var moreInfoPF = document.getElementById("moreInfoPF");
-        if (moreInfoPF) {
-            console.log('MORE INFO');
-            console.log(moreInfoPF);
-            moreInfoPF.style.display = "none";
-        }
-    };
 
-
-    function showMoreInfo() {
-        var moreInfo = document.getElementById("moreInfo");
-        var btnShow = document.getElementById("btn-show-info");
-        var btnHide = document.getElementById("btn-hide-info");
-        console.log("btnHide", btnHide);
-        moreInfo.style.display = "inline";
-        btnHide.style.display = "block";
-        btnShow.style.display = "none";
-    };
-
-    function showLessInfo() {
-        var moreInfo = document.getElementById("moreInfo");
-        var btnHide = document.getElementById("btn-hide-info");
-        var btnShow = document.getElementById("btn-show-info");
-        moreInfo.style.display = "none";
-        btnShow.style.display = "block";
-        btnHide.style.display = "none";
-    };
-
-    function showMorePFInfo() {
-        var moreInfo = document.getElementById("moreInfoPF");
-        var btnShow = document.getElementById("btn-hide-info");
-        var btnHide = document.getElementById("btn-hide-pf");
-        console.log("btnHide", btnHide);
-        moreInfo.style.display = "inline";
-        btnHide.style.display = "block";
-        btnShow.style.display = "none";
-    };
-
-    function showLessPFInfo() {
-        var moreInfo = document.getElementById("moreInfoPF");
-        var btnHide = document.getElementById("btn-hide-info");
-        var btnShow = document.getElementById("btn-show-info");
-        moreInfo.style.display = "none";
-        btnShow.style.display = "block";
-        btnHide.style.display = "none";
-    };
 
     function calculate_comparative(table_id) {
         //$("table#comparative_table").hide();
@@ -1131,11 +1081,11 @@ javascript:
                                           | Aún no se encuentran consultas.
                             .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                               .m-demo__preview
-                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-show-info" onclick="showMorePFInfo()"
+                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-show-info-pf" onclick="showMorePFInfo()"
                                   span.d-flex.flex-column.justify-content-center
                                     strong = "Ver mas"
                                     i.fa.fa-chevron-down.align-self-center
-                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-hide-info" onclick="showLessPFInfo()" style="display: none;"
+                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-hide-info-pf" onclick="showLessPFInfo()" style="display: none;"
                                   span.d-flex.flex-column.justify-content-center
                                     strong = "Ver menos"
                                     i.fa.fa-chevron-up.align-self-center
@@ -1695,15 +1645,15 @@ javascript:
                                           | Aún no se encuentran consultas.
                             .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                               .m-demo__preview
-                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-show-info" onclick="showMorePFInfo()"
+                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-show-info" onclick="showMoreInfo()"
                                   span.d-flex.flex-column.justify-content-center
                                     strong = "Ver mas"
                                     i.fa.fa-chevron-down.align-self-center
-                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-hide-info" onclick="showLessPFInfo()" style="display: none;"
+                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-hide-info" onclick="showLessInfo()" style="display: none;"
                                   span.d-flex.flex-column.justify-content-center
                                     strong = "Ver menos"
                                     i.fa.fa-chevron-up.align-self-center
-                            div id="moreInfoPF"
+                            div id="moreInfo"
                               .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                                 .m-demo__preview
                                   h3.m-portlet__head-text

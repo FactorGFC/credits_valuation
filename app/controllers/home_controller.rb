@@ -133,7 +133,8 @@ class HomeController < ApplicationController
 
                           @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
                         else
-                          @bureau_report = BuroCredito.get_buro_report 60742 #,@info #4450 60368
+                          @bureau_report = BuroCredito.get_buro_report 60742 #
+                          # ,@info #4450 60368
                           p "@bureau_report ---------------------------------------------------------------------------------------------------------------------"
                           p @bureau_report
 

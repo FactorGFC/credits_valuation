@@ -1,13 +1,14 @@
 import $ from 'jquery';
 import I18n from 'i18n-js';
 import 'javascripts/i18n/translations';
-I18n.locale = window.I18n.locale;
+I18n.locale = I18n.locale;
 
 const emailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 const phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
 
 $(document).on('turbolinks:load', function () {
 
+    console.log("ENTRE AL companies");
     $(document).on("click", ".open-modal-request", function () {
         var requestId       = $(this).data('id');
         var companyId       = $(this).data('companyid');
@@ -92,6 +93,57 @@ $(document).on('turbolinks:load', function () {
         var moreInfo = document.getElementById("moreInfoPF");
         moreInfo.style.display = "none";
     };*/
+
+
+    var moreInfo = document.getElementById("moreInfo");
+    if (moreInfo) {
+        moreInfo.style.display = "none";
+    }
+    var moreInfoPF = document.getElementById("moreInfoPF");
+    if (moreInfoPF) {
+        console.log('MORE INFO');
+        console.log(moreInfoPF);
+        moreInfoPF.style.display = "none";
+    }
+
+    window.showMoreInfo = function () {
+        var moreInfo = document.getElementById("moreInfo");
+        var btnShow = document.getElementById("btn-show-info");
+        var btnHide = document.getElementById("btn-hide-info");
+        console.log("btnHide", btnHide);
+        moreInfo.style.display = "inline";
+        btnHide.style.display = "block";
+        btnShow.style.display = "none";
+    };
+
+    window.showLessInfo = function () {
+        var moreInfo = document.getElementById("moreInfo");
+        var btnHide = document.getElementById("btn-hide-info");
+        var btnShow = document.getElementById("btn-show-info");
+        moreInfo.style.display = "none";
+        btnShow.style.display = "block";
+        btnHide.style.display = "none";
+    };
+
+    window.showMorePFInfo = function () {
+        var moreInfo = document.getElementById("moreInfoPF");
+        var btnShow = document.getElementById("btn-show-info-pf");
+        var btnHide = document.getElementById("btn-hide-info-pf");
+        console.log("btnHide", btnHide);
+        moreInfo.style.display = "inline";
+        btnHide.style.display = "block";
+        btnShow.style.display = "none";
+    };
+
+    window.showLessPFInfo = function() {
+        var moreInfo = document.getElementById("moreInfoPF");
+        var btnShow = document.getElementById("btn-show-info-pf");
+        var btnHide = document.getElementById("btn-hide-info-pf");
+        moreInfo.style.display = "none";
+        btnShow.style.display = "block";
+        btnHide.style.display = "none";
+    };
+
 
     window.phoneValidate = function() {
         var isValid = phoneRegex.test($('#phone_input').val());
