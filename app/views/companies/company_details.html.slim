@@ -1,6 +1,6 @@
 = stylesheet_pack_tag 'application'
 javascript:
-    window.onload = function(){
+    window.onload = function () {
         var moreInfo = document.getElementById("moreInfo");
         if (moreInfo) {
             moreInfo.style.display = "none";
@@ -11,182 +11,190 @@ javascript:
             console.log(moreInfoPF);
             moreInfoPF.style.display = "none";
         }
-    };
-
-
-    function showMoreInfo() {
-        var moreInfo = document.getElementById("moreInfo");
-        var btnShow = document.getElementById("btn-show-info");
-        var btnHide = document.getElementById("btn-hide-info");
-        moreInfo.style.display = "inline";
-        btnHide.style.display = "block";
-        btnShow.style.display = "none";
-    };
-
-    function showLessInfo() {
-        var moreInfo = document.getElementById("moreInfo");
-        var btnHide = document.getElementById("btn-hide-info");
-        var btnShow = document.getElementById("btn-show-info");
-        moreInfo.style.display = "none";
-        btnShow.style.display = "block";
-        btnHide.style.display = "none";
-    };
-
-    function showMorePFInfo() {
-        var moreInfo = document.getElementById("moreInfoPF");
-        var btnShow = document.getElementById("btn-show-pf");
-        var btnHide = document.getElementById("btn-hide-pf");
-        moreInfo.style.display = "inline";
-        btnHide.style.display = "block";
-        btnShow.style.display = "none";
-    };
-
-    function showLessPFInfo() {
-        var moreInfo = document.getElementById("moreInfoPF");
-        var btnHide = document.getElementById("btn-hide-pf");
-        var btnShow = document.getElementById("btn-show-pf");
-        moreInfo.style.display = "none";
-        btnShow.style.display = "block";
-        btnHide.style.display = "none";
-    };
-
-    function calculate_comparative(table_id) {
-        //$("table#comparative_table").hide();
-        var colMax = 0;
-        var all_col = document.getElementsByClassName('col-comp');
-        var titles = [];
-        var noCols = $("table#" + table_id + " tr.tr-rdata:first").children('td.sum_input').filter(function () {
-            return $(this).css('display') !== 'none';
-        }).length;
-
-
-        if (noCols !== 2) {
-            for (var i = 0; i < all_col.length; i++) {
-                all_col[i].style.display = "none";
-            }
-            document.getElementById("col-comp_head_" + table_id).style.display = "none";
-        } else {
-            $("table#" + table_id + " tr.tr-title").children('th.th-title').filter(function () {
-                return $(this).css('display') !== 'none';
-            }).each(function () {
-                titles.push($(this).text().split(" ")[0]);
-            });
-
-            //****Evalua si pertenecen al mismo periodo en base a la primera palabra del th***//
-            if (titles.every((val, ind, arr) => val === arr[0]))
-            {
-                if (titles[0].toLowerCase() === 'anual') {
-                    $('div.percentage-badge.blue-badge').show();
-                } else {
-                    $('div.percentage-badge.blue-badge').hide();
-                }
-                for (var i = 0; i < all_col.length; i++) {
-                    all_col[i].style.display = "table-cell";
-                }
-                document.getElementById("col-comp_head_" + table_id).style.display = "table-cell";
-            }
-        }
-
-        $("table#" + table_id + " tr.tr-rdata").each(function (index, tb_row) {
-            var percent_values_array = [];
-            var max_num = 0;
-            var min_num = 0;
-            var percent_value = 0;
-
-            var columns = $(tb_row).children('td.sum_input').filter(function () {
-                return $(this).css('display') !== 'none';
-            });
-            var rowTotal = 0;
-
-            colMax = columns.length;
-
-            for (var col = 0; col < colMax; col++) {
-                if (columns.eq(col).css('display') !== 'none') {
-                    var colData = parseFloat(columns.eq(col).find('span.td-value' + index).text().split(',').join(''));
-                    var colPercent = columns.eq(col).find('span.percent-value' + index).text().split(" ")[0];
-
-                    percent_values_array.push(colPercent);
-                    colData = Math.abs(colData);
-                    //CALCULO DE COMPARATIVA, RESTA DE AÑO 1 - 2
-                    if (!isNaN(colData)) {
-                        if (col === 0) {
-                            rowTotal = colData;
-                        } else {
-                            rowTotal -= colData;
-                        }
-                    } else {
-                        rowTotal = null;
-                        break;
-                    }
-
-                }
-            }
-            ;
-
-            // CALCULO DE VARIACIÓN DE PORCENTAJES
-            max_num = Math.max(...percent_values_array);
-            min_num = Math.min(...percent_values_array);
-            percent_value = ((max_num - min_num) / min_num) * 100;
-
-            if (Number.isFinite(percent_value) || percent_value) {
-                if (percent_value > 100 || percent_value < 0) {
-                    $('span.percent_t' + index).text('+100 %');
-                } else {
-                    $('span.percent_t' + index).text(percent_value.toFixed(2) + ' %');
-                }
-            } else {
-                $('span.percent_t' + index).text('+100 %');
-            }
-
-            if (rowTotal !== null) {
-
-                $('span.total_p' + index).text(rowTotal.toLocaleString());
-                $('span.percent_t' + index).show();
-                $('span.scale' + index).show();
-                $('span.total_p' + index).closest('td').removeClass("bg-lines");
-            } else {
-                $('span.total_p' + index).text('');
-                if (titles.length > 0) {
-                    if (titles[0].toLowerCase() != 'anual') {
-                        $('span.total_p' + index).closest('td').addClass("bg-lines");
-                    }
-                }
-                $('span.scale' + index).hide();
-                $('span.percent_t' + index).hide();
-            }
-        });
-
-        //======> CALCULO DE PORCENTAJE HORIZONTAL COLUMNA COMPARATIVA ENTRE PORCENTAJES DE DIFERENCIA ENTRE SAT Y CAPTURA
-        var rowMax = ($("table#" + table_id + " tr.tr-rdata").length) / 2;
-
-        for (var row = 0; row < rowMax; row++) {
-            var values_array = [];
-            var max_num = 0;
-            var min_num = 0;
-            var percent_value = 0;
-            var rowData = '';
-
-            for (var col = 0; col < colMax; col++) {
-                if ($('span#' + table_id + '.percent-bdg' + row + '-' + col).closest('td.sum_input').css('display') !== 'none') {
-                    rowData = $('span#' + table_id + '.percent-bdg' + row + '-' + col).text();
-                    values_array.push(parseFloat(rowData));
-                }
-            }
-
-            max_num = Math.max(...values_array);
-            min_num = Math.min(...values_array);
-            percent_value = ((max_num - min_num) / min_num) * 100;
-            if (percent_value > 100) {
-                $('span.tb-badge' + row).text('+100 %');
-            } else {
-                $('span.tb-badge' + row).text(percent_value.toFixed(2) + ' %');
-            }
-        }
-        ///=======>
-
-        //$("table#comparative_table").show();
     }
 
+
+        function showMoreInfo() {
+            var moreInfo = document.getElementById("moreInfo");
+            var btnShow = document.getElementById("btn-show-info");
+            var btnHide = document.getElementById("btn-hide-info");
+            console.log("btnHide", btnHide);
+            moreInfo.style.display = "inline";
+            btnHide.style.display = "block";
+            btnShow.style.display = "none";
+        };
+
+        function showLessInfo() {
+            var moreInfo = document.getElementById("moreInfo");
+            var btnHide = document.getElementById("btn-hide-info");
+            var btnShow = document.getElementById("btn-show-info");
+            moreInfo.style.display = "none";
+            btnShow.style.display = "block";
+            btnHide.style.display = "none";
+        };
+
+        function showMorePFInfo() {
+            var moreInfo = document.getElementById("moreInfoPF");
+            var btnShow = document.getElementById("btn-show-pf");
+            var btnHide = document.getElementById("btn-hide-pf");
+            moreInfo.style.display = "inline";
+            btnHide.style.display = "block";
+            btnShow.style.display = "none";
+        };
+
+        function showLessPFInfo() {
+            var moreInfo = document.getElementById("moreInfoPF");
+            var btnHide = document.getElementById("btn-hide-pf");
+            var btnShow = document.getElementById("btn-show-pf");
+            moreInfo.style.display = "none";
+            btnShow.style.display = "block";
+            btnHide.style.display = "none";
+        };
+
+        function calculate_comparative(table_id) {
+            //$("table#comparative_table").hide();
+            var colMax = 0;
+            var all_col = document.getElementsByClassName('col-comp');
+            var titles = [];
+            var noCols = $("table#" + table_id + " tr.tr-rdata:first").children('td.sum_input').filter(function () {
+                return $(this).css('display') !== 'none';
+            }).length;
+
+
+            if (noCols !== 2) {
+                for (var i = 0; i < all_col.length; i++) {
+                    all_col[i].style.display = "none";
+                }
+                document.getElementById("col-comp_head_" + table_id).style.display = "none";
+            } else {
+                $("table#" + table_id + " tr.tr-title").children('th.th-title').filter(function () {
+                    return $(this).css('display') !== 'none';
+                }).each(function () {
+                    titles.push($(this).text().split(" ")[0]);
+                });
+
+                //****Evalua si pertenecen al mismo periodo en base a la primera palabra del th***//
+                if (titles.every((val, ind, arr) => val === arr[0]))
+                {
+                    if (titles[0].toLowerCase() === 'anual') {
+                        $('div.percentage-badge.blue-badge').show();
+                    } else {
+                        $('div.percentage-badge.blue-badge').hide();
+                    }
+                    for (var i = 0; i < all_col.length; i++) {
+                        all_col[i].style.display = "table-cell";
+                    }
+                    document.getElementById("col-comp_head_" + table_id).style.display = "table-cell";
+                }
+            }
+
+            $("table#" + table_id + " tr.tr-rdata").each(function (index, tb_row) {
+                var percent_values_array = [];
+                var max_num = 0;
+                var min_num = 0;
+                var percent_value = 0;
+
+                var columns = $(tb_row).children('td.sum_input').filter(function () {
+                    return $(this).css('display') !== 'none';
+                });
+                var rowTotal = 0;
+
+                colMax = columns.length;
+
+                for (var col = 0; col < colMax; col++) {
+                    if (columns.eq(col).css('display') !== 'none') {
+                        var colData = parseFloat(columns.eq(col).find('span.td-value' + index).text().split(',').join(''));
+                        var colPercent = columns.eq(col).find('span.percent-value' + index).text().split(" ")[0];
+
+                        percent_values_array.push(colPercent);
+                        colData = Math.abs(colData);
+                        //CALCULO DE COMPARATIVA, RESTA DE AÑO 1 - 2
+                        if (!isNaN(colData)) {
+                            if (col === 0) {
+                                rowTotal = colData;
+                            } else {
+                                rowTotal -= colData;
+                            }
+                        } else {
+                            rowTotal = null;
+                            break;
+                        }
+
+                    }
+                }
+                ;
+
+                // CALCULO DE VARIACIÓN DE PORCENTAJES
+                max_num = Math.max(...percent_values_array
+            )
+                ;
+                min_num = Math.min(...percent_values_array
+            )
+                ;
+                percent_value = ((max_num - min_num) / min_num) * 100;
+
+                if (Number.isFinite(percent_value) || percent_value) {
+                    if (percent_value > 100 || percent_value < 0) {
+                        $('span.percent_t' + index).text('+100 %');
+                    } else {
+                        $('span.percent_t' + index).text(percent_value.toFixed(2) + ' %');
+                    }
+                } else {
+                    $('span.percent_t' + index).text('+100 %');
+                }
+
+                if (rowTotal !== null) {
+
+                    $('span.total_p' + index).text(rowTotal.toLocaleString());
+                    $('span.percent_t' + index).show();
+                    $('span.scale' + index).show();
+                    $('span.total_p' + index).closest('td').removeClass("bg-lines");
+                } else {
+                    $('span.total_p' + index).text('');
+                    if (titles.length > 0) {
+                        if (titles[0].toLowerCase() != 'anual') {
+                            $('span.total_p' + index).closest('td').addClass("bg-lines");
+                        }
+                    }
+                    $('span.scale' + index).hide();
+                    $('span.percent_t' + index).hide();
+                }
+            });
+
+            //======> CALCULO DE PORCENTAJE HORIZONTAL COLUMNA COMPARATIVA ENTRE PORCENTAJES DE DIFERENCIA ENTRE SAT Y CAPTURA
+            var rowMax = ($("table#" + table_id + " tr.tr-rdata").length) / 2;
+
+            for (var row = 0; row < rowMax; row++) {
+                var values_array = [];
+                var max_num = 0;
+                var min_num = 0;
+                var percent_value = 0;
+                var rowData = '';
+
+                for (var col = 0; col < colMax; col++) {
+                    if ($('span#' + table_id + '.percent-bdg' + row + '-' + col).closest('td.sum_input').css('display') !== 'none') {
+                        rowData = $('span#' + table_id + '.percent-bdg' + row + '-' + col).text();
+                        values_array.push(parseFloat(rowData));
+                    }
+                }
+
+                max_num = Math.max(...values_array
+            )
+                ;
+                min_num = Math.min(...values_array
+            )
+                ;
+                percent_value = ((max_num - min_num) / min_num) * 100;
+                if (percent_value > 100) {
+                    $('span.tb-badge' + row).text('+100 %');
+                } else {
+                    $('span.tb-badge' + row).text(percent_value.toFixed(2) + ' %');
+                }
+            }
+            ///=======>
+
+            //$("table#comparative_table").show();
+        }
 
 
 .col-xl-12
@@ -383,23 +391,23 @@ javascript:
                               a.btn.btn-danger.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action href="#{ENV['DOWNLOAD_FILES']}/#{request.try(:file_id)}/#{request.try(:file_name)}" target="_blank"
                                 span
                                   i.fa.fa-eye.mx-2
-                                  span ="Ver"
+                                  span = "Ver"
                           td
                             .dropdown
                               button#dropdownMenuButton.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
                                 | Acciones
                               .dropdown-menu aria-labelledby="dropdownMenuButton"
-                                a.dropdown-item.open-modal-request href="#m_modal_request_details"  data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
+                                a.dropdown-item.open-modal-request href="#m_modal_request_details" data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
                                   | Detalles
                                 a.dropdown-item target="_blank" href="/request_comments/#{request.id}"
                                   | Comentarios
                                 - if @company.income_calendar_details.present? or @company.balance_calendar_details.present?
                                   a.dropdown-item target="_blank" href="#{dictamen_report_path(@company.id, request.id, format: :pdf)}"
                                     | Dictamen
-                            /button.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action.mb-1.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
+                                  /button.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action.mb-1.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
                               span
                                 span = "Detalles"
-                            /a.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action href="/request_comments/#{request.id}"
+                                  /a.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action href="/request_comments/#{request.id}"
                               span
                                 span = "Comentarios"
           .col-md-4
@@ -413,8 +421,8 @@ javascript:
               - else
                 span.text-center
                   | Es necesario validar la solicitud.
-                /button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_income" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="income_statement" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
-                /  = "Estado Resultados"
+                    /button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_income" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="income_statement" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
+                    /  = "Estado Resultados"
 
             .btns-card.mt-30
               .subtitle-icon.d-flex.justify-content-center.align-items-center
@@ -575,8 +583,8 @@ javascript:
                                       .m-widget3__info
                                         span.m-widget3__username
                                           = User.where(id: comment.user_id).try(:first).full_name
-                                          /br
-                                          /span.m--font-primary
+                                        /br
+                                        /span.m--font-primary
                                             = "#{comment.process_status.name}"
                                         br
                                         span.m-widget3__time
@@ -640,8 +648,8 @@ javascript:
                                       .m-widget3__info
                                         span.m-widget3__username
                                           = User.where(id: comment.user_id).try(:first).full_name
-                                          /br
-                                          /span.m--font-primary
+                                        /br
+                                        /span.m--font-primary
                                             = "#{comment.process_status.name}"
                                         br
                                         span.m-widget3__time
@@ -1122,11 +1130,11 @@ javascript:
                                           | Aún no se encuentran consultas.
                             .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
                               .m-demo__preview
-                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-show-pf" onclick="showMorePFInfo()"
+                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-show-info" onclick="showMorePFInfo()"
                                   span.d-flex.flex-column.justify-content-center
                                     strong = "Ver mas"
                                     i.fa.fa-chevron-down.align-self-center
-                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-hide-pf" onclick="showLessPFInfo()" style="display: none;"
+                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-hide-info" onclick="showLessPFInfo()" style="display: none;"
                                   span.d-flex.flex-column.justify-content-center
                                     strong = "Ver menos"
                                     i.fa.fa-chevron-up.align-self-center
@@ -1690,7 +1698,7 @@ javascript:
                                   span.d-flex.flex-column.justify-content-center
                                     strong = "Ver mas"
                                     i.fa.fa-chevron-down.align-self-center
-                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block id="btn-hide-info" onclick="showLessPFInfo()" style="display: none;"
+                                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.btn-hide-info onclick="showLessPFInfo()" style="display: none;"
                                   span.d-flex.flex-column.justify-content-center
                                     strong = "Ver menos"
                                     i.fa.fa-chevron-up.align-self-center
@@ -2736,7 +2744,7 @@ javascript:
           .col-xl-12 style="display: grid;"
             p#textModal
               | Asignar Analista
-            = select("request", "analyst_id", User.where(role_id: Role.find_by(key:'analyst').try(:id)).collect {|p| [ p.full_name, p.id ] }, { include_blank: 'Selecciona analista' }, {class: "form-control m-input", disabled: (current_user.god? or current_user.credit_management? or current_user.credit_area? or current_user.promotion_area?) ? false : true })
+            = select("request", "analyst_id", User.where(role_id: Role.find_by(key: 'analyst').try(:id)).collect { |p| [p.full_name, p.id] }, {include_blank: 'Selecciona analista'}, {class: "form-control m-input", disabled: (current_user.god? or current_user.credit_management? or current_user.credit_area? or current_user.promotion_area?) ? false : true})
 
           - if @company.company_calendar_details.present?
             .col-xl-12#input_credit_type style="display: none;"
@@ -2744,14 +2752,14 @@ javascript:
                 | Asignar Tipo de Crédito
               div style="display: grid;"
                 = select("request", "factor_credit_id", FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input"})
-                /= select("request", "factor_credit_id", FactorCredit.where.not(id:@requests.pluck(:factor_credit_id)).collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input"})
+                  /= select("request", "factor_credit_id", FactorCredit.where.not(id:@requests.pluck(:factor_credit_id)).collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input"})
           /- if @request.try(:order).present?
             - if @request.try(:order) >= 2
           .col-xl-12 id="#{current_user.super_user? ? '' : 'input_status_process'}"
             p.mt-20#textModal
               | Asignar Status del Proceso
             div style="display: grid;"
-              = select("request", "process_status_id", @process_status.collect {|p| [ p.name, p.id ] }, { include_blank: false }, {class: "form-control m-input"})
+              = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: false}, {class: "form-control m-input"})
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar
@@ -2767,11 +2775,11 @@ javascript:
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true"
             | \&times;
-      = form_for current_user, url: assign_pdf_to_request_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed',html: { multipart: true } do |f|
+      = form_for current_user, url: assign_pdf_to_request_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed', html: {multipart: true} do |f|
         .modal-body
           input type="hidden" name="request_id" id="requestIdFile" value=""
           .col-xl-12 style="display: grid;"
-            = f.file_field :file_name, class: "custom-file-input", required: true,accept: "application/pdf"
+            = f.file_field :file_name, class: "custom-file-input", required: true, accept: "application/pdf"
             label.custom-file-label Elige un archivo...
             span.custom-file-control
         .modal-footer
