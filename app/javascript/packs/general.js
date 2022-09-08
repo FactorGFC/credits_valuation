@@ -12,7 +12,7 @@ import 'bootstrap';
 import 'select2';// from 'select2';
 import 'javascripts/i18n/translations';
 
-I18n.locale = window.I18n.locale;
+// I18n.locale = window.I18n.locale;
 
 document.addEventListener("turbolinks:before-cache", function () {
     $('[data-toggle="m-tooltip"]').tooltip('hide');
