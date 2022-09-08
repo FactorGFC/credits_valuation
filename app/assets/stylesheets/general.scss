@@ -597,22 +597,6 @@ span.badge {
   animation: horizontal-shaking 3s infinite;
 }
 
-button:hover{
-  #btn-show-info, #btn-hide-info{
-    span > svg {
-      animation: vertical-shaking 3s infinite;
-    }
-  }
-}
-
-button:hover{
-  #btn-show-info, #btn-hide-info{
-    span > svg {
-      animation: vertical-shaking 3s infinite;
-    }
-  }
-}
-
 button#btn-show-info:hover{
   span{
     svg {
@@ -622,6 +606,22 @@ button#btn-show-info:hover{
 }
 
 button#btn-hide-info:hover{
+  span{
+    svg {
+      animation: vertical-shaking 3s infinite;
+    }
+  }
+}
+
+button#btn-show-pf:hover{
+  span{
+    svg {
+      animation: vertical-shaking 3s infinite;
+    }
+  }
+}
+
+button#btn-hide-pf:hover{
   span{
     svg {
       animation: vertical-shaking 3s infinite;
