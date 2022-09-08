@@ -3,7 +3,8 @@
   height: 100% !important;
 
   tr{
-    position: relative;
+    position:           relative;
+    page-break-inside:  avoid !important;
   }
   tr > th{
     position:         sticky;
@@ -22,8 +23,25 @@
   }
 
   td{
-    border:         1px solid #3b3e52;
-    vertical-align: middle;
+    border:             1px solid #3b3e52;
+    vertical-align:     middle;
+    page-break-inside:  avoid !important;
+    /*span{
+    position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 0;
+      align-content: center;
+      display: inline-grid;
+      align-items: start;
+      padding-left: 10px;
+    }*/
+  }
+
+  .td-title, .tr-rdata{
+    page-break-inside: avoid;
   }
 
   td.full-input{
@@ -62,17 +80,22 @@
 
   .percentage-badge{
     position:         absolute;
-    display:          flex;
-    flex-direction:   column;
-    justify-content:  center;
-    align-items:      center;
+    display:          table;
     color:            white;
     height:           135%;
     width:            25%;
     border-radius:    0 50px 50px 0;
     left:             0;
-    top:              30%;
+    top:              20px;
     font-size:        75%;
+    span{
+      display:        table-cell;
+      margin:         0 auto;
+      padding:        28px 0;;
+      vertical-align: middle;
+      min-height:     75px !important;
+    }
+
   }
 
   .red-badge{

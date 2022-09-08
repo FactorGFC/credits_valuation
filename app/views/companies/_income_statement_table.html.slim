@@ -8,7 +8,7 @@
             input onchange="hide_show_table(this.id, 'comparative_table_is');" type="checkbox" value="hide" checked="true" id="col-#{y.id}"
             span = y.calendar.period_name
 
-    p.text-center Mostrar/Ocultar años
+    p.text-center Mostrar/Ocultar añoss
 table.table.table-bordered.input-focusable-table#comparative_table_is
   tr.tr-title
     th
@@ -19,7 +19,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       = 'COMPARACIÓN (ANUAL)'
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'Ingresos'
+      span.fill-td.text-left = 'Ingresos'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input.sat_value class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -49,7 +49,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale1.value-scale = @bs_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'Costo de ventas'
+      span.fill-td.text-left = 'Costo de ventas'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -79,7 +79,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale3.value-scale = @ins_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'Utilidad Bruta'
+      span.fill-td.text-left = 'Utilidad Bruta'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -109,7 +109,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale5.value-scale = @ins_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'Gastos de operación'
+      span.fill-td.text-left = 'Gastos de operación'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -139,7 +139,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale7.value-scale = @ins_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'Utilidad de operación'
+      span.fill-td.text-left = 'Utilidad de operación'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -169,7 +169,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale9.value-scale = @ins_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'Resultado integral de financiamiento'
+      span.fill-td.text-left = 'Resultado integral de financiamiento'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -199,7 +199,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale11.value-scale = @ins_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'Gasto financiero'
+      span.fill-td.text-left = 'Gasto financiero'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -229,7 +229,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale13.value-scale = @ins_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'Utilidad o pérdida cambiaria'
+      span.fill-td.text-left = 'Utilidad o pérdida cambiaria'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -259,7 +259,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale15.value-scale = @ins_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'Otros gastos/ingresos'
+      span.fill-td.text-left = 'Otros gastos/ingresos'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -289,7 +289,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale17.value-scale = @ins_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'Utilidad antes de impuestos'
+      span.fill-td.text-left = 'Utilidad antes de impuestos'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -319,7 +319,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale19.value-scale = @ins_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'ISR'
+      span.fill-td.text-left = 'ISR'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -349,7 +349,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale21.value-scale = @ins_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'PTU'
+      span.fill-td.text-left = 'PTU'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -379,7 +379,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
       span.scale23.value-scale = @ins_scale
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
-      span.text-left = 'Participación subsidiarios'
+      span.fill-td.text-left = 'Participación subsidiarios'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'
@@ -410,7 +410,7 @@ table.table.table-bordered.input-focusable-table#comparative_table_is
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       // 14: UTILIDAD NETA
-      span.text-left = 'Utilidad neta'
+      span.fill-td.text-left = 'Utilidad neta'
     - @calendar_periods_is.each_with_index do |y, y_index|
       td.sum_input class="full-input col-#{y.id}"
         - if y.calendar.period_type == 'anual'

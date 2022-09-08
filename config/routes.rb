@@ -83,7 +83,8 @@ Rails.application.routes.draw do
     get 'company_balance_sheet/:id'  => 'companies#company_balance_sheet', as: :company_balance_sheet
     get 'company_income_statement/:id'  => 'companies#company_income_statement', as: :company_income_statement
     get 'company_details/:id'  => 'companies#company_details', as: :company_details
-    get 'dictamen_report/:id'  => 'companies#dictamen_report', as: :dictamen_report
+    get 'dictamen_report/:id/:request_id'  => 'companies#dictamen_report', as: :dictamen_report
+    get 'dictamen_report_backup/:id/:request_id'  => 'companies#dictamen_report_backup', as: :dictamen_report_backup
     get 'open_pdf/:id/:file'  => 'companies#open_pdf', as: :open_pdf
     get 'comments/:company_id/:assigned_to' => 'companies#comments'
     put 'save_comment' => 'companies#save_comment', as: :save_comment

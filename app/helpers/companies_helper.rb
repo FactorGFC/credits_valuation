@@ -659,19 +659,35 @@ module CompaniesHelper
     end
   end
 
+  def calculate_risk score
+    if score.present?
+      if score < 550
+        '#E84C3D'
+      elsif score >= 550 and score < 650
+        '#f1c40f'
+      elsif score >= 650 and score < 750
+        '#7caa55'
+      else
+        '#1eaa59'
+      end
+    else
+      '#E84C3D'
+    end
+  end
+
   def calculate_face score
     if score.present?
       if score < 550
-        'face-bad.png'
+        'icons/face-bad.png'
       elsif score >= 550 and score < 650
-        'face-med.png'
+        'icons/face-med.png'
       elsif score >= 650 and score < 750
-        'face-nice.png'
+        'icons/face-nice.png'
       else
-        'face-good.png'
+        'icons/face-good.png'
       end
     else
-      'face-bad.png'
+      'icons/face-bad.png'
     end
   end
 

@@ -64,7 +64,34 @@ $(document).on('turbolinks:load', function () {
         }
     };
 
-    
+    window.showMoreInfo = function() {
+        var moreInfo = document.getElementById("moreInfo");
+        var btnShow = document.getElementById("btn-show-info");
+        var btnHide = document.getElementById("btn-hide-info");
+
+        moreInfo.style.display = "inline";
+        btnHide.style.display = "block";
+        btnShow.style.display = "none";
+    };
+
+    window.showLessInfo = function() {
+        var moreInfo = document.getElementById("moreInfo");
+        var btnHide = document.getElementById("btn-hide-info");
+        var btnShow = document.getElementById("btn-show-info");
+        moreInfo.style.display = "none";
+        btnShow.style.display = "block";
+        btnHide.style.display = "none";
+    };
+
+    /*window.showMorePFInfo = function() {
+        var moreInfo = document.getElementById("moreInfoPF");
+        moreInfo.style.display = "inline";
+    };
+
+    window.showLessPFInfo = function() {
+        var moreInfo = document.getElementById("moreInfoPF");
+        moreInfo.style.display = "none";
+    };*/
 
     window.phoneValidate = function() {
         var isValid = phoneRegex.test($('#phone_input').val());
