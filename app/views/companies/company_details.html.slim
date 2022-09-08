@@ -1,13 +1,18 @@
 = stylesheet_pack_tag 'application'
 javascript:
-    var moreInfo = document.getElementById("moreInfo");
-    if (moreInfo) {
-        moreInfo.style.display = "none";
-    }
-    var moreInfoPF = document.getElementById("moreInfoPF");
-    if (moreInfoPF) {
-        moreInfoPF.style.display = "none";
-    }
+    window.onload = function(){
+        var moreInfo = document.getElementById("moreInfo");
+        if (moreInfo) {
+            moreInfo.style.display = "none";
+        }
+        var moreInfoPF = document.getElementById("moreInfoPF");
+
+        if (moreInfoPF) {
+            console.log('MORE INFO');
+            moreInfoPF.style.display = "none";
+        }
+    };
+
 
     function showMoreInfo() {
         var moreInfo = document.getElementById("moreInfo");
