@@ -4,8 +4,12 @@ class RequestCommentsController < ApplicationController
   # GET /request_comments or /request_comments.json
   def index
     #@request_comments = RequestComment.all
-    @company = Company.find(params[:company_id])
-    @request = Request.joins(:process_status).where(company_id: params[:company_id]).order('process_status.order DESC').first
+    #@company = Company.find(params[:company_id])
+    #@request = Request.joins(:process_status).where(company_id: params[:company_id]).order('process_status.order DESC').first
+    #@request_comments = RequestComment.where(request_id: @request.try(:id))
+
+    @request = Request.find(params[:request_id])
+    @company = @request.company
     @request_comments = RequestComment.where(request_id: @request.try(:id))
   end
 
@@ -66,7 +70,7 @@ class RequestCommentsController < ApplicationController
 
     respond_to do |format|
       if request_comment.save
-        format.html { redirect_to "/request_comments/#{company_id}", notice: "Request comment was successfully updated." }
+        format.html { redirect_to "/request_comments/#{request_comment.request.id}", notice: "Comentario agregado exitosamente." }
       else
         #format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: request_comment.errors, status: :unprocessable_entity }

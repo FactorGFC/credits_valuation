@@ -1,0 +1,350 @@
+table.table.table-bordered.input-focusable-table
+  tr.tr-title
+    th
+      span style="padding-bottom: 5px;"
+        = "Escala en:"
+      br
+      span.th-scale
+        = 'MILES'
+    - @calendar_fr.each do |y|
+      th.th-title
+        = y.calendar.period_name
+
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'FLUJO BRUTO'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept = 'SAT'
+          br
+          span.td-value0
+            = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_bruto').try(:id)).first.try(:value)
+
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value1
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_bruto').try(:id)).first.try(:value)
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'VARIACIÓN CLIENTES'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept  = 'SAT'
+          br
+          span.td-value0
+            = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_clientes').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value1
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_clientes').try(:id)).first.try(:value)
+
+
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px; position: relative;" rowspan="2"
+      span.text-left = 'VARIACIÓN INVENTARIOS'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept  = 'SAT'
+          br
+          span.td-value0
+            = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_inventarios').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value1
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_inventarios').try(:id)).first.try(:value)
+
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'VARIACIÓN PROVEEDORES'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept  = 'SAT'
+          br
+          span.td-value0
+            = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_proveedores').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_proveedores').try(:id)).first.try(:value)
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'VARIACIÓN ANTICIPO CLIENTES'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept  = 'SAT'
+          br
+          span.td-value0
+            = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_anticipo_clientes').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_anticipo_clientes').try(:id)).first.try(:value)
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'FLUJO DE OPERACIÓN'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept  = 'SAT'
+          br
+          span.td-value0
+            = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_operacion').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_operacion').try(:id)).first.try(:value)
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'IMPUESTOS PAGADOS Y PTU'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept  = 'SAT'
+          br
+          span.td-value0
+            = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'impuestos_pagados_ptu').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'impuestos_pagados_ptu').try(:id)).first.try(:value)
+
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'GASTOS FINANCIEROS'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept = 'SAT'
+          br
+          span.td-value0
+            = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'gastos_financieros').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'gastos_financieros').try(:id)).first.try(:value)
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'FLUJO NETO'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept = 'SAT'
+          br
+          span.td-value0
+            = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_neto').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_neto').try(:id)).first.try(:value)
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'VARIACIÓN EN ACTIVO FIJO'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept = 'SAT'
+          br
+          span.td-value0
+            = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_activo_fijo').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_activo_fijo').try(:id)).first.try(:value)
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'VARIACIÓN OTROS ACTIVOS'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept = 'SAT'
+          br
+          span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_activos').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_activos').try(:id)).first.try(:value)
+
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'VARIACIÓN OTROS PASIVOS'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept = 'SAT'
+          br
+          span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_pasivos').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_pasivos').try(:id)).first.try(:value)
+
+  tr.tr-rdata
+    td style=" font-weight: 800; font-size: 18px" rowspan="2"
+      span.text-left = 'AUMENTO DISMINUCIÓN EN CAJA'
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input.sat_value class="full-input col-#{calendar.id}"
+        - if calendar.calendar.period_type == 'anual'
+          span.text-table-concept = 'SAT'
+          br
+          span.td-value0
+            = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'aumento_disminucion_caja').try(:id)).first.try(:value)
+  tr.tr-rdata
+    - @calendar_fr.each_with_index do |calendar, calendar_index|
+      td.sum_input class="full-input col-#{calendar.id}"
+        span.text-table-concept = 'CAPTURA'
+        br
+        span.td-value0
+          = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'aumento_disminucion_caja').try(:id)).first.try(:value)
+
+
+#m_extra_data.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog role="document" style="margin-top: 0%;"
+    .modal-content
+      .modal-header
+        h5.modal-title
+          = "Datos extra para calcular razónes financieras"
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"
+            | \&times;
+      = form_for current_user, url: save_extra_data_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
+        input type="hidden" name="id" value="#{@company.id}"
+        .modal-body
+          h4 style="text-align: end; color: #2c346e;" = 'ESCALA: MILES'
+          table.table.table-bordered.input-focusable-table.mt-3.unsticky-th
+            tr
+              th
+              - @calendar_fr.each do |y|
+                th = y.calendar.period_name
+            tr.tr-title
+              th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
+                = 'FLUJO'
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Flujo neto'
+              - @calendar_fr.each do |y|
+                td class="full-input-psm"
+                  input type="hidden" name="data_flow[#{y.id}][concept_id]" value="#{FlowConcept.find_by(key: 'flujo_neto').try(:id)}"
+                  input type="hidden" name="data_flow[#{y.id}][period]" value="#{y.calendar_id}"
+                  input type="number" step=0.001 name="data_flow[#{y.id}][value]" class="focusable-input" value="#{CompanyFlow.find_by(flow_concept_id: FlowConcept.find_by(key: 'flujo_neto').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
+            tr.tr-title
+              th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
+                = 'CONCILIACIONES'
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Dividendos pagados en efectivo'
+              - @calendar_fr.each do |y|
+                td class="full-input-psm"
+                  input type="hidden" name="data_conc[#{y.id}][concept_id]" value="#{ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id)}"
+                  input type="hidden" name="data_conc[#{y.id}][period]" value="#{y.calendar_id}"
+                  input type="number" step=0.001 name="data_conc[#{y.id}][value]" class="focusable-input" value="#{CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
+            tr.tr-title
+              th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
+                = 'BALANCE FINANCIERO'
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Bancos corto plazo'
+              - @calendar_fr.each do |y|
+                td class="full-input-psm"
+                  input type="hidden" name="data_bs[#{y.id}.1][concept_id]" value="#{BalanceConcept.find_by(key: 'bancos_cp').try(:id)}"
+                  input type="hidden" name="data_bs[#{y.id}.1][period]" value="#{y.calendar_id}"
+                  input type="number" step=0.001 name="data_bs[#{y.id}.1][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_cp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Otros pasivos fin. (C.P.)'
+              - @calendar_fr.each do |y|
+                td class="full-input-psm"
+                  input type="hidden" name="data_bs[#{y.id}.2][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_fin_cp').try(:id)}"
+                  input type="hidden" name="data_bs[#{y.id}.2][period]" value="#{y.calendar_id}"
+                  input type="number" step=0.001 name="data_bs[#{y.id}.2][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_fin_cp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Pago de capital'
+              - @calendar_fr.each do |y|
+                td class="full-input-psm"
+                  input type="hidden" name="data_bs[#{y.id}.3][concept_id]" value="#{BalanceConcept.find_by(key: 'pago_de_capital').try(:id)}"
+                  input type="hidden" name="data_bs[#{y.id}.3][period]" value="#{y.calendar_id}"
+                  input type="number" step=0.001 name="data_bs[#{y.id}.3][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'pago_de_capital').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Otros pasivos (Circulante)'
+              - @calendar_fr.each do |y|
+                td class="full-input-psm"
+                  input type="hidden" name="data_bs[#{y.id}.4][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_circulante').try(:id)}"
+                  input type="hidden" name="data_bs[#{y.id}.4][period]" value="#{y.calendar_id}"
+                  input type="number" step=0.001 name="data_bs[#{y.id}.4][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_circulante').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Bancos largo plazo'
+              - @calendar_fr.each do |y|
+                td class="full-input-psm"
+                  input type="hidden" name="data_bs[#{y.id}.5][concept_id]" value="#{BalanceConcept.find_by(key: 'bancos_lp').try(:id)}"
+                  input type="hidden" name="data_bs[#{y.id}.5][period]" value="#{y.calendar_id}"
+                  input type="number" step=0.001 name="data_bs[#{y.id}.5][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_lp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Otros pasivos (L.P.)'
+              - @calendar_fr.each do |y|
+                td class="full-input-psm"
+                  input type="hidden" name="data_bs[#{y.id}.6][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_lp').try(:id)}"
+                  input type="hidden" name="data_bs[#{y.id}.6][period]" value="#{y.calendar_id}"
+                  input type="number" step=0.001 name="data_bs[#{y.id}.6][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_lp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+            tr.tr-title
+              th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
+                = 'ESTADO DE RESULTADOS'
+            tr
+              td style="font-weight: 800"
+                span.text-left = 'Depreciación y amortización'
+              - @calendar_fr.each do |y|
+                td class="full-input-psm"
+                  input type="hidden" name="data_is[#{y.id}][concept_id]" value="#{IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id)}"
+                  input type="hidden" name="data_is[#{y.id}][period]" value="#{y.calendar_id}"
+                  input type="number" step=0.001 name="data_is[#{y.id}][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_id: IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id), income_statement_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+
+        .modal-footer
+          button.btn.btn-secondary data-dismiss="modal" type="button"
+            | Cerrar
+          button#idBtn.btn.btn-success type="submit"
+            | Guardar

@@ -9,7 +9,7 @@ class HomeController < ApplicationController
 
     if Role.where(key: ['god', 'analyst']).pluck(:id).include? current_user.role_id
       @search_companies = policy_scope(Company).ransack(params[:q])
-      @companies = @search_companies.result.paginate(page: params[:page], per_page: get_pagination)
+      @companies = @search_companies.result.order(created_at: :desc).paginate(page: params[:page], per_page: get_pagination)
     elsif Role.where(key: ['committee', 'credit_management', 'credit_area', 'promotion_area']).pluck(:id).include? current_user.role_id
       redirect_to '/events'
     else
@@ -19,8 +19,14 @@ class HomeController < ApplicationController
   end
 
   def home_company
-    @user = current_user
-    @company = current_user.company
+    @user           = current_user
+    @company        = current_user.company
+
+    cc_details_bs = @company.company_calendar_details.where(assign_to: 'balance_sheet')
+    cc_details_is = @company.company_calendar_details.where(assign_to: 'income_statement')
+    @data_bs_captured  = cc_details_bs.count == cc_details_bs.where(capture_finished: true).count
+    @data_is_captured  = cc_details_is.count == cc_details_is.where(capture_finished: true).count
+
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
         if @company.try(:info_company)['hydra:member'][0]['company'].present?
@@ -127,14 +133,21 @@ class HomeController < ApplicationController
 
                           @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
                         else
-                          @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
+                          @bureau_report = BuroCredito.get_buro_report 60742 #
+                          # ,@info #4450 60368
+                          p "@bureau_report ---------------------------------------------------------------------------------------------------------------------"
+                          p @bureau_report
 
                         end
 
 
 
                         # @bureau_report = BuroCredito.get_report_by_id 12468
-                        @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @info
+                        # @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @info
+                        @bureau_info = BuroCredito.get_buro_info 60742, @info
+
+                        p "@bureau_info --------------------------------------------------------------------------------"
+                        p @bureau_info
 
                         if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
                           if @user.update(sat_id: @sat['id'])
@@ -353,9 +366,6 @@ class HomeController < ApplicationController
     end
 
 
-    Rails.logger.info "data CREate buro ----------------------------------------------------------------------------------------------------"
-    Rails.logger.info data
-
     @buro = BuroCredito.create_client data
 
     if @buro['result'].present?
@@ -500,6 +510,7 @@ class HomeController < ApplicationController
       if credit_bureau['results'][0]['response'].present?
 
         if credit_bureau['results'][0]['response'].present?
+
 
           if credit_bureau['results'][0]['response']['return'].present?
             if credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas'].present?

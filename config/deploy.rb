@@ -89,6 +89,7 @@ task :deploy do
     #invoke :'rails:db_create'
     invoke :'rails:db_migrate'
     #invoke :'yarn_install'
+    invoke :'rails:assets_clean'
     invoke :'rails:assets_precompile'
     command %{NODE_ENV=staging RAILS_ENV=staging bundle exec rails webpacker:compile}
     invoke :'deploy:cleanup'

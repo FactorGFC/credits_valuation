@@ -10,6 +10,7 @@
 #  cer_encoded               :text
 #  client_type               :string
 #  complete                  :boolean
+#  confirmation_message      :boolean
 #  credential_company        :jsonb
 #  customers                 :jsonb
 #  group_company             :boolean
@@ -31,6 +32,7 @@
 #  step_six                  :boolean
 #  step_three                :boolean
 #  step_two                  :boolean
+#  welcome_message           :boolean
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  buro_id                   :string
@@ -79,6 +81,35 @@ class Company < ApplicationRecord
 
 
   acts_as_taggable_on :main_products
+
+  def self.remove_company id
+    company = Company.find(id)
+    if company.user.present?
+      company.user.delete
+    end
+    p "company.number_collaborator.present? --------------------------------------------------------"
+    p company.number_collaborator.present?
+    if company.number_collaborator.present?
+
+      company.number_collaborator.delete
+    end
+    CompanyClient.where(company_id: id).delete_all
+    CompanyProvider.where(company_id: id).delete_all
+    CompanyFile.where( company_id: id ).delete_all
+    FinancialInstitution.where(company_id: id).delete_all
+    IncomeCalendarDetail.where(company_id: id).delete_all
+    BalanceCalendarDetail.where( company_id: id ).delete_all
+    CompanyCalendarDetail.where( company_id: id ).delete_all
+    IncomeStatementFile.where( company_id: id ).delete_all
+    CompanyIncomeStatement.where( company_id: id ).delete_all
+    CompanyBalanceSheet.where( company_id: id ).delete_all
+    CreditBureau.where( company_id: id ).delete_all
+    FReasonsCompany.where( company_id: id ).delete_all
+    CompanyFlow.where( company_id: id ).delete_all
+    Request.where(company_id: id).delete_all
+    company.delete
+
+  end
 
   def self.approved?
     self.status_company.key == 'aprobada'
@@ -618,5 +649,72 @@ class Company < ApplicationRecord
     end
 
     return value
+  end
+
+  ###===Funciones para flujo de efectivo
+  def self.calculate_customer_variation clients_year1, clients_year0
+    value = -(clients_year1 - clients_year0)
+
+    return value.round(2)
+  end
+
+  def self.calculate_inventory_variance inventory_year1, inventory_year0
+    value = -(inventory_year1 - inventory_year0)
+
+    return value.round(2)
+  end
+
+  def self.calculate_supplier_variation supplier_year1, supplier_year0
+    value = (supplier_year1 - supplier_year0)
+
+    return value.round(2)
+  end
+
+  def self.calculate_advance_customers advance_customers1, advance_customers0
+    value = (advance_customers1 - advance_customers0)
+
+    return value.round(2)
+  end
+
+  def self.calculate_operation_flow gross_flow, customer_variation, inventory_variation, supplier_variation, customer_advance_variation
+    value = (gross_flow + customer_variation + inventory_variation + supplier_variation + customer_advance_variation)
+
+    return value.round(2)
+  end
+
+  def self.calculate_paid_taxes_ptu isr_value, ptu_value, contributions_payable
+    value = -(isr_value + ptu_value)-contributions_payable
+
+    return value.round(2)
+  end
+
+  def self.calculate_net_flow operation_flow, paid_taxes_ptu, financial_expense
+    value = (operation_flow + paid_taxes_ptu + financial_expense)
+
+    return value.round(2)
+  end
+
+  def self.calculate_variation_fixed_assets land_buildings_1, machinery_equipment_1, other_fixed_assets_1, land_buildings_0, machinery_equipment_0, other_fixed_assets_0, accumulated_depreciation
+    value = -((land_buildings_1 + machinery_equipment_1 + other_fixed_assets_1) - ((land_buildings_0 + machinery_equipment_0 + other_fixed_assets_0) - accumulated_depreciation))
+
+    return value.round(2)
+  end
+
+  def self.calculate_variation_other_assets other_current_assets_1, other_current_assets_0, charges_and_expenses_1, charges_and_expenses_0
+    value = -(other_current_assets_1 - other_current_assets_0) - (charges_and_expenses_1 - charges_and_expenses_0)
+
+    return value.round(2)
+  end
+
+  def self.calculate_variation_other_liabilities other_passives_1, other_passives_0
+    value = other_passives_1 - other_passives_0
+
+    return value.round(2)
+  end
+
+  def self.calculate_cash_increase_decrease net_flow, var_fixed_assets, var_other_assets, var_other_liabilities
+    value =  net_flow + var_fixed_assets + var_other_assets + var_other_liabilities
+
+    return value.round(2)
   end
 end

@@ -1,7 +1,7 @@
 class CompaniesController < ApplicationController
   require 'base64'
   include CompaniesHelper
-  before_action :set_company, only: %i[ show edit update destroy company_details open_pdf generate_financial_reasons save_data_crec_sost save_data_cobertura_deuda save_data_deuda_fin_lp save_extra_data]
+  before_action :set_company, only: %i[ show edit update destroy company_details open_pdf generate_financial_reasons save_data_crec_sost save_data_cobertura_deuda save_data_deuda_fin_lp save_extra_data dictamen_report  generate_cash_flow]
   helper_method :translate_errors, :get_company_info, :get_payments_frecuency, :method_payment
 
   # GET /companies or /companies.json
@@ -88,8 +88,9 @@ class CompaniesController < ApplicationController
         status_company_id:  params[:company][:status_company_id]
     }
 
-    user    = User.find_by(email: user_params[:email])
-    user ? user : user = User.new(user_params)
+
+
+    user = User.new(user_params)
 
     company = Company.new(company_params)
 
@@ -100,40 +101,45 @@ class CompaniesController < ApplicationController
     end
 
     respond_to do |format|
-      if company.save
-        if user.id
-          user.company_id             = company.id
-          user.sat_id                 = sat_id
-        else
-          new_password = [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+      if User.find_by(email: user_params[:email]).present?
+        format.html { redirect_to new_company_path, alert: 'Correo '+ user_params[:email] +' ya registrado'}
+      else
 
-          user.company_id             = company.id
-          user.role_id                = Role.find_by_key('enterprise').try(:id).present? ?   Role.find_by_key('enterprise').try(:id) : 4
-          user.password               = new_password
-          user.password_confirmation  = new_password
-          user.new_password           = new_password
-          user.sat_id                 = sat_id
+        if company.save
+          if user.id
+            user.company_id             = company.id
+            user.sat_id                 = sat_id
+          else
+            new_password = [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
 
-          user.skip_confirmation!
-        end
+            user.company_id             = company.id
+            user.role_id                = Role.find_by_key('enterprise').try(:id).present? ?   Role.find_by_key('enterprise').try(:id) : 4
+            user.password               = new_password
+            user.password_confirmation  = new_password
+            user.new_password           = new_password
+            user.sat_id                 = sat_id
 
-        if user.save
-          #Envia correo
-          if company.status_company.key == 'aprobada'
-            CreditRequestMailer.with(request_data: {user: user, company: company}).credit_request_approved.deliver_now
-          elsif company.status_company.key == 'rechazada'
-            CreditRequestMailer.with(request_data: {user: user, company: company}).credit_request_refused.deliver_now
+            user.skip_confirmation!
           end
 
-          format.html { redirect_to companies_path, notice: t('notifications_masc.success.resource.created',
-                                                   resource: t('roles.form.resource')) }
+          if user.save
+            #Envia correo
+            if company.status_company.key == 'aprobada'
+              CreditRequestMailer.with(request_data: {user: user, company: company}).credit_request_approved.deliver_now
+            elsif company.status_company.key == 'rechazada'
+              CreditRequestMailer.with(request_data: {user: user, company: company}).credit_request_refused.deliver_now
+            end
+
+            format.html { redirect_to companies_path, notice: t('notifications_masc.success.resource.created',
+                                                     resource: t('roles.form.resource')) }
+          else
+            format.html { render :new, status: :unprocessable_entity }
+            format.json { render json: user.errors, status: :unprocessable_entity }
+          end
         else
           format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: user.errors, status: :unprocessable_entity }
+          format.json { render json: company.errors, status: :unprocessable_entity }
         end
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: company.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -281,12 +287,23 @@ class CompaniesController < ApplicationController
     @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
     @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
     @calendar_fr         = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
-    @request             = Request.find_by(company_id: params[:id])
-    @request_comments    = RequestComment.where(request_id: @request.try(:id)).order(:created_at).limit(5)
+    @bs_comments         = Comment.where(company_id: @company.id, assigned_to: 'balance_sheet').order(:created_at).limit(5)
+    @is_comments         = Comment.where(company_id: @company.id, assigned_to: 'income_statement').order(:created_at).limit(5)
+    @fr_comments         = Comment.where(company_id: @company.id, assigned_to: 'financial_reasons').order(:created_at).limit(5)
+    @cb_comments         = Comment.where(company_id: @company.id, assigned_to: 'credit_bureau').order(:created_at).limit(5)
+    @cf_comments         = Comment.where(company_id: @company.id, assigned_to: 'cash_flow').order(:created_at).limit(5)
     @financial_inst      = @company.financial_institutions
     @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
-    @requests            = Request.where(company_id: params[:id])
+
+    @requests            = policy_scope(Request).where(company_id: params[:id]).order(created_at: :desc)
+    @process_status      = policy_scope(ProcessStatus)
+    @can_assign_period   = can_assign_periods(@company)
+
+    if @company.balance_sheet_finished and @company.income_statement_finished
+      @process_status += ProcessStatus.where(key: ['denied_validated_period', 'success_validated_period'])
+    end
+
     if @company.cash_flow.present?
       @cash_flow = @company.cash_flow.group_by{|c| [c['date']]}
     else
@@ -396,7 +413,7 @@ class CompaniesController < ApplicationController
         if approved_company == "true"
 
           #Send Mail to Company, is approved by FACTOR
-          CreditRequestMailer.with(request_data: request_data).credit_request_approved.deliver_now
+          CreditRequestMailer.with(request_data: request_data, company: company).credit_request_approved.deliver_now
           #Send MSG to Company, is approved by FACTOR
           Company.send_msj_to_company company, user, 2
 
@@ -445,7 +462,7 @@ class CompaniesController < ApplicationController
     begin
       CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'balance_sheet', calendar_id: destroy_records).destroy_all
       CompanyCalendarDetail.where(company_id: params[:company_id], assign_to: 'income_statement', calendar_id: destroy_records).destroy_all
-      BalanceCalendarDetail.transaction do
+      CompanyCalendarDetail.transaction do
         new_records.each do |e|
           CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'balance_sheet')
           CompanyCalendarDetail.create(company_id: params[:company_id], calendar_id: e, assign_to: 'income_statement')
@@ -464,15 +481,24 @@ class CompaniesController < ApplicationController
   end
 
   def assign_details_to_request
+    company         = Company.find(params[:company_id])
     request         = params[:request_id].present? ? Request.find(params[:request_id]) : nil
     request_params  = params[:request]
+
     request_params[:company_id]         = params[:company_id]
     request_params[:process_status_id]  = ProcessStatus.first_step unless request_params[:process_status_id].present?
     request_params[:factor_credit_id]   = nil unless request_params[:factor_credit_id].present?
     request_params[:user_id]            = current_user.id
 
     if request
+      tmp_analyst = request.analyst_id
       if request.update(analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
+        if ProcessStatus.find_by_id(request_params[:process_status_id]).try(:key) == 'denied_validated_period'
+          CreditRequestMailer.with(request_data: {user:  company.user, company: company}).denied_validated.deliver_now
+        end
+        if request.analyst_id != tmp_analyst
+          CreditRequestMailer.with(request_data: {user:  company.user, company: company}).request_analyst_assigned.deliver_now
+        end
         redirect_to "/company_details/#{params[:company_id]}", notice: "Actualizado correctamente."
       else
         redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')
@@ -481,11 +507,43 @@ class CompaniesController < ApplicationController
       new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: ProcessStatus.first_step, factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
 
       if new_request.save
+        CreditRequestMailer.with(request_data: {user:  company.user, company: company}).request_analyst_assigned.deliver_now
+
         redirect_to "/company_details/#{params[:company_id]}", notice: "Guardado correctamente."
       else
         redirect_to "/company_details/#{params[:company_id]}", alert: new_request.errors.full_messages.join(' ')
       end
     end
+  end
+
+  def assign_pdf_to_request
+    s3 = Aws::S3::Resource.new(access_key_id: 'AKIAWRCSQFXT4UEWO2PS' , region: 'us-east-1',
+                               secret_access_key:  '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')
+    bucket_name = 'analisisbucket'
+
+    request = params[:request_id].present? ? Request.find(params[:request_id]) : nil
+
+    if request
+      invoice_id_file = request.id.to_s + [*('a'..'z'),*('0'..'9')].shuffle[0,8].join
+      file_id_file = File.open(Rails.root.join(params[:user][:file_name]))
+      name_id_file = params[:user][:file_name].original_filename.gsub(/\s+/, "")
+
+      obj_id_file = s3.bucket(bucket_name).object("credits_valuation/#{invoice_id_file}/#{name_id_file}")
+      obj_id_file.put(
+          body: file_id_file,
+          acl: "public-read" # optional: makes the file readable/downloadable by anyone
+      )
+
+
+      file_id_file.close
+
+      if request.update(file_id: invoice_id_file, file_name: name_id_file)
+        redirect_to "/company_details/#{request.company_id}", notice: "Actualizado correctamente."
+      else
+        redirect_to "/company_details/#{request.company_id}", alert: request.errors.full_messages.join(' ')
+      end
+    end
+
   end
 
   def translate_errors message
@@ -519,8 +577,6 @@ class CompaniesController < ApplicationController
     @step_two_value = @company.step_two && @company.step_one
     @step_three_value = @company.step_three && @company.step_two && @company.step_one && !@company.has_clients
     @step_four_value = @company.step_four && @company.step_three && @company.step_two && @company.step_one && !@company.has_providers
-    @step_five_value = @company.step_five && @company.step_four && @company.step_three && @company.step_two && @company.step_one
-    @step_six_value = @company.step_six && @company.step_five && @company.step_four && @company.step_three && @company.step_two && @company.step_one
     @step_complete_value = @company.complete
 
     if @company.complete
@@ -543,17 +599,63 @@ class CompaniesController < ApplicationController
   def balance_sheet_request
     sort_order = %w(mensual trimestral anual)
 
-    @company = current_user.company
-    @balance_concepts = BalanceConcept.where(ancestry: nil, active: true)
-    @calendar_periods = CompanyCalendarDetail.where(company_id: current_user.try(:company_id), assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
+    @company            = Company.find(params[:company_id])
+    @balance_concepts   = BalanceConcept.where(ancestry: nil, active: true)
+    @calendar_periods   = CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
+    @data_captured      = @calendar_periods.length == CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'balance_sheet', capture_finished: true).count
+
+    if @company.try(:info_company).present?
+      if @company.try(:info_company)['hydra:member'].present?
+        if @company.try(:info_company)['hydra:member'][0]['company'].present?
+          @company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+        else
+          @company_name = @company.try(:name)
+        end
+        if @company.try(:info_company)['hydra:member'][0]['address'].present?
+          @company_address = @company.try(:info_company)['hydra:member'][0]['address']['streetName'] +
+              @company.try(:info_company)['hydra:member'][0]['address']['streetNumber'] + ', COL. ' + @company.try(:info_company)['hydra:member'][0]['address']['neighborhood']
+          @company_state_municipality = @company.try(:info_company)['hydra:member'][0]['address']['state'] + ' / ' +
+              @company.try(:info_company)['hydra:member'][0]['address']['municipality']
+        else
+          @company_address = @company.try(:address)
+        end
+      else
+        @company_name = @company.try(:name)
+      end
+    else
+      @company_name = @company.try(:name)
+    end
   end
 
   def income_statement_capture
     sort_order = %w(mensual trimestral anual)
 
-    @company = current_user.company
-    @concepts = IncomeStatementConcept.where(ancestry: nil, active: true)
-    @calendar_periods = CompanyCalendarDetail.where(company_id: current_user.try(:company_id), assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
+    @company          = Company.find(params[:company_id])
+    @concepts         = IncomeStatementConcept.where(ancestry: nil, active: true)
+    @calendar_periods = CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| -sort_order.index(calendar_p.calendar.period_type) }
+    @data_captured    = @calendar_periods.length == CompanyCalendarDetail.where(company_id: @company.try(:id), assign_to: 'income_statement', capture_finished: true).count
+
+    if @company.try(:info_company).present?
+      if @company.try(:info_company)['hydra:member'].present?
+        if @company.try(:info_company)['hydra:member'][0]['company'].present?
+          @company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+        else
+          @company_name = @company.try(:name)
+        end
+        if @company.try(:info_company)['hydra:member'][0]['address'].present?
+          @company_address = @company.try(:info_company)['hydra:member'][0]['address']['streetName'] +
+              @company.try(:info_company)['hydra:member'][0]['address']['streetNumber'] + ', COL. ' + @company.try(:info_company)['hydra:member'][0]['address']['neighborhood']
+          @company_state_municipality = @company.try(:info_company)['hydra:member'][0]['address']['state'] + ' / ' +
+              @company.try(:info_company)['hydra:member'][0]['address']['municipality']
+        else
+          @company_address = @company.try(:address)
+        end
+      else
+        @company_name = @company.try(:name)
+      end
+    else
+      @company_name = @company.try(:name)
+    end
   end
 
   def balance_sheet_comparative
@@ -575,27 +677,27 @@ class CompaniesController < ApplicationController
   end
 
   def create_balance_sheet_request
-    @company    = current_user.company
+    @company    = Company.find(params[:company_id])
     value_scale = params[:bs_request][:value_scale]
     submit_type = params[:button]
 
     begin
       BalanceCalendarDetail.transaction do
         params[:b_sheet].each do |e|
-          bs_detail = BalanceCalendarDetail.find_by(balance_concept_key: e[1][:concept], calendar_id: e[1][:period], company_id: current_user.company_id)
+          bs_detail = BalanceCalendarDetail.find_by(balance_concept_key: e[1][:concept], calendar_id: e[1][:period], company_id: @company.id)
           if bs_detail.present?
             raise ActiveRecord::Rollback unless bs_detail.update(value: e[1][:value].present? ? e[1][:value] : 0, value_scale: value_scale)
           else
-            raise ActiveRecord::Rollback unless BalanceCalendarDetail.new(balance_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value].present? ? e[1][:value] : 0, balance_type: 'FACTOR', company_id: current_user.company_id, value_scale: value_scale).save
+            raise ActiveRecord::Rollback unless BalanceCalendarDetail.new(balance_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value].present? ? e[1][:value] : 0, balance_type: 'FACTOR', company_id: @company.id, value_scale: value_scale).save
           end
         end
       end
 
       if submit_type == 'finalize'
-        @company.update(balance_sheet_finished: true)
+        @company.company_calendar_details.where(assign_to: 'balance_sheet').update(capture_finished: true)
         redirect_to '/login', notice: "Finalizado y enviado correctamente."
       else
-        redirect_to '/balance_sheet_request', notice: "Guardado correctamente."
+        redirect_to "/balance_sheet_request/#{@company.id}", notice: "Guardado correctamente."
       end
 
     rescue StandardError => e
@@ -604,27 +706,27 @@ class CompaniesController < ApplicationController
   end
 
   def create_income_statement_cap
-    @company    = current_user.company
+    @company    = Company.find(params[:company_id])
     value_scale = params[:ins_request][:value_scale]
     submit_type = params[:button]
     #p '=entre'
     begin
       IncomeCalendarDetail.transaction do
         params[:b_sheet].each do |e|
-          ic_detail = IncomeCalendarDetail.find_by(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], company_id: current_user.company_id)
+          ic_detail = IncomeCalendarDetail.find_by(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], company_id: @company.id)
           if ic_detail.present?
             raise ActiveRecord::Rollback unless ic_detail.update(value: e[1][:value].present? ? e[1][:value] : 0, value_scale: value_scale)
           else
-            raise ActiveRecord::Rollback unless IncomeCalendarDetail.new(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value].present? ? e[1][:value] : 0, company_id: current_user.company_id, value_scale: value_scale).save
+            raise ActiveRecord::Rollback unless IncomeCalendarDetail.new(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value].present? ? e[1][:value] : 0, company_id: @company.id, value_scale: value_scale).save
           end
         end
       end
 
       if submit_type == 'finalize'
-        @company.update(income_statement_finished: true)
+        @company.company_calendar_details.where(assign_to: 'income_statement').update(capture_finished: true)
         redirect_to '/login', notice: "Finalizado y enviado correctamente."
       else
-        redirect_to '/income_statement_capture', notice: "Guardado correctamente."
+        redirect_to "/income_statement_capture/#{@company.id}", notice: "Guardado correctamente."
       end
     rescue StandardError => e
       p "Error: #{e}"
@@ -633,9 +735,11 @@ class CompaniesController < ApplicationController
 
   def change_capture_status
     company = Company.find(params[:id])
+
     if params[:capture_type] === 'balance_sheet'
       respond_to do |format|
-        if company.update(balance_sheet_finished: false)
+        if company.company_calendar_details.where(assign_to: 'balance_sheet').update(capture_finished: false)
+          CreditRequestMailer.with(user: company.user, company: company).capture_enabled.deliver_now
           format.html { redirect_to "/company_details/#{company.id}", notice: "Captura de BALANCE FINANCIERO habilitada." }
         else
           format.json { render json: company.errors, status: :unprocessable_entity }
@@ -643,7 +747,8 @@ class CompaniesController < ApplicationController
       end
     else
       respond_to do |format|
-        if company.update(income_statement_finished: false)
+        if company.company_calendar_details.where(assign_to: 'income_statement').update(capture_finished: false)
+          CreditRequestMailer.with(user: company.user, company: company).capture_enabled.deliver_now
           format.html { redirect_to "/company_details/#{company.id}", notice: "Captura de ESTADO DE RESULTADOS habilitada." }
         else
           format.json { render json: company.errors, status: :unprocessable_entity }
@@ -880,31 +985,6 @@ class CompaniesController < ApplicationController
       FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_intereses').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
       #####====== FIN COBERTURA DE INTERESES (DEP)
 
-=begin
-      #####====== DEUDA FINANCIERA TOTAL / UAFIRDA ======= PENDIENTE
-      #CALCULO CON VALORES DEL SAT
-      if calendar.calendar.period_type == "anual"
-        utility_op          = Company.convert_value_to_units @ins_scale, company_income_stat_value(@company.id, calendar.calendar, 5, @ins_scale)
-        dep_y_amort         = Company.convert_value_to_units @ins_scale, 0
-        bancos_lp_otros_pas = Company.convert_value_to_units @bs_scale, 0
-        other_pas           = Company.convert_value_to_units @bs_scale,  company_balance_sheet_value(@company.id, calendar.calendar, 13, @bs_scale)
-        value               = Company.calculate_finantial_total utility_op, dep_y_amort, bancos_lp_otros_pas, other_pas, months
-        FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_total').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
-      end
-      #CALCULO CON VALORES DE CAPTURA
-      utility_op          = Company.convert_value_to_units @ins_scale, income_calendar_detail_value(@company.id, calendar.calendar, 5, @ins_scale)
-      dep_y_amort         = Company.convert_value_to_units @ins_scale, 0
-      bancos_lp_otros_pas = Company.convert_value_to_units @bs_scale, 0
-      other_pas           = Company.convert_value_to_units @bs_scale,  income_calendar_detail_value(@company.id, calendar.calendar, 13, @bs_scale)
-      value               = Company.calculate_finantial_total utility_op, dep_y_amort, bancos_lp_otros_pas, other_pas, months
-      FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_total').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
-      #####====== FIN DEUDA FINANCIERA TOTAL / UAFIRDA
-=end
-
-      #####====== DIAS INVENTARIO
-      #CALCULO CON VALORES DEL SAT
-      #CALCULO CON VALORES DE CAPTURA
-      #####====== FIN DIAS INVENTARIO
     end
 
     respond_to do |format|
@@ -917,216 +997,293 @@ class CompaniesController < ApplicationController
 
   end
 
-=begin
+  #Función para generar tabla de flujo de efectivo
+  def generate_cash_flow
+    sort_order = %w(anual trimestral mensual)
+    @bs_scale    = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
+    @ins_scale   = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
+    @calendar_fr = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
 
-  def save_data_crec_sost
-    sort_order  = %w(anual trimestral mensual)
-    cs_data     = params[:data]
-    value_scale = params[:scale_select][:value_scale]
-    calendar_fr = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    CompanyFlow.where(company_id: @company.id).destroy_all
 
-    ins_scale   = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
-    concil_scale= CompanyConciliation.find_by(company_id: @company.id).try(:value_scale)
+    @calendar_fr.each_with_index do |calendar, calendar_index|
+      # capture_type = 1 (VALORES OBTENIDOS DEL SAT)
+      # capture_type = 2 (VALORES OBTENIDOS DE CAPTURA)
 
-    begin
-      CompanyConciliation.transaction do
-        cs_data.each do |e|
-          company_conciliation = CompanyConciliation.find_by(conciliation_concept_id: e[1][:concept_id], calendar_id: e[1][:period], company_id: @company.id)
-          if company_conciliation.present?
-            raise ActiveRecord::Rollback unless company_conciliation.update(value: e[1][:value], value_scale: value_scale)
-          else
-            raise ActiveRecord::Rollback unless CompanyConciliation.new(conciliation_concept_id: e[1][:concept_id], calendar_id: e[1][:period], value: e[1][:value], company_id: @company.id, value_scale: value_scale).save
-          end
-        end
+      months = Company.calculate_months calendar.calendar.period_type
+      #####====== FLUJO BRUTO
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        value = Company.convert_value_to_miles @ins_scale, company_income_stat_value(@company.id, calendar.calendar, 5, @ins_scale)
+
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_bruto').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
+      end
+      #CALCULO CON VALORES DE CAPTURA
+      value = Company.convert_value_to_miles @ins_scale, income_calendar_detail_value(@company.id, calendar.calendar, 5, @ins_scale)
+
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_bruto').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN FLUJO BRUTO
+
+
+      #####====== VARIACIÓN CLIENTES
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        clients_year1 = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 2, @bs_scale)
+        clients_year0 = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, 2, @bs_scale))
+
+        value = Company.calculate_customer_variation clients_year1, clients_year0
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_clientes').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
       end
 
-      #GUARDAR EN BD
-      FReasonsCompany.where(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_sostenible').try(:id)).destroy_all
+      #CALCULO CON VALORES DE CAPTURA
+      clients_year1 = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 2, @bs_scale)
+      clients_year0 = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : balance_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 2, @bs_scale))
 
-      calendar_fr.each_with_index do |calendar, calendar_index|
-        #####====== CRECIMIENTO SOSTENIBLE
-        #CALCULO CON VALORES DEL SAT
-        if calendar.calendar.period_type == 'anual'
-          net_margin              = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'margen_neto').try(:id)).first.try(:value)
-          pas_tot_cap_cont        = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'pas_total_cap_contable').try(:id)).first.try(:value)
-          asset_turnover          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 1, f_reasons_concept_id: FReasonsConcept.find_by(key: 'rotacion_de_activos').try(:id)).first.try(:value)
-          dividends_paid_in_cash  = Company.convert_value_to_miles concil_scale, CompanyConciliation.where(calendar_id: calendar.calendar.id, conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), company_id: @company.id).first.try(:value)
-          net_profit              = Company.convert_value_to_miles ins_scale, company_income_stat_value(@company.id, calendar.calendar, 14, ins_scale)
+      value = Company.calculate_customer_variation clients_year1, clients_year0
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_clientes').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN VARIACIÓN CLIENTES
 
-          value = Company.calculate_crecimiento_sostenible net_margin, pas_tot_cap_cont, asset_turnover, dividends_paid_in_cash, net_profit
-          FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_sostenible').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value.round(1))
-        end
+      #####====== VARIACIÓN INVENTARIOS
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        inventory_year1 = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 3, @bs_scale)
+        inventory_year0 = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, 3, @bs_scale))
 
-        #CALCULO CON VALORES DE CAPTURA
-        net_margin              = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'margen_neto').try(:id)).first.try(:value)
-        pas_tot_cap_cont        = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'pas_total_cap_contable').try(:id)).first.try(:value)
-        asset_turnover          = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, f_reasons_concept_id: FReasonsConcept.find_by(key: 'rotacion_de_activos').try(:id)).first.try(:value)
-        dividends_paid_in_cash  = Company.convert_value_to_miles concil_scale, CompanyConciliation.where(calendar_id: calendar.calendar.id, conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), company_id: @company.id).first.try(:value)
-        net_profit              = Company.convert_value_to_miles ins_scale,income_calendar_detail_value(@company.id, calendar.calendar, 14, ins_scale)
-
-        #Los valores se convierten a MILES para calcular las razones.
-        value = Company.calculate_crecimiento_sostenible net_margin, pas_tot_cap_cont, asset_turnover, dividends_paid_in_cash, net_profit
-        FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'crecimiento_sostenible').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value.round(1))
+        value = Company.calculate_inventory_variance inventory_year1, inventory_year0
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_inventarios').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
       end
 
-      redirect_to "/company_details/#{@company.id}", notice: "Datos guardados."
+      #CALCULO CON VALORES DE CAPTURA
+      inventory_year1 = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 3, @bs_scale)
+      inventory_year0 = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : balance_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 3, @bs_scale))
 
-    rescue StandardError => e
-      p "Error: #{e}"
+      value = Company.calculate_inventory_variance inventory_year1, inventory_year0
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_inventarios').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN VARIACIÓN INVENTARIOS
+
+      #####====== VARIACIÓN PROVEEDORES
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        supplier_year1 = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 10, @bs_scale)
+        supplier_year0 = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, 10, @bs_scale))
+
+        value = Company.calculate_supplier_variation supplier_year1, supplier_year0
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_proveedores').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
+      end
+
+      #CALCULO CON VALORES DE CAPTURA
+      supplier_year1 = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 10, @bs_scale)
+      supplier_year0 = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : balance_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 10, @bs_scale))
+
+      value = Company.calculate_supplier_variation supplier_year1, supplier_year0
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_proveedores').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN VARIACIÓN PROVEEDORES
+
+      #####====== VARIACIÓN ANTICIPO CLIENTES
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        advance_customers1 = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 12, @bs_scale)
+        advance_customers0 = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, 12, @bs_scale))
+
+        value = Company.calculate_advance_customers advance_customers1, advance_customers0
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_anticipo_clientes').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
+      end
+
+      #CALCULO CON VALORES DE CAPTURA
+      advance_customers1 = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 12, @bs_scale)
+      advance_customers0 = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : balance_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 12, @bs_scale))
+
+      value = Company.calculate_advance_customers advance_customers1, advance_customers0
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_anticipo_clientes').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN VARIACIÓN ANTICIPO CLIENTES
+
+      #####====== FLUJO DE OPERACIÓN
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        gross_flow          = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_bruto').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+        customer_variation  = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_clientes').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+        inventory_variation = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_inventarios').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+        supplier_variation  = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_proveedores').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+        customer_advance_variation  = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_anticipo_clientes').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+
+        value = Company.calculate_operation_flow gross_flow, customer_variation, inventory_variation, supplier_variation, customer_advance_variation
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_operacion').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
+      end
+
+      #CALCULO CON VALORES DE CAPTURA
+      gross_flow          = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_bruto').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+      customer_variation  = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_clientes').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+      inventory_variation = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_inventarios').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+      supplier_variation  = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_proveedores').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+      customer_advance_variation  = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_anticipo_clientes').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+
+      value = Company.calculate_operation_flow gross_flow, customer_variation, inventory_variation, supplier_variation, customer_advance_variation
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_operacion').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN FLUJO DE OPERACIÓN
+
+      #####====== IMPUESTOS PAGADOS Y PTU
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        isr_value             = Company.convert_value_to_miles @ins_scale, company_income_stat_value(@company.id, calendar.calendar, 11, @ins_scale)
+        ptu_value             = Company.convert_value_to_miles @ins_scale, company_income_stat_value(@company.id, calendar.calendar, 12, @ins_scale)
+        contributions_payable = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 11, @bs_scale)
+
+        value = Company.calculate_paid_taxes_ptu isr_value, ptu_value, contributions_payable
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'impuestos_pagados_ptu').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
+      end
+
+      #CALCULO CON VALORES DE CAPTURA
+      isr_value             = Company.convert_value_to_miles @ins_scale, income_calendar_detail_value(@company.id, calendar.calendar, 11, @ins_scale)
+      ptu_value             = Company.convert_value_to_miles @ins_scale, income_calendar_detail_value(@company.id, calendar.calendar, 12, @ins_scale)
+      contributions_payable = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 11, @bs_scale)
+
+      value = Company.calculate_paid_taxes_ptu isr_value, ptu_value, contributions_payable
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'impuestos_pagados_ptu').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN IMPUESTOS PAGADOS Y PTU
+
+      #####====== GASTOS FINANCIEROS
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        financial_expense  = Company.convert_value_to_miles @ins_scale, company_income_stat_value(@company.id, calendar.calendar, 7, @ins_scale)
+
+        value = -(financial_expense)
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'gastos_financieros').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
+      end
+
+      #CALCULO CON VALORES DE CAPTURA
+      financial_expense  = Company.convert_value_to_miles @ins_scale, income_calendar_detail_value(@company.id, calendar.calendar, 7, @ins_scale)
+
+      value = -(financial_expense)
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'gastos_financieros').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN GASTOS FINANCIEROS
+
+      #####====== FLUJO NETO
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        operation_flow    = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_operacion').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+        paid_taxes_ptu    = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'impuestos_pagados_ptu').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+        financial_expense = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'gastos_financieros').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+
+        value = Company.calculate_net_flow operation_flow, paid_taxes_ptu, financial_expense
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_neto').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
+      end
+
+      #CALCULO CON VALORES DE CAPTURA
+      operation_flow    = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_operacion').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+      paid_taxes_ptu    = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'impuestos_pagados_ptu').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+      financial_expense = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'gastos_financieros').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+
+      value = Company.calculate_net_flow operation_flow, paid_taxes_ptu, financial_expense
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_neto').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN FLUJO NETO
+
+      #####====== VARIACIÓN EN ACTIVO FIJO
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        land_buildings_1      = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 5, @bs_scale)
+        machinery_equipment_1 = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 6, @bs_scale)
+        other_fixed_assets_1  = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 8, @bs_scale)
+
+        land_buildings_0      = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, 5, @bs_scale))
+        machinery_equipment_0 = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, 6, @bs_scale))
+        other_fixed_assets_0  = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, 8, @bs_scale))
+
+        accumulated_depreciation = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 7, @bs_scale)
+
+        value = Company.calculate_variation_fixed_assets land_buildings_1, machinery_equipment_1, other_fixed_assets_1, land_buildings_0, machinery_equipment_0, other_fixed_assets_0, accumulated_depreciation
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_activo_fijo').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
+      end
+
+      #CALCULO CON VALORES DE CAPTURA
+      land_buildings_1      = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 5, @bs_scale)
+      machinery_equipment_1 = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 6, @bs_scale)
+      other_fixed_assets_1  = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 8, @bs_scale)
+
+      land_buildings_0      = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : balance_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 5, @bs_scale))
+      machinery_equipment_0 = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : balance_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 6, @bs_scale))
+      other_fixed_assets_0  = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : balance_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 8, @bs_scale))
+
+      accumulated_depreciation = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 7, @bs_scale)
+
+      value = Company.calculate_variation_fixed_assets land_buildings_1, machinery_equipment_1, other_fixed_assets_1, land_buildings_0, machinery_equipment_0, other_fixed_assets_0, accumulated_depreciation
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_activo_fijo').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN VARIACIÓN EN ACTIVO FIJO
+
+      #####====== VARIACIÓN OTROS ACTIVOS
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        other_current_assets_1  = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 4, @bs_scale)
+        other_current_assets_0  = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, 4, @bs_scale))
+        charges_and_expenses_1  = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 9, @bs_scale)
+        charges_and_expenses_0  = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, 9, @bs_scale))
+
+        value = Company.calculate_variation_other_assets other_current_assets_1, other_current_assets_0, charges_and_expenses_1, charges_and_expenses_0
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_activos').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
+      end
+
+      #CALCULO CON VALORES DE CAPTURA
+      other_current_assets_1  = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 4, @bs_scale)
+      other_current_assets_0  = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : balance_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 4, @bs_scale))
+      charges_and_expenses_1  = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 9, @bs_scale)
+      charges_and_expenses_0  = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : balance_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 9, @bs_scale))
+
+      value = Company.calculate_variation_other_assets other_current_assets_1, other_current_assets_0, charges_and_expenses_1, charges_and_expenses_0
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_activos').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN VARIACIÓN OTROS ACTIVOS
+
+      #####====== VARIACIÓN OTROS PASIVOS
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        other_passives_1  = Company.convert_value_to_miles @bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 13, @bs_scale)
+        other_passives_0  = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : company_balance_sheet_value(@company.id, @calendar_fr[calendar_index-1].calendar, 13, @bs_scale))
+
+        value = Company.calculate_variation_other_liabilities other_passives_1, other_passives_0
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_pasivos').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
+      end
+
+      #CALCULO CON VALORES DE CAPTURA
+      other_passives_1  = Company.convert_value_to_miles @bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 13, @bs_scale)
+      other_passives_0  = Company.convert_value_to_miles @bs_scale, (calendar_index-1 < 0 ? 0 : balance_calendar_detail_value(@company.id, @calendar_fr[calendar_index-1].calendar, 13, @bs_scale))
+
+      value = Company.calculate_variation_other_liabilities other_passives_1, other_passives_0
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_pasivos').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN VARIACIÓN OTROS PASIVOS
+
+      #####====== AUMENTO/DISMINUCIÓN EN CAJA
+      #CALCULO CON VALORES DEL SAT
+      if calendar.calendar.period_type == 'anual'
+        net_flow              = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_neto').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+        var_fixed_assets      = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_activo_fijo').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+        var_other_assets      = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_activos').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+        var_other_liabilities = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_pasivos').try(:id), calendar_id: calendar.calendar.id, capture_type: 1).try(:value)
+
+        value = Company.calculate_cash_increase_decrease net_flow, var_fixed_assets, var_other_assets, var_other_liabilities
+        CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'aumento_disminucion_caja').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
+      end
+
+      #CALCULO CON VALORES DE CAPTURA
+      net_flow              = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_neto').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+      var_fixed_assets      = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_activo_fijo').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+      var_other_assets      = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_activos').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+      var_other_liabilities = CompanyFlow.find_by(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_pasivos').try(:id), calendar_id: calendar.calendar.id, capture_type: 2).try(:value)
+
+      value = Company.calculate_cash_increase_decrease net_flow, var_fixed_assets, var_other_assets, var_other_liabilities
+      CompanyFlow.create(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'aumento_disminucion_caja').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
+      #####====== FIN AUMENTO/DISMINUCIÓN EN CAJA
+    end
+
+    respond_to do |format|
+      if true
+        format.html { redirect_to "/company_details/#{@company.id}", notice: "Flujo de efectivo generado exitosamente." }
+      else
+        #format.json { render json: company.errors, status: :unprocessable_entity }
+      end
     end
   end
-
-  def save_data_cobertura_deuda
-    sort_order  = %w(anual trimestral mensual)
-    cd_data     = params[:data]
-    value_scale = params[:scale_select][:value_scale]
-    calendar_fr = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
-
-    ins_scale   = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
-    bs_scale    = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
-
-    begin
-      BalanceCalendarDetail.transaction do
-        cd_data.each do |e|
-          bs_detail = BalanceCalendarDetail.find_by(balance_concept_id: e[1][:concept_id], calendar_id: e[1][:period], company_id: @company.id)
-          if bs_detail.present?
-            raise ActiveRecord::Rollback unless bs_detail.update(value: e[1][:value], value_scale: value_scale)
-          else
-            raise ActiveRecord::Rollback unless BalanceCalendarDetail.new(balance_concept_id: e[1][:concept_id], calendar_id: e[1][:period], value: e[1][:value], balance_type: 'FACTOR', company_id: @company.id, value_scale: value_scale).save
-          end
-        end
-      end
-
-      #GUARDAR EN BD
-      FReasonsCompany.where(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_deuda').try(:id)).destroy_all
-
-      calendar_fr.each_with_index do |calendar, calendar_index|
-        #####====== COBERTURA DE DEUDA
-        #CALCULO CON VALORES DEL SAT
-        if calendar.calendar.period_type == "anual"
-          utility_op        = Company.convert_value_to_miles ins_scale, company_income_stat_value(@company.id, calendar.calendar, 5, ins_scale)
-          principal_payment = Company.convert_value_to_miles bs_scale,  BalanceCalendarDetail.where(calendar_id: calendar.calendar.id, balance_concept_id: BalanceConcept.find_by(key: 'pago_de_capital').try(:id), company_id: @company.id).first.try(:value)
-          financial_expense = Company.convert_value_to_miles ins_scale, company_income_stat_value(@company.id, calendar.calendar, 7, ins_scale)
-          value             = Company.calculate_interest_coverage utility_op, principal_payment, financial_expense
-          FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_deuda').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
-        end
-        #CALCULO CON VALORES DE CAPTURA
-        utility_op          = Company.convert_value_to_miles ins_scale, income_calendar_detail_value(@company.id, calendar.calendar, 5, ins_scale)
-        principal_payment  = Company.convert_value_to_miles bs_scale, BalanceCalendarDetail.where(calendar_id: calendar.calendar.id, balance_concept_id: BalanceConcept.find_by(key: 'pago_de_capital').try(:id), company_id: @company.id).first.try(:value)
-        financial_expense  = Company.convert_value_to_miles ins_scale, income_calendar_detail_value(@company.id, calendar.calendar, 7, ins_scale)
-        value = Company.calculate_interest_coverage utility_op, principal_payment, financial_expense
-        FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'cobertura_de_deuda').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
-        #####====== FIN COBERTURA DE DEUDA
-      end
-
-      redirect_to "/company_details/#{@company.id}", notice: "Datos guardados."
-
-    rescue StandardError => e
-      p "Error: #{e}"
-    end
-
-  end
-
-  def save_data_deuda_fin_lp
-    sort_order  = %w(anual trimestral mensual)
-    data_bs  = params[:data_bs]
-    data_is  = params[:data_is]
-    calendar_fr = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
-
-    ins_scale   = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
-    bs_scale    = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
-
-    begin
-      ####Bancos largo plazo
-      BalanceCalendarDetail.transaction do
-        data_bs.each do |e|
-          bs_detail = BalanceCalendarDetail.find_by(balance_concept_id: e[1][:concept_id], calendar_id: e[1][:period], company_id: @company.id)
-          if bs_detail.present?
-            raise ActiveRecord::Rollback unless bs_detail.update(value: e[1][:value], value_scale: bs_scale)
-          else
-            raise ActiveRecord::Rollback unless BalanceCalendarDetail.new(balance_concept_id: e[1][:concept_id], calendar_id: e[1][:period], value: e[1][:value], balance_type: 'FACTOR', company_id: @company.id, value_scale: bs_scale).save
-          end
-        end
-      end
-
-      ####Depreciación y amortización
-      IncomeCalendarDetail.transaction do
-        data_is.each do |e|
-          ic_detail = IncomeCalendarDetail.find_by(income_statement_concept_id: e[1][:concept_id], calendar_id: e[1][:period], company_id: @company.id)
-          if ic_detail.present?
-            raise ActiveRecord::Rollback unless ic_detail.update(value: e[1][:value], value_scale: ins_scale)
-          else
-            raise ActiveRecord::Rollback unless IncomeCalendarDetail.new(income_statement_concept_id: e[1][:concept_id], calendar_id: e[1][:period], value: e[1][:value], company_id: @company.id, value_scale: ins_scale).save
-          end
-        end
-      end
-
-      #GUARDAR EN BD
-      FReasonsCompany.where(company_id: @company.id, f_reasons_concept_id: [FReasonsConcept.find_by(key: 'deuda_financiera_lp').try(:id), FReasonsConcept.find_by(key: 'deuda_financiera_total').try(:id)]).destroy_all
-
-      calendar_fr.each_with_index do |calendar, calendar_index|
-        months = Company.calculate_months calendar.calendar.period_type
-
-        #####====== DEUDA FINANCIERA LP / UAFIRDA
-        #CALCULO CON VALORES DEL SAT
-        if calendar.calendar.period_type == "anual"
-          banks_lt          = Company.convert_value_to_miles bs_scale, BalanceCalendarDetail.where(calendar_id: calendar.calendar.id, balance_concept_id: BalanceConcept.find_by(key: 'bancos_lp').try(:id), company_id: @company.id).first.try(:value)
-          other_passives    = Company.convert_value_to_miles bs_scale, company_balance_sheet_value(@company.id, calendar.calendar, 13, bs_scale)
-          dep_and_amort     = Company.convert_value_to_miles ins_scale, IncomeCalendarDetail.where(calendar_id: calendar.calendar.id, income_statement_concept_id: IncomeStatementConcept.find_by(key: 'bancos_lp').try(:id), company_id: @company.id).first.try(:value)
-          utility_operation = Company.convert_value_to_miles ins_scale, company_income_stat_value(@company.id, calendar.calendar, 5, ins_scale)
-
-          value             = Company.calculate_finantial_lp banks_lt, other_passives, dep_and_amort, utility_operation, months
-          FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_lp').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
-        end
-        #CALCULO CON VALORES DE CAPTURA
-        banks_lt          = Company.convert_value_to_miles bs_scale, BalanceCalendarDetail.where(calendar_id: calendar.calendar.id, balance_concept_id: BalanceConcept.find_by(key: 'bancos_lp').try(:id), company_id: @company.id).first.try(:value)
-        other_passives    = Company.convert_value_to_miles bs_scale, balance_calendar_detail_value(@company.id, calendar.calendar, 13, @bs_scale)
-        dep_and_amort     = Company.convert_value_to_miles ins_scale, IncomeCalendarDetail.where(calendar_id: calendar.calendar.id, income_statement_concept_id: IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id), company_id: @company.id).first.try(:value)
-        utility_operation = Company.convert_value_to_miles ins_scale, income_calendar_detail_value(@company.id, calendar.calendar, 5, @ins_scale)
-
-        value             = Company.calculate_finantial_lp banks_lt, other_passives, dep_and_amort, utility_operation, months
-        FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_lp').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
-        #####====== FIN DEUDA FINANCIERA LP / UAFIRDA
-
-        #####====== DEUDA FINANCIERA TOTAL / UAFIRDA ======= PENDIENTE
-
-        #CALCULO CON VALORES DEL SAT
-        if calendar.calendar.period_type == "anual"
-          other_pas           = Company.convert_value_to_miles @bs_scale,  company_balance_sheet_value(@company.id, calendar.calendar, 13, @bs_scale)
-          utility_op          = Company.convert_value_to_miles @ins_scale, company_income_stat_value(@company.id, calendar.calendar, 5, @ins_scale)
-          dep_y_amort         = Company.convert_value_to_miles @ins_scale, IncomeCalendarDetail.where(income_statement_concept_id: IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id), calendar_id:  calendar.calendar.id, company_id: @company.id).first.try(:value)
-
-          banks_lt            = Company.convert_value_to_miles @bs_scale, BalanceCalendarDetail.where(balance_concept_id: BalanceConcept.find_by(key: 'bancos_lp').try(:id), calendar_id:  calendar.calendar.id, company_id: @company.id).first.try(:value)
-          banks_st            = Company.convert_value_to_miles @bs_scale, BalanceCalendarDetail.where(balance_concept_id: BalanceConcept.find_by(key: 'bancos_cp').try(:id), calendar_id:  calendar.calendar.id, company_id: @company.id).first.try(:value)
-
-          value               = Company.calculate_finantial_total utility_op, dep_y_amort, banks_st, banks_lt, other_pas, months
-          FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_total').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
-        end
-        #CALCULO CON VALORES DE CAPTURA
-        other_pas           = Company.convert_value_to_miles @bs_scale,  balance_calendar_detail_value(@company.id, calendar.calendar, 13, @bs_scale)
-        utility_op          = Company.convert_value_to_miles @ins_scale, income_calendar_detail_value(@company.id, calendar.calendar, 5, @ins_scale)
-        dep_y_amort         = Company.convert_value_to_miles @ins_scale, IncomeCalendarDetail.where(income_statement_concept_id: IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id), calendar_id:  calendar.calendar.id, company_id: @company.id).first.try(:value)
-
-        banks_lt           = Company.convert_value_to_miles @bs_scale, BalanceCalendarDetail.where(balance_concept_id: BalanceConcept.find_by(key: 'bancos_lp').try(:id), calendar_id:  calendar.calendar.id, company_id: @company.id).first.try(:value)
-        banks_st           = Company.convert_value_to_miles @bs_scale, BalanceCalendarDetail.where(balance_concept_id: BalanceConcept.find_by(key: 'bancos_cp').try(:id), calendar_id:  calendar.calendar.id, company_id: @company.id).first.try(:value)
-
-        value               = Company.calculate_finantial_total utility_op, dep_y_amort, banks_st, banks_lt, other_pas, months
-        FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_total').try(:id), calendar_id: calendar.calendar.id, capture_type: 2, value: value)
-        #####====== FIN DEUDA FINANCIERA TOTAL / UAFIRDA
-
-      end
-
-      redirect_to "/company_details/#{@company.id}", notice: "Datos guardados."
-
-    rescue StandardError => e
-      p "Error: #{e}"
-    end
-  end
-=end
 
   def save_extra_data
     sort_order  = %w(anual trimestral mensual)
-    data_flow   = params[:data_flow]
+    #data_flow   = params[:data_flow]
     data_conc   = params[:data_conc]
     data_bs     = params[:data_bs]
     data_is     = params[:data_is]
@@ -1137,6 +1294,7 @@ class CompaniesController < ApplicationController
     reasons_scale = 'miles'
 
     begin
+=begin
       CompanyFlow.transaction do
         data_flow.each do |e|
           company_flow = CompanyFlow.find_by(flow_concept_id: e[1][:concept_id], calendar_id: e[1][:period], company_id: @company.id)
@@ -1147,6 +1305,7 @@ class CompaniesController < ApplicationController
           end
         end
       end
+=end
 
       CompanyConciliation.transaction do
         data_conc.each do |e|
@@ -1227,7 +1386,7 @@ class CompaniesController < ApplicationController
           banks_st                = Company.convert_value_to_miles reasons_scale, BalanceCalendarDetail.where(calendar_id: calendar.calendar.id, balance_concept_id: BalanceConcept.find_by(key: 'bancos_cp').try(:id), company_id: @company.id).first.try(:value)
           other_pas_cp            = Company.convert_value_to_miles reasons_scale, BalanceCalendarDetail.where(calendar_id: calendar.calendar.id, balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_fin_cp').try(:id), company_id: @company.id).first.try(:value)
           principal_payment       = Company.convert_value_to_miles reasons_scale, BalanceCalendarDetail.where(calendar_id: calendar.calendar.id, balance_concept_id: BalanceConcept.find_by(key: 'pago_de_capital').try(:id), company_id: @company.id).first.try(:value)
-          other_pas_circ       = Company.convert_value_to_miles reasons_scale, BalanceCalendarDetail.where(calendar_id: calendar.calendar.id, balance_concept_id: BalanceConcept.find_by(key: 'pago_de_capital').try(:id), company_id: @company.id).first.try(:value)
+          other_pas_circ          = Company.convert_value_to_miles reasons_scale, BalanceCalendarDetail.where(calendar_id: calendar.calendar.id, balance_concept_id: BalanceConcept.find_by(key: 'pago_de_capital').try(:id), company_id: @company.id).first.try(:value)
 
           value  = Company.calculate_razon_circulante activo_circulante, providers, contributions_payable, advance_customers, banks_st, other_pas_cp, principal_payment, other_pas_circ
           FReasonsCompany.create(company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'razon_circulante').try(:id), calendar_id: calendar.calendar.id, capture_type: 1, value: value)
@@ -1407,6 +1566,50 @@ class CompaniesController < ApplicationController
     end
   end
 
+  def comments
+    @company      = Company.find(params[:company_id])
+    @comments     = Comment.where(company_id: params[:company_id], assigned_to: params[:assigned_to])
+    @comment_type = params[:assigned_to]
+
+    if @company.try(:info_company).present?
+      if @company.try(:info_company)['hydra:member'].present?
+        if @company.try(:info_company)['hydra:member'][0]['company'].present?
+          @company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+        else
+          @company_name = @company.try(:name)
+        end
+        if @company.try(:info_company)['hydra:member'][0]['address'].present?
+          @company_address = @company.try(:info_company)['hydra:member'][0]['address']['streetName'] +
+              @company.try(:info_company)['hydra:member'][0]['address']['streetNumber'] + ', COL. ' + @company.try(:info_company)['hydra:member'][0]['address']['neighborhood']
+          @company_state_municipality = @company.try(:info_company)['hydra:member'][0]['address']['state'] + ' / ' +
+              @company.try(:info_company)['hydra:member'][0]['address']['municipality']
+        else
+          @company_address = @company.try(:address)
+        end
+      else
+        @company_name = @company.try(:name)
+      end
+    else
+      @company_name = @company.try(:name)
+    end
+
+  end
+
+  def save_comment
+    comment_params =  params[:comment]
+    comment = Comment.new(comment: comment_params[:comment], user_id: current_user.id, assigned_to: comment_params[:assigned_to], company_id: comment_params[:company_id])
+
+    respond_to do |format|
+      if comment.save
+        format.html { redirect_to "/comments/#{comment_params[:company_id]}/#{comment_params[:assigned_to]}", notice: "Comentario guardado exitosamente."  }
+        format.js
+      else
+        format.html { render "/comments/#{comment_params[:company_id]}/#{comment_params[:assigned_to]}", status: :unprocessable_entity }
+        format.json { render json: user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def open_pdf
     @pdf = Base64.decode64(params[:file])
 
@@ -1431,11 +1634,8 @@ class CompaniesController < ApplicationController
     @company_bs = CompanyBalanceSheet.where(company_id: params[:id])
     @years      = @company_bs.pluck(:year).uniq.sort
   end
-
   def company_income_statement
-
   end
-
   ##CODIGO TENTATIVO A ELIMINAR====================##
 
   def process_date
@@ -1559,6 +1759,92 @@ class CompaniesController < ApplicationController
                disposition: "inline"
       end
     end
+  end
+
+  def dictamen_report
+    sort_order = %w(anual trimestral mensual)
+    @periods             = Calendar.all.order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.period_type) }
+    @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @calendar_fr         = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
+    @request             = Request.find_by(company_id: params[:id])
+    @request_comments    = RequestComment.where(request_id: params[:request_id])
+    @bs_comments         = Comment.where(company_id: @company.id, assigned_to: 'balance_sheet').order(:created_at)
+    @is_comments         = Comment.where(company_id: @company.id, assigned_to: 'income_statement').order(:created_at)
+    @fr_comments         = Comment.where(company_id: @company.id, assigned_to: 'financial_reasons').order(:created_at)
+    @cb_comments         = Comment.where(company_id: @company.id, assigned_to: 'credit_bureau').order(:created_at)
+    @cf_comments         = Comment.where(company_id: @company.id, assigned_to: 'cash_flow').order(:created_at)
+    @financial_inst      = @company.financial_institutions
+    @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
+    @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
+    @requests            = Request.where(company_id: params[:id])
+
+    if @company.cash_flow.present?
+      @cash_flow = @company.cash_flow.group_by{|c| [c['date']]}
+    else
+      @cash_flow = []
+    end
+
+    if @company.try(:info_company).present?
+      if @company.try(:info_company)['hydra:member'].present?
+        if @company.try(:info_company)['hydra:member'][0]['company'].present?
+          @company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+        else
+          @company_name = @company.try(:name)
+        end
+        if @company.try(:info_company)['hydra:member'][0]['address'].present?
+          @company_address = @company.try(:info_company)['hydra:member'][0]['address']['streetName'] +
+              @company.try(:info_company)['hydra:member'][0]['address']['streetNumber'] + ', COL. ' + @company.try(:info_company)['hydra:member'][0]['address']['neighborhood']
+          @company_state_municipality = @company.try(:info_company)['hydra:member'][0]['address']['state'] + ' / ' +
+              @company.try(:info_company)['hydra:member'][0]['address']['municipality']
+        else
+          @company_address = @company.try(:address)
+        end
+      else
+        @company_name = @company.try(:name)
+      end
+    else
+      @company_name = @company.try(:name)
+    end
+
+    credit_bureaus = @company.try(:credit_bureaus).try(:last)
+
+    if credit_bureaus.present?#@company.credit_bureaus.present?
+      if credit_bureaus.bureau_report['results'].present?
+        if credit_bureaus.bureau_report['results'][0]['response'].present?
+          @report_result = credit_bureaus.bureau_report['results'][0]
+        else
+          @report_result = credit_bureaus.bureau_report['results'][1]
+        end
+      else
+        @report_result = credit_bureaus.bureau_report
+      end
+
+      @credit_bureau = credit_bureaus
+
+      if @company.try(:client_type) == 'PF'
+        if @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito'].present?
+          @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
+        else
+          @score = 0
+        end
+      end
+
+    end
+
+    respond_to do |format|
+      format.html
+      # format.pdf { render  template: "companies/credit_bureau", pdf: "Reporte Buró de Crédito", type: "application/pdf" }   # Excluding ".pdf" extension.
+      format.pdf do
+        render pdf: "Dictámen",
+               template: "companies/dictamen_report.html.slim",
+               type: "application/pdf",
+               disposition: "inline",
+               encoding: 'UTF-8',
+               dpi: '300'
+      end
+    end
+
   end
 
   private

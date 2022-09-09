@@ -19,21 +19,7 @@
               .step-icon
                 i.fa.fa-hashtag
             .indicator-line#ind3
-            - if !@company.has_clients
-              .step#step4
-                .step-icon
-                  i.fa.fa-users
-              .indicator-line#ind4
-            - if !@company.has_providers
-              .step#step5
-                .step-icon
-                  i.fa.fa-users
-              .indicator-line#ind5
-            .step#step6
-              .step-icon
-                i.fa.fa-chart-line
-            .indicator-line#ind6
-            .step#step7
+            .step#step4
               .step-icon
                 i.fa.fa-file-alt
 
@@ -47,18 +33,7 @@
             .step-desc.active#stepDesc3
               span
               .title Número de colaboradores
-            - if !@company.has_clients
-              .step-desc.inactive#stepDesc4
-                span
-                .title Principales Clientes
-            - if !@company.has_providers
-              .step-desc.inactive#stepDesc5
-                span
-                .title Principales Proveedores
-            .step-desc.inactive#stepDesc6
-              span
-              .title Instituciones financieras
-            .step-desc.inactive#stepDesc7
+            .step-desc.inactive#stepDesc4
               span 
               .title Archivos
     .step-content.col-9
@@ -66,19 +41,9 @@
         button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('1','2')"
           i.fa.fa-chevron-left
           | Regresar
-        - if !@company.has_clients
-          button.btn.btn-default.nav-step-btn.btn-next type="button" id="buttonTwo" onclick="nextPageNew('3','2')"
-            | Siguiente
-            i.fa.fa-chevron-right
-        - else
-          - if !@company.has_providers && @company.has_clients
-            button.btn.btn-default.nav-step-btn.btn-next type="button" id="buttonTwo" onclick="nextPageNew('4','2')"
-              | Siguiente
-              i.fa.fa-chevron-right
-          - else
-            button.btn.btn-default.nav-step-btn.btn-next type="button" id="buttonTwo" onclick="nextPageNew('5','2')"
-              | Siguiente
-              i.fa.fa-chevron-right
+        button.btn.btn-default.nav-step-btn.btn-next type="button" id="buttonTwo" onclick="nextPageNew('3','2')"
+          | Siguiente
+          i.fa.fa-chevron-right
       .step-page.m-animate-fade-in-up
         .title
           div style=("color: #602BFA; width: 500px;")

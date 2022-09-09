@@ -18,10 +18,11 @@
                   span.input-group-append
                     button.m-portlet__nav-link.btn.btn-brand.m-btn.m-btn--icon.m-btn--icon-only.m-btn--pill.rounded-circle#searchInUsers type="submit"
                       i.la.la-search
-          li.m-portlet__nav-item
-            = link_item_block new_company_path, class: 'm-portlet__nav-link btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill rounded-circle',
-                    data: {'title': (t('helpers.new')), placement: 'top', toggle: 'm-tooltip', 'skin': "dark"}
-              i.la.la-plus
+          - if has_policy(Company, %w(new))
+            li.m-portlet__nav-item
+              = link_item_block new_company_path, class: 'm-portlet__nav-link btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill rounded-circle',
+                      data: {'title': (t('helpers.new')), placement: 'top', toggle: 'm-tooltip', 'skin': "dark"}
+                i.la.la-plus
           /- if has_policy('Companies::new', %w(new_company))
             li.m-portlet__nav-item
               = link_to new_company_path, class: 'm-portlet__nav-link btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill rounded-circle',
@@ -34,16 +35,16 @@
           .row.align-items-center.m--padding-10
             .col-xl-12.order-2.order-xl-1
               .form-group.m-form__group.row.align-items-center
-                .col-md-3
+                .col-md-4
                   .text-lg-left
                     label RFC
                   .m-input-icon.m-input
-                    = f.text_field :name_or_rfc, class: 'form-control m-input',
+                    = f.text_field :rfc_cont, class: 'form-control m-input',
                             placeholder: t('helpers.search')
                       span.m-input-icon__icon.m-input-icon__icon--left
                         span
                           i.la.la-search
-                .col-md-3
+                .col-md-4
                   .text-lg-left
                     label Nombre Compañia
                   .m-input-icon.m-input
@@ -52,7 +53,7 @@
                       span.m-input-icon__icon.m-input-icon__icon--left
                         span
                           i.la.la-search
-                .col-md-3
+                .col-md-4
                   .text-lg-left
                     label Estatus
                   .m-input-icon.m-input

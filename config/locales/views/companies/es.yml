@@ -53,13 +53,36 @@ es:
     AU: 'Compra de Automóvil'
     CC: 'Tarjeta de Crédito'
   payments_frecuency:
-    M: 'Pagos fijos'
-    Z: 'Pago minimo'
+    B: 'Bimestral'
+    D: 'Diario'
+    H: 'Semestral'
+    K: 'Catorcenal'
+    M: 'Mensual'
+    P: 'Deducción del salario'
+    Q: 'Trimestral'
+    S: 'Quincenal'
+    V: 'Variable'
+    W: 'Semanal'
+    Y: 'Anual'
+    Z: 'Pago mínimo'
   report_type:
     bureau_pm: 'Listas negras'
     bureau_pf: 'Listas negras'
     sat_1: 'RFC'
     sat_rfc: 'RFC'
+  credits_type:
+    1305: 'SIMPLE'
+    1322: 'ARREND'
+    1302: 'SIMPLE'
+  moneda:
+    '001': 'MXP'
+  tipo_responsabilidad:
+    I: 'Individual'
+
+  tipo_contrato:
+    PL: 'Préstamo personal'
+    CC: 'Tarjeta de crédito'
+    UK: 'Desconocido'
 
 
   companies:

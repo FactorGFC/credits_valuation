@@ -93,6 +93,10 @@ class User < ApplicationRecord
     role_key.eql?('promotion_area')
   end
 
+  def super_user?
+    role_key.in?(['god', 'credit_management', 'credit_area', 'promotion_area'])
+  end
+
   def has_total_scope?
     role_scope.eql?('total')
   end
