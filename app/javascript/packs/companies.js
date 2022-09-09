@@ -8,7 +8,6 @@ const phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
 
 $(document).on('turbolinks:load', function () {
 
-    console.log("ENTRE AL companies");
     $(document).on("click", ".open-modal-request", function () {
         var requestId       = $(this).data('id');
         var companyId       = $(this).data('companyid');
@@ -24,7 +23,6 @@ $(document).on('turbolinks:load', function () {
             }
         }
 
-        console.log(processStatus['key']);
         //Evalua si fue rechazado
         if(processStatus['key'] == 'denied_validated_period'){
             if(document.getElementById('input_status_process')){
@@ -101,8 +99,6 @@ $(document).on('turbolinks:load', function () {
     }
     var moreInfoPF = document.getElementById("moreInfoPF");
     if (moreInfoPF) {
-        console.log('MORE INFO');
-        console.log(moreInfoPF);
         moreInfoPF.style.display = "none";
     }
 
@@ -110,7 +106,6 @@ $(document).on('turbolinks:load', function () {
         var moreInfo = document.getElementById("moreInfo");
         var btnShow = document.getElementById("btn-show-info");
         var btnHide = document.getElementById("btn-hide-info");
-        console.log("btnHide", btnHide);
         moreInfo.style.display = "inline";
         btnHide.style.display = "block";
         btnShow.style.display = "none";
@@ -129,7 +124,6 @@ $(document).on('turbolinks:load', function () {
         var moreInfo = document.getElementById("moreInfoPF");
         var btnShow = document.getElementById("btn-show-info-pf");
         var btnHide = document.getElementById("btn-hide-info-pf");
-        console.log("btnHide", btnHide);
         moreInfo.style.display = "inline";
         btnHide.style.display = "block";
         btnShow.style.display = "none";
@@ -220,5 +214,30 @@ $(document).on('turbolinks:load', function () {
         const ut_neta               = $(`[name="${utilidad_neta}"]`);
 
         ut_neta.val(parseFloat(utilidad_ai_val) - parseFloat(isr_val) - parseFloat(ptu_val) - parseFloat(participacion_sub_val)).change();
+    };
+    
+
+    window.validateDataCompany = function(){
+        var name_id = document.getElementById('name_id');
+        var last_name_id = document.getElementById('last_name_id');
+        var phone_input = document.getElementById('phone_input');
+        var email_input = document.getElementById('email_input');
+        var company_name_id = document.getElementById('company_name_id');
+        var rfc_input = document.getElementById('rfc_input');
+        var address_id = document.getElementById('address_id');
+        var status_id = document.getElementById('status_id');
+
+        if(name_id.value !== '' && name_id.value !== undefined && name_id.value !== null && last_name_id.value !== ''
+            && last_name_id.value !== undefined && last_name_id.value !== null && phone_input.value !== ''
+            && phone_input.value !== undefined && phone_input.value !== null && email_input.value !== ''
+            && email_input.value !== undefined && email_input.value !== null && company_name_id.value !== ''
+            && company_name_id.value !== undefined && company_name_id.value !== null && rfc_input.value !== ''
+            && rfc_input.value !== undefined && rfc_input.value !== null && address_id.value !== ''
+            && address_id.value !== undefined && address_id.value !== null && status_id.value !== ''
+            && status_id.value !== undefined && status_id.value !== null){
+            var companyBtn = document.getElementById("companyBtn");
+            companyBtn.classList.remove("btn-section-disabled");
+
+        }
     };
 });
