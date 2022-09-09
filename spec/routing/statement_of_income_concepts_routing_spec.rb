@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe StatementOfIncomeConceptsController, type: :routing do
+RSpec.describe IncomeStatementConceptsController, type: :routing do
   describe "routing" do
     it "routes to #index" do
       expect(get: "/income_statement_concepts").to route_to("income_statement_concepts#index")
