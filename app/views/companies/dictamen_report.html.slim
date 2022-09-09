@@ -518,9 +518,6 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                           = bureau_report['status']
                         .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                           = bureau_report['createdAt'].to_datetime.strftime('%d-%m-%Y')
-                        .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
-                          a href="/credit_bureaus/#{bureau_report['id']}"
-                            |Ver reporte
                 - else
                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                     .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
