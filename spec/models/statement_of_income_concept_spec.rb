@@ -17,6 +17,6 @@
 #
 require 'rails_helper'
 
-RSpec.describe StatementOfIncomeConcept, type: :model do
+RSpec.describe IncomeStatementConcept, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"
 end
