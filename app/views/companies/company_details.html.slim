@@ -355,12 +355,6 @@ javascript:
                                 - if @company.income_calendar_details.present? or @company.balance_calendar_details.present?
                                   a.dropdown-item target="_blank" href="#{dictamen_report_path(@company.id, request.id, format: :pdf)}"
                                     | Dictamen
-                                  /button.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action.mb-1.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
-                              span
-                                span = "Detalles"
-                                  /a.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action href="/request_comments/#{request.id}"
-                              span
-                                span = "Comentarios"
           .col-md-4
             .btns-card
               .subtitle-icon.d-flex.justify-content-center.align-items-center
