@@ -9,8 +9,6 @@ require("@rails/activestorage").start();
 require("channels");
 // require("@angular");
 
-console.log("Applicationnnn");
-
 require("jquery");
 require("bootstrap");
 require("bootstrap-datepicker/js/bootstrap-datepicker");
