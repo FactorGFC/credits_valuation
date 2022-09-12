@@ -366,8 +366,6 @@ javascript:
               - else
                 span.text-center
                   | Es necesario validar la solicitud.
-                    /button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_income" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="income_statement" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
-                    /  = "Estado Resultados"
 
             .btns-card.mt-30
               .subtitle-icon.d-flex.justify-content-center.align-items-center
