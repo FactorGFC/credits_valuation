@@ -56,22 +56,28 @@
     height:     100%;
 }
 
-.body-info-one {
+.body-info-green {
     background: #6cdc81 !important;
     overflow:   auto;
     text-align: center;
     color:      dimgray;
 }
 
-.body-info-two {
+.body-info-yellow {
     background: #f2d753 !important;
     overflow:   auto;
     text-align: center;
     color:      dimgray;
 }
 
-.body-info-x {
+.body-info-red {
     background: #f27670 !important;
+    overflow:   auto;
+    text-align: center;
+    color:      dimgray;
+}
+.body-info-white {
+    background: #FFFFFF !important;
     overflow:   auto;
     text-align: center;
     color:      dimgray;

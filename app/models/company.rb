@@ -87,8 +87,6 @@ class Company < ApplicationRecord
     if company.user.present?
       company.user.delete
     end
-    p "company.number_collaborator.present? --------------------------------------------------------"
-    p company.number_collaborator.present?
     if company.number_collaborator.present?
 
       company.number_collaborator.delete

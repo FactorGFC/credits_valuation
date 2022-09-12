@@ -1006,15 +1006,19 @@ javascript:
                                             - if v[:value] == 0
                                               .m-stack__item.body-info-company.m-stack__item--middle
                                             - elsif v[:value] == '1'
-                                              .m-stack__item.body-info-one.m-stack__item--middle
+                                              .m-stack__item.body-info-green.m-stack__item--middle
                                                 strong
                                                   = v[:value]
-                                            - elsif v[:value] == '2'
-                                              .m-stack__item.body-info-two.m-stack__item--middle
+                                            - elsif v[:value] == '2' || v[:value] == '3' || v[:value] == '4'
+                                              .m-stack__item.body-info-yellow.m-stack__item--middle
+                                                strong
+                                                  = v[:value]
+                                            - elsif v[:value] == '5' || v[:value] == '6' || v[:value] == '7'
+                                              .m-stack__item.body-info-red.m-stack__item--middle
                                                 strong
                                                   = v[:value]
                                             - else
-                                              .m-stack__item.body-info-x.m-stack__item--middle
+                                              .m-stack__item.body-info-white.m-stack__item--middle
                                                 strong
                                                   = v[:value]
                                       hr.dotted

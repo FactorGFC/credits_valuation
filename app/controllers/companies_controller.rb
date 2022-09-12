@@ -12,7 +12,7 @@ class CompaniesController < ApplicationController
       @user.update company_id: params[:company_id]
     end
 
-    if @user.try(:company).present?
+    if @user.enterprise?
       @search_companies = policy_scope(Company).ransack(params[:q])
       @company = @search_companies.result.first
 
