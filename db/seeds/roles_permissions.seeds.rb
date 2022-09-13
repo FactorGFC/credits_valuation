@@ -77,6 +77,3 @@ after :permissions do
 
   ])
 end
-
-PermissionsRole.create!([{role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Validar o rechazar compañia').id},
-                         {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Validar o rechazar compañia').id}])

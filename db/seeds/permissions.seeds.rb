@@ -90,4 +90,3 @@ after :initialize_permissions do
   #
 end
 
-Permission.create!([{name: 'Validar o rechazar compañia', description: 'Permite validar o rechazar la compañia.', action: 'validate_company', controller: 'Companies'}])
