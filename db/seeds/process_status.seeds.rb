@@ -28,7 +28,7 @@
 
     {name: 'Liberación', key: 'release', order: 11, active: true },
   ])
-
+  
 
 =begin
   ProcessStatus.first.update name: 'Analista Asignado', key: 'analist', order: 1, active: true
