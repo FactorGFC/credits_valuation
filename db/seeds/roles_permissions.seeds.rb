@@ -73,7 +73,28 @@ after :permissions do
                             {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Ver vista de detalles de la compañia').id},
                             {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Ver vista de detalles de la compañia').id},
                             {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Validar o rechazar compañia').id},
-                            {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Validar o rechazar compañia').id}
+                            {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Validar o rechazar compañia').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Ver vista de detalles de la compañia').id},
+                            {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver eventos').id},
+                            {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver acuerdos en eventos').id}
 
   ])
 end
+PermissionsRole.where(role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver acuerdos en eventos').id)
+
+
+PermissionsRole.create!([{role_id: Role.find_by_key('credit_area').id,    permission_id: Permission.find_by_name('Ver vista para crear una nueva compañia').id},
+                         {role_id: Role.find_by_key('credit_area').id,    permission_id: Permission.find_by_name('Crear compañia').id},
+                         {role_id: Role.find_by_key('promotion_area').id,    permission_id: Permission.find_by_name('Ver vista para crear una nueva compañia').id},
+                         {role_id: Role.find_by_key('promotion_area').id,    permission_id: Permission.find_by_name('Crear compañia').id},
+                         {role_id: Role.find_by_key('promotion_area').id,    permission_id: Permission.find_by_name('Ver compañias').id},
+                         {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Ver vista de detalles de la compañia').id},
+                         {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Ver vista de detalles de la compañia').id},
+                         {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Validar o rechazar compañia').id},
+                         {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Ver vista de detalles de la compañia').id},
+                         {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver eventos').id},
+                         {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver acuerdos en eventos').id}
+                        ])
+
+
+

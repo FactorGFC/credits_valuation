@@ -283,6 +283,7 @@ class CompaniesController < ApplicationController
 
   def company_details
     sort_order = %w(anual trimestral mensual)
+    @user = current_user
     @periods             = Calendar.all.order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.period_type) }
     @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
     @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }

@@ -82,11 +82,10 @@ after :initialize_permissions do
                          #29-Ago-2022
                          {name: 'Habilitar captura', description: 'Permite habilitar captura', action: 'change_capture_status', controller: 'Companies'},
 
-                         #12-09-2022
+                         #12-Sept-2022
                          {name: 'Ver vista para crear una nueva compañia', description: 'Permite entrar a la vista para crear una nueva compañia', action: 'new', controller: 'Companies'},
                          {name: 'Crear compañia', description: 'Permite crear compañias.', action: 'create', controller: 'Companies'},
                          {name: 'Validar o rechazar compañia', description: 'Permite validar o rechazar la compañia.', action: 'validate_company', controller: 'Companies'}
                      ])
   #
 end
-

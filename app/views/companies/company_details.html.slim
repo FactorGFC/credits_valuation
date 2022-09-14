@@ -2685,11 +2685,12 @@ javascript:
           input type="hidden" name="request_id" id="requestId" value=""
           input type="hidden" name="company_id" id="companyId" value=""
           .col-xl-12 style="display: grid;"
-            p#textModal
-              | Asignar Analista
-            = select("request", "analyst_id", User.where(role_id: Role.find_by(key: 'analyst').try(:id)).collect { |p| [p.full_name, p.id] }, {include_blank: 'Selecciona analista'}, {class: "form-control m-input", disabled: (current_user.god? or current_user.credit_management? or current_user.credit_area? or current_user.promotion_area?) ? false : true})
+            - unless @user.role.key == 'credit_management'
+              p#textModal
+                | Asignar Analista
+              = select("request", "analyst_id", User.where(role_id: Role.find_by(key: 'analyst').try(:id)).collect { |p| [p.full_name, p.id] }, {include_blank: 'Selecciona analista'}, {class: "form-control m-input", disabled: (current_user.god? or current_user.credit_management? or current_user.credit_area? or current_user.promotion_area?) ? false : true})
 
-          - if @company.company_calendar_details.present?
+          - if @company.company_calendar_details.present? && @user.role.key != 'credit_management'
             .col-xl-12#input_credit_type style="display: none;"
               p.mt-20#textModal
                 | Asignar Tipo de Crédito
@@ -2702,7 +2703,7 @@ javascript:
             p.mt-20#textModal
               | Asignar Status del Proceso
             div style="display: grid;"
-              = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: false}, {class: "form-control m-input"})
+              = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona una opción'}, {class: "form-control m-input"})
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar
