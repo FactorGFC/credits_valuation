@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature "Destroying Roles", type: :feature do
   let(:user) {
     role = create(:role, :god)
-    create(:user, role: role)
+    create(:user, role: role, phone: '123123123')
   }
 
   before(:example) do

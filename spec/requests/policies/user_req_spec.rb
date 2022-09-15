@@ -6,7 +6,7 @@ RSpec.describe 'User requested', type: :request do
   }
 
   let (:user) {
-    create(:user, role: role)
+    create(:user, role: role, phone: '123123123')
   }
 
   before(:example) do

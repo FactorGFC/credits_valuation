@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Sessions', type: :request do
   before(:example) do
-    @user = create(:user)
+    @user = create(:user, phone: '123123123')
   end
 
   describe 'GET /sign_in' do
@@ -53,7 +53,7 @@ RSpec.describe 'Sessions', type: :request do
 
       sign_out @user
       get authenticated_root_path
-      expect(controller.current_user).to be_nil
+      expect(controller.try(:current_user)).to be_nil
     end
   end
 end

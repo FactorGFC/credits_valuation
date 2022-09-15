@@ -5,6 +5,6 @@
       .row
         .col-lg-12
           = f.submit t('helpers.submit.submit', model: t('.resource')), class: 'btn btn-primary'
-          - if has_policy(Status Company, %w(index))
+          - if has_policy(StatusCompany, %w(index))
             =< link_to status_companies_path, class: 'btn btn-secondary'
               = t('helpers.go_to', resource: t('.back_resource'))

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Registrations', type: :request do
   let (:user) {
     @role = create(:role, :god)
-    create(:user, role: @role)
+    create(:user, role: @role, phone: '123123123')
   }
 
   before(:example) do
@@ -27,12 +27,12 @@ RSpec.describe 'Registrations', type: :request do
   describe 'POST /users' do
     context 'with valid parameters' do
       it 'creates a new user' do
-        expect{post create_user_path, params: {user: attributes_for(:user, email: 'email@example.com').merge!(role_id: @role.id)}
+        expect{post create_user_path, params: {user: attributes_for(:user, email: 'email@example.com',phone:'6141972726').merge!(role_id: @role.id)}
         }.to change(User, :count).by(1)
       end
 
       it 'redirects to users list' do
-        post create_user_path, params: {user: attributes_for(:user, email: 'email@example.com').merge!(role_id: @role.id)}
+        post create_user_path, params: {user: attributes_for(:user, email: 'email@example.com',phone:'6141972726').merge!(role_id: @role.id)}
         expect(response).to redirect_to(user_registrations_path)
       end
     end
@@ -59,7 +59,7 @@ RSpec.describe 'Registrations', type: :request do
 
   describe 'PUT /users/:id' do
     before(:example) do
-      @user = create(:user, email: 'email@example.com')
+      @user = create(:user, email: 'email@example.com',phone: '123123123')
     end
 
     context 'with valid parameters' do
@@ -123,12 +123,12 @@ RSpec.describe 'Registrations', type: :request do
 
     context 'user is not current user' do
       it 'deletes user' do
-        user = create(:user, email: 'email@example.com')
+        user = create(:user, email: 'email@example.com', phone: '123123123')
         expect{ delete destroy_user_registration_path(user.id)}.to change(User, :count)
       end
 
       it 'redirects to the users list' do
-        user = create(:user, email: 'email@example.com')
+        user = create(:user, email: 'email@example.com', phone: '123123123')
         delete destroy_user_registration_path(user.id)
         expect(response).to redirect_to(user_registrations_path)
       end
@@ -137,7 +137,7 @@ RSpec.describe 'Registrations', type: :request do
 
   describe 'GET /users/:id/change_user_password' do
     it 'returns a success response' do
-      user = create(:user, :default, role: create(:role))
+      user = create(:user, :default, role: create(:role), phone: '123123123')
       get change_user_password_path(user)
       expect(response).to have_http_status(200)
     end
@@ -145,7 +145,7 @@ RSpec.describe 'Registrations', type: :request do
 
   describe 'GET /users/:id/save_user_password' do
     it 'returns a success response' do
-      user = create(:user, :default, role: create(:role))
+      user = create(:user, :default, role: create(:role), phone: '123123123')
       put save_user_password_path(user),  params: {
           user: { password: 'newpassword',
                   password_confirmation: 'newpassword'}}

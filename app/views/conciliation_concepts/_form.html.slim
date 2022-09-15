@@ -17,6 +17,6 @@
       .row
         .col-lg-12
           = f.submit t('helpers.submit.submit', model: t('.resource')), class: 'btn btn-primary'
-          - if has_policy(Conciliation Concept, %w(index))
+          - if has_policy(ConciliationConcept, %w(index))
             =< link_to conciliation_concepts_path, class: 'btn btn-secondary'
               = t('helpers.go_to', resource: t('.back_resource'))

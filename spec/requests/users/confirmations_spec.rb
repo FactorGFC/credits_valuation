@@ -11,7 +11,7 @@ RSpec.describe 'Confirmations', type: :request do
   describe 'POST /confirmation' do
     context 'with valid user email' do
       it 'redirects to login page' do
-        user = create(:user, confirmed_at: nil)
+        user = create(:user, confirmed_at: nil,phone: '123123123')
         post user_confirmation_path, params: {user: {email: user.email}}
         expect(response).to redirect_to(new_user_session_path)
       end
@@ -19,7 +19,7 @@ RSpec.describe 'Confirmations', type: :request do
 
     context 'with already confirmed user' do
       it 'returns a success response (to display the :new template)' do
-        user = create(:user)
+        user = create(:user, phone: '123123123')
         user.confirm
         post user_confirmation_path, params: {user: {email: user.email}}
         expect(response).to have_http_status(200)

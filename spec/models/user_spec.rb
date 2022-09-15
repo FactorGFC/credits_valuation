@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                     :bigint           not null, primary key
+#  audit                  :boolean
 #  avatar                 :string
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string
@@ -18,14 +19,17 @@
 #  last_sign_in_ip        :string
 #  new_password           :string
 #  phone                  :string
+#  registry               :boolean
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  reviewer               :boolean
 #  sign_in_count          :integer          default(0), not null
 #  unconfirmed_email      :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  company_id             :bigint
+#  current_process_id     :integer
 #  role_id                :bigint
 #  sat_id                 :string
 #
@@ -48,7 +52,7 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   before(:example) do
     role = create(:role, :god)
-    @user = build(:user, role: role)
+    @user = build(:user, role: role,phone: '123123123')
   end
 
   it 'is valid with valid attributes' do

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature 'Destroying Permissions', type: :feature do
   let(:user) do
     role = create(:role, :god)
-    create(:user, role: role)
+    create(:user, role: role, phone: '123123123')
   end
 
   before(:example) do

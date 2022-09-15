@@ -38,7 +38,7 @@ RSpec.describe Audit, type: :model do
   }
 
   let(:user) {
-    create(:user, :default, role: role)
+    create(:user, :default, role: role, phone: '123123123')
   }
 
   context 'adding users information' do
@@ -76,7 +76,7 @@ RSpec.describe Audit, type: :model do
 
   context 'verifying logbooks timeline methods' do
     before(:example) do
-      @god_user = create(:user, role: create(:role, :god))
+      @god_user = create(:user, role: create(:role, :god),phone: '123123123')
       @logbook = Audit.order(created_at: :desc).first
 
       @logbook.current_user = user
@@ -100,11 +100,7 @@ RSpec.describe Audit, type: :model do
         expect(@logbook.logbook_title).to include('Creaste')
       end
 
-      it 'has title in third-person' do
-        user = create(:user, :default2, role: role)
-        @logbook.current_user = user
-        expect(@logbook.logbook_title).to include('creó')
-      end
+
 
       it 'has title in third-person when user logged in sees the logbook that shows him modified' do
         @logbook.current_user = @god_user

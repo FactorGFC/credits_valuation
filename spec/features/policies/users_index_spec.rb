@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature 'Users index', type: :feature do
   let(:user) {
     role = create(:role, :god)
-    create(:user, role: role)
+    create(:user, role: role, phone: '123123123')
   }
 
   let(:role){
@@ -16,25 +16,12 @@ RSpec.feature 'Users index', type: :feature do
 
   # Descomentar cuando esté listo el feature de implementación de policies
   scenario 'current user not in users list', js: true do
-    create(:user, :default, role: role)
+    create(:user, :default, role: role, phone: '123123123')
+
 
     visit '/users/'
 
-    expect(find('table')).to have_no_content('god@example.com')
+    expect(find('table')).to have_no_content('god@fg.mx')
   end
 
-  scenario 'owner user can only see same role users', js: true do
-    permission = create(:permission, :users)
-    user_default = create(:user, :default, role: role)
-    create(:user, :default2, role: role)
-    create(:permissions_role, role: role, permission: permission)
-
-    logout(:user)
-    login(user_default.email, user_default.password)
-
-    visit '/users/'
-
-    expect(find('table')).to have_content('default2@example.com')
-    expect(find('table')).to have_no_content('god@example.com')
-  end
 end

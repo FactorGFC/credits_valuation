@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Permissions', type: :request do
   let (:user) {
     role = create(:role, :god)
-    create(:user, role: role)
+    create(:user, role: role, phone: '123123123')
   }
 
   before(:example) do
