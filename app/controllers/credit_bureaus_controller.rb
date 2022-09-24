@@ -1,4 +1,4 @@
-class Api::V1::CreditBureausController < ApplicationController
+class CreditBureausController < ApplicationController
   before_action :set_credit_bureau, only: %i[ edit update destroy ]
 
   # GET /credit_bureaus or /credit_bureaus.json
