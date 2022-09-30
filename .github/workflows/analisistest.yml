@@ -29,36 +29,36 @@ jobs:
         with:
           ruby-version: 2.7.6
           bundler-cache: false
-      # - uses: actions/checkout@v2
-      # - uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '14'
-      #     cache: 'npm'
-      # - run: npm install
-      # - run: npm test
-      # - name: Build and run test
-      #   env:
-      #     DATABASE_URL: postgres://factor:fc01551025@localhost:5432/factor_backend_test
-      #     REDIS_URL: redis://localhost:6379/0
-      #     RAILS_ENV: test
-      #     POSTGRES_USER: postgres
-      #     POSTGRES_PASSWORD: pg01551025
-      #   run: |
-      #     sudo apt-get install libmagickwand-dev imagemagick nginx nodejs git-core curl build-essential openssl curl zlib1g zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev autoconf libc6-dev nmon
-      #     curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
-      #     curl -L https://get.rvm.io | bash -s stable
-      #     sudo apt-get install libpq-dev
-      #     sudo apt-get install -y nodejs
-      #     sudo apt-get update
-      #     sudo gem install bundler -v '2.2.22'
-      #     bundler -v
-      #     bundle package
-      #     bundle install --jobs 4 --retry 3
-      #     bundle exec rake db:create
-      #     bundle exec rake db:migrate
-      #     bundle exec rspec .
-      #     bundle exec rails webpacker:compile
-      #     rake assets:precompile
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+      - run: npm install
+      - run: npm test
+      - name: Build and run test
+        env:
+          DATABASE_URL: postgres://factor:fc01551025@localhost:5432/factor_backend_test
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_ENV: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: pg01551025
+        run: |
+          sudo apt-get install libmagickwand-dev imagemagick nginx nodejs git-core curl build-essential openssl curl zlib1g zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev autoconf libc6-dev nmon
+          curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
+          curl -L https://get.rvm.io | bash -s stable
+          sudo apt-get install libpq-dev
+          sudo apt-get install -y nodejs
+          sudo apt-get update
+          sudo gem install bundler -v '2.2.22'
+          bundler -v
+          bundle package
+          bundle install --jobs 4 --retry 3
+          bundle exec rake db:create
+          bundle exec rake db:migrate
+          bundle exec rspec .
+          bundle exec rails webpacker:compile
+          rake assets:precompile
       - name: Generate deployment package
         run: |
           zip -r deploy.zip . -x '*.git*'
