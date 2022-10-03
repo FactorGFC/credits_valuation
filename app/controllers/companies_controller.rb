@@ -1742,7 +1742,7 @@ class CompaniesController < ApplicationController
   def credit_bureau_report
     @company = Company.find(params[:id])
 
-    @bureau_report = BuroCredito.get_buro_report 4450
+    @bureau_report = BuroCredito.get_buro_report @company.try(:buro_id),@company.try(:info_company)
 
     respond_to do |format|
       if @company.try(:credit_bureaus).last.update(bureau_report: @bureau_report)

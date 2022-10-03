@@ -371,7 +371,7 @@ javascript:
               .subtitle-icon.d-flex.justify-content-center.align-items-center
                 i.fa.fa-sync.fa-lg.m--font-primary
               h5.h5.subtitle = 'Información faltante de compañía'
-              - if @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present?
+              - if @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present? and company_have_credit_bureau(@credit_bureau)
                 span.text-center
                   | Todo en orden.
               - else
@@ -388,7 +388,7 @@ javascript:
                 - unless @company.try(:credit_bureaus).last.try(:bureau_info).present?
                   = link_to credit_bureau_info_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                     = "Info. Buró de crédito"
-                - unless @company.try(:credit_bureaus).last.try(:bureau_report).present?
+                - unless company_have_credit_bureau @credit_bureau['bureau_report']
                   = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                     = "Reporte del buró de crédito"
 

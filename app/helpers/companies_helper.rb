@@ -578,18 +578,6 @@ module CompaniesHelper
 
     sum2_div = utility_op + dep_y_amort
 
-    p '=======CONTROLLER=========='
-    p '=======CONTROLLER=========='
-    p '=======CONTROLLER=========='
-    p utility_op
-    p dep_y_amort
-    p bancos_lp_otros_pas
-    p sum2_div
-    p other_pas
-    p ((bancos_lp_otros_pas+other_pas)/(((utility_op+dep_y_amort)/months)*12)).round(2)
-    p '================='
-    p '================='
-    p '================='
     if sum2_div < 0
       return 'UAFIRDA Neg.'
     elsif sum2_div == 0
@@ -1238,6 +1226,19 @@ module CompaniesHelper
 
     return month.to_s + '-' + year.to_s
 
+  end
+
+  def company_have_credit_bureau credit_bureau
+    result = false
+    if credit_bureau.present?
+      if credit_bureau['bureau_report']
+        if credit_bureau['bureau_report']['results'].present?
+          result = true 
+        end
+      end
+    end
+
+    return result
   end
 
   

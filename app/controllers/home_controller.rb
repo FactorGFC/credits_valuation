@@ -133,21 +133,14 @@ class HomeController < ApplicationController
 
                           @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
                         else
-                          @bureau_report = BuroCredito.get_buro_report 60742 #
-                          # ,@info #4450 60368
-                          p "@bureau_report ---------------------------------------------------------------------------------------------------------------------"
-                          p @bureau_report
+                          @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
 
                         end
 
 
 
                         # @bureau_report = BuroCredito.get_report_by_id 12468
-                        # @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @info
-                        @bureau_info = BuroCredito.get_buro_info 60742, @info
-
-                        p "@bureau_info --------------------------------------------------------------------------------"
-                        p @bureau_info
+                        @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @info
 
                         if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
                           if @user.update(sat_id: @sat['id'])
