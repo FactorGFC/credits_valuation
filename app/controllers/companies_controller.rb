@@ -349,8 +349,12 @@ class CompaniesController < ApplicationController
       @credit_bureau = credit_bureaus
 
       if @company.try(:client_type) == 'PF'
-        if @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito'].present?
-          @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
+        if @report_result['response'].present?
+          if @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito'].present?
+            @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
+          else
+            @score = 0
+          end
         else
           @score = 0
         end
