@@ -76,7 +76,10 @@ after :permissions do
                             {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Validar o rechazar compañia').id},
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Ver vista de detalles de la compañia').id},
                             {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver eventos').id},
-                            {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver acuerdos en eventos').id}
+                            {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver acuerdos en eventos').id},
+
+                            #10-10-2022
+                            {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Asignar detalles a solicitud').id}
 
   ])
 end
