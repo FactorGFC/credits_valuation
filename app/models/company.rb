@@ -6,9 +6,11 @@
 #  address                   :string
 #  balance_sheet             :jsonb
 #  balance_sheet_finished    :boolean
+#  cash_flow                 :jsonb
 #  cer_encoded               :text
 #  client_type               :string
 #  complete                  :boolean
+#  confirmation_message      :boolean
 #  credential_company        :jsonb
 #  customers                 :jsonb
 #  group_company             :boolean
@@ -30,6 +32,7 @@
 #  step_six                  :boolean
 #  step_three                :boolean
 #  step_two                  :boolean
+#  welcome_message           :boolean
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  buro_id                   :string
@@ -58,6 +61,7 @@ class Company < ApplicationRecord
   has_many :balance_calendar_details
   has_many :company_calendar_details
   has_many :income_calendar_details
+  has_many :company_conciliations
   has_many :company_income_statements
   has_many :company_balance_sheets
   has_many :credit_bureaus
@@ -78,6 +82,36 @@ class Company < ApplicationRecord
 
   acts_as_taggable_on :main_products
 
+  def self.remove_company id
+    company = Company.find(id)
+    if company.user.present?
+      company.user.delete
+    end
+    if company.number_collaborator.present?
+
+      company.number_collaborator.delete
+    end
+    CompanyClient.where(company_id: id).delete_all
+    CompanyProvider.where(company_id: id).delete_all
+    CompanyFile.where( company_id: id ).delete_all
+    FinancialInstitution.where(company_id: id).delete_all
+    IncomeCalendarDetail.where(company_id: id).delete_all
+    BalanceCalendarDetail.where( company_id: id ).delete_all
+    CompanyCalendarDetail.where( company_id: id ).delete_all
+    IncomeStatementFile.where( company_id: id ).delete_all
+    CompanyIncomeStatement.where( company_id: id ).delete_all
+    CompanyBalanceSheet.where( company_id: id ).delete_all
+    CreditBureau.where( company_id: id ).delete_all
+    FReasonsCompany.where( company_id: id ).delete_all
+    CompanyFlow.where( company_id: id ).delete_all
+    Request.where(company_id: id).delete_all
+    company.delete
+
+  end
+
+  def self.approved?
+    self.status_company.key == 'aprobada'
+  end
 
   #Message and Comunication with Companies
   def self.send_msj_to_company company, user, step
@@ -355,6 +389,23 @@ class Company < ApplicationRecord
     return value
   end
 
+  #Convierte las cantidades a miles para manejarlos valores en razones financieras
+  def self.convert_value_to_miles scale, value
+    if value
+      if scale === 'millones'
+        value = value*1000000
+      elsif scale === 'pesos'
+        value = value/1000
+      else
+        value = value
+      end
+    else
+      value = nil
+    end
+
+    return value
+  end
+
   #OPERACIONES
   def self.calculate_crecimiento_nom_ventas income_year0, income_year1, months, inflation
     if income_year0.nil? or income_year0 == 0
@@ -370,13 +421,33 @@ class Company < ApplicationRecord
     return value
   end
 
+  def self.calculate_crecimiento_sostenible net_margin, pas_tot_cap_cont, asset_turnover, dividends_paid_in_cash, net_profit
+    #Se convierte porcentaje a cantidad de net_margin
+    if asset_turnover.nil? or asset_turnover != 0
+      net_margin = net_margin/100
+      value = ((net_margin)*(1-(dividends_paid_in_cash/net_profit))*(1+pas_tot_cap_cont))/((1/asset_turnover)-(net_margin*(1-(dividends_paid_in_cash/net_profit))*(1+pas_tot_cap_cont)))
+    else
+      value = 0.0
+    end
+
+    return value*100
+  end
+
+  def self.calculate_total_pas_fin banks_st, other_pas_circ, principal_payment, banks_lt, other_pas_lp
+    value = (banks_st + other_pas_circ + principal_payment + banks_lt + other_pas_lp).round(2)
+
+    return value
+  end
+
   def self.calculate_rotacion_activos income_year1, total_active0, total_active1, months
+
     if (total_active1+total_active0) != 0
       value = ((income_year1/months)*12)/((total_active1+total_active0)/2)
     else
       value = 0.0
     end
-    return value
+
+    return value.round(2)
   end
 
   def self.calculate_margen_operativo total_active, gross_profit
@@ -391,7 +462,7 @@ class Company < ApplicationRecord
 
   def self.calculate_rentabilidad_base_capital net_profit, total_capital0, total_capital1, months, kind
     value = 0.0
-    if total_capital0
+    if total_capital0 and (total_capital0+total_capital1)/2 != 0
       #1 es referente al año del row actual, el 0 es del año anterior
       value = ((net_profit/months)*12)/((total_capital0+total_capital1)/2)
       value = (value*100).round(1)
@@ -412,10 +483,12 @@ class Company < ApplicationRecord
     return value
   end
 
-  def self.calculate_razon_circulante activo_circulante, pasivo_circ
-    if pasivo_circ != 0
+  def self.calculate_razon_circulante activo_circulante, providers, contributions_payable, advance_customers, banks_st, other_pas_cp, principal_payment, other_pas_circ
+    pasivo_circulante = providers + contributions_payable + advance_customers + banks_st + other_pas_cp + principal_payment + other_pas_circ
+
+    if pasivo_circulante != 0
       #pasivo_circ se está obteniento del pasivo total
-      value = activo_circulante/pasivo_circ
+      value = activo_circulante/pasivo_circulante
       value = (value).round(2)
     else
       value = 0.0
@@ -423,14 +496,32 @@ class Company < ApplicationRecord
     return value
   end
 
-  def self.calculate_prueba_acido activo_circulante, pasivo_circ, inventarios
-    if pasivo_circ != 0
+  def self.calculate_prueba_acido activo_circulante, inventarios, providers, contributions_payable, advance_customers, banks_st, other_pas_cp, principal_payment, other_pas_circ
+    pasivo_circulante = providers + contributions_payable + advance_customers + banks_st + other_pas_cp + principal_payment + other_pas_circ
+
+    if pasivo_circulante != 0
       #pasivo_circ se está obteniento del pasivo total
-      value = (activo_circulante-inventarios)/pasivo_circ
+      value = (activo_circulante-inventarios)/pasivo_circulante
       value = (value).round(2)
     else
       value = 0.0
     end
+    p '=============='
+    p '=========='
+    p '======'
+    p '=============='
+    p '=========='
+    p '======'
+    p activo_circulante
+    p inventarios
+    p pasivo_circulante
+    p value
+    p '======'
+    p '=========='
+    p '=============='
+    p '======'
+    p '=========='
+    p '=============='
     return value
   end
 
@@ -441,6 +532,7 @@ class Company < ApplicationRecord
     else
       value = 0.0
     end
+
     return value
   end
 
@@ -482,7 +574,7 @@ class Company < ApplicationRecord
 
   def self.calculate_investment_in_work clients, ctas_x_cob_fop, inventory, providers, ctas_x_pag_fop
     value = clients + ctas_x_cob_fop + inventory - providers - ctas_x_pag_fop
-    value = value.round
+    value = (value/1000).round #Convertir a miles
     return value
   end
 
@@ -490,6 +582,7 @@ class Company < ApplicationRecord
     if financial_expense == 0
       financial_expense = 1
     end
+
     value = (utility_op+dep_y_amort)/financial_expense
     value = value.round(2)
     return value
@@ -506,34 +599,120 @@ class Company < ApplicationRecord
     return value
   end
 
+  def self.calculate_flujo_neto_pas_fin net_flow, pas_fin_total
+    if pas_fin_total != 0
+      value = net_flow/pas_fin_total
+    else
+      value = 0
+    end
+    return (value*100).round(1)
+  end
 
-  def self.calculate_finantial_lp utility_op, dep_y_amort, bancos_lp_otros_pas, other_pas, months
-    sum2_div = utility_op + dep_y_amort
+  def self.calculate_flujo_neto_pas_total net_flow, pas_total
+    if pas_fin_total != 0
+      value = net_flow/pas_total
+    else
+      value = 0
+    end
 
+    return (value*100).round(1)
+  end
+
+  def self.calculate_finantial_lp banks_lt, other_passives, dep_and_amort, utility_operation, months
+    sum2_div = utility_operation + dep_and_amort
+    other_passives = 0
     if sum2_div < 0
       value = -0#'UAFIRDA Neg.'
     elsif sum2_div == 0
       value = 0
     else
-      value = (bancos_lp_otros_pas+other_pas)/(((utility_op+dep_y_amort)/months)*12)
+      value = (banks_lt+other_passives)/(((utility_operation+dep_and_amort)/months)*12)
       value = value.round(2)
     end
     return value
   end
 
-  def self.calculate_finantial_total utility_op, dep_y_amort, bancos_lp_otros_pas, other_pas, months
+  def self.calculate_finantial_total utility_operation, dep_and_amort, banks_st, banks_lt, other_passives, months
     #ESTE PROCESO LE FALTAN DATOS DEL DESGLOCE DE PASIVO ESTE CÓDIGO PERTENECE A EL CALCULO ANTERIOR.
-    sum2_div = utility_op + dep_y_amort
+    sum2_div = utility_operation + dep_and_amort
+    #other_passives -= (banks_st+banks_lt)
 
     if sum2_div < 0
       value = -0#'UAFIRDA Neg.'
     elsif sum2_div == 0
       value = 0
     else
-      value = (bancos_lp_otros_pas+other_pas)/(((utility_op+dep_y_amort)/months)*12)
+      value = (other_passives)/(((sum2_div)/months)*12)
       value = value.round(2)
     end
 
     return value
+  end
+
+  ###===Funciones para flujo de efectivo
+  def self.calculate_customer_variation clients_year1, clients_year0
+    value = -(clients_year1 - clients_year0)
+
+    return value.round(2)
+  end
+
+  def self.calculate_inventory_variance inventory_year1, inventory_year0
+    value = -(inventory_year1 - inventory_year0)
+
+    return value.round(2)
+  end
+
+  def self.calculate_supplier_variation supplier_year1, supplier_year0
+    value = (supplier_year1 - supplier_year0)
+
+    return value.round(2)
+  end
+
+  def self.calculate_advance_customers advance_customers1, advance_customers0
+    value = (advance_customers1 - advance_customers0)
+
+    return value.round(2)
+  end
+
+  def self.calculate_operation_flow gross_flow, customer_variation, inventory_variation, supplier_variation, customer_advance_variation
+    value = (gross_flow + customer_variation + inventory_variation + supplier_variation + customer_advance_variation)
+
+    return value.round(2)
+  end
+
+  def self.calculate_paid_taxes_ptu isr_value, ptu_value, contributions_payable
+    value = -(isr_value + ptu_value)-contributions_payable
+
+    return value.round(2)
+  end
+
+  def self.calculate_net_flow operation_flow, paid_taxes_ptu, financial_expense
+    value = (operation_flow + paid_taxes_ptu + financial_expense)
+
+    return value.round(2)
+  end
+
+  def self.calculate_variation_fixed_assets land_buildings_1, machinery_equipment_1, other_fixed_assets_1, land_buildings_0, machinery_equipment_0, other_fixed_assets_0, accumulated_depreciation
+    value = -((land_buildings_1 + machinery_equipment_1 + other_fixed_assets_1) - ((land_buildings_0 + machinery_equipment_0 + other_fixed_assets_0) - accumulated_depreciation))
+
+    return value.round(2)
+  end
+
+  def self.calculate_variation_other_assets other_current_assets_1, other_current_assets_0, charges_and_expenses_1, charges_and_expenses_0
+    value = -(other_current_assets_1 - other_current_assets_0) - (charges_and_expenses_1 - charges_and_expenses_0)
+
+    return value.round(2)
+  end
+
+  def self.calculate_variation_other_liabilities other_passives_1, other_passives_0
+    value = other_passives_1 - other_passives_0
+
+    return value.round(2)
+  end
+
+  def self.calculate_cash_increase_decrease net_flow, var_fixed_assets, var_other_assets, var_other_liabilities
+    value =  net_flow + var_fixed_assets + var_other_assets + var_other_liabilities
+
+    return value.round(2)
   end
 end

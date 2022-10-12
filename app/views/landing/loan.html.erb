@@ -1,7 +1,7 @@
 <main>
   <!-- BreadCrumb start -->
   <section class="breadcrumb-area">
-    <div class="breadcrumb-widget  pt-120 pb-30" style="background-image: <%= asset_path("breadcrumb/bg-1.png")%>">
+    <div class="breadcrumb-widget  pt-120 pb-30" style="background-image: <%= asset_path("breadcrumb/bg-1.png") %>">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
@@ -18,10 +18,26 @@
       </div>
     </div>
   </section>
+  <% if flash[:notice].present? %>
+    <div class="m-portlet">
+      <div class="m-portlet__body">
+        <div class="m-section">
+          <div class="m-section__content">
+            <div class="m-alert m-alert--outline alert alert-warning alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+              <strong>
+                <%= flash[:notice] %>
+              </strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
   <!-- BreadCrumb end -->
 
   <!-- Loan details start -->
-  <%= form_tag '/credit_request', :method => 'post' do %>
+  <%= form_tag '/credit_request', :method => 'post', id: 'creditRequestForm' do %>
     <section class="loan-deatils-area bg_disable pt-50 pb-120" id="first_step">
       <div class="container">
         <div class="row">
@@ -32,23 +48,24 @@
                 <div class="row gy-4">
                   <div class="col-md-6">
                     <label class="label" for="fName">Nombre *</label>
-                    <%= text_field_tag :fName, params[:fName], class:"form-control", type: "text", id: "fName", required: true%>
+                    <%= text_field_tag :fName, params[:fName], class: "form-control", type: "text", id: "fName", required: true %>
                   </div>
 
                   <div class="col-md-6">
                     <label class="label" for="lName">Apellido(s) *</label>
-                    <%= text_field_tag :lName, params[:lName], class:"form-control", type: "text", id: "lName", required: true%>
+                    <%= text_field_tag :lName, params[:lName], class: "form-control", type: "text", id: "lName", required: true %>
                   </div>
 
                   <div class="col-md-6">
                     <label class="label" for="email">Email</label>
-                    <%= text_field_tag :email, params[:email], class:"form-control", type: "email", id: "email_input", placeholder: "examplename@example.com", onkeyup: 'emailValidate()', required: true%>
+                    <%= text_field_tag :email, params[:email], class: "form-control", type: "email", id: "email_input", placeholder: "examplename@example.com", onkeyup: 'emailValidate();validateEmailExists()', required: true %>
                     <span class="invalid_value" id="validEmail">Email invalido</span>
+                    <span class="invalid_value" id="emailExist">El email ya esta registrado </span>
                   </div>
 
                   <div class="col-md-6">
                     <label class="label" for="phoneNumber">Télefono*</label>
-                    <%= number_field_tag :phone, params[:phone], class:"form-control w-100", type: "number", id: "phone_input", onkeyup: 'phoneValidate()', maxlength: 10, required: true%>
+                    <%= number_field_tag :phone, params[:phone], class: "form-control w-100", type: "number", id: "phone_input", onkeyup: 'phoneValidate()', maxlength: 10, required: true %>
                     <span class="invalid_value" id="validPhone">Télefono invalido</span>
                   </div>
                 </div>
@@ -58,18 +75,18 @@
                 <div class="row gy-4">
                   <div class="col-md-6">
                     <label class="label" for="companyName">Nombre *</label>
-                    <%= text_field_tag :companyName, params[:companyName], class:"form-control", type: "text", id: "companyName", placeholder: "Nombre Comercial de la Empresa", required: true%>
+                    <%= text_field_tag :companyName, params[:companyName], class: "form-control", type: "text", id: "companyName", placeholder: "Nombre Comercial de la Empresa", required: true %>
                   </div>
 
                   <div class="col-md-6">
                     <label class="label" for="rfc">RFC *</label>
-                    <%= text_field_tag :rfc, params[:rfc], class:"form-control", type: "text", id: "rfc_input", onkeyup: 'rfcValidate()', required: true, maxlength: 13%>
+                    <%= text_field_tag :rfc, params[:rfc], class: "form-control", type: "text", id: "rfc_input", onkeyup: 'rfcValidate()', required: true, maxlength: 13 %>
                     <span class="invalid_value" id="validRfc">RFC invalido</span>
                   </div>
 
                   <div class="col-md-12">
                     <label class="label" for="companyAddress">Dirección *</label>
-                    <%= text_field_tag :companyAddress, params[:companyAddress], class:"form-control w-100", type: "text", id: "companyAddress", required: true%>
+                    <%= text_field_tag :companyAddress, params[:companyAddress], class: "form-control w-100", type: "text", id: "companyAddress", required: true %>
                   </div>
                 </div>
 
@@ -92,14 +109,16 @@
                           <div class="centered-icon">
                             <img class="md-image" src="<%= asset_path('mail.svg') %>" alt="icon">
                           </div>
-                          <h4 class="job-title mt-20">Se enviarán los datos de tu solicitud y recibirás un mensaje para confirmar tu solicitud.</h4>
+                          <h4 class="job-title mt-20">Se enviarán los datos de tu solicitud y recibirás un mensaje para
+                            confirmar tu solicitud.</h4>
                           <h6>¿Deseas continuar y enviar?</h6>
                         </div>
 
                         <div class="col-12 mt-50">
                           <div class="d-flex justify-content-between">
                             <button type="button" class="theme-btn theme-btn-primary_alt"
-                                    data-bs-dismiss="modal"> <i class="arrow_left"></i> Regresar</button>
+                                    data-bs-dismiss="modal"><i class="arrow_left"></i> Regresar
+                            </button>
                             <%= button_tag type: 'submit', class: "theme-btn theme-btn-primary_alt" do %>
                               Enviar solicitud
                             <% end %>
@@ -122,14 +141,14 @@
 <!-- JQuery code to  show the form -->
 <script type="text/javascript">
     window.onload = function () {
-        $(document).on('click','#btn_next', function(e) {
+        $(document).on('click', '#btn_next', function (e) {
             e.preventDefault();
             $("#first_step").hide();
             $("#second_step").show();
             return false;
         });
 
-        $(document).on('click','#btn_prev', function(e) {
+        $(document).on('click', '#btn_prev', function (e) {
             e.preventDefault();
             $("#second_step").hide();
             $("#first_step").show();

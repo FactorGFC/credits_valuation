@@ -1,13 +1,37 @@
 //@import '@fullcalendar/core/main.css';
 // @import '@fullcalendar/daygrid/main.css';
+.h3{
+  font-size:  25px !important;
+  font-weight: bold !important;;
+  display: flex;
+}
+.h4{
+  font-size:  18px !important;
+  font-weight: bold !important;;
+  display: flex;
+}
+.mr-15{
+  margin-right: 15px !important;
+}
 
+.self-align-center{
+  align-self: center !important;
+}
+
+.btn-action{
+  position: relative;
+  span > svg{
+    position: absolute;
+    left: 0;
+  }
+}
 // Custom table with icons
 .table-custom {
   .btn-pill {
     border-radius: 60px;
     height: 30px;
     line-height: 15px;
-    margin: 0px 3px;
+    margin: 0 3px;
     padding: 6px;
     width: 30px;
   }
@@ -365,7 +389,8 @@ span.badge {
   padding: 15px;
 
   span{
-    font-size: 11px;
+    font-size:  11px;
+    text-align: center;
   }
 
   img{
@@ -374,6 +399,77 @@ span.badge {
     border-radius: 50%;
     padding: 5px;
   }
+}
+
+.status-container-large{
+  display:          inline-block;
+  background-color: #f4f4f4;
+  border-radius:    15px;
+  width:            200px;
+  height:           auto;
+  margin:           20px;
+  padding:          15px;
+
+
+  img{
+    width: 50px;
+    //margin-right: 10px;
+  }
+
+  span{
+    font-size:  25px;
+    position:   relative;
+  }
+}
+
+
+.status-container-pdf{
+  display:          inline-block;
+  background-color: #f4f4f4;
+  border-radius: 15px;
+  width: 180px;
+  height: 60px;
+  margin: 5px;
+  padding: 10px;
+  padding-right: 50px;
+
+  span{
+    font-size:    10px;
+    word-break:   break-word;
+    position:     relative;
+  }
+
+  img{
+    width: 30px;
+    margin-right: 10px;
+  }
+}
+
+/*SCORE FOR PDF*/
+.circle-container{
+  color:  black;
+  border-radius: 50%;
+  padding: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+.low-dot, .low-m-dot, .good-dot, .good-m-dot{
+  display:        block;
+  width:          20px;
+  height:         20px;
+  border-radius:  50%;
+}
+.low-dot{
+  background-color: #E84C3D;
+}
+.low-m-dot{
+  background-color: #f1c40f;
+}
+.good-dot{
+  background-color: #7caa55;
+}
+.good-m-dot{
+  background-color: #1eaa59;
 }
 
 /* RISK VELOCIMETER */
@@ -501,6 +597,38 @@ span.badge {
   animation: horizontal-shaking 3s infinite;
 }
 
+button#btn-show-info:hover{
+  span{
+    svg {
+      animation: vertical-shaking 3s infinite;
+    }
+  }
+}
+
+button#btn-hide-info:hover{
+  span{
+    svg {
+      animation: vertical-shaking 3s infinite;
+    }
+  }
+}
+
+button#btn-show-pf:hover{
+  span{
+    svg {
+      animation: vertical-shaking 3s infinite;
+    }
+  }
+}
+
+button#btn-hide-pf:hover{
+  span{
+    svg {
+      animation: vertical-shaking 3s infinite;
+    }
+  }
+}
+
 .btn-event-delete{
   display: none;
 }
@@ -618,6 +746,18 @@ span.badge {
   border:         5px double rgba(0, 197, 221, 0.3);
 }
 
+.quantity-circle-pdf{
+  background:     transparent;
+  font-weight:    bold;
+  font-size:      1.3em;
+  width:          60px;
+  height:         60px;
+  margin:         10px 0;
+  border-radius:  50%;
+  color:          #004e5f;
+  border:         5px double rgba(0, 197, 221, 0.3);
+}
+
 .quantity-num{
   font-size: 12px;
   color: #444655;
@@ -628,6 +768,13 @@ span.badge {
   border-radius:  15px;
   padding:        0 20px 20px 20px;
   text-align:     center;
+}
+
+.btns-card-pdf{
+  border:             1px solid lightsteelblue;
+  padding:            20px;
+  text-align:         center;
+  page-break-inside:  avoid;
 }
 
 .subtitle-icon{
@@ -647,7 +794,7 @@ span.badge {
   font-size: 20px;
 }
 
-.comments-card{
+.max-h-card{
   max-height: 260px;
   overflow: scroll;
 }
@@ -734,6 +881,89 @@ table#comparative_table_is td:empty {
 .bg-lines{
   background: repeating-linear-gradient(45deg, #d0d3de70 0px, #b3b8c952 20px, #c3c7d682 20px, #e1d3d378 40px);
 }
+tr.disabled-row{
+  background: #e5e5e5;
+}
+
+.tabs-actions{
+  display: flex;
+
+  .btn{
+    display:          flex;
+    justify-content:  center;
+    align-items:      center;
+    height:           80px;
+    margin-top:       0 !important;
+    font-size:        16px;
+    font-weight:      bold;
+  }
+}
+
+//==Table for pdf===//
+.table-fix{
+  border: 1px solid #f4f4f4;
+  thead{
+    background: #f4f4f4;
+  }
+  tr.tr-title{
+    background: #f4f4f4 !important;
+  }
+}
+
+h2.subtitle-st{
+  span{
+    background: white;
+    margin:     0 15px;
+    z-index:    999;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+hr.hr-title{
+  border-style: solid;
+  border-color: #556977;
+  border-width: 2px 0 0 0;
+  position: relative;
+  bottom: -30px;
+}
+
+.comment-bubbled {
+  position:relative;
+  padding:15px;
+  margin:1em 0 1em;
+  color:#333;
+  background:#fff;
+  /* css3 */
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+  text-align: start;
+}
+
+
+.comment-bubbled, .aft{
+  border:1px solid #556977;
+
+}
+
+.comment-bubbled .aft{
+  position:absolute;
+  top:-10px; /* value = - border-top-width - border-bottom-width */
+  border-top:none;
+  border-left:none;
+  left:70px; /* controls horizontal position */
+  width:20px;
+  height: 20px;
+  background:#fff;
+  -webkit-transform: rotate(225deg)
+}
+
+/*Page Break on PDF*/
+.page-breaker{
+  display:          block;
+  clear:            both;
+  page-break-inside: avoid;
+}
 
 ////ANIMATIONS
 
@@ -750,4 +980,14 @@ table#comparative_table_is td:empty {
   20% { transform: translateX(5px) }
   25% { transform: translateX(0) }
   100% { transform: translateX(0) }
+}
+
+@-webkit-keyframes vertical-shaking  {
+  0% { transform: translateY(0) }
+  5% { transform: translateY(5px) }
+  10% { transform: translateY(-5px) }
+  15% { transform: translateY(-5px) }
+  20% { transform: translateY(5px) }
+  25% { transform: translateY(0) }
+  100% { transform: translateY(0) }
 }

@@ -6,9 +6,11 @@
 #  address                   :string
 #  balance_sheet             :jsonb
 #  balance_sheet_finished    :boolean
+#  cash_flow                 :jsonb
 #  cer_encoded               :text
 #  client_type               :string
 #  complete                  :boolean
+#  confirmation_message      :boolean
 #  credential_company        :jsonb
 #  customers                 :jsonb
 #  group_company             :boolean
@@ -30,6 +32,7 @@
 #  step_six                  :boolean
 #  step_three                :boolean
 #  step_two                  :boolean
+#  welcome_message           :boolean
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  buro_id                   :string

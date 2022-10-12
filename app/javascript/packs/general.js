@@ -12,7 +12,7 @@ import 'bootstrap';
 import 'select2';// from 'select2';
 import 'javascripts/i18n/translations';
 
-I18n.locale = window.I18n.locale;
+I18n.locale = I18n.locale;
 
 document.addEventListener("turbolinks:before-cache", function () {
     $('[data-toggle="m-tooltip"]').tooltip('hide');
@@ -25,8 +25,6 @@ $(document).on('turbo:render', function(){
 
 $(document).on('turbolinks:load', function () {
 
-
-
     //window.Calendar = require("@fullcalenda/core").Calendar;
     //window.dayGridPlugin = require("@fullcalendar/daygrid").default;
 
@@ -35,8 +33,6 @@ $(document).on('turbolinks:load', function () {
     if(document.getElementById('calendar')) {
         var calendarEl  = document.getElementById('calendar');
 
-        //console.log('***');
-        //console.log(calendarEl);
         var calendar = new Calendar(calendarEl, {
             plugins: [ dayGridPlugin ],
             initialView: 'dayGridMonth',
@@ -164,6 +160,7 @@ $(document).on('turbolinks:load', function () {
             });
         });
     });
+    
 
     // bootstrap-select initializer
     $('.selectpicker, .per-page-selectpicker').selectpicker();
@@ -274,6 +271,7 @@ $(document).on('turbolinks:load', function () {
         if(idFile && constancyFile && financialStatementsOneFile && financialStatementsTwoFile
             && financialStatementsParcialFile){
             $('#filesBtn').attr('class', 'btn btn-primary col-xl-12');
+            $('#filesBtn').prop("disabled", false);
         }
 
     };
@@ -282,12 +280,34 @@ $(document).on('turbolinks:load', function () {
         var stepOne = document.getElementById("idStepOne").value;
         var stepTwo = document.getElementById("idStepTwo").value;
         var stepThree = document.getElementById("idStepThree").value;
-        var stepFour = document.getElementById("idStepFour").value;
-        var stepFive = document.getElementById("idStepFive").value;
-        var stepSix = document.getElementById("idStepSix").value;
+        $('#filesBtn').attr('class', 'btn btn-primary col-xl-12 disabled');
+        $('#filesBtn').prop("disabled", true);
 
     }
 
+
+    function setNumberCollaboratorsValues(){
+        if( $("#idOperative").val() === '') {
+            $("#idOperative").val(0);
+        }
+
+        if ($("#idAdministrativos").val() === '' ){
+            $("#idAdministrativos").val(0);
+        }
+        
+        if ($("#idSales").val() === '' ){
+            $("#idSales").val(0);
+        }
+        if ($("#idEventual").val() === '' ){
+            $("#idEventual").val(0);
+        }
+        if ($("#idUnionized").val() === '' ){
+            $("#idUnionized").val(0);
+        }
+        if ($("#totalId").val() === '' ){
+            $("#totalId").val(0);
+        }
+    };
 
 
     if (!stepOne) {
@@ -303,26 +323,12 @@ $(document).on('turbolinks:load', function () {
     if (stepTwo && !stepThree) {
         $('#step-2').show();
         $("#buttonTwo").hide();
+        setNumberCollaboratorsValues();
     }
 
-    if (stepThree && !stepFour) {
+    if (stepThree) {
         $('#step-3').show();
         $("#buttonThree").hide();
-    }
-
-    if (stepFour && !stepFive) {
-        $('#step-4').show();
-        $("#buttonFour").hide();
-    }
-
-    if (stepFive && !stepSix) {
-        $('#step-5').show();
-        $("#buttonFive").hide();
-    }
-
-    if (stepSix) {
-        $('#step-6').show();
-        $('#filesBtn').attr('class', 'btn btn-primary col-xl-12 btn-section-disabled');
     }
 
 
@@ -443,6 +449,187 @@ $(document).on('turbolinks:load', function () {
     if(document.getElementById("comparative_table_bs")){
         calculate_comparative('comparative_table_bs');
     }
+
+    $( "#modal_providers" ).on('shown.bs.modal', function(e){
+
+        var dollarUSLocale = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
+
+        var years = [];
+        $('#divTransactions').empty();
+        var transactions = $(e.relatedTarget).data('transactions');
+
+
+        $('#divTransactions').html(
+            "<table id='tablaTransactions' class='table'>" +
+            "<thead class='thead-default thead-custom'>" +
+            "<tr>" +
+            "<th class='text-center'>Fecha</th> " +
+            "<th class='text-center'>Total</th> " +
+            "</thead>" +
+            "<tbody>" +
+            "</tbody>" +
+            "</table>"
+        ).appendTo('#divTransactions');
+
+        $.each(transactions, function (index, transaction) {
+            if(transaction.total !== 0){
+                years.push( transaction.date.substring(0, transaction.date. indexOf('-')));
+                $("#divTransactions tbody").append(
+                    "<tr>" +
+                    "<td class='text-center'>" + transaction.date + "</td>" +
+                    "<td class='text-center'>" + dollarUSLocale.format(transaction.total) + "</td>" +
+                    "</tr>"
+
+                )
+            }
+        });
+
+        var uniqueChars = [];
+        years.forEach((y) => {
+            if (!uniqueChars.includes(y)) {
+                uniqueChars.push(y);
+            }
+        });
+
+        var select = document.getElementById('selectProviders');
+        select.innerHTML = '';
+
+        var opt = document.createElement('option');
+        opt.innerHTML = 'Buscar por año';
+        select.appendChild(opt);
+
+        uniqueChars.forEach((uc)=>{
+            var opt = document.createElement('option');
+            opt.value = uc;
+            opt.innerHTML = uc;
+            select.appendChild(opt);
+        });
+
+
+        window.getTransactionsForYearProviders = function(transaction) {
+            $('#divTransactions tbody').empty();
+            transactions.forEach((tr) =>{
+                var year = tr.date.substring(0, tr.date. indexOf('-'));
+
+                if(tr.total !== 0 && year === transaction.value){
+                    $("#divTransactions tbody").append(
+                        "<tr>" +
+                        "<td class='text-center'>" + tr.date + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
+                        "</tr>"
+
+                    );
+                }else if(transaction.value === 'Buscar por año' && tr.total !== 0){
+                    $("#divTransactions tbody").append(
+                        "<tr>" +
+                        "<td class='text-center'>" + tr.date + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
+                        "</tr>"
+
+                    );
+                }
+
+            });
+
+
+        };
+
+    });
+
+    $( "#modal_customers" ).on('shown.bs.modal', function(e){
+        $('#divCustomersTransactions').empty();
+
+        var dollarUSLocale = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
+
+        var years = [];
+        var transactions = $(e.relatedTarget).data('transactions');
+
+
+        $('#divCustomersTransactions').html(
+            "<table id='tablaTransactions' class='table'>" +
+            "<thead class='thead-default thead-custom'>" +
+            "<tr>" +
+            "<th class='text-center'>Fecha</th> " +
+            "<th class='text-center'>Total</th> " +
+            "</thead>" +
+            "<tbody>" +
+            "</tbody>" +
+            "</table>"
+        ).appendTo('#divCustomersTransactions');
+
+        $.each(transactions, function (index, transaction) {
+            if(transaction.total !== 0){
+                years.push( transaction.date.substring(0, transaction.date. indexOf('-')));
+                $("#divCustomersTransactions tbody").append(
+                    "<tr>" +
+                    "<td class='text-center'>" + transaction.date + "</td>" +
+                    "<td class='text-center'>" + dollarUSLocale.format(transaction.total) + "</td>" +
+                    "</tr>"
+
+                )
+            }
+        });
+
+        var uniqueChars = [];
+        years.forEach((y) => {
+            if (!uniqueChars.includes(y)) {
+                uniqueChars.push(y);
+            };
+        });
+
+        var select = document.getElementById('selectProvidersCustomers');
+        select.innerHTML = '';
+
+        var opt = document.createElement('option');
+        opt.innerHTML = 'Buscar por año';
+        select.appendChild(opt);
+
+        uniqueChars.forEach((uc)=>{
+            var opt = document.createElement('option');
+            opt.value = uc;
+            opt.innerHTML = uc;
+            select.appendChild(opt);
+        });
+        
+        window.getTransactionsForYearCustomers = function(transaction) {
+            $('#divCustomersTransactions tbody').empty();
+
+            transactions.forEach((tr) => {
+                var year = tr.date.substring(0, tr.date.indexOf('-'));
+                if(tr.total !== 0 && year === transaction.value){
+                    $("#divCustomersTransactions tbody").append(
+                        "<tr>" +
+                        "<td class='text-center'>" + tr.date + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
+                        "</tr>"
+
+                    );
+                }else if(transaction.value === 'Buscar por año' && tr.total !== 0){
+                    $("#divCustomersTransactions tbody").append(
+                        "<tr>" +
+                        "<td class='text-center'>" + tr.date + "</td>" +
+                        "<td class='text-center'>" + dollarUSLocale.format(tr.total) + "</td>" +
+                        "</tr>"
+
+                    );
+                }
+            });
+
+
+
+        };
+
+    });
+
+
+
+
 
     //window.display_table = function (table_id) {
     //    calculate_comparative(table_id);
@@ -577,10 +764,11 @@ function calculate_comparative(table_id){
         for (var col = 0; col < colMax; col++) {
             if(columns.eq(col).css('display') !== 'none'){
                 var colData    = parseFloat(columns.eq(col).find('span.td-value'+index).text().split(',').join(''));
-
                 var colPercent = columns.eq(col).find('span.percent-value'+index).text().split(" ")[0];
-                percent_values_array.push(colPercent);
 
+                percent_values_array.push(colPercent);
+                colData = Math.abs(colData);
+                //CALCULO DE COMPARATIVA, RESTA DE AÑO 1 - 2
                 if(!isNaN(colData)){
                     if(col === 0){
                         rowTotal = colData;
@@ -595,17 +783,17 @@ function calculate_comparative(table_id){
             }
         };
 
+        // CALCULO DE VARIACIÓN DE PORCENTAJES
         max_num = Math.max(...percent_values_array);
         min_num = Math.min(...percent_values_array);
         percent_value = ((max_num - min_num)/min_num)*100;
-        if(min_num === 0){
-            percent_value = ((max_num - min_num) / 1) * 100;
-        }else{
-            percent_value = ((max_num - min_num) / min_num) * 100;
-        }
 
-        if(Number.isFinite(percent_value) && percent_value){
-            $('span.percent_t'+index).text(percent_value.toFixed(2) + ' %');
+        if(Number.isFinite(percent_value) || percent_value){
+            if(percent_value > 100 || percent_value < 0){
+                $('span.percent_t'+index).text('+100 %');
+            }else{
+                $('span.percent_t'+index).text(percent_value.toFixed(2) + ' %');
+            }
         }else{
             $('span.percent_t'+index).text('+100 %');
         }
@@ -628,28 +816,33 @@ function calculate_comparative(table_id){
         }
     });
 
+    //======> CALCULO DE PORCENTAJE HORIZONTAL COLUMNA COMPARATIVA ENTRE PORCENTAJES DE DIFERENCIA ENTRE SAT Y CAPTURA
     var rowMax = ($("table#"+table_id+" tr.tr-rdata").length)/2;
 
-    for(var row = 0; row < rowMax; row ++){
-        var values_array  = [];
-        var max_num       = 0;
-        var min_num       = 0;
+    for(var row = 0; row < rowMax; row ++) {
+        var values_array = [];
+        var max_num = 0;
+        var min_num = 0;
         var percent_value = 0;
-        var rowData       = '';
+        var rowData = '';
 
         for (var col = 0; col < colMax; col++) {
-            if($('span#'+table_id+'.percent-bdg'+row+'-'+col).closest('td.sum_input').css('display') !== 'none'){
-                rowData = $('span#'+table_id+'.percent-bdg'+row+'-'+col).text();
+            if ($('span#' + table_id + '.percent-bdg' + row + '-' + col).closest('td.sum_input').css('display') !== 'none') {
+                rowData = $('span#' + table_id + '.percent-bdg' + row + '-' + col).text();
                 values_array.push(parseFloat(rowData));
             }
         }
 
         max_num = Math.max(...values_array);
         min_num = Math.min(...values_array);
-        percent_value = ((max_num - min_num)/min_num)*100;
-
-        $('span.tb-badge'+row).text(percent_value.toFixed(2) + ' %');
+        percent_value = ((max_num - min_num) / min_num) * 100;
+        if(percent_value > 100){
+            $('span.tb-badge'+row).text('+100 %');
+        }else{
+            $('span.tb-badge'+row).text(percent_value.toFixed(2) + ' %');
+        }
     }
+    ///=======>
 
     //$("table#comparative_table").show();
 }

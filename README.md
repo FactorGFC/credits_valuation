@@ -92,6 +92,9 @@ La aplicación utiliza una serie de gemas para su desarrollo, dentro de las cual
 | GitHub | Repositorio|[https://github.com/FactorGFC/credits_valuation][PlGh] |
 | DEVISE | Autenticación basada en Warden|[https://github.com/heartcombo/devise][PlDb] |
 
+```Instalación WickedPDF
+https://gist.github.com/paulsturgess/cfe1a59c7c03f1504c879d45787699f5
+```
 
 ## License
 

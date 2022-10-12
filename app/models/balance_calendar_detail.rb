@@ -5,6 +5,7 @@
 #  id                  :bigint           not null, primary key
 #  balance_concept_key :string
 #  balance_type        :string
+#  extra_data          :boolean
 #  value               :float
 #  value_scale         :string
 #  balance_concept_id  :integer
@@ -25,6 +26,11 @@
 #
 
 class BalanceCalendarDetail < ApplicationRecord
+  #####
+  ##### Los registros que de captura extra guardan balance_concept_id y deja :balance_concept_key en 'nil'
+  ##### Los registros que captura el cliente guardan :balance_concept_key y dejan balance_concept_id en 'nil'
+  #####
+
   #belongs_to :company
   belongs_to :calendar
   belongs_to :balance_concept, optional: true

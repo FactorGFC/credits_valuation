@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :flow_concepts
+  resources :conciliation_concepts
   resources :f_reasons_concepts
   resources :factor_credits
   #resources :request_comments
@@ -60,13 +62,20 @@ Rails.application.routes.draw do
     put 'sat_balance_sheet/:id' => 'companies#sat_balance_sheet', as: :sat_balance_sheet
     put 'credit_bureau_info/:id' => 'companies#credit_bureau_info', as: :credit_bureau_info
     put 'credit_bureau_report/:id' => 'companies#credit_bureau_report', as: :credit_bureau_report
+=begin
+    put 'save_data_crec_sost' => 'companies#save_data_crec_sost', as: :save_extra_data_cs
+    put 'save_data_cobertura_deuda' => 'companies#save_data_cobertura_deuda', as: :save_data_cobertura_deuda
+    put 'save_data_deuda_fin_lp' => 'companies#save_data_deuda_fin_lp', as: :save_data_deuda_fin_lp
+=end
+    put 'save_extra_data' => 'companies#save_extra_data', as: :save_extra_data
 
     get 'request_steps'  => 'companies#request_steps', as: :request_steps
-    get 'balance_sheet_request'  => 'companies#balance_sheet_request', as: :balance_sheet_request
+    get 'balance_sheet_request/:company_id'  => 'companies#balance_sheet_request', as: :balance_sheet_request
     post 'create_balance_sheet_request'  => 'companies#create_balance_sheet_request', as: :create_balance_sheet_request
-    get 'income_statement_capture'  => 'companies#income_statement_capture', as: :income_statement_capture
+    get 'income_statement_capture/:company_id'  => 'companies#income_statement_capture', as: :income_statement_capture
     post 'create_income_statement_cap'  => 'companies#create_income_statement_cap', as: :create_income_statement_cap
     get 'generate_financial_reasons/:id'  => 'companies#generate_financial_reasons', as: :generate_financial_reasons
+    get 'generate_cash_flow/:id'  => 'companies#generate_cash_flow', as: :generate_cash_flow
 
     get 'balance_sheet_comparative/:id'  => 'companies#balance_sheet_comparative', as: :balance_sheet_comparative
     get 'income_statement_comparative/:id'  => 'companies#income_statement_comparative', as: :income_statement
@@ -74,9 +83,14 @@ Rails.application.routes.draw do
     get 'company_balance_sheet/:id'  => 'companies#company_balance_sheet', as: :company_balance_sheet
     get 'company_income_statement/:id'  => 'companies#company_income_statement', as: :company_income_statement
     get 'company_details/:id'  => 'companies#company_details', as: :company_details
+    get 'dictamen_report/:id/:request_id'  => 'companies#dictamen_report', as: :dictamen_report
     get 'open_pdf/:id/:file'  => 'companies#open_pdf', as: :open_pdf
+    get 'comments/:company_id/:assigned_to' => 'companies#comments'
+    put 'save_comment' => 'companies#save_comment', as: :save_comment
 
-    get 'request_comments/:company_id' => 'request_comments#index'
+    get 'request_comments/:request_id' => 'request_comments#index'
+
+    get '/credit_bureau_pdf.pdf'  => 'companies#credit_bureau_pdf', as: :credit_bureau_pdf
 
     authenticate :user do
       # Shows all users.
@@ -117,6 +131,7 @@ Rails.application.routes.draw do
 
       #assign Analyst to request
       put 'assign_details_to_request' => 'companies#assign_details_to_request', as: :assign_details_to_request
+      put 'assign_pdf_to_request' => 'companies#assign_pdf_to_request', as: :assign_pdf_to_request
 
       #refuse companies
       put 'refuse_company' => 'companies#refuse_company', as: :refuse_company
@@ -166,6 +181,7 @@ Rails.application.routes.draw do
 
   get  'loan', to: 'landing#loan', as: :loan
   post  'credit_request', to: 'landing#credit_request'
+  get  'get_user_by_email', to: 'landing#get_user_by_email'
 
   get 'blog_details/:id', to: 'landing#blog_details', as: :blog_details
   get 'company_blog/:id', to: 'landing#company_blog', as: :company_blog

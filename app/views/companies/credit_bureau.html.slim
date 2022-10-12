@@ -1,0 +1,838 @@
+doctype 5
+html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-active.wf-roboto-n7-active.wf-poppins-n3-active.wf-poppins-n4-active.wf-poppins-n5-active.wf-poppins-n6-active.wf-poppins-n7-active.wf-active
+  head
+    meta charset='utf-8' /
+    meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' /
+    meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" /
+    = csrf_meta_tags
+    = csp_meta_tag
+    = wicked_pdf_stylesheet_link_tag "application"
+
+  body.m-page--fluid.m--skin-.m-content--skin-light2.m-header--fixed.m-header--fixed-mobile.m-aside-left--enabled.m-aside-left--skin-dark.m-aside-left--fixed.m-aside-left--offcanvas.m-footer--push.m-aside--offcanvas-default class="#{'m-brand--minimize m-aside-left--minimize' if cookies[:sidebar_toggle_state].eql?('on')}"
+    .m-content
+      .row
+        = wicked_pdf_image_tag asset_url('logo.png'), width: "auto"
+      .row
+        .portlet-profile.d-flex.justify-content-end
+          .info-profile-container
+            .icon-circle.d-flex.justify-content-end.align-items-center.px-5
+              i.fa.fa-id-card.fa-4x style="position: relative;"
+            .d-flex.flex-column.col-md-12.mb-2
+              .col-md-12
+                span.port-title = @company_name
+                span = @company.rfc
+    .m-content
+      .row
+        .col-xl-12
+          .m-portlet
+            / .m-portlet__body
+            .m-section.mb-0
+              - if !@credit_bureau.present?
+                .m-section__content
+                  .no-results
+              - else
+              .m-section__sub
+                .row.m-section__sub style="display: flex"
+                  .col-6.pl-0
+                  .col-6.per-page-container
+              .m-section__content
+                - if @credit_bureau.present? and @company.try(:client_type).eql?('PF')
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                  .m-demo__preview
+                    h3.m-portlet__head-text
+                      | SCORE
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      .d-flex.flex-column.justify-content-center
+                        .gauge-wrapper
+                          .gauge.four.rischio style="--degres: #{calculate_degrees(@score)}deg;"
+                            .slice-colors
+                              .st.slice-item
+                              .st.slice-item
+                              .st.slice-item
+                              .st.slice-item
+                            .needle
+                            .gauge-center
+                              .number
+                                = @score
+                              .status-face
+                        /= image_tag calculate_face(@score)
+
+                        .d-inline-flex.justify-content-center
+                          .d-flex.flex-column.justify-content-between.align-items-center.status-container
+                            span.text-center
+                              strong  = 'BAJA, MENOR A 550 PUNTOS'
+                            = image_tag 'face-bad.png'
+                          .d-flex.flex-column.justify-content-between.align-items-center.status-container
+                            span.text-center
+                              strong = 'REGULAR, 551-650 PUNTOS'
+                            = image_tag 'face-med.png'
+                          .d-flex.flex-column.justify-content-between.align-items-center.status-container
+                            span.text-center
+                              strong = 'BUENA 651- 750 PUNTOS'
+                            = image_tag 'face-nice.png'
+                          .d-flex.flex-column.justify-content-between.align-items-center.status-container
+                            span.text-center
+                              strong = 'EXCELENTE MÁS DE 751 PUNTOS'
+                            = image_tag 'face-good.png'
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                        | Datos Generales
+                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                        - if @credit_bureau.present?
+
+                          - if @report_result['response'].present?
+                            .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                              strong
+                                | Nombre
+                            .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                              = @report_result['response']['return']['Personas']['Persona'][0]['Nombre']['PrimerNombre'] + ' ' + @report_result['response']['return']['Personas']['Persona'][0]['Nombre']['ApellidoPaterno'] + ' ' + @report_result['response']['return']['Personas']['Persona'][0]['Nombre']['ApellidoMaterno']
+                            .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                              strong
+                                | R.F.C
+                            .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                              = @report_result['response']['return']['Personas']['Persona'][0]['Nombre']['RFC']
+                            .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                              strong
+                                | Fecha de nacimiento
+                            .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                              = get_pm_birthdate @report_result['response']['return']['Personas']['Persona'][0]['Nombre']['FechaNacimiento']
+                          - else
+                            .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                              .m-alert__icon
+                                i.flaticon-exclamation-1
+                                span
+                              .m-alert__text
+                                strong
+                                  | Aún no se encuentran datos generales.
+                        - else
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              i.flaticon-exclamation-1
+                              span
+                            .m-alert__text
+                              strong
+                                | Aún no se encuentran datos generales.
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                        | Resumen de Créditos (M.N.)
+                      - if @credit_bureau.bureau_report.present?
+                        - if @report_result['response'].present?
+                          .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                            .m-section
+                              .m-section__content
+                                table.table style="display: block;overflow-x: auto;"
+                                  thead.thead-default
+                                    tr
+                                      th
+                                        | MOP
+                                      th
+                                        | Cuentas Abiertas
+                                      th
+                                        | Limite Abiertas
+                                      th
+                                        | Maximo Abiertas
+                                      th
+                                        | Saldo Actual Abiertas
+                                      th
+                                        | Saldo Vencido Abiertas
+                                      th
+                                        | Pago a Realizar
+                                      th
+                                        | Cuentas Cerradas
+                                      th
+                                        | Limite Cerradas
+                                      th
+                                        | Maximo Cerradas
+                                      th
+                                        | Saldo Actual Cerradas
+                                      th
+                                        | Monto Cerradas
+                                  tbody
+                                    - get_ur_credits(@report_result['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta']).each do |credit|
+                                      tr
+                                        td
+                                          = credit[:mop]
+                                        td
+                                          = credit[:cuentas_abiertas]
+                                        td
+                                          = number_to_currency credit[:limite_abiertas]
+                                        td
+                                          = number_to_currency credit[:maximo_abiertas]
+                                        td
+                                          = number_to_currency credit[:saldo_actual]
+                                        td
+                                          = number_to_currency credit[:saldo_vencido]
+                                        td
+                                          = number_to_currency credit[:pago_realizar]
+                                        td
+                                          = credit[:cuentas_cerradas]
+                                        td
+                                          = number_to_currency credit[:limite_cerradas]
+                                        td
+                                          = number_to_currency credit[:maximo_cerradas]
+                                        td
+                                          = number_to_currency credit[:saldo_cerradas]
+                                        td
+                                          = number_to_currency credit[:monto_cerradas]
+
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                        | Domicilios registrados
+                      - if @credit_bureau.present?
+                        - if @report_result['response'].present?
+                          - @report_result['response']['return']['Personas']['Persona'][0]['Domicilios']['Domicilio'].each do |address|
+                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Calle y número
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = address['Direccion1']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Colonia
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = address['ColoniaPoblacion']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Del / Mpio
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = address['DelegacionMunicipio']
+                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Estado
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = address['Estado']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | C.P
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = address['CP']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Teléfono
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = address['NumeroTelefono']
+                            br
+                        - else
+                          .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                            .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                              .m-alert__icon
+                                i.flaticon-exclamation-1
+                                span
+                              .m-alert__text
+                                strong
+                                  | Aún no se encuentran domicilios registrados.
+                      - else
+                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              i.flaticon-exclamation-1
+                              span
+                            .m-alert__text
+                              strong
+                                | Aún no se encuentran domicilios registrados.
+
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                        | Domicilio(s) de empleo(s) registrado(s)
+                      - if @credit_bureau.present?
+                        - if @report_result['response'].present?
+                          - @report_result['response']['return']['Personas']['Persona'][0]['Empleos']['Empleo'].each do |job|
+                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Compañía
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = job['NombreEmpresa']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Puesto
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = job['Cargo']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | País
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = job['CodPais']
+                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Calle y número
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = job['Direccion1']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Telefono
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = job['NumeroTelefono']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Fecha de contratación
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                =  get_pm_birthdate job['FechaContratacion']
+
+                            br
+                        - else
+                          .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                            .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                              .m-alert__icon
+                                i.flaticon-exclamation-1
+                                span
+                              .m-alert__text
+                                strong
+                                  | Aún no se encuentran Domicilio(s) de empleo(s) registrado(s).
+                      - else
+                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              i.flaticon-exclamation-1
+                              span
+                            .m-alert__text
+                              strong
+                                | Aún no se encuentran Domicilio(s) de empleo(s) registrado(s).
+
+
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                        | Cuentas
+                      - if @credit_bureau.present?
+                        - if @report_result['response'].present?
+                          - @report_result['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
+                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Nombre del Otorgante
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = account['NombreOtorgante']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Monto a pagar
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = number_to_currency account['MontoPagar']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Tipo de cuenta
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                =  I18n.t("account_type.#{account['TipoCuenta']}")
+                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Saldo actual
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = account['SaldoActual']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Saldo vencido
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = account['SaldoVencido']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Tipo de contrato
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                =  I18n.t("contract_type.#{account['TipoContrato']}")
+                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Crédito máximo
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = number_to_currency account['CreditoMaximo']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Forma de Pago
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                = method_payment account['FormaPagoActual']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Frecuencia de pagos
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                =  I18n.t("payments_frecuency.#{account['FrecuenciaPagos']}")
+                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
+                                h4.strong
+                                  | Historial de pagos
+                                .history-icon
+                                  i.fa.fa-calendar-check.fa-2x.lightgray-text
+                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo.history-table
+                              .m-stack__item.body-info-company.m-stack__item--middle
+                                strong
+                                  | Mes
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | E
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | F
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | M
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | A
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | M
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | J
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | J
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | A
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | S
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | O
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | N
+                              .m-stack__item.body-info-company.m-stack__item--middle.text-center
+                                strong
+                                  | D
+                            - get_history_payments(account).each do |key, value|
+                              .m-stack.m-stack--ver.m-stack--general.m-stack--demo.history-table
+                                .m-stack__item.body-info-company.m-stack__item--middle
+                                  = key
+                                - value.each do |v|
+                                  - if v[:value] == 0
+                                    .m-stack__item.body-info-company.m-stack__item--middle
+                                  - elsif v[:value] == '1'
+                                    .m-stack__item.body-info-one.m-stack__item--middle
+                                      strong
+                                        = v[:value]
+                                  - elsif v[:value] == '2'
+                                    .m-stack__item.body-info-two.m-stack__item--middle
+                                      strong
+                                        = v[:value]
+                                  - else
+                                    .m-stack__item.body-info-x.m-stack__item--middle
+                                      strong
+                                        = v[:value]
+                            hr.dotted
+                        - else
+                          .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                            .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                              .m-alert__icon
+                                i.flaticon-exclamation-1
+                                span
+                              .m-alert__text
+                                strong
+                                  | Aún no se encuentran cuentas.
+                      - else
+                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              i.flaticon-exclamation-1
+                              span
+                            .m-alert__text
+                              strong
+                                | Aún no se encuentran cuentas.
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                        | Consultas
+                      - if @credit_bureau.bureau_report.present?
+                        - @credit_bureau['bureau_report']['results'].each do |bureau_report|
+                          - if bureau_report['status']
+                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                =  I18n.t("report_type.#{bureau_report['metadata']['reportType']}")
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                = bureau_report['status']
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                = bureau_report['createdAt'].to_datetime.strftime('%d-%m-%Y')
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                a href="/credit_bureaus/#{bureau_report['id']}"
+                                  |Ver reporte
+                      - else
+                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              i.flaticon-exclamation-1
+                              span
+                            .m-alert__text
+                              strong
+                                | Aún no se encuentran consultas.
+
+                - elsif (@credit_bureau.present? and @company.try(:client_type).eql?('PM')) || (@credit_bureau.present? and @company.try(:client_type).eql?('PFAE'))
+
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                        - if @credit_bureau.present?
+                          - if @report_result['query'].present?
+                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                strong
+                                  | Calificación cartera
+                              .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                                - if @report_result['response']['respuesta']['datosGenerales'].present?
+                                  strong
+                                    = @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].present? ? @report_result['response']['respuesta']['datosGenerales']['calificacionCartera'].tr('0', '') : 'N/D'
+                                - else
+                                  strong
+                                    | N/D
+
+                          - else
+                            .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                              .m-alert__icon
+                                i.flaticon-exclamation-1
+                                span
+                              .m-alert__text
+                                strong
+                                  | Aún no se encuentra calificación.
+                        - else
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              i.flaticon-exclamation-1
+                              span
+                            .m-alert__text
+                              strong
+                                | Aún no se encuentra calificación.
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                        | Datos Generales
+                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                        - if @credit_bureau.present?
+                          - if @report_result['query'].present?
+                            .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                              strong
+                                | Nombre
+                            .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                              strong
+                                = @report_result['query']['consulta']['persona']['nombre']
+                            .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                              strong
+                                | R.F.C
+                            .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                              strong
+                                =  @report_result['query']['consulta']['persona']['rfc']
+
+                          - else
+                            .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                              .m-alert__icon
+                                i.flaticon-exclamation-1
+                                span
+                              .m-alert__text
+                                strong
+                                  | Aún no se encuentran datos generales.
+                        - else
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              i.flaticon-exclamation-1
+                              span
+                            .m-alert__text
+                              strong
+                                | Aún no se encuentran datos generales.
+
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                        | Domicilio registrado
+                      - if @credit_bureau.present?
+                        - if @report_result['query'].present?
+                          .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                            .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                              strong
+                                | Calle y número
+                            .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                              = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['direccion1'] : 'N/D'
+                            .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                              strong
+                                | Colonia
+                            .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                              = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['coloniaPoblacion'] : 'N/D'
+                            .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                              strong
+                                | Del / Mpio
+                            .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                              = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['delegacionMunicipio'] : 'N/D'
+                          .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                            .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                              strong
+                                | Estado
+                            .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                              = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['estado'] : 'N/D'
+                            .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                              strong
+                                | C.P
+                            .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                              = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['codigoPostal'] : 'N/D'
+                            .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                              strong
+                                | Teléfono
+                            .m-stack__item.m-stack__item--left.body-info-company.m-stack__item--middle
+                              = @report_result['response']['respuesta']['datosGenerales'].present? ? @report_result['response']['respuesta']['datosGenerales']['telefono'] : 'N/D'
+                          br
+                        - else
+                          .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                            .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                              .m-alert__icon
+                                i.flaticon-exclamation-1
+                                span
+                              .m-alert__text
+                                strong
+                                  | Aún no se encuentran domicilios registrados.
+                      - else
+                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              i.flaticon-exclamation-1
+                              span
+                            .m-alert__text
+                              strong
+                                | Aún no se encuentran domicilios registrados.
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                        | Créditos activos
+                      - if @credit_bureau.bureau_report.present?
+                        - if @report_result['response'].present?
+                          .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                            .m-section
+                              .m-section__content
+                                table.table style="display: block;overflow-x: auto;"
+                                  thead.thead-default
+                                    tr
+                                      th
+                                        | Tipo de Otorgante
+                                      th
+                                        | Tipo de Crédito
+                                      th
+                                        | Cuentas Abiertas
+                                      th
+                                        Cuentas en MXP
+                                      th
+                                        | Cuentas en USD
+                                      th
+                                        | Otras Monedas
+                                      th
+                                        | Original
+                                      th
+                                        | Saldo Actual
+                                      th
+                                        | Vigente
+                                      th
+                                        | 1-29 días
+                                      th
+                                        | 30-59 días
+                                      th
+                                        | 60-89 días
+                                      th
+                                        | 90-119 días
+                                      th
+                                        | 120 - 179 días
+                                      th
+                                        | 180+ días
+                                  tbody
+                                    - get_active_credits(@report_result['response']['respuesta']['creditoFinanciero']).each do |active_credit|
+                                      tr
+                                        th
+                                          = active_credit[:otorgante]
+                                        th
+                                          = active_credit[:tipo_credito]
+                                        th
+                                          = active_credit[:cuentas_abiertas]
+                                        th
+                                          = active_credit[:cuentas_mxp]
+                                        th
+                                          = active_credit[:cuentas_usd]
+                                        th
+                                          = active_credit[:otras_monedas]
+                                        th
+                                          = number_to_currency active_credit[:original]
+                                        th
+                                          = number_to_currency active_credit[:saldo_actual]
+                                        th
+                                          = number_to_currency  active_credit[:vigente]
+                                        th
+                                          = active_credit[:one]
+                                        th
+                                          = active_credit[:thirty]
+                                        th
+                                          = active_credit[:sixty]
+                                        th
+                                          = active_credit[:ninety]
+                                        th
+                                          = active_credit[:one_twenty]
+                                        th
+                                          = active_credit[:one_eighty]
+                                    - get_total_active_credits(@report_result['response']['respuesta']['creditoFinanciero']).each do |active_credit|
+                                      tr
+                                        th colspan="2"
+                                          | Total
+                                        th
+                                          = active_credit[:cuentas_abiertas]
+                                        th
+                                          = active_credit[:cuentas_mxp]
+                                        th
+                                          = active_credit[:cuentas_usd]
+                                        th
+                                          = active_credit[:otras_monedas]
+                                        th
+                                          = number_to_currency active_credit[:original]
+                                        th
+                                          = number_to_currency active_credit[:saldo_actual]
+                                        th
+                                          = number_to_currency active_credit[:vigente]
+                                        th
+                                          = active_credit[:one]
+                                        th
+                                          = active_credit[:thirty]
+                                        th
+                                          = active_credit[:sixty]
+                                        th
+                                          = active_credit[:ninety]
+                                        th
+                                          = active_credit[:one_twenty]
+                                        th
+                                          = active_credit[:one_eighty]
+
+                        - else
+                          .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                            .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                              .m-alert__icon
+                                i.flaticon-exclamation-1
+                                span
+                              .m-alert__text
+                                strong
+                                  | Aún no se encuentran creditos activos.
+                      - else
+                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              i.flaticon-exclamation-1
+                              span
+                            .m-alert__text
+                              strong
+                                | Aún no se encuentran creditos activos.
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                        | Historia
+                      - if @credit_bureau.present?
+                        - if @report_result['response'].present?
+                          - split_months = @report_result['response']['respuesta']['historia'].length / 5.0
+                          - if split_months % 1 != 0
+                            - split_months += 1
+                          - starting = 0
+                          - ending = 4
+                          .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                            .m-section
+                              .m-section__content
+                                table.table style="display: block;overflow-x: auto;"
+                                  - for a in 1..split_months do
+                                    thead.thead-default
+                                      tr
+                                        th
+                                        - @report_result['response']['respuesta']['historia'][starting..ending].each do |historia|
+                                          th
+                                            = get_date historia['periodo']
+                                    tbody
+                                      tr
+                                        th
+                                          | Vigente
+                                        - @report_result['response']['respuesta']['historia'][starting..ending].each do |historia|
+                                          th
+                                            = number_to_currency historia['saldoVigente']
+                                      tr
+                                        th
+                                          | Vencido de 1 a 29 días
+                                        - @report_result['response']['respuesta']['historia'][starting..ending].each do |historia|
+                                          th
+                                            = number_to_currency historia['saldoVencidoA90Dias']
+                                      tr
+                                        th
+                                          | Vencido de 30 a 59 días
+                                        - @report_result['response']['respuesta']['historia'][starting..ending].each do |historia|
+                                          th
+                                            = number_to_currency historia['saldoVencido1A29Dias']
+                                      tr
+                                        th
+                                          | Vencido de 60 a 89 días
+                                        - @report_result['response']['respuesta']['historia'][starting..ending].each do |historia|
+                                          th
+                                            = number_to_currency historia['saldoVencido30A59Dias']
+                                      tr
+                                        th
+                                          | Vencido de a mas de 89 días
+                                        - @report_result['response']['respuesta']['historia'][starting..ending].each do |historia|
+                                          th
+                                            = number_to_currency historia['saldoVencido60A89Dias']
+                                      tr
+                                        th
+                                          | Calificación de cartera
+                                        - @report_result['response']['respuesta']['historia'][starting..ending].each do |historia|
+                                          th
+                                            = historia['calificacioncartera'].present? ? historia['calificacioncartera'] : 'N/D'
+
+                                    - starting += 5
+                                    - ending += 5
+
+                        - else
+                          .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                            .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                              .m-alert__icon
+                                i.flaticon-exclamation-1
+                                span
+                              .m-alert__text
+                                strong
+                                  | Aún no se encuentran creditos activos.
+                      - else
+                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              i.flaticon-exclamation-1
+                              span
+                            .m-alert__text
+                              strong
+                                | Aún no se encuentran creditos activos.
+
+                  .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
+                    .m-demo__preview
+                      h3.m-portlet__head-text
+                        | Consultas
+                      - if false
+                      /- if @credit_bureau.bureau_report.present?
+                                        - @credit_bureau['bureau_report']['results'].each do |bureau_report|
+                                          - if bureau_report['status']
+                                            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                                /= I18n.t("report_type.#{bureau_report['metadata']['reportType']}")
+                                                = bureau_report['metadata']['reportType']
+                                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                                = bureau_report['status']
+                                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                                = bureau_report['createdAt'].to_datetime.strftime('%d-%m-%Y')
+                                              .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
+                                                a href="/credit_bureaus/#{bureau_report['id']}"
+                                                  |Ver reporte
+                      - else
+                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                        .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                          .m-alert__icon
+                            i.flaticon-exclamation-1
+                            span
+                          .m-alert__text
+                            strong
+                              | Aún no se encuentran consultas.
+                - else
+                  .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                    .m-alert__icon
+                      i.flaticon-exclamation-1
+                      span
+                    .m-alert__text
+                      strong
+                        | Aún no se le ha asignado el buró de crédito.

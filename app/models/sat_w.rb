@@ -239,4 +239,96 @@ class SatW < ApplicationRecord
     return JSON.parse(response.body)
   end
 
+
+  def self.get_cash_flow id
+
+    # Desarrollo
+    # uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}insights/#{id}/supplier-concentration")
+    # api_key = ENV['API_KEY_SAT_DEVELOP']
+
+    # Produccion
+    uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}insights/#{id}/cash-flow")
+    api_key = ENV['API_KEY_SAT_PRODUCTION']
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+    request.content_type = "application/id+json"
+    request["X-API-Key"] = api_key
+    request["Cache-Control"] = "no-cache"
+
+    req_options = {
+        use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    return JSON.parse(response.body)
+  end
+
+  def self.get_tax_compliance_checks rfc
+
+    #Desarollo
+    # uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}taxpayers/#{rfc}/tax-status")
+    # api_key = ENV['API_KEY_SAT_DEVELOP']
+
+    #Produccion
+    uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}taxpayers/#{rfc}/tax-compliance-checks")
+    api_key = ENV['API_KEY_SAT_PRODUCTION']
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+    request.content_type = "application/id+json"
+    request["X-API-Key"] = api_key
+    request["Cache-Control"] = "no-cache"
+# request.body = {
+#     "id": "957534d2-a8d3-49ee-8d67-130dd8acbd77	"
+# }.to_json
+
+    req_options = {
+        use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+
+
+    return JSON.parse(response.body)
+  end
+
+  def self.get_tax_compliance_checks_pdf id
+
+    #Desarollo
+    # uri = URI.parse("#{ENV['URL_SAT_DEVELOP']}taxpayers/#{rfc}/tax-status")
+    # api_key = ENV['API_KEY_SAT_DEVELOP']
+
+    #Produccion
+    uri = URI.parse("#{ENV['URL_SAT_PRODUCTION']}tax-compliance-checks/#{id}")
+    api_key = ENV['API_KEY_SAT_PRODUCTION']
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+
+    request.content_type = "application/id+json"
+    request["X-API-Key"] = api_key
+    request["Cache-Control"] = "no-cache"
+# request.body = {
+#     "id": "957534d2-a8d3-49ee-8d67-130dd8acbd77	"
+# }.to_json
+
+    req_options = {
+        use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+
+
+    return JSON.parse(response.body)
+  end
+
 end

@@ -3,11 +3,13 @@
 # Table name: requests
 #
 #  id                :bigint           not null, primary key
+#  file_name         :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  analyst_id        :bigint
 #  company_id        :bigint           not null
-#  factor_credit_id  :bigint           not null
+#  factor_credit_id  :bigint
+#  file_id           :string
 #  process_status_id :bigint           not null
 #  user_id           :bigint           not null
 #

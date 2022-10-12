@@ -22,15 +22,6 @@ module CompaniesHelper
   def balance_calendar_detail_value(company_id, calendar, number_key, value_scale)
     balance_cd = BalanceCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, balance_concept_key: number_key).try(:first).try(:value)
     if balance_cd.present?
-=begin
-      if value_scale === 'millones'
-        return (balance_cd/1000000).round(2)
-      elsif value_scale === 'miles'
-        return (balance_cd/1000).round(2)
-      else
-        return balance_cd.round(2)
-      end
-=end
       return balance_cd.round(2)
     else
       return 0
@@ -65,15 +56,6 @@ module CompaniesHelper
   def income_calendar_detail_value(company_id, calendar, number_key, value_scale)
     income_cs = IncomeCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, income_statement_concept_key: number_key).try(:first).try(:value)
     if income_cs.present?
-=begin
-      if value_scale === 'millones'
-        return (income_cs/1000000).round(2)
-      elsif value_scale === 'miles'
-        return (income_cs/1000).round(2)
-      else
-        return income_cs.round(2)
-      end
-=end
       return income_cs.round(2)
     else
       return 0
@@ -84,30 +66,27 @@ module CompaniesHelper
   def calculate_percentage(type, company_id, calendar, number_key, value_scale)
     if type === 'balance_sheet'
       sat_value = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: number_key, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f).abs
-      fg_value  = BalanceCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, balance_concept_key: number_key).try(:first).try(:value).to_f.abs
+      fg_value  = BalanceCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, balance_concept_key: number_key).try(:first).try(:value).to_f#.abs
     else
       sat_value = CompanyIncomeStatement.where(company_id: company_id, year: calendar.year, income_statement_concept_id: IncomeStatementConcept.where(number_key: number_key, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f).abs
-      fg_value  = IncomeCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, income_statement_concept_key: number_key).try(:first).try(:value).to_f.abs
+      fg_value  = IncomeCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, income_statement_concept_key: number_key).try(:first).try(:value).to_f#.abs
     end
 
     if value_scale === 'millones'
       sat_value = sat_value/1000000
-      fg_value  = fg_value/1000000
     elsif value_scale === 'miles'
       sat_value = sat_value/1000
-      fg_value  = fg_value/1000
     end
 
     max_num = [sat_value, fg_value].max
     min_num = [sat_value, fg_value].min
-
     if max_num != 0 and min_num != 0
-      percent_value = ((max_num - min_num)/min_num).round(2)
-      if percent_value <= 15
+      percent_value = (((max_num - min_num)/min_num)*100).round(2)
+      if percent_value <= 15 and percent_value >= 0
         [percent_value, 'green-badge']
-      elsif percent_value > 15 and percent_value <= 30
+      elsif percent_value > 15 and percent_value <= 40
         [percent_value, 'yellow-badge']
-      elsif percent_value > 30 and percent_value <= 100
+      elsif percent_value > 40 and percent_value <= 100
         [percent_value, 'red-badge']
       else
         ['+100', 'red-badge']
@@ -120,15 +99,6 @@ module CompaniesHelper
   #Calcula sumatoria de valores capturados
   def bs_capture_sum company_id, bs_keys_array, calendar_id, value_scale
     total = BalanceCalendarDetail.where(company_id: company_id, balance_concept_key: bs_keys_array, calendar_id: calendar_id).sum(:value)
-=begin
-    if value_scale === 'millones'
-      total/1000000
-    elsif value_scale === 'miles'
-      total/1000
-    else
-      total
-    end
-=end
     return total.round(2)
   end
 
@@ -136,32 +106,15 @@ module CompaniesHelper
   def bs_activo_fijo company_id, bs_keys_array, calendar_id, value_scale
     total = BalanceCalendarDetail.where(company_id: company_id, balance_concept_key: bs_keys_array, calendar_id: calendar_id).sum(:value)
     depreciacion = BalanceCalendarDetail.where(company_id: company_id, balance_concept_key: 7, calendar_id: calendar_id).first.try(:value)
-=begin
-    if value_scale === 'millones'
-      total/1000000
-    elsif value_scale === 'miles'
-      total/1000
-    else
-      total
-    end
-=end
 
-    return ((total.nil? ? 0 : total)-(depreciacion.nil? ? 0 : total)).round(2)
+    return ((total.nil? ? 0 : total)-(depreciacion.nil? ? 0 : depreciacion)).round(2)
   end
 
-  #Calcula sumatoria para activo fijo
+  #Calcula sumatoria para activo fijo sat
   def bs_activo_fijo_sat company_id, bs_keys_array, calendar, value_scale
     total = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: bs_keys_array, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f)
     depreciacion = CompanyBalanceSheet.where(company_id: company_id, year: calendar.year, balance_concept_id: BalanceConcept.where(number_key: 7, capturable: true).pluck(:id)).pluck(:value).sum(&:to_f)
-=begin
-    if value_scale === 'millones'
-      total/1000000
-    elsif value_scale === 'miles'
-      total/1000
-    else
-      total
-    end
-=end
+
     return (total-depreciacion).round(2)
   end
 
@@ -625,18 +578,6 @@ module CompaniesHelper
 
     sum2_div = utility_op + dep_y_amort
 
-    p '=======CONTROLLER=========='
-    p '=======CONTROLLER=========='
-    p '=======CONTROLLER=========='
-    p utility_op
-    p dep_y_amort
-    p bancos_lp_otros_pas
-    p sum2_div
-    p other_pas
-    p ((bancos_lp_otros_pas+other_pas)/(((utility_op+dep_y_amort)/months)*12)).round(2)
-    p '================='
-    p '================='
-    p '================='
     if sum2_div < 0
       return 'UAFIRDA Neg.'
     elsif sum2_div == 0
@@ -706,28 +647,39 @@ module CompaniesHelper
     end
   end
 
+  def calculate_risk score
+    if score.present?
+      if score < 550
+        '#E84C3D'
+      elsif score >= 550 and score < 650
+        '#f1c40f'
+      elsif score >= 650 and score < 750
+        '#7caa55'
+      else
+        '#1eaa59'
+      end
+    else
+      '#E84C3D'
+    end
+  end
+
   def calculate_face score
     if score.present?
       if score < 550
-        'face-bad.png'
+        'icons/face-bad.png'
       elsif score >= 550 and score < 650
-        'face-med.png'
+        'icons/face-med.png'
       elsif score >= 650 and score < 750
-        'face-nice.png'
+        'icons/face-nice.png'
       else
-        'face-good.png'
+        'icons/face-good.png'
       end
     else
-      'face-bad.png'
+      'icons/face-bad.png'
     end
   end
 
   def get_history_payments account
-    p "account ------------------------------------------------------------"
-    p account
-
-    Rails.logger.info "account logger ------------------------------------------------------------"
-    Rails.logger.info account
     array = {}
 
     if account['FechaMasAntiguaHistoricoPagos'].present?
@@ -862,7 +814,7 @@ module CompaniesHelper
                                 one_eighty: 0}
 
     banco_linea_credito = {otorgante:'BANCO',tipo_credito: 'LINEA DE CRÉDITO' , cuentas_abiertas: 0, cuentas_mxp: 0,
-                           cuentas_usd: 0, otras_monedas: 0, original: 0, saldo_actual: 0, vigente: 0, one:0, thirty: 0, 
+                           cuentas_usd: 0, otras_monedas: 0, original: 0, saldo_actual: 0, vigente: 0, one:0, thirty: 0,
                            sixty: 0,ninety: 0,one_twenty: 0, one_eighty: 0}
 
     banco_credito_empresarial = {otorgante:'BANCO',tipo_credito: 'T. CRED. EMPRESARIAL-CORPORATIVA',cuentas_abiertas: 0,
@@ -870,6 +822,10 @@ module CompaniesHelper
                                  vigente: 0, one:0, thirty: 0, sixty: 0,ninety: 0,one_twenty: 0, one_eighty: 0}
 
     otras_financieras = {otorgante:'OTRAS FINANCIERAS',tipo_credito: 'O.C. GARANTIA INMOB' , cuentas_abiertas: 0,
+                                     cuentas_mxp: 0, cuentas_usd: 0, otras_monedas: 0, original: 0, saldo_actual: 0,
+                                     vigente: 0, one:0, thirty: 0, sixty: 0,ninety: 0,one_twenty: 0, one_eighty: 0}
+
+    arrendadora = {otorgante:'ARRENDADORA',tipo_credito: 'ARRENDAD' , cuentas_abiertas: 0,
                                      cuentas_mxp: 0, cuentas_usd: 0, otras_monedas: 0, original: 0, saldo_actual: 0,
                                      vigente: 0, one:0, thirty: 0, sixty: 0,ninety: 0,one_twenty: 0, one_eighty: 0}
 
@@ -933,6 +889,19 @@ module CompaniesHelper
         otras_financieras[:ninety] += active_credit['saldoVencidoDe90a119Dias'].to_f
         otras_financieras[:one_twenty] += active_credit['saldoVencidoDe120a179Dias'].to_f
         otras_financieras[:one_eighty] += active_credit['saldoVencidoDe180DiasOMas'].to_f
+      elsif active_credit['tipoUsuario'] == 'ARRENDADORA' && !active_credit['pagoCierre'].present?
+
+        arrendadora[:cuentas_abiertas] += 1
+        arrendadora[:cuentas_mxp] += 1
+        arrendadora[:original] += active_credit['saldoInicial'].to_i / 1000
+        arrendadora[:saldo_actual] += active_credit['saldoVigente'].to_i / 1000
+        arrendadora[:vigente] += active_credit['saldoVigente'].to_i / 1000
+        arrendadora[:one] += active_credit['saldoVencidoDe1a29Dias'].to_f
+        arrendadora[:thirty] += active_credit['saldoVencidoDe30a59Dias'].to_f
+        arrendadora[:sixty] += active_credit['saldoVencidoDe60a89Dias'].to_f
+        arrendadora[:ninety] += active_credit['saldoVencidoDe90a119Dias'].to_f
+        arrendadora[:one_twenty] += active_credit['saldoVencidoDe120a179Dias'].to_f
+        arrendadora[:one_eighty] += active_credit['saldoVencidoDe180DiasOMas'].to_f
 
       end
     end
@@ -941,6 +910,7 @@ module CompaniesHelper
     @actives_credits.push(banco_linea_credito)
     @actives_credits.push(banco_credito_empresarial)
     @actives_credits.push(otras_financieras)
+    @actives_credits.push(arrendadora)
 
     return @actives_credits
 
@@ -957,7 +927,8 @@ module CompaniesHelper
 
 
     actives_credits.each do |active_credit|
-      
+      unless active_credit['pagoCierre']
+
         otras_financieras_simple[:cuentas_abiertas] += 1
         otras_financieras_simple[:cuentas_mxp] += 1
         otras_financieras_simple[:original] += active_credit['saldoInicial'].to_i / 1000
@@ -969,6 +940,87 @@ module CompaniesHelper
         otras_financieras_simple[:ninety] += active_credit['saldoVencidoDe90a119Dias'].to_f
         otras_financieras_simple[:one_twenty] += active_credit['saldoVencidoDe120a179Dias'].to_f
         otras_financieras_simple[:one_eighty] += active_credit['saldoVencidoDe180DiasOMas'].to_f
+      end
+
+
+
+    end
+
+    total_actives_credits.push(otras_financieras_simple)
+
+    return total_actives_credits
+
+  end
+
+  def get_closed_credits credits
+
+    otras_financieras_quirog = {otorgante:'OTRAS FINANCIERAS',tipo_credito: 'QUIROG' , cuentas_abiertas: 0,
+                                cuentas_mxp: 0, cuentas_usd: 0, otras_monedas: 0, original: 0, quita: 0, dacion: 0,
+                                pago:0, quebranto: 0}
+
+    otras_financieras_simple = {otorgante:'OTRAS FINANCIERAS',tipo_credito: 'SIMPLE' , cuentas_abiertas: 0,
+                                cuentas_mxp: 0, cuentas_usd: 0, otras_monedas: 0, original: 0, quita: 0, dacion: 0,
+                                pago:0, quebranto: 0}
+
+
+    @actives_credits = []
+
+
+    credits.each do |credit|
+      if credit['pagoCierre'].present?
+        
+        if credit['tipoCredito'] == '1302'
+
+          otras_financieras_quirog[:cuentas_abiertas] += 1
+          otras_financieras_quirog[:cuentas_mxp] += 1
+          otras_financieras_quirog[:original] += credit['saldoInicial'].to_i / 1000
+          otras_financieras_quirog[:quita] += credit['quita'].to_i / 1000
+          otras_financieras_quirog[:dacion] += credit['dacion'].to_i / 1000
+          otras_financieras_quirog[:pago] += credit['pagoCierre'].to_f
+          otras_financieras_quirog[:quebranto] += credit['quebranto'].to_f
+
+        elsif credit['tipoCredito'] == '1305'
+          otras_financieras_simple[:cuentas_abiertas] += 1
+          otras_financieras_simple[:cuentas_mxp] += 1
+          otras_financieras_simple[:original] += credit['saldoInicial'].to_i / 1000
+          otras_financieras_simple[:quita] += credit['quita'].to_i / 1000
+          otras_financieras_simple[:dacion] += credit['dacion'].to_i / 1000
+          otras_financieras_simple[:pago] += credit['pagoCierre'].to_f
+          otras_financieras_simple[:quebranto] += credit['quebranto'].to_f
+
+        end
+      end
+    end
+
+
+    @actives_credits.push(otras_financieras_quirog)
+    @actives_credits.push(otras_financieras_simple)
+
+    return @actives_credits
+
+  end
+
+  def get_total_closed_credits credits
+
+    otras_financieras_simple = {cuentas_abiertas: 0, cuentas_mxp: 0, cuentas_usd: 0, otras_monedas: 0, original: 0,
+                                quita: 0, dacion: 0, pago:0, quebranto: 0}
+
+
+    total_actives_credits = []
+
+
+    credits.each do |credit|
+      if credit['pagoCierre']
+
+        otras_financieras_simple[:cuentas_abiertas] += 1
+        otras_financieras_simple[:cuentas_mxp] += 1
+        otras_financieras_simple[:original] += credit['saldoInicial'].to_i / 1000
+        otras_financieras_simple[:quita] += credit['quita'].to_i / 1000
+        otras_financieras_simple[:dacion] += credit['dacion'].to_i / 1000
+        otras_financieras_simple[:pago] += credit['pagoCierre'].to_f
+        otras_financieras_simple[:quebranto] += credit['quebranto'].to_f
+      end
+
 
 
     end
@@ -987,15 +1039,15 @@ module CompaniesHelper
   end
 
   def get_ur_credits credits
-    ur_credits = {mop: 'UR', cuentas_abiertas: 0, limite_abiertas: 0, maximo_abiertas: 0, saldo_actual: 0, 
-                  saldo_vencido: 0, pago_realizar: 0, cuentas_cerradas: 0, limite_cerradas: 0, maximo_cerradas: 0, 
+    ur_credits = {mop: 'UR', cuentas_abiertas: 0, limite_abiertas: 0, maximo_abiertas: 0, saldo_actual: 0,
+                  saldo_vencido: 0, pago_realizar: 0, cuentas_cerradas: 0, limite_cerradas: 0, maximo_cerradas: 0,
                   saldo_cerradas: 0, monto_cerradas: 0}
 
-    credits_01 = {mop: '01',cuentas_abiertas: 0, limite_abiertas: 0, maximo_abiertas: 0, saldo_actual: 0, saldo_vencido: 0, 
-                  pago_realizar: 0, cuentas_cerradas: 0, limite_cerradas: 0, maximo_cerradas: 0, saldo_cerradas: 0, 
+    credits_01 = {mop: '01',cuentas_abiertas: 0, limite_abiertas: 0, maximo_abiertas: 0, saldo_actual: 0, saldo_vencido: 0,
+                  pago_realizar: 0, cuentas_cerradas: 0, limite_cerradas: 0, maximo_cerradas: 0, saldo_cerradas: 0,
                   monto_cerradas: 0}
 
-    
+
     all_credits = []
 
 
@@ -1017,7 +1069,7 @@ module CompaniesHelper
         credits_01[:maximo_cerradas] += credit['CreditoMaximo'].to_i
         credits_01[:saldo_cerradas] += credit['SaldoActual'].to_i
         credits_01[:monto_cerradas] += credit['MontoPagar'].to_i
-        
+
       elsif !credit['FechaCierreCuenta'].present? && credit['FormaPagoActual'] == 'UR'
 
         ur_credits[:cuentas_abiertas] += 1
@@ -1103,7 +1155,8 @@ module CompaniesHelper
   end
 
   def render_quantity_h number
-    number_to_human(number,format:'%n%u',units:{thousand:'K',million:'M',billion:'B'})
+    value = number_to_human(number,format:'%n%u',units:{thousand:'K',million:'M',billion:'B'})
+    return value.present? ? value : '0'
   end
 
   def generate_pdf_name type, company_id
@@ -1122,4 +1175,72 @@ module CompaniesHelper
       "#{company_id}.pdf"
     end
   end
+
+  def comment_type comment_type
+    if comment_type == 'balance_sheet'
+      'Balance Financiero'
+    elsif comment_type == 'income_statement'
+      'Estado de Resultados'
+    elsif comment_type == 'financial_reasons'
+      'Razónes Financieras'
+    elsif comment_type == 'credit_bureau'
+      'Buró de Crédito'
+    elsif comment_type == 'cash_flow'
+      'Flujo de Efectivo'
+    end
+  end
+
+  def get_pdf_uuid rfc
+    tax_compliance = SatW.get_tax_compliance_checks rfc
+
+    return tax_compliance["hydra:member"][0]['file']['id']
+
+  end
+
+  def can_assign_periods company
+    if current_user.analyst?
+      can_assign = company.requests.where(analyst_id: current_user.id, process_status_id: ProcessStatus.find_by(key: 'credit_validated').try(:id)).present?
+    elsif current_user.super_user?
+      can_assign = true
+    else
+      can_assign = false
+    end
+
+    can_assign
+  end
+
+  def format_date date
+
+    day = date.first(2)
+    month = date[2,2]
+    year = date.last(4)
+    
+    return day.to_s + '-' + month.to_s + '-' + year.to_s
+
+  end
+
+  def format_date_updated_at date
+
+    year = date.first(4)
+    month = date.last(2)
+
+    return month.to_s + '-' + year.to_s
+
+  end
+
+  def company_have_credit_bureau credit_bureau
+    result = false
+    if credit_bureau.present?
+      if credit_bureau['bureau_report']
+        if credit_bureau['bureau_report']['results'].present?
+          result = true 
+        end
+      end
+    end
+
+    return result
+  end
+
+  
+  
 end

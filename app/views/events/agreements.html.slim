@@ -47,7 +47,7 @@
                   tr.tr-custom
                     th scope="row" = event.title
                     td = event.description
-                    td = "#{event.start_date.strftime('%d/%m/%Y')}"
+                    td = "#{ event.start_date.strftime('%d/%m/%Y') }"
                     td = event.event_type
                     td = event.event_type.eql?('PRESENCIAL') ? event.location : event.url
                     td = event.try(:event_finished).present? ? 'TERMINADO':'PENDIENTE'
@@ -66,10 +66,10 @@
           h3.m-portlet__head-text = t('.attendants')
     .m-portlet__body
       .m-section.mb-0
-        - if @attendants.empty?
+        - if true#@attendants.empty?
           .m-section__content
             .no-results
-              = t('helpers.not_created_yet', resource: t('.other').downcase)
+              = t('helpers.not_created_yet', resource: t('.attendants').downcase)
         - else
           .m-section__content.table-responsive
             table.table.m-table.m-table--head-separator-brand.table-custom
@@ -125,7 +125,7 @@
                       / td = select_tag "requests[#{index}][process_status_id]", options_for_select(@process_status.collect{ |u| [u.name, u.id] }),
                               { include_blank: t('helpers.select.prompt'), class: "form-control m-input" }
                       td = select("requests[#{index}]", "process_status_id", @process_status.all.collect {|p| [ p.name, p.id ] },
-                              { selected: event_request.try(:process_status_id) }, {class: "form-control m-input"})
+                              { selected: event_request.try(:process_status_id) ,include_blank: 'seleccione una opción'}, {class: "form-control m-input"})
                       td = text_field_tag "requests[#{index}][comment]", event_request.comment, class: 'form-control m-input'
                       input type="hidden" name="requests[#{index}][request_id]" value="#{event_request.request_id}"
                 tfoot

@@ -7,9 +7,11 @@ class HomeController < ApplicationController
 
   def index
 
-    if Role.where(key: ['god', 'analyst']).pluck(:id).include? current_user.role_id
+    if Role.where(key: ['god', 'analyst','credit_area','promotion_area','credit_management']).pluck(:id).include? current_user.role_id
       @search_companies = policy_scope(Company).ransack(params[:q])
-      @companies = @search_companies.result.paginate(page: params[:page], per_page: get_pagination)
+      @companies = @search_companies.result.order(created_at: :desc).paginate(page: params[:page], per_page: get_pagination)
+    elsif Role.where(key: ['committee']).pluck(:id).include? current_user.role_id
+      redirect_to '/events'
     else
       #redirect_to companies_path
       redirect_to '/home_company'
@@ -17,8 +19,14 @@ class HomeController < ApplicationController
   end
 
   def home_company
-    @user = current_user
-    @company = current_user.company
+    @user           = current_user
+    @company        = current_user.company
+
+    cc_details_bs = @company.company_calendar_details.where(assign_to: 'balance_sheet')
+    cc_details_is = @company.company_calendar_details.where(assign_to: 'income_statement')
+    @data_bs_captured  = cc_details_bs.count == cc_details_bs.where(capture_finished: true).count
+    @data_is_captured  = cc_details_is.count == cc_details_is.where(capture_finished: true).count
+
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
         if @company.try(:info_company)['hydra:member'][0]['company'].present?
@@ -80,12 +88,6 @@ class HomeController < ApplicationController
     @sat = SatW.create_sat_ws data
 
 
-    p "@sat ------------------------------------------------------------------"
-    p @sat
-
-    Rails.logger.info "@sat looogessrr ------------------------------------------------"
-    Rails.logger.info @sat
-
     respond_to do |format|
       if params_ciec
         if rfc_valid
@@ -93,15 +95,6 @@ class HomeController < ApplicationController
           if @sat['hydra:title'] != 'An error occurred'
 
             @info = SatW.get_tax_status @user.try(:company).try(:rfc)
-
-            p "@@info ------------------------------------------------------------------"
-            p @info
-
-            Rails.logger.info "@@info looogessrr ------------------------------------------------"
-            Rails.logger.info @info
-
-
-
 
             if @info['@type'] != 'hydra:Error'
 
@@ -114,11 +107,6 @@ class HomeController < ApplicationController
               @buro = create_buro @info, @user.try(:phone)
 
 
-              Rails.logger.info "@buro ---------------------------------------------------------------------------------------------------"
-              Rails.logger.info @buro
-
-
-
               if @buro
                 @credential = SatW.get_credential @sat['id']
 
@@ -129,11 +117,17 @@ class HomeController < ApplicationController
                     @balance_sheet = SatW.get_balance_sheet @user.try(:company).try(:rfc)
 
                     if !@balance_sheet.first[0].present?
+                      @cash_flow = SatW.get_cash_flow @user.try(:company).try(:rfc)
+                      providers = SatW.get_suppliers_concentration @user.try(:company).try(:rfc)
+                      customers = SatW.get_customer_concentration @user.try(:company).try(:rfc)
+
+
                       if @company.update(info_company: @info, credential_company: @credential, sat_id: @sat['id'],
                                          income_statment: @income_statment, buro_id: @buro.first['id'],
                                          sat_password: params[:passsword_ciec], balance_sheet: @balance_sheet,
                                          main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
-                                         client_type: client_type)
+                                         client_type: client_type, providers: providers, customers: customers,
+                                         cash_flow: @cash_flow)
 
                         if @user.try(:company).try(:rfc) == 'FGL190102DH6'
 
@@ -221,11 +215,15 @@ class HomeController < ApplicationController
                 if !@income_statment.first[0].present?
                   @balance_sheet = SatW.get_balance_sheet @user.try(:company).try(:rfc)
                   if !@balance_sheet.first[0].present?
+                    @cash_flow = SatW.get_cash_flow @user.try(:company).try(:rfc)
+                    providers = SatW.get_suppliers_concentration @user.try(:company).try(:rfc)
+                    customers = SatW.get_customer_concentration @user.try(:company).try(:rfc)
                     if @company.update(info_company: @info, credential_company: @credential, sat_id: @sat['id'],
                                        sat_password: params[:passsword_firma], key_encoded: key_base_64, cer_encoded: cer_base_64,
                                        buro_id: @buro.first['id'], balance_sheet: @balance_sheet,
                                        main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
-                                       client_type: client_type)
+                                       client_type: client_type, providers: providers, customers: customers,
+                                       cash_flow: cash_flow)
                       @bureau_report = BuroCredito.get_buro_report @buro.first['id']
                       @bureau_info = BuroCredito.get_buro_info @buro.first['id']
 
@@ -360,9 +358,6 @@ class HomeController < ApplicationController
              municipality: municipality, nationality: "MX",phone: user_phone]
     end
 
-
-    Rails.logger.info "data CREate buro ----------------------------------------------------------------------------------------------------"
-    Rails.logger.info data
 
     @buro = BuroCredito.create_client data
 
@@ -509,31 +504,36 @@ class HomeController < ApplicationController
 
         if credit_bureau['results'][0]['response'].present?
 
+
           if credit_bureau['results'][0]['response']['return'].present?
-            credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
+            if credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
+              credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
 
-              if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
-                                             type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
-                response = true
-              else
-                response = false
+                if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
+                                               type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
+                  response = true
+                else
+                  response = false
 
+                end
               end
             end
           end
         else
           if credit_bureau['results'][1]['response']['return'].presnet?
 
-            credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
+            if credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
+              credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
 
-              if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
-                                             type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
-                response = true
-              else
-                response = false
+                if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
+                                               type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
+                  response = true
+                else
+                  response = false
+
+                end
 
               end
-
             end
           end
 

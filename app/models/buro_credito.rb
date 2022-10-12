@@ -60,24 +60,17 @@ class BuroCredito < ApplicationRecord
   end
 
 
-  def self.get_buro_report id, info_sat = nil
+  def self.get_buro_report id , info_sat = nil
     # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/profiles/#{id}/query")
     # token = ENV['TOKEN_BURO_DEVELOP']
 
     uri = URI.parse("#{ENV['URL_BUREAU_PRODUCTION']}api/v1/profiles/#{id}/query")
     token = ENV['TOKEN_BURO_PRODUCTION']
 
-    account_type_pf_b = false
+    account_type_pf_b = true
     account_type_pm_b = false
 
-    Rails.logger.info "info_sat ----------------------------------------------------------------------"
-    Rails.logger.info info_sat
-
-    Rails.logger.info "info_sat['hydra:member'][0]['company'] ------------------------------------------------"
-    Rails.logger.info info_sat['hydra:member'][0]['company']
-
-
-    if info_sat['hydra:member'][0]['company'].present?
+    if info_sat['hydra:member'][0]['company'].present? 
       account_type_pm_b = true
     else
       account_type_pf_b = true
@@ -89,9 +82,6 @@ class BuroCredito < ApplicationRecord
         satBlackList: false,
         satRFC: true
     }
-
-    Rails.logger.info "data bureau report ------------------------------------------------------------------------"
-    Rails.logger.info  data
 
     request = Net::HTTP::Post.new(uri.request_uri)
 
