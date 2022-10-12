@@ -1,0 +1,75 @@
+name: CI/CD - Analisis dev
+on:  
+  push:
+    branches:
+      - dev
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:13
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_USER: factor
+          POSTGRES_PASSWORD: fc01551025
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        ports: ["6379:6379"]
+        options: --entrypoint redis-server
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Ruby 2.7
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.6
+          bundler-cache: false
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+      - run: npm install
+      - run: npm test
+      - name: Build and run test
+        env:
+          DATABASE_URL: postgres://factor:fc01551025@localhost:5432/factor_backend_test
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_ENV: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: pg01551025
+        run: |
+          sudo apt-get install libmagickwand-dev imagemagick nginx nodejs git-core curl build-essential openssl curl zlib1g zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev autoconf libc6-dev nmon          
+          curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
+          curl -L https://get.rvm.io | bash -s stable
+          sudo apt-get install libpq-dev          
+          sudo apt-get install -y nodejs
+          sudo apt-get update       
+          sudo gem install bundler -v '2.2.22'
+          bundler -v
+          bundle package
+          bundle install --jobs 4 --retry 3         
+          bundle exec rake db:create
+          bundle exec rake db:migrate
+          bundle exec rspec .        
+          bundle exec rails webpacker:compile
+          rake assets:precompile
+      - name: Generate deployment package
+        run: |
+          zip -r deploy.zip . -x '*.git*'               
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v11
+        with:
+          aws_access_key: ${{ secrets.FG_AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.FG_AWS_SECRET_ACCESS_KEY }}
+          application_name: analisis
+          environment_name: analisis-dev-env
+          version_label: ${{ github.SHA }}
+          version_description: ${{ github.event.head_commit.message }}
+          region: us-east-1
+          deployment_package: deploy.zip
