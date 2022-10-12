@@ -3,7 +3,7 @@ class EventsController < ApplicationController
 
   def index
     @users            = User.where(role_id: Role.where(key:['committee', 'credit_management', 'credit_area', 'promotion_area']).pluck(:id))
-    @requests         = Request.where(process_status_id: ProcessStatus.find_by(key: ['success_by_credit_area','committee_pending']).try(:id))
+    @requests         = policy_scope(Request)
     @next_events      = Event.where('start_date >= ?', Date.today()).order(:start_date)
     @pending_events   = Event.where(event_finished: [false, nil]).order(:start_date)
     @finished_events  = Event.where(event_finished: true).order(:start_date)
@@ -152,7 +152,7 @@ class EventsController < ApplicationController
 
   def agreements
     @event = Event.where(id: params[:id])
-    @process_status = ProcessStatus.where(key:['committee_approved','committee_rejected','committee_pending'])
+    @process_status = ProcessStatus.where(key:['committee_approved','committee_rejected','committee_pending','release'])
 
     attendants_ids = EventDetail.where(event_id: params[:id]).pluck(:user_id)
     @attendants = User.where(id: attendants_ids)

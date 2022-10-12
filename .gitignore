@@ -74,3 +74,5 @@ yarn-debug.log*
 
 .idea/credits_valuation.iml
 
+Gemfile.lock
+

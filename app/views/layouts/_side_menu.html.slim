@@ -17,7 +17,7 @@
             span.m-menu__link-title
               span.m-menu__link-wrap
                 span.m-menu__link-text = t('.landing')
-      - unless current_user.enterprise?
+      - if current_user.god? || current_user.credit_management? || current_user.committee? || current_user.credit_management?
         li class="m-menu__item #{'m-menu__item--active' if controller_name.eql?('events')}" aria-haspopup="true"
           a.m-menu__link href="/events"
             i.m-menu__link-icon.flaticon-users

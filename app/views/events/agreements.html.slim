@@ -125,7 +125,7 @@
                       / td = select_tag "requests[#{index}][process_status_id]", options_for_select(@process_status.collect{ |u| [u.name, u.id] }),
                               { include_blank: t('helpers.select.prompt'), class: "form-control m-input" }
                       td = select("requests[#{index}]", "process_status_id", @process_status.all.collect {|p| [ p.name, p.id ] },
-                              { selected: event_request.try(:process_status_id) }, {class: "form-control m-input"})
+                              { selected: event_request.try(:process_status_id) ,include_blank: 'seleccione una opción'}, {class: "form-control m-input"})
                       td = text_field_tag "requests[#{index}][comment]", event_request.comment, class: 'form-control m-input'
                       input type="hidden" name="requests[#{index}][request_id]" value="#{event_request.request_id}"
                 tfoot

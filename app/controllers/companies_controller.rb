@@ -12,7 +12,7 @@ class CompaniesController < ApplicationController
       @user.update company_id: params[:company_id]
     end
 
-    if @user.try(:company).present?
+    if @user.enterprise?
       @search_companies = policy_scope(Company).ransack(params[:q])
       @company = @search_companies.result.first
 
@@ -283,6 +283,7 @@ class CompaniesController < ApplicationController
 
   def company_details
     sort_order = %w(anual trimestral mensual)
+    @user = current_user
     @periods             = Calendar.all.order(:year, :period).sort_by { |calendar_p| sort_order.index(calendar_p.period_type) }
     @calendar_periods_bs = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'balance_sheet').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
     @calendar_periods_is = CompanyCalendarDetail.where(company_id: @company.id, assign_to: 'income_statement').joins(:calendar).order(year: :asc, period: :desc).sort_by { |calendar_p| sort_order.index(calendar_p.calendar.period_type) }
@@ -348,8 +349,12 @@ class CompaniesController < ApplicationController
       @credit_bureau = credit_bureaus
 
       if @company.try(:client_type) == 'PF'
-        if @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito'].present?
-          @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
+        if @report_result['response'].present?
+          if @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito'].present?
+            @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
+          else
+            @score = 0
+          end
         else
           @score = 0
         end
@@ -485,35 +490,40 @@ class CompaniesController < ApplicationController
     request         = params[:request_id].present? ? Request.find(params[:request_id]) : nil
     request_params  = params[:request]
 
-    request_params[:company_id]         = params[:company_id]
-    request_params[:process_status_id]  = ProcessStatus.first_step unless request_params[:process_status_id].present?
-    request_params[:factor_credit_id]   = nil unless request_params[:factor_credit_id].present?
-    request_params[:user_id]            = current_user.id
+    if params[:request].present?
+      request_params[:company_id]         = params[:company_id]
+      request_params[:process_status_id]  = ProcessStatus.first_step unless request_params[:process_status_id].present?
+      request_params[:factor_credit_id]   = nil unless request_params[:factor_credit_id].present?
+      request_params[:user_id]            = current_user.id
 
-    if request
-      tmp_analyst = request.analyst_id
-      if request.update(analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
-        if ProcessStatus.find_by_id(request_params[:process_status_id]).try(:key) == 'denied_validated_period'
-          CreditRequestMailer.with(request_data: {user:  company.user, company: company}).denied_validated.deliver_now
+      if request
+        tmp_analyst = request.analyst_id
+        if request.update(analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
+          if ProcessStatus.find_by_id(request_params[:process_status_id]).try(:key) == 'denied_validated_period'
+            CreditRequestMailer.with(request_data: {user:  company.user, company: company}).denied_validated.deliver_now
+          end
+          if request.analyst_id != tmp_analyst
+            CreditRequestMailer.with(request_data: {user:  company.user, company: company}).request_analyst_assigned.deliver_now
+          end
+          redirect_to "/company_details/#{params[:company_id]}", notice: "Actualizado correctamente."
+        else
+          redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')
         end
-        if request.analyst_id != tmp_analyst
-          CreditRequestMailer.with(request_data: {user:  company.user, company: company}).request_analyst_assigned.deliver_now
-        end
-        redirect_to "/company_details/#{params[:company_id]}", notice: "Actualizado correctamente."
       else
-        redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')
+        new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: ProcessStatus.first_step, factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
+
+        if new_request.save
+          CreditRequestMailer.with(request_data: {user:  company.user, company: company}).request_analyst_assigned.deliver_now
+
+          redirect_to "/company_details/#{params[:company_id]}", notice: "Guardado correctamente."
+        else
+          redirect_to "/company_details/#{params[:company_id]}", alert: new_request.errors.full_messages.join(' ')
+        end
       end
     else
-      new_request = Request.new(company_id: params[:company_id], analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: ProcessStatus.first_step, factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
-
-      if new_request.save
-        CreditRequestMailer.with(request_data: {user:  company.user, company: company}).request_analyst_assigned.deliver_now
-
-        redirect_to "/company_details/#{params[:company_id]}", notice: "Guardado correctamente."
-      else
-        redirect_to "/company_details/#{params[:company_id]}", alert: new_request.errors.full_messages.join(' ')
-      end
+      redirect_to "/company_details/#{params[:company_id]}", alert: "Hubo un error."
     end
+
   end
 
   def assign_pdf_to_request
@@ -1737,7 +1747,7 @@ class CompaniesController < ApplicationController
   def credit_bureau_report
     @company = Company.find(params[:id])
 
-    @bureau_report = BuroCredito.get_buro_report 4450
+    @bureau_report = BuroCredito.get_buro_report @company.try(:buro_id),@company.try(:info_company)
 
     respond_to do |format|
       if @company.try(:credit_bureaus).last.update(bureau_report: @bureau_report)

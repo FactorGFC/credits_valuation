@@ -366,14 +366,12 @@ javascript:
               - else
                 span.text-center
                   | Es necesario validar la solicitud.
-                    /button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_income" data-toggle="modal" type="button" data-id="#{@company.id}" data-assignto="income_statement" data-calendars="#{@company.company_calendar_details.where(assign_to: 'income_statement').pluck(:calendar_id)}" data-approved="true"
-                    /  = "Estado Resultados"
 
             .btns-card.mt-30
               .subtitle-icon.d-flex.justify-content-center.align-items-center
                 i.fa.fa-sync.fa-lg.m--font-primary
               h5.h5.subtitle = 'Información faltante de compañía'
-              - if @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present?
+              - if @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present? and company_have_credit_bureau(@credit_bureau)
                 span.text-center
                   | Todo en orden.
               - else
@@ -390,7 +388,7 @@ javascript:
                 - unless @company.try(:credit_bureaus).last.try(:bureau_info).present?
                   = link_to credit_bureau_info_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                     = "Info. Buró de crédito"
-                - unless @company.try(:credit_bureaus).last.try(:bureau_report).present?
+                - unless company_have_credit_bureau @credit_bureau['bureau_report']
                   = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                     = "Reporte del buró de crédito"
 
@@ -1006,15 +1004,19 @@ javascript:
                                             - if v[:value] == 0
                                               .m-stack__item.body-info-company.m-stack__item--middle
                                             - elsif v[:value] == '1'
-                                              .m-stack__item.body-info-one.m-stack__item--middle
+                                              .m-stack__item.body-info-green.m-stack__item--middle
                                                 strong
                                                   = v[:value]
-                                            - elsif v[:value] == '2'
-                                              .m-stack__item.body-info-two.m-stack__item--middle
+                                            - elsif v[:value] == '2' || v[:value] == '3' || v[:value] == '4'
+                                              .m-stack__item.body-info-yellow.m-stack__item--middle
+                                                strong
+                                                  = v[:value]
+                                            - elsif v[:value] == '5' || v[:value] == '6' || v[:value] == '7'
+                                              .m-stack__item.body-info-red.m-stack__item--middle
                                                 strong
                                                   = v[:value]
                                             - else
-                                              .m-stack__item.body-info-x.m-stack__item--middle
+                                              .m-stack__item.body-info-white.m-stack__item--middle
                                                 strong
                                                   = v[:value]
                                       hr.dotted
@@ -1087,101 +1089,34 @@ javascript:
                                   h3.m-portlet__head-text
                                     | Información de HAWK
                                   - if @credit_bureau.bureau_report.present?
-                                    - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD'].present?
+                                    - if @credit_bureau['bureau_report']['results'].present?
+                                      - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD'].present?
 
-                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
-                                        .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
-                                          h4.strong
-                                            | Mensaje de prevención
-                                          .history-icon
-                                            i.fa.fa-info-circle.fa-2x.lightgray-text
+                                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
+                                          .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
+                                            h4.strong
+                                              | Mensaje de prevención
+                                            .history-icon
+                                              i.fa.fa-info-circle.fa-2x.lightgray-text
 
-                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                        .m-section
-                                          .m-section__content
-                                            table.table style="display: block;overflow-x: auto;"
-                                              thead.thead-default
-                                                tr
-                                                  th
-                                                    | Fecha de
-                                                  th
-                                                    | Clave
-                                                  th
-                                                    | Institución
-                                                  th
-                                                    | Mensaje
+                                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                          .m-section
+                                            .m-section__content
+                                              table.table style="display: block;overflow-x: auto;"
+                                                thead.thead-default
+                                                  tr
+                                                    th
+                                                      | Fecha de
+                                                    th
+                                                      | Clave
+                                                    th
+                                                      | Institución
+                                                    th
+                                                      | Mensaje
 
-                                              tbody
-                                                - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk|
-                                                  - if hawk['CodigoClave'] == '010'
-                                                    tr
-                                                      td
-                                                        = format_date hawk['FechaReporte']
-                                                      td
-                                                        = hawk['CodigoClave']
-                                                      td
-                                                        = hawk['TipoInstitucion']
-                                                      td
-                                                        = hawk['Mensaje']
-                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
-                                        .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
-                                          h4.strong
-                                            | Mensaje por inconsistencia de datos
-                                          .history-icon
-                                            i.fa.fa-info-circle.fa-2x.lightgray-text
-                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                        .m-section
-                                          .m-section__content
-                                            table.table style="display: block;overflow-x: auto;"
-                                              thead.thead-default
-                                                tr
-                                                  th
-                                                    | Fecha de
-                                                  th
-                                                    | Clave
-                                                  th
-                                                    | Institución
-                                                  th
-                                                    | Mensaje
-
-                                              tbody
-                                                - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk|
-                                                  - if hawk['CodigoClave'] == '850' || hawk['CodigoClave'] == '860'
-                                                    tr
-                                                      td
-                                                        = format_date hawk['FechaReporte']
-                                                      td
-                                                        = hawk['CodigoClave']
-                                                      td
-                                                        = hawk['TipoInstitucion']
-                                                      td
-                                                        = hawk['Mensaje']
-
-                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
-                                        .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
-                                          h4.strong
-                                            | Mensaje por información de juicios (Nombre del consultado asociado a un juicio como demandado)
-                                          .history-icon
-                                            i.fa.fa-info-circle.fa-2x.lightgray-text
-                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                        .m-section
-                                          .m-section__content
-                                            table.table style="display: block;overflow-x: auto;"
-                                              thead.thead-default
-                                                tr
-                                                  th
-                                                    | Fecha de
-                                                  th
-                                                    | Clave
-                                                  th
-                                                    | Institución
-                                                  th
-                                                    | Mensaje
-
-                                              tbody
-                                                - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD'].present?
+                                                tbody
                                                   - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk|
-                                                    - if hawk['CodigoClave'] == '990'
+                                                    - if hawk['CodigoClave'] == '010'
                                                       tr
                                                         td
                                                           = format_date hawk['FechaReporte']
@@ -1191,9 +1126,30 @@ javascript:
                                                           = hawk['TipoInstitucion']
                                                         td
                                                           = hawk['Mensaje']
-                                                - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertConsulta'].present?
-                                                  - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertConsulta']['HawkAlertC'].each_with_index do |hawk|
-                                                    - if hawk['CodigoClave'] == '990'
+                                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
+                                          .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
+                                            h4.strong
+                                              | Mensaje por inconsistencia de datos
+                                            .history-icon
+                                              i.fa.fa-info-circle.fa-2x.lightgray-text
+                                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                          .m-section
+                                            .m-section__content
+                                              table.table style="display: block;overflow-x: auto;"
+                                                thead.thead-default
+                                                  tr
+                                                    th
+                                                      | Fecha de
+                                                    th
+                                                      | Clave
+                                                    th
+                                                      | Institución
+                                                    th
+                                                      | Mensaje
+
+                                                tbody
+                                                  - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk|
+                                                    - if hawk['CodigoClave'] == '850' || hawk['CodigoClave'] == '860'
                                                       tr
                                                         td
                                                           = format_date hawk['FechaReporte']
@@ -1203,6 +1159,62 @@ javascript:
                                                           = hawk['TipoInstitucion']
                                                         td
                                                           = hawk['Mensaje']
+
+                                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
+                                          .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle.d-flex.justify-content-between.align-items-center.history-header
+                                            h4.strong
+                                              | Mensaje por información de juicios (Nombre del consultado asociado a un juicio como demandado)
+                                            .history-icon
+                                              i.fa.fa-info-circle.fa-2x.lightgray-text
+                                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                          .m-section
+                                            .m-section__content
+                                              table.table style="display: block;overflow-x: auto;"
+                                                thead.thead-default
+                                                  tr
+                                                    th
+                                                      | Fecha de
+                                                    th
+                                                      | Clave
+                                                    th
+                                                      | Institución
+                                                    th
+                                                      | Mensaje
+
+                                                tbody
+                                                  - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD'].present?
+                                                    - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk|
+                                                      - if hawk['CodigoClave'] == '990'
+                                                        tr
+                                                          td
+                                                            = format_date hawk['FechaReporte']
+                                                          td
+                                                            = hawk['CodigoClave']
+                                                          td
+                                                            = hawk['TipoInstitucion']
+                                                          td
+                                                            = hawk['Mensaje']
+                                                  - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertConsulta'].present?
+                                                    - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertConsulta']['HawkAlertC'].each_with_index do |hawk|
+                                                      - if hawk['CodigoClave'] == '990'
+                                                        tr
+                                                          td
+                                                            = format_date hawk['FechaReporte']
+                                                          td
+                                                            = hawk['CodigoClave']
+                                                          td
+                                                            = hawk['TipoInstitucion']
+                                                          td
+                                                            = hawk['Mensaje']
+                                      - else
+                                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                            .m-alert__icon
+                                              i.flaticon-exclamation-1
+                                              span
+                                            .m-alert__text
+                                              strong
+                                                | Aún no se encuentra Información de HAWK.
                                     - else
                                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                         .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
@@ -1228,39 +1240,49 @@ javascript:
                                   h3.m-portlet__head-text
                                     | Detalle de las consultas
                                   - if @credit_bureau.bureau_report.present?
-                                    - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['ConsultasEfectuadas'].present?
-                                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                                        .m-section
-                                          .m-section__content
-                                            table.table style="display: block;overflow-x: auto;"
-                                              thead.thead-default
-                                                tr
-                                                  th
-                                                    | Otorgante
-                                                  th
-                                                    | Fecha de la consulta
-                                                  th
-                                                    | Responsabilidad
-                                                  th
-                                                    | Tipo de contrato
-                                                  th
-                                                    | Importe
-
-                                              tbody
-                                                - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['ConsultasEfectuadas']['ConsultaEfectuada'].each_with_index do |consulta|
+                                    - if @credit_bureau['bureau_report']['results'].present?
+                                      - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['ConsultasEfectuadas'].present?
+                                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                          .m-section
+                                            .m-section__content
+                                              table.table style="display: block;overflow-x: auto;"
+                                                thead.thead-default
                                                   tr
-                                                    td
-                                                      = consulta['NombreOtorgante']
-                                                    td
-                                                      = format_date consulta['FechaConsulta']
-                                                    td
-                                                      = consulta['IndicadorTipoResponsabilidad'].present? ? I18n.t("tipo_responsabilidad.#{consulta['IndicadorTipoResponsabilidad']}") : ''
-                                                    td
-                                                      = I18n.t("tipo_contrato.#{consulta['TipoContrato']}")
-                                                    td
-                                                      = consulta['ImporteContrato']
+                                                    th
+                                                      | Otorgante
+                                                    th
+                                                      | Fecha de la consulta
+                                                    th
+                                                      | Responsabilidad
+                                                    th
+                                                      | Tipo de contrato
+                                                    th
+                                                      | Importe
+
+                                                tbody
+                                                  - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['ConsultasEfectuadas']['ConsultaEfectuada'].each_with_index do |consulta|
+                                                    tr
+                                                      td
+                                                        = consulta['NombreOtorgante']
+                                                      td
+                                                        = format_date consulta['FechaConsulta']
+                                                      td
+                                                        = consulta['IndicadorTipoResponsabilidad'].present? ? I18n.t("tipo_responsabilidad.#{consulta['IndicadorTipoResponsabilidad']}") : ''
+                                                      td
+                                                        = I18n.t("tipo_contrato.#{consulta['TipoContrato']}")
+                                                      td
+                                                        = consulta['ImporteContrato']
 
 
+                                      - else
+                                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                                            .m-alert__icon
+                                              i.flaticon-exclamation-1
+                                              span
+                                            .m-alert__text
+                                              strong
+                                                | Aún no se encuentra detalle de las conusltas.
                                     - else
                                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                         .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
@@ -2683,11 +2705,12 @@ javascript:
           input type="hidden" name="request_id" id="requestId" value=""
           input type="hidden" name="company_id" id="companyId" value=""
           .col-xl-12 style="display: grid;"
-            p#textModal
-              | Asignar Analista
-            = select("request", "analyst_id", User.where(role_id: Role.find_by(key: 'analyst').try(:id)).collect { |p| [p.full_name, p.id] }, {include_blank: 'Selecciona analista'}, {class: "form-control m-input", disabled: (current_user.god? or current_user.credit_management? or current_user.credit_area? or current_user.promotion_area?) ? false : true})
+            - unless @user.role.key == 'credit_management'
+              p#textModal
+                | Asignar Analista
+              = select("request", "analyst_id", User.where(role_id: Role.find_by(key: 'analyst').try(:id)).collect { |p| [p.full_name, p.id] }, {include_blank: 'Selecciona analista'}, {class: "form-control m-input", disabled: (current_user.god? or current_user.credit_management? or current_user.credit_area? or current_user.promotion_area?) ? false : true})
 
-          - if @company.company_calendar_details.present?
+          - if @company.company_calendar_details.present? && @user.role.key != 'credit_management'
             .col-xl-12#input_credit_type style="display: none;"
               p.mt-20#textModal
                 | Asignar Tipo de Crédito
@@ -2700,7 +2723,7 @@ javascript:
             p.mt-20#textModal
               | Asignar Status del Proceso
             div style="display: grid;"
-              = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: false}, {class: "form-control m-input"})
+              = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona una opción'}, {class: "form-control m-input"})
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar

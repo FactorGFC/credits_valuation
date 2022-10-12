@@ -7,10 +7,10 @@ class HomeController < ApplicationController
 
   def index
 
-    if Role.where(key: ['god', 'analyst']).pluck(:id).include? current_user.role_id
+    if Role.where(key: ['god', 'analyst','credit_area','promotion_area','credit_management']).pluck(:id).include? current_user.role_id
       @search_companies = policy_scope(Company).ransack(params[:q])
       @companies = @search_companies.result.order(created_at: :desc).paginate(page: params[:page], per_page: get_pagination)
-    elsif Role.where(key: ['committee', 'credit_management', 'credit_area', 'promotion_area']).pluck(:id).include? current_user.role_id
+    elsif Role.where(key: ['committee']).pluck(:id).include? current_user.role_id
       redirect_to '/events'
     else
       #redirect_to companies_path
@@ -133,21 +133,14 @@ class HomeController < ApplicationController
 
                           @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
                         else
-                          @bureau_report = BuroCredito.get_buro_report 60742 #
-                          # ,@info #4450 60368
-                          p "@bureau_report ---------------------------------------------------------------------------------------------------------------------"
-                          p @bureau_report
+                          @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
 
                         end
 
 
 
                         # @bureau_report = BuroCredito.get_report_by_id 12468
-                        # @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @info
-                        @bureau_info = BuroCredito.get_buro_info 60742, @info
-
-                        p "@bureau_info --------------------------------------------------------------------------------"
-                        p @bureau_info
+                        @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @info
 
                         if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
                           if @user.update(sat_id: @sat['id'])
