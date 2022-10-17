@@ -9,7 +9,7 @@ class RequestPolicy < ApplicationPolicy
       
       if @user.god?
         scope.all
-      elsif @user.analyst
+      elsif @user.analyst?
         scope.where(analyst_id: @user.id)
       elsif @user.credit_management?
         scope.where(process_status_id: ProcessStatus.find_by(key: ['success_by_credit_area']).try(:id))
