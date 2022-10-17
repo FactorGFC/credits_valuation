@@ -297,7 +297,7 @@ class CompaniesController < ApplicationController
     @bs_scale            = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
 
-    @requests            = policy_scope(Request).where(company_id: params[:id]).order(created_at: :desc)
+    @requests            = policy_scope(Request).where(company_id: params[:id]).distinct.order(created_at: :desc)
     @process_status      = policy_scope(ProcessStatus)
     @can_assign_period   = can_assign_periods(@company)
 
