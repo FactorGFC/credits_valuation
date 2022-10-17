@@ -7,7 +7,7 @@ class RequestPolicy < ApplicationPolicy
       #   scope.where(analyst_id: @user.id)
       # end
       
-      if @user.god? || @user.analyst?
+      if @user.god? || @user.credit_area?
         scope.all
       elsif @user.analyst?
         scope.where(analyst_id: @user.id)
