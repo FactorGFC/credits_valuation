@@ -1231,7 +1231,7 @@ module CompaniesHelper
   def company_have_credit_bureau credit_bureau
     result = false
     if credit_bureau.present?
-      if credit_bureau['bureau_report']
+      if credit_bureau['bureau_report'].present?
         if credit_bureau['bureau_report']['results'].present?
           result = true 
         end

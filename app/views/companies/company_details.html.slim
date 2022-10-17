@@ -388,9 +388,9 @@ javascript:
                 - unless @company.try(:credit_bureaus).last.try(:bureau_info).present?
                   = link_to credit_bureau_info_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                     = "Info. Buró de crédito"
-                - unless company_have_credit_bureau @credit_bureau['bureau_report']
-                  = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
-                    = "Reporte del buró de crédito"
+                  - unless company_have_credit_bureau @credit_bureau
+                    = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                      = "Reporte del buró de crédito"
 
   - if @company.income_calendar_details.present? or @company.balance_calendar_details.present?
     .m-portlet
