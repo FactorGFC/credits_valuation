@@ -6,6 +6,10 @@ class RequestPolicy < ApplicationPolicy
       # elsif @user.role_key.eql? 'analyst'
       #   scope.where(analyst_id: @user.id)
       # end
+      
+      if @user.god?
+        scope.all
+      end
       if @user.credit_management?
         scope.where(process_status_id: ProcessStatus.find_by(key: ['success_by_credit_area']).try(:id))
       else
