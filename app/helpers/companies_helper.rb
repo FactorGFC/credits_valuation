@@ -1199,7 +1199,7 @@ module CompaniesHelper
 
   def can_assign_periods company
     if current_user.analyst?
-      can_assign = company.requests.where(analyst_id: current_user.id, process_status_id: ProcessStatus.find_by(key: 'credit_validated').try(:id)).present?
+      can_assign = company.requests.where(company_id: company.id, process_status_id: ProcessStatus.find_by(key: 'credit_validated').try(:id)).present?
     elsif current_user.super_user?
       can_assign = true
     else
