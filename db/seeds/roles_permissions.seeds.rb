@@ -82,5 +82,3 @@ after :permissions do
 
   ])
 end
-
-
