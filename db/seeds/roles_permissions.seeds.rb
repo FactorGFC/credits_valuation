@@ -77,6 +77,8 @@ after :permissions do
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Ver vista de detalles de la compañia').id},
                             {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver eventos').id},
                             {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver acuerdos en eventos').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Mostar vista de comentario de una solicitud de una solicitud').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Añadir comentarios de solicitud').id}
 
                             #10-10-2022
 
