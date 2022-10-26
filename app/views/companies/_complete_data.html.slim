@@ -1,0 +1,153 @@
+= form_tag('/update_complete_data', method: :put)  do
+  .multisteps-container.container-fluid
+    .row
+      .steps-container.col-3
+        .steps-content.single-opt
+          .align-items-center
+            .h5 Captura
+            .h6.mb-10 = @company.try(:name)
+          .step-progress.mt-20
+            section.step-indicator
+              .step#step2
+                .step-icon
+                  i.fa.fa-address-card aria-hidden='true'
+              .indicator-line.active#ind1
+              .step.completed#step1 style="opacity: 1;"
+                .step-icon
+                  i.fa.fa-address-book aria-hidden='true'
+              / .indicator-line#ind1
+              / .step#step2
+              /   .step-icon 02
+              / .indicator-line#ind2
+              / .step#step3
+              /   .step-icon 03
+              / .indicator-line#ind3
+              / - if !@company.has_clients
+              /   .step#step4
+              /     .step-icon 04
+              /   .indicator-line#ind4
+              / - if !@company.has_providers
+              /   .step#step5
+              /     .step-icon 05
+              /   .indicator-line#ind5
+              / .step#step6
+              /     .step-icon 06
+              / .indicator-line#ind6
+              / .step#step7
+              /   .step-icon 07
+
+            section.step-indicator.description
+              .step-desc.inactive#stepDesc1
+                span
+                  .title Credenciales
+              .step-desc.active#stepDesc2
+                span
+                  .title Completa tus datos
+              / .step-desc.inactive#stepDesc2
+              /   span PASO 02
+              /   .title Actividad y producto
+              / .step-desc.inactive#stepDesc3
+              /   span PASO 03
+              /   .title Número de colaboradores
+              / - if !@company.has_clients
+              /   .step-desc.inactive#stepDesc4
+              /     span PASO 04
+              /     .title Principales Clientes
+              / .step-desc.inactive#stepDesc5
+              /   span PASO 05
+              /   .title Principales Proveedores
+              / .step-desc.inactive#stepDesc6
+              /   span PASO 06
+              /   .title Instituciones financieras
+              / .step-desc.inactive#stepDesc7
+              /   span PASO 07
+              /   .title Archivos
+      .step-content.col-9
+          /= hidden_field :company, :step_one, value: true
+          .step-page.m-animate-fade-in-up
+            .title
+              div style=("color: #602BFA; width: 500px;")
+                strong
+                  span style=("color: #3c3e6a; width: 500px") > Datos personales
+            .col-xl-12.mt-20
+              .tab-content.col-xl-12.mb-30
+                .form-group.m-form__group
+                  .d-inline-flex.col-12
+                    .col-6
+                      label.text-bold
+                        | Nombre
+                      = text_field :user, :first_name, class: 'form-control m-input m-input--square'
+                    .col-6
+                      label.text-bold
+                        | Apellido(s)
+                      = text_field :user, :last_name, class: 'form-control m-input m-input--square'
+                  .d-inline-flex.col-12
+                    .col-6
+                      label.text-bold
+                        | Email
+                      = text_field :user, :email, class: 'form-control m-input m-input--square'
+                    .col-6
+                      label.text-bold
+                        | Télefono
+                      = text_field :user, :phone, class: 'form-control m-input m-input--square'
+
+            .title
+              div style=("color: #602BFA; width: 500px;")
+                strong
+                  span style=("color: #3c3e6a; width: 500px") > Datos de la Empresa
+            .col-xl-12.mt-20
+              .tab-content.col-xl-12.mb-30
+                .form-group.m-form__group
+                  .d-inline-flex.col-12
+                    .col-6
+                      label.text-bold
+                        | Nombre
+                      = text_field :company, :name, class: 'form-control m-input m-input--square'
+                    .col-6
+                      label.text-bold
+                        | RFC
+                      = text_field :company, :rfc, class: 'form-control m-input m-input--square'
+                  .d-inline-flex.col-12
+                    .col-12
+                      label.text-bold
+                        | Dirección
+                      = text_field :company, :address, class: 'form-control m-input m-input--square'
+              .col-xl-12
+                a.btn.btn-primary.col-xl-12 data-target="#m_phone_confirmation" data-toggle="modal" href="#m_phone_confirmation"
+                  = 'Continuar'
+
+  #m_phone_confirmation.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
+    .modal-dialog role="document" style="margin-top: 0%;"
+      .modal-content
+        .modal-header
+          h5.modal-title
+            = "Autorización de consulta de Buró de credito"
+          button.close aria-label="Close" data-dismiss="modal" type="button"
+            span aria-hidden="true"
+              | \&times;
+        .modal-body
+          p
+            | Por este conducto autorizo expresamente a
+            strong.ml-2 = 'Créditos Factor Global'
+            |, para que por conducto de sus funcionarios facultados lleve a cabo Investigaciones, sobre mi comportamiento crediticio o el de la Empresa que represento en Trans Union de México, S. A. SIC y/o Dun & Bradstreet, S.A. SIC
+            br
+            | Así mismo, declaro que conozco la naturaleza y alcance de la información que se solicitará, del uso que Moffin Software S.A.P.I. de C.V., hará de tal información y de que ésta podrá realizar consultas periódicas sobre mi historial o el de la empresa que represento, consintiendo que esta autorización se encuentre vigente por un período de 3 años contados a partir de su expedición y en todo caso durante el tiempo que se mantenga la relación jurídica.
+            br
+            | En caso de que la solicitante sea una Persona Moral, declaro bajo protesta de decir verdad Ser Representante Legal de la empresa mencionada en esta autorización; manifestando que a la fecha de firma de la presente autorización los poderes no me han sido revocados, limitados, ni modificados en forma alguna.
+          .form-group.m-form__group
+            .d-flex.col-md-12
+              .col-md-2
+                label.mr-2
+                  strong = 'Confirma tu código:'
+              .col-md-6
+                input.form-control.m-input.m-input--square name='confirmation_code'
+                a href='#'
+                  span = 'Reenviar'
+
+
+        .modal-footer
+          button.btn.btn-secondary data-dismiss="modal" type="button"
+            | Cerrar
+          = submit_tag 'Guardar', class: 'btn btn-success', id: 'idBtn'
+            | Guardar
+

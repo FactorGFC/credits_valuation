@@ -86,6 +86,7 @@ Rails.application.routes.draw do
     get 'dictamen_report/:id/:request_id'  => 'companies#dictamen_report', as: :dictamen_report
     get 'open_pdf/:id/:file'  => 'companies#open_pdf', as: :open_pdf
     get 'comments/:company_id/:assigned_to' => 'companies#comments'
+    put 'update_complete_data' => 'companies#update_complete_data', as: :update_complete_data
     put 'save_comment' => 'companies#save_comment', as: :save_comment
 
     get 'request_comments/:request_id' => 'request_comments#index'

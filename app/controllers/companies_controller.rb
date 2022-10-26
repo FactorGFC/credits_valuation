@@ -281,6 +281,26 @@ class CompaniesController < ApplicationController
     end
   end
 
+  # Completar datos de compañia, usuario
+  def update_complete_data
+    #TODO ¿SET CORRECTO?
+    @user     = current_user
+    @company  = current_user.company
+    company_params  = params[:company]
+    user_params     = params[:user]
+    #TODO
+    respond_to do |format|
+      if @company.update(step_two: true, name: company_params[:name], rfc: company_params[:rfc], address: company_params[:address]) and
+         @user.update(first_name: user_params[:first_name], last_name: user_params[:last_name], email: user_params[:email], phone: user_params[:phone])
+        format.html { redirect_to '/request_steps', notice: "Datos actualizados correctamente." }
+        format.json { render :show, status: :ok, location: @company }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @company.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def company_details
     sort_order = %w(anual trimestral mensual)
     @user = current_user
@@ -583,11 +603,15 @@ class CompaniesController < ApplicationController
     @search_companies = policy_scope(Company).ransack(params[:q])
     @company = @search_companies.result.first
 
-    @step_one_value = @company.step_one
-    @step_two_value = @company.step_two && @company.step_one
-    @step_three_value = @company.step_three && @company.step_two && @company.step_one && !@company.has_clients
-    @step_four_value = @company.step_four && @company.step_three && @company.step_two && @company.step_one && !@company.has_providers
-    @step_complete_value = @company.complete
+    @step_one_value       = @company.step_one
+    p '====='
+    p @step_one_value
+    p '====='
+    @step_two_value       = @company.step_two   && @company.step_one
+    @step_three_value     = @company.step_three && @company.step_two    && @company.step_one && !@company.has_clients
+    @step_four_value      = @company.step_four  && @company.step_three  && @company.step_two && @company.step_one && !@company.has_providers
+    @step_fifth_value     = @company.try(:step_fifth) && @company.step_four && @company.step_three && @company.step_two && @company.step_one && !@company.has_providers
+    @step_complete_value  = @company.complete
 
     if @company.complete
       redirect_to companies_path

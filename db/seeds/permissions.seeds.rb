@@ -86,7 +86,10 @@ after :initialize_permissions do
                            #12-Sept-2022
                            {name: 'Ver vista para crear una nueva compañia', description: 'Permite entrar a la vista para crear una nueva compañia', action: 'new', controller: 'Companies'},
                            {name: 'Crear compañia', description: 'Permite crear compañias.', action: 'create', controller: 'Companies'},
-                           {name: 'Validar o rechazar compañia', description: 'Permite validar o rechazar la compañia.', action: 'validate_company', controller: 'Companies'}
+                           {name: 'Validar o rechazar compañia', description: 'Permite validar o rechazar la compañia.', action: 'validate_company', controller: 'Companies'},
+
+                           #20-Oct-2022
+                           {name: 'Confirmar y completar datos en solicitud', description: 'Permite actualizar y completar los datos en solicitud (primero paso)', action: 'update_complete_data', controller: 'Companies'}
                        ])
   rescue StandardError => e
     p Permission.first

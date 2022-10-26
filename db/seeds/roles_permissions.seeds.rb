@@ -78,7 +78,9 @@ after :permissions do
                             {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver eventos').id},
                             {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver acuerdos en eventos').id},
 
-                            #10-10-2022
+                            #20-OCT-2022
+                            #Company
+                            {role_id: Role.find_by_key('enterprise').id, permission_id: Permission.find_by_name('Confirmar y completar datos en solicitud').id},
 
   ])
 end
