@@ -86,11 +86,14 @@ after :initialize_permissions do
                            #12-Sept-2022
                            {name: 'Ver vista para crear una nueva compañia', description: 'Permite entrar a la vista para crear una nueva compañia', action: 'new', controller: 'Companies'},
                            {name: 'Crear compañia', description: 'Permite crear compañias.', action: 'create', controller: 'Companies'},
-                           {name: 'Validar o rechazar compañia', description: 'Permite validar o rechazar la compañia.', action: 'validate_company', controller: 'Companies'}
+                           {name: 'Validar o rechazar compañia', description: 'Permite validar o rechazar la compañia.', action: 'validate_company', controller: 'Companies'},
+                           {name: 'Ver dictamen', description: 'Permite ver el reporte del dictamen.', action: 'dictamen_report', controller: 'Companies'},
+
                        ])
   rescue StandardError => e
     p Permission.first
     Permission.create(name: 'Finalizar captura', description: 'Permite finalizar captura', action: 'assign_calendar', controller: 'Companies')
+    
 
     p "Permission.last -----"
     p Permission.last

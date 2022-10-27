@@ -434,13 +434,13 @@ javascript:
                     .m-section.mb-0
                       .m-section__content.table-responsive.text-center
                         .tabs-actions
-                          /- if @company.balance_sheet_finished
-                          button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="balance_sheet"
-                            .fa.fa-check-square.mx-2
-                            = "Habilitar Captura"
-                          a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block href="/balance_sheet_request/#{@company.id}" target="_blank"
-                            .fa.fa-pencil-alt.mx-2
-                            = "Editar Captura"
+                          - unless @user.committee? || @user.credit_management?
+                            button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="balance_sheet"
+                              .fa.fa-check-square.mx-2
+                              = "Habilitar Captura"
+                            a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block href="/balance_sheet_request/#{@company.id}" target="_blank"
+                              .fa.fa-pencil-alt.mx-2
+                              = "Editar Captura"
                       - if @company.company_calendar_details.where(assign_to: 'balance_sheet').present?
                         = render "balance_sheet_table"
                       - else
