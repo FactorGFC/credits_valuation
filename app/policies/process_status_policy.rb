@@ -6,7 +6,7 @@ class ProcessStatusPolicy < ApplicationPolicy
       elsif @user.role_key.eql? 'analyst'
         scope.where(key: ['denied_analist', 'credit_validated','denied_validated_period','success_validated_period'])
       elsif @user.role_key.eql? 'credit_management'
-        scope.where(key: ['rejected_by_credit_area', 'success_by_credit_area'])
+        scope.where(key: ['rejected_by_credit_area', 'success_by_credit_area','analist'])
       else
         nil
       end
