@@ -494,12 +494,13 @@ javascript:
                       .m-section__content.table-responsive.text-center
                         .tabs-actions
                           /- if @company.income_statement_finished
-                          button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.mx-2.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="income_statement_finished"
-                            .fa.fa-check-square.mx-2
-                            = "Habilitar Captura"
-                          a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block.mx-2 href="/income_statement_capture/#{@company.id}" target="_blank"
-                            .fa.fa-pencil-alt.mx-2
-                            = "Editar Captura"
+                          - unless @user.committee? || @user.credit_management?
+                            button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.mx-2.open-modal-cstatus data-toggle="modal" type="button" data-target="#m_modal_capture_status" data-id="#{@company.id}" data-type="income_statement_finished"
+                              .fa.fa-check-square.mx-2
+                              = "Habilitar Captura"
+                            a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.mx-2.btn-block.mx-2 href="/income_statement_capture/#{@company.id}" target="_blank"
+                              .fa.fa-pencil-alt.mx-2
+                              = "Editar Captura"
 
                       - if @company.company_calendar_details.where(assign_to: 'income_statement').present?
                         = render "income_statement_table"
