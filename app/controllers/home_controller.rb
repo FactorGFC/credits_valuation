@@ -87,7 +87,6 @@ class HomeController < ApplicationController
 
     @sat = SatW.create_sat_ws data
 
-
     respond_to do |format|
       if params_ciec
         if rfc_valid
@@ -104,10 +103,11 @@ class HomeController < ApplicationController
                client_type = "PF"
               end
 
+=begin
               @buro = create_buro @info, @user.try(:phone)
+=end
 
-
-              if @buro
+              #if @buro
                 @credential = SatW.get_credential @sat['id']
 
                 if @credential['@type'] != 'hydra:Error'
@@ -122,13 +122,20 @@ class HomeController < ApplicationController
                       customers = SatW.get_customer_concentration @user.try(:company).try(:rfc)
 
 
+=begin
                       if @company.update(info_company: @info, credential_company: @credential, sat_id: @sat['id'],
                                          income_statment: @income_statment, buro_id: @buro.first['id'],
                                          sat_password: params[:passsword_ciec], balance_sheet: @balance_sheet,
                                          main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
                                          client_type: client_type, providers: providers, customers: customers,
                                          cash_flow: @cash_flow)
-
+=end
+                      if @company.update(info_company: @info, credential_company: @credential, sat_id: @sat['id'],
+                                         income_statment: @income_statment, sat_password: params[:passsword_ciec], balance_sheet: @balance_sheet,
+                                         main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
+                                         client_type: client_type, providers: providers, customers: customers,
+                                         cash_flow: @cash_flow)
+=begin
                         if @user.try(:company).try(:rfc) == 'FGL190102DH6'
 
                           @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
@@ -136,14 +143,17 @@ class HomeController < ApplicationController
                           @bureau_report = BuroCredito.get_buro_report @buro.first['id'],@info #4450 60368
 
                         end
+=end
 
-
-
+=begin
                         # @bureau_report = BuroCredito.get_report_by_id 12468
                         @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @info
+=end
 
+=begin
                         if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
                           if @user.update(sat_id: @sat['id'])
+=end
 
                             #UPDATE DE COMPANY CON BALANCE-SHEET
                             @clients = get_clients_sat @user.try(:company)
@@ -152,7 +162,9 @@ class HomeController < ApplicationController
                             if @clients
                               @providers = get_providers_sat @user.try(:company)
                               if @providers
+=begin
                                 @financial_institutions = create_financial_institutions @bureau_report, @company.id
+=end
                                 if @company.update(step_one: true)
                                   format.html { redirect_to companies_url, notice: t('notifications_masc.success.resource.updated',
                                                                                      resource: t('users.registrations.form.resource')) }
@@ -165,12 +177,14 @@ class HomeController < ApplicationController
                             else
                               format.html { redirect_to companies_url, alert: '(4)Hubo un error favor volver a intentar' }
                             end
+=begin
                           else
                             format.html { redirect_to companies_url, alert: '(5)Hubo un error favor volver a intentar' }
                           end
                         else
                           format.html { redirect_to companies_url, alert: '(6)Hubo un error favor volver a intentar' }
                         end
+=end
                       else
                         format.html { redirect_to companies_url, alert: '(7)Hubo un error favor volver a intentar' }
                       end
@@ -183,9 +197,9 @@ class HomeController < ApplicationController
                 else
                   format.html { redirect_to companies_url, alert: '(12)Hubo un error favor volver a intentar' }
                 end
-              else
-                format.html { redirect_to companies_url, alert: '(13)Hubo un error favor volver a intentar' }
-              end
+              #else
+              #  format.html { redirect_to companies_url, alert: '(13)Hubo un error favor volver a intentar' }
+              #end
             else
               format.html { redirect_to companies_url, alert: '(14)Hubo un error favor volver a intentar' }
             end
@@ -205,8 +219,10 @@ class HomeController < ApplicationController
             else
               client_type = "PF"
             end
+=begin
             @buro = create_buro @info,@user.try(:phone)
             if @buro
+=end
               @credential = SatW.get_credential @sat['id']
 
               if @credential['@type'] != 'hydra:Error'
@@ -218,16 +234,25 @@ class HomeController < ApplicationController
                     @cash_flow = SatW.get_cash_flow @user.try(:company).try(:rfc)
                     providers = SatW.get_suppliers_concentration @user.try(:company).try(:rfc)
                     customers = SatW.get_customer_concentration @user.try(:company).try(:rfc)
+=begin
                     if @company.update(info_company: @info, credential_company: @credential, sat_id: @sat['id'],
                                        sat_password: params[:passsword_firma], key_encoded: key_base_64, cer_encoded: cer_base_64,
                                        buro_id: @buro.first['id'], balance_sheet: @balance_sheet,
                                        main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
                                        client_type: client_type, providers: providers, customers: customers,
                                        cash_flow: cash_flow)
+=end
+                    if @company.update(info_company: @info, credential_company: @credential, sat_id: @sat['id'],
+                                     sat_password: params[:passsword_firma], key_encoded: key_base_64, cer_encoded: cer_base_64, balance_sheet: @balance_sheet,
+                                     main_activity: @info['hydra:member'][0]["economicActivities"][0]['name'],
+                                     client_type: client_type, providers: providers, customers: customers,
+                                     cash_flow: cash_flow)
+=begin
                       @bureau_report = BuroCredito.get_buro_report @buro.first['id']
                       @bureau_info = BuroCredito.get_buro_info @buro.first['id']
 
                       if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
+=end
 
                         if @user.update(sat_id: @sat['id'])
                           #UPDATE DE COMPANY CON BALANCE-SHEET
@@ -235,7 +260,9 @@ class HomeController < ApplicationController
                           if @clients
                             @providers = get_providers_sat @user.try(:company)
                             if @providers
+=begin
                               @financial_institutions = create_financial_institutions @bureau_report, @company.id
+=end
 
                               if @company.update(step_one: true)
                                 format.html { redirect_to companies_url, notice: t('notifications_masc.success.resource.updated',
@@ -253,9 +280,11 @@ class HomeController < ApplicationController
                         else
                           format.html { redirect_to companies_url, alert: '(5)Hubo un error favor volver a intentar' }
                         end
+=begin
                       else
                         format.html { redirect_to companies_url, alert: '(6)Hubo un error favor volver a intentar' }
                       end
+=end
                     else
                       format.html { redirect_to companies_url, alert: '(7)Hubo un error favor volver a intentar' }
                     end
@@ -268,9 +297,11 @@ class HomeController < ApplicationController
               else
                 format.html { redirect_to companies_url, alert: '(11)Hubo un error favor volver a intentar' }
               end
+=begin
             else
               format.html { redirect_to companies_url, alert: '(12)Hubo un error favor volver a intentar' }
             end
+=end
           else
             format.html { redirect_to companies_url, alert: '(13)Hubo un error favor volver a intentar' }
           end
@@ -282,6 +313,7 @@ class HomeController < ApplicationController
 
   end
 
+  #TODO Quitar creación de buró en home_controller.rb
   def create_buro info_sat, user_phone = nil
 
     rfc = info_sat['hydra:member'][0]['rfc']

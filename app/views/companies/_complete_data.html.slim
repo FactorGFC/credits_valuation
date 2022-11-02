@@ -1,4 +1,4 @@
-= form_tag('/update_complete_data', method: :put)  do
+= form_tag('/update_complete_data', id:'confirm_data_form', method: :put, remote: true)  do
   .multisteps-container.container-fluid
     .row
       .steps-container.col-3
@@ -8,113 +8,129 @@
             .h6.mb-10 = @company.try(:name)
           .step-progress.mt-20
             section.step-indicator
-              .step#step2
+              .step.completed#step2 style="opacity: 1;"
                 .step-icon
-                  i.fa.fa-address-card aria-hidden='true'
+                  i.fa.fa-check aria-hidden='true'
               .indicator-line.active#ind1
-              .step.completed#step1 style="opacity: 1;"
+              .step.active#step1 style="opacity: 1;"
                 .step-icon
                   i.fa.fa-address-book aria-hidden='true'
-              / .indicator-line#ind1
-              / .step#step2
-              /   .step-icon 02
-              / .indicator-line#ind2
-              / .step#step3
-              /   .step-icon 03
-              / .indicator-line#ind3
-              / - if !@company.has_clients
-              /   .step#step4
-              /     .step-icon 04
-              /   .indicator-line#ind4
-              / - if !@company.has_providers
-              /   .step#step5
-              /     .step-icon 05
-              /   .indicator-line#ind5
-              / .step#step6
-              /     .step-icon 06
-              / .indicator-line#ind6
-              / .step#step7
-              /   .step-icon 07
+              .indicator-line#ind2
+              .step.inactive#step3
+                .step-icon
+                  i.fa.fa-list-ol
+              .indicator-line#ind3
+              .step.inactive#step4
+                .step-icon
+                  i.fa.fa-hashtag
+              .indicator-line#ind4
+              .step.inactive#step5
+                .step-icon
+                  i.fa.fa-file-alt
 
             section.step-indicator.description
-              .step-desc.inactive#stepDesc1
+              .step-desc.active#stepDesc1
                 span
                   .title Credenciales
               .step-desc.active#stepDesc2
                 span
-                  .title Completa tus datos
-              / .step-desc.inactive#stepDesc2
-              /   span PASO 02
-              /   .title Actividad y producto
-              / .step-desc.inactive#stepDesc3
-              /   span PASO 03
-              /   .title Número de colaboradores
-              / - if !@company.has_clients
-              /   .step-desc.inactive#stepDesc4
-              /     span PASO 04
-              /     .title Principales Clientes
-              / .step-desc.inactive#stepDesc5
-              /   span PASO 05
-              /   .title Principales Proveedores
-              / .step-desc.inactive#stepDesc6
-              /   span PASO 06
-              /   .title Instituciones financieras
-              / .step-desc.inactive#stepDesc7
-              /   span PASO 07
-              /   .title Archivos
-      .step-content.col-9
-          /= hidden_field :company, :step_one, value: true
-          .step-page.m-animate-fade-in-up
-            .title
-              div style=("color: #602BFA; width: 500px;")
-                strong
-                  span style=("color: #3c3e6a; width: 500px") > Datos personales
-            .col-xl-12.mt-20
-              .tab-content.col-xl-12.mb-30
-                .form-group.m-form__group
-                  .d-inline-flex.col-12
-                    .col-6
-                      label.text-bold
-                        | Nombre
-                      = text_field :user, :first_name, class: 'form-control m-input m-input--square'
-                    .col-6
-                      label.text-bold
-                        | Apellido(s)
-                      = text_field :user, :last_name, class: 'form-control m-input m-input--square'
-                  .d-inline-flex.col-12
-                    .col-6
-                      label.text-bold
-                        | Email
-                      = text_field :user, :email, class: 'form-control m-input m-input--square'
-                    .col-6
-                      label.text-bold
-                        | Télefono
-                      = text_field :user, :phone, class: 'form-control m-input m-input--square'
+                  .title Confirma tus datos
+              .step-desc.inactive#stepDesc3
+                span
+                .title Actividad y Producto
+              .step-desc.inactive#stepDesc4
+                span
+                .title Número de colaboradores
+              .step-desc.inactive#stepDesc5
+                span
+                .title Archivos
 
-            .title
-              div style=("color: #602BFA; width: 500px;")
+      .step-content.col-9
+        .step-page.m-animate-fade-in-up
+          .title
+            div style=("color: #602BFA; width: 500px;")
+              strong
+                span style=("color: #3c3e6a; width: 500px") > Datos Personales
+          .col-xl-12.mt-20
+            .tab-content.col-xl-12.mb-30
+              .form-group.m-form__group
+                .d-inline-flex.col-12.mb-3
+                  .col-6
+                    label.text-bold
+                      | Nombre
+                    = text_field :user, :first_name, class: 'form-control m-input m-input--square', disabled:'disabled'
+                  .col-6
+                    label.text-bold
+                      | Apellido(s)
+                    = text_field :user, :last_name, class: 'form-control m-input m-input--square', disabled:'disabled'
+                .d-inline-flex.col-12.mb-3
+                  .col-6
+                    label.text-bold
+                      | Email
+                    = text_field :user, :email, class: 'form-control m-input m-input--square', disabled:'disabled'
+                  .col-6
+                    label.text-bold
+                      | Télefono
+                    = text_field :user, :phone, class: 'form-control m-input m-input--square', id:'phone_input', type: "number", onkeyup: 'phoneValidate()'
+                    span.invalid_value id="validPhone" = 'Télefono invalido'
+
+          .title
+            div style=("color: #602BFA; min-width: 300px;")
+              strong
+                span style=("color: #3c3e6a; width: 500px") > Datos Generales
+
+          .col-xl-12.mt-20
+            .d-flex.justify-content-center.align-items-center.mb-3
+              i.fa.fa-info-circle.info-text.mr-10
+              span.info-text
                 strong
-                  span style=("color: #3c3e6a; width: 500px") > Datos de la Empresa
-            .col-xl-12.mt-20
-              .tab-content.col-xl-12.mb-30
-                .form-group.m-form__group
-                  .d-inline-flex.col-12
-                    .col-6
-                      label.text-bold
-                        | Nombre
-                      = text_field :company, :name, class: 'form-control m-input m-input--square'
-                    .col-6
-                      label.text-bold
-                        | RFC
-                      = text_field :company, :rfc, class: 'form-control m-input m-input--square'
-                  .d-inline-flex.col-12
-                    .col-12
-                      label.text-bold
-                        | Dirección
-                      = text_field :company, :address, class: 'form-control m-input m-input--square'
-              .col-xl-12
-                a.btn.btn-primary.col-xl-12 data-target="#m_phone_confirmation" data-toggle="modal" href="#m_phone_confirmation"
-                  = 'Continuar'
+                  | Información obtenida del SAT
+                  =  @company.id
+            .tab-content.col-xl-12.mb-30
+              .form-group.m-form__group
+                .d-inline-flex.col-12.mb-3
+                  .col-6
+                    label.text-bold
+                      | Nombre
+                    = text_field :company, :name, class: 'form-control m-input m-input--square',  disabled:'disabled'
+                  .col-6
+                    label.text-bold
+                      | RFC
+                    = text_field 'company_data', 'rfc', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['rfc'], disabled:'disabled'
+                .d-inline-flex.col-12.mb-3
+                  .col-6
+                    label.text-bold
+                      | Calle
+                    = text_field 'company_data', 'street', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['buildingNumber'], disabled:'disabled'
+                  .col-3
+                    label.text-bold
+                      | Núm. Exterior
+                    = text_field 'company_data', 'interior_number', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['streetNumber'], disabled:'disabled'
+                  .col-3
+                    label.text-bold
+                      | Núm. Interior
+                    = text_field 'company_data', 'exterior_number', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['buildingNumber'], disabled:'disabled'
+                .d-inline-flex.col-12.mb-3
+                  .col-6
+                    label.text-bold
+                      | Código Postal
+                    = text_field 'company_data', 'postal_code', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['postalCode'], disabled:'disabled'
+                  .col-6
+                    label.text-bold
+                      | Colonia
+                    = text_field 'company_data', 'neighborhood', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['neighborhood'], disabled:'disabled'
+                .d-inline-flex.col-12.mb-3
+                  .col-6
+                    label.text-bold
+                      | Estado
+                    = text_field 'company_data', 'postal_code', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['state'], disabled:'disabled'
+                  .col-6
+                    label.text-bold
+                      | Delegación/Municipio
+                    = text_field 'company_data', 'neighborhood', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['municipality'], disabled:'disabled'
+            .col-xl-12
+              button.btn.btn-primary.col-xl-12 id="openAndSendCode" type='button'
+                = 'Enviar código de confirmación'
 
   #m_phone_confirmation.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
     .modal-dialog role="document" style="margin-top: 0%;"
@@ -140,14 +156,13 @@
                 label.mr-2
                   strong = 'Confirma tu código:'
               .col-md-6
-                input.form-control.m-input.m-input--square name='confirmation_code'
-                a href='#'
-                  span = 'Reenviar'
-
+                input.form-control.m-input.m-input--square name='confirmation_code' autofocus='autofocus' id="confirm_input_code" style="border-color: purple;"
+                button.btn.btn-link type='button' id='resendConfirmCode'
+                  | Reenviar
 
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar
-          = submit_tag 'Guardar', class: 'btn btn-success', id: 'idBtn'
+          = submit_tag 'Guardar', class: 'btn btn-success', id: 'submit_complete_data', disabled: true, style:'cursor: not-allowed;'
             | Guardar
 

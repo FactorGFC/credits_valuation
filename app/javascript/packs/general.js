@@ -307,9 +307,6 @@ $(document).on('turbolinks:load', function () {
         var stepFourth = document.getElementById("idStepFourth").value;
         $('#filesBtn').attr('class', 'btn btn-primary col-xl-12 disabled');
         $('#filesBtn').prop("disabled", true);
-
-        console.log(stepOne);
-        console.log(stepTwo);
     }
 
 

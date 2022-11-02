@@ -6,6 +6,8 @@
 #  address                   :string
 #  balance_sheet             :jsonb
 #  balance_sheet_finished    :boolean
+#  bufo_confirmation_date    :datetime
+#  buro_confirmation_code    :integer
 #  cash_flow                 :jsonb
 #  cer_encoded               :text
 #  client_type               :string
@@ -13,6 +15,7 @@
 #  confirmation_message      :boolean
 #  credential_company        :jsonb
 #  customers                 :jsonb
+#  forwarded_code            :boolean
 #  group_company             :boolean
 #  has_clients               :boolean
 #  has_providers             :boolean

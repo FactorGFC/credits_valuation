@@ -4,6 +4,8 @@ class CompaniesController < ApplicationController
   before_action :set_company, only: %i[ show edit update destroy company_details open_pdf generate_financial_reasons save_data_crec_sost save_data_cobertura_deuda save_data_deuda_fin_lp save_extra_data dictamen_report  generate_cash_flow]
   helper_method :translate_errors, :get_company_info, :get_payments_frecuency, :method_payment
 
+  skip_before_action :verify_authenticity_token, only: [:send_buro_confirm_code]
+
   # GET /companies or /companies.json
   def index
     @user = current_user
@@ -283,21 +285,62 @@ class CompaniesController < ApplicationController
 
   # Completar datos de compañia, usuario
   def update_complete_data
-    #TODO ¿SET CORRECTO?
-    @user     = current_user
-    @company  = current_user.company
-    company_params  = params[:company]
-    user_params     = params[:user]
-    #TODO
-    respond_to do |format|
-      if @company.update(step_two: true, name: company_params[:name], rfc: company_params[:rfc], address: company_params[:address]) and
-         @user.update(first_name: user_params[:first_name], last_name: user_params[:last_name], email: user_params[:email], phone: user_params[:phone])
-        format.html { redirect_to '/request_steps', notice: "Datos actualizados correctamente." }
-        format.json { render :show, status: :ok, location: @company }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
+    @user       = current_user
+    @company    = current_user.company
+    user_params = params[:user]
+
+    if @company.buro_confirmation_code.to_s === params[:confirmation_code].to_s
+      respond_to do |format|
+        @buro = create_buro @company.info_company, @user.try(:phone)
+        if @buro
+          if @company.update(buro_id: @buro.first['id'])
+            if @user.try(:company).try(:rfc) == 'FGL190102DH6'
+              @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
+            else
+              @bureau_report = BuroCredito.get_buro_report @buro.first['id'], @company.info_company
+            end
+
+            @bureau_info = BuroCredito.get_buro_info @buro.first['id'],  @company.info_company
+
+            if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
+=begin
+              if @user.update(sat_id: @sat['id'])
+=end
+                @clients = get_clients_sat @user.try(:company)
+                if @clients
+                  @providers = get_providers_sat @user.try(:company)
+                  if @providers
+                    @financial_institutions = create_financial_institutions @bureau_report, @company.id
+                    if @company.update(step_two: true) and @user.update(phone: user_params[:phone])
+                      format.html { redirect_to '/request_steps', notice: "Datos actualizados correctamente." }
+                      format.json { render :show, status: :ok, location: @company }
+                    else
+                      format.html { render '/request_steps', status: :unprocessable_entity }
+                      format.json { render json: @company.errors, status: :unprocessable_entity }
+                    end
+                  else
+                    render json: {alert: '(1)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
+                  end
+                else
+                  render json: {alert: '(2)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
+                end
+=begin
+              else
+                render json: {alert: '(3)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
+              end
+=end
+            else
+              render json: {alert: '(4)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
+            end
+          else
+            render json: {alert: '(5)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
+          end
+        else
+          render json: {alert: '(6)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
+        end
       end
+    else
+      render json: {alert: 'Código no coincide'}, status: :unprocessable_entity
     end
   end
 
@@ -604,13 +647,10 @@ class CompaniesController < ApplicationController
     @company = @search_companies.result.first
 
     @step_one_value       = @company.step_one
-    p '====='
-    p @step_one_value
-    p '====='
     @step_two_value       = @company.step_two   && @company.step_one
-    @step_three_value     = @company.step_three && @company.step_two    && @company.step_one && !@company.has_clients
-    @step_four_value      = @company.step_four  && @company.step_three  && @company.step_two && @company.step_one && !@company.has_providers
-    @step_fifth_value     = @company.try(:step_fifth) && @company.step_four && @company.step_three && @company.step_two && @company.step_one && !@company.has_providers
+    @step_three_value     = @company.step_three && @company.step_two    && @company.step_one  #  && !@company.has_clients
+    @step_four_value      = @company.step_four  && @company.step_three  && @company.step_two    && @company.step_one# && !@company.has_providers
+    @step_five_value     = @company.step_five && @company.step_four   && @company.step_three  && @company.step_two && @company.step_one # && !@company.has_providers
     @step_complete_value  = @company.complete
 
     if @company.complete
@@ -1881,6 +1921,296 @@ class CompaniesController < ApplicationController
 
   end
 
+  def send_buro_confirm_code
+    company   = current_user.company
+    date_now  = DateTime.now
+
+    begin
+      code        = SecureRandom.random_number(10**4).to_s.rjust(4, '1')
+      code_sended = Company.send_buro_code(params[:phone], code)
+
+      if code_sended
+        if company.forwarded_code == nil
+          company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now, forwarded_code: false)
+        elsif company.forwarded_code == false
+          company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now, forwarded_code: true)
+        elsif company.forwarded_code and company.bufo_confirmation_date.before?(1.day.ago)
+          company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now)
+        else
+          render json: { message: 'Something went wrong, try later' }, status: 401
+          return
+        end
+      end
+
+      render json: {message: 'Code sended sucesfully'}, status: 200
+    rescue => e
+      render json: { message: 'Something went wrong' }, status: 400
+    end
+  end
+
+  def create_buro info_sat, user_phone = nil
+
+    rfc = info_sat['hydra:member'][0]['rfc']
+    address = info_sat['hydra:member'][0]['address']['streetName']
+    city = info_sat['hydra:member'][0]['address']['locality']
+    state = get_state info_sat['hydra:member'][0]['address']['state']
+    zip_code = info_sat['hydra:member'][0]['address']['postalCode']
+    interior_number = info_sat['hydra:member'][0]['address']['buildingNumber']
+    exterior_number = info_sat['hydra:member'][0]['address']['streetNumber']
+    municipality = info_sat['hydra:member'][0]['address']['municipality']
+    neighborhood = info_sat['hydra:member'][0]['address']['neighborhood']
+
+    #PF
+    # rfc = "HEMG4812162Q2"
+    # address = "CLL SA CATARINA"
+    # city = "CHIHUAHUA"
+    # state = "CHI"
+    # zip_code = "31215"
+    # interior_number = ""
+    # exterior_number = "3206"
+    # municipality = "CHIHUAHUA"
+    # neighborhood = ""
+    # account_type = "PF"
+    # first_name = "GUSTAVO"
+    # first_last_name = "HERNANDEZ"
+    # second_last_name = 'MONROY'
+
+    #PM
+    # rfc = "GLO0605033G2"
+    # basic_rfc = "GLO060503"
+    # address = "REPUBLICA DE CUBA"
+    # city = "CHIHUAHUA"
+    # state = "CHI"
+    # zip_code = "31210"
+    # interior_number = ""
+    # exterior_number = "806"
+    # municipality = "CHIHUAHUA"
+    # neighborhood = "PANAMERICANA"
+    # account_type = "PM"
+    # trade_name="GRUPO LOPIC SA DE CV"
+
+    #PFAE
+    # rfc = "COPS611102S83"
+    # basic_rfc = "COPS611102"
+    # address = "IGNACIO LOPEZ RAYON"
+    # city = "CIUDAD CUAUHTEMOC"
+    # state = "CHI"
+    # zip_code = "31530"
+    # interior_number = ""
+    # exterior_number = "1925"
+    # municipality = "CUAUHTEMOC"
+    # neighborhood = "CIUDAD CUAUHTEMOC"
+    # account_type = "PF"
+    # trade_name="SALVADOR CORRAL PEREZ"
+
+
+    if info_sat['hydra:member'][0]['company'].present?
+      account_type = "PM"
+      trade_name = info_sat['hydra:member'][0]['company']['tradeName']
+      basic_rfc = rfc.first(9)
+
+      data = [accountType: account_type, tradeName: trade_name,  rfc: rfc, basicRFC: basic_rfc, address: address,
+              city: city, state: state, zipCode: zip_code, exteriorNumber: exterior_number,
+              interiorNumber: interior_number, neighborhood: neighborhood, municipality: municipality, nationality: "MX",
+              country: "MX"]
+    else
+      first_name = info_sat['hydra:member'][0]['person']['firstName']
+      first_last_name = info_sat['hydra:member'][0]['person']['middleName']
+      second_last_name = info_sat['hydra:member'][0]['person']['lastName']
+      account_type = "PF"
+      data = [accountType: account_type, firstName: first_name, middleName: "", rfc: rfc, firstLastName: first_last_name,
+              secondLastName: second_last_name, address: address, city: city, state: state, zipCode: zip_code,
+              exteriorNumber: exterior_number, interiorNumber: interior_number, neighborhood: neighborhood,
+              municipality: municipality, nationality: "MX",phone: user_phone]
+    end
+
+
+    @buro = BuroCredito.create_client data
+
+    if @buro['result'].present?
+      response = @buro['result']
+    else
+      response = false
+
+    end
+
+
+    return response
+  end
+
+  def get_state state
+    if state == 'Aguascalientes' || state == 'aguascalientes' || state == 'AGUASCALIENTES'
+      new_state = 'AGS'
+    elsif state == 'Baja California Norte' || state == 'baja california norte' || state == 'BAJA CALIFORNIA NORTE'
+      new_state = 'BCN'
+    elsif state == 'Baja California Sur' || state == 'baja california sur' || state == 'BAJA CALIFORNIA SUR'
+      new_state = 'BCS'
+    elsif state == 'Campeche' || state == 'campeche' || state == 'CAMPECHE'
+      new_state = 'CAM'
+    elsif state == 'Chiapas' || state == 'chiapas' || state == 'CHIAPAS'
+      new_state = 'CHS'
+    elsif state == 'Chihuahua' || state == 'chihuahua' || state == 'CHIHUAHUA'
+      new_state = 'CHI'
+    elsif state == 'Coahuila' || state == 'coahuila' || state == 'COAHUILA'
+      new_state = 'COA'
+    elsif state == 'Colima' || state == 'colima' || state == 'COLIMA'
+      new_state = 'COL'
+    elsif state == 'Durango' || state == 'durango' || state == 'DURANGO'
+      new_state = 'DGO'
+    elsif state == 'Estado de Mexico' || state == 'estado de mexico' || state == 'Estado De Mexico' || state == 'ESTADO DE MEXICO'
+      new_state = 'EM'
+    elsif state == 'Guanajuato' || state == 'guanajuato' || state == 'GUANAJUATO'
+      new_state = 'GTO'
+    elsif state == 'Guerrero' || state == 'guerrero' || state == 'GUERRERO'
+      new_state = 'GRO'
+    elsif state == 'Hidalgo' || state == 'hidalgo' || state == 'HIDALGO'
+      new_state = 'HGO'
+    elsif state == 'Jalisco' || state == 'jalisco' || state == 'JALISCO'
+      new_state = 'JAL'
+    elsif state == 'Michoacan' || state == 'michoacan' || state == 'MICHOACAN'
+      new_state = 'MICH'
+    elsif state == 'Morelia' || state == 'morelia' || state == 'MORELIA'
+      new_state = 'MOR'
+    elsif state == 'Nayarit' || state == 'nayarit' || state == 'NAYARIT'
+      new_state = 'NAY'
+    elsif state == 'Nuevo Leon' || state == 'nuevo leon' || state == 'NUEVO LEON'
+      new_state = 'NL'
+    elsif state == 'Oaxaca' || state == 'oaxaca' || state == 'OAXACA'
+      new_state = 'OAX'
+    elsif state == 'Puebla' || state == 'puebla' || state == 'PUEBLA'
+      new_state = 'PUE'
+    elsif state == 'Quintana Roo' || state == 'quintana roo' || state == 'QUINTANA ROO'
+      new_state = 'QRO'
+    elsif state == 'Queretaro' || state == 'queretaro' || state == 'QUERETARO'
+      new_state = 'QR'
+    elsif state == 'San Luis Potosi' || state == 'san luis potosi' || state == 'SAN LUIS POTOSI'
+      new_state = 'SLP'
+    elsif state == 'Sinaloa' || state == 'sinaloa' || state == 'SINALOA'
+      new_state = 'SIN'
+    elsif state == 'Sonora' || state == 'sonora' || state == 'SONORA'
+      new_state = 'SON'
+    elsif state == 'Tabasco' || state == 'tabasco' || state == 'TABASCO'
+      new_state = 'TAB'
+    elsif state == 'Tamaulipas' || state == 'tamaulipas' || state == 'TAMAULIPAS'
+      new_state = 'TAM'
+    elsif state == 'Tlaxcala' || state == 'tlaxcala' || state == 'TLAXCALA'
+      new_state = 'TLAX'
+    elsif state == 'Veracruz' || state == 'veracruz' || state == 'VERACRUZ'
+      new_state = 'VER'
+    elsif state == 'Yucatan' || state == 'yucatan' || state == 'YUCATAN'
+      new_state = 'YUC'
+    elsif state == 'Zacatecas' || state == 'zacatecas' || state == 'ZACATECAS'
+      new_state = 'ZAC'
+    end
+
+    return new_state
+  end
+
+  def get_clients_sat company
+
+    response = false
+
+    clients = SatW.get_customer_concentration company.try(:rfc)
+
+    if clients['data'].present?
+      clients['data'].each do |client|
+
+        if CompanyClient.create(company_id: company.try(:id), name: client['name'], sales: client['total'], credit: client['transactions'].count)
+          response = true
+        else
+          response = false
+        end
+      end
+    else
+      company.update(has_clients: false)
+    end
+
+    if response
+      company.update(step_four: true, has_clients: true)
+    end
+
+    return response
+
+  end
+
+  def get_providers_sat company
+
+    response = false
+
+    providers = SatW.get_suppliers_concentration company.try(:rfc)
+
+    if providers['data'].present?
+      providers['data'].each do |provider|
+
+        if CompanyProvider.create(company_id: company.try(:id), name: provider['name'], purchase: provider['total'], credit: provider['transactions'].count)
+          response = true
+        else
+          response = false
+
+        end
+      end
+    else
+      company.update(has_providers: false)
+    end
+
+    if response
+      company.update(step_five: true, has_providers: true)
+
+
+    end
+
+    return response
+
+  end
+
+  def create_financial_institutions credit_bureau, company_id
+    response = false
+    if credit_bureau['results'].present?
+      if credit_bureau['results'][0]['response'].present?
+
+        if credit_bureau['results'][0]['response'].present?
+
+
+          if credit_bureau['results'][0]['response']['return'].present?
+            if credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
+              credit_bureau['results'][0]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
+
+                if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
+                                               type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
+                  response = true
+                else
+                  response = false
+
+                end
+              end
+            end
+          end
+        else
+          if credit_bureau['results'][1]['response']['return'].presnet?
+
+            if credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
+              credit_bureau['results'][1]['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
+
+                if FinancialInstitution.create(company_id: company_id, institution: account['NombreOtorgante'],
+                                               type_contract: I18n.t("contract_type.#{account['TipoContrato']}"), balance: account['CreditoMaximo'], coin: 0)
+                  response = true
+                else
+                  response = false
+
+                end
+
+              end
+            end
+          end
+
+
+        end
+      end
+    end
+
+    return response
+
+  end
   private
 
   # Use callbacks to share common setup or constraints between actions.

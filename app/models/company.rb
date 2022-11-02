@@ -6,6 +6,8 @@
 #  address                   :string
 #  balance_sheet             :jsonb
 #  balance_sheet_finished    :boolean
+#  bufo_confirmation_date    :datetime
+#  buro_confirmation_code    :integer
 #  cash_flow                 :jsonb
 #  cer_encoded               :text
 #  client_type               :string
@@ -13,6 +15,7 @@
 #  confirmation_message      :boolean
 #  credential_company        :jsonb
 #  customers                 :jsonb
+#  forwarded_code            :boolean
 #  group_company             :boolean
 #  has_clients               :boolean
 #  has_providers             :boolean
@@ -140,6 +143,33 @@ class Company < ApplicationRecord
     rescue
       p "Error al enviar msj de bienvenida"
       p "Error #{$!}"
+    end
+  end
+
+  #Confirmation Code for buró consult
+  def self.send_buro_code phone, code
+    begin
+
+      msg = "Factor GFC Global, realizará una consulta a tu buró de crédito para obtener información importante para tusolicitud de crédito, favor de validar el código #{code}, dentro de la plataforma."
+
+      account_sid = 'ACefa09be571fd58ece80c24205bfdd4af'
+      auth_token = 'adc501aebb84c6fcf54219fb0f8aa193'
+      client = Twilio::REST::Client.new(account_sid, auth_token)
+
+      from = '+14157410844' # Your Twilio number
+      to = "+521#{phone}"# Your mobile phone number
+      #to = "+5216141972726"
+
+      client.messages.create(
+          from: from,
+          to: to,
+          body: msg
+      )
+      return true
+    rescue
+      p "Error al enviar SMS de confirmación"
+      p "Error #{$!}"
+      return false
     end
   end
 

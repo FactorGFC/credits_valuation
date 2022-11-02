@@ -1,11 +1,11 @@
 .multisteps-container.container-fluid
   .row
     .steps-container.col-3
-      .steps-content
+      .steps-content.single-opt
         .align-items-center
           .h5 Captura
           .h6.mb-10 = @company.name
-        .step-progress
+        .step-progress.mt-20
           section.step-indicator
             .step.completed#step1
               .step-icon
@@ -19,7 +19,11 @@
               .step-icon
                 i.fa.fa-check aria-hidden='true'
             .indicator-line.active#ind3
-            .step#step4 class="active" style="opacity: 1"
+            .step.completed#step4 style="opacity: 1"
+              .step-icon
+                i.fa.fa-check
+            .indicator-line.active#ind4
+            .step#step5 class="active" style="opacity: 1"
               .step-icon
                 i.fa.fa-file-alt
 
@@ -29,16 +33,19 @@
               .title Credenciales
             .step-desc#stepDesc2
               span
-              .title Actividad y Producto
+              .title Confirma tus datos
             .step-desc#stepDesc3
               span
+              .title Actividad y Producto
+            .step-desc#stepDesc4
+              span
               .title Número de colaboradores
-            .step-desc.active#stepDesc4
+            .step-desc.active#stepDesc5
               span
               .title Archivos
     .step-content.col-9
       .nav-btns-container
-        button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('2','3')"
+        button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('3','4')"
           i.fa.fa-chevron-left
           | Regresar
       .step-page.m-animate-fade-in-up

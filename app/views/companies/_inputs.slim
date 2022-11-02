@@ -1,44 +1,79 @@
 .multisteps-container.container-fluid
   .row
     .steps-container.col-3
-      .steps-content
+      .steps-content.single-opt
         .align-items-center
           .h5 Captura
           .h6.mb-10 = @company.name
-        .step-progress
+        .step-progress.mt-20
           section.step-indicator
-            .step.completed#step1
+            .step.completed#step1 style="opacity: 1;"
               .step-icon
                 i.fa.fa-check aria-hidden='true'
             .indicator-line.active#ind1
-            .step#step2 class="active" style="opacity: 1"
+            .step.completed#step2 style="opacity: 1;"
               .step-icon
-                i.fa.fa-list-ol
-            .indicator-line#ind2
-            .step#step3
+                i.fa.fa-check aria-hidden='true'
+            .indicator-line.active#ind2
+            .step.active#step3 style="opacity: 1;"
+              .step-icon
+                i.fa.fa-list-ol aria-hidden='true'
+            .indicator-line#ind3
+            .step.inactive#step4
               .step-icon
                 i.fa.fa-hashtag
-            .indicator-line#ind3
-            .step#step4
+            .indicator-line#ind4
+            .step.inactive#step5
               .step-icon
                 i.fa.fa-file-alt
+          / .indicator-line#ind3
+          / - if !@company.has_clients
+          /   .step#step4
+          /     .step-icon 04
+          /   .indicator-line#ind4
+          / - if !@company.has_providers
+          /   .step#step5
+          /     .step-icon 05
+          /   .indicator-line#ind5
+          / .step#step6
+          /     .step-icon 06
+          / .indicator-line#ind6
+          / .step#step7
+          /   .step-icon 07
 
           section.step-indicator.description
-            .step-desc#stepDesc1
+            .step-desc.active#stepDesc1
               span
-              .title Credenciales
+                .title Credenciales
             .step-desc.active#stepDesc2
               span
-              .title Actividad y producto
-            .step-desc.inactive#stepDesc3
+                .title Confirma tus datos
+            .step-desc.active#stepDesc3
               span
-              .title Número de colaboradores
+                .title Actividad y producto
             .step-desc.inactive#stepDesc4
               span
+              .title Número de colaboradores
+            .step-desc.inactive#stepDesc5
+              span
               .title Archivos
+    / - if !@company.has_clients
+    /   .step-desc.inactive#stepDesc4
+    /     span PASO 04
+    /     .title Principales Clientes
+    / .step-desc.inactive#stepDesc5
+    /   span PASO 05
+    /   .title Principales Proveedores
+    / .step-desc.inactive#stepDesc6
+    /   span PASO 06
+    /   .title Instituciones financieras
+    / .step-desc.inactive#stepDesc7
+    /   span PASO 07
+    /   .title Archivos
+
     .step-content.col-9
       .nav-btns-container
-        button.btn.btn-default.nav-step-btn.btn-next id="buttonOne" type="button" onclick="nextPageNew('2','1')"
+        button.btn.btn-default.nav-step-btn.btn-next id="buttonOne" type="button" onclick="nextPageNew('3','2')"
           | Siguiente
           i.fa.fa-chevron-right
       .step-page.m-animate-fade-in-up

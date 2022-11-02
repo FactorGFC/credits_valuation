@@ -1,11 +1,11 @@
 .multisteps-container.container-fluid
   .row
     .steps-container.col-3
-      .steps-content
+      .steps-content.single-opt
         .align-items-center
           .h5 Captura
           .h6.mb-10 = @company.try(:name)
-        .step-progress
+        .step-progress.mt-20
           section.step-indicator
             .step.completed#step1
               .step-icon
@@ -15,11 +15,15 @@
               .step-icon
                 i.fa.fa-check aria-hidden='true'
             .indicator-line.active#ind2 style="opacity: 1"
-            .step#step3 class="active" style="opacity: 1"
+            .step.completed#step3 style="opacity: 1"
+              .step-icon
+                i.fa.fa-check
+            .indicator-line.active#ind3
+            .step.active#step4 style="opacity: 1"
               .step-icon
                 i.fa.fa-hashtag
-            .indicator-line#ind3
-            .step#step4
+            .indicator-line#ind4
+            .step.inactive#step5
               .step-icon
                 i.fa.fa-file-alt
 
@@ -29,19 +33,22 @@
               .title Credenciales
             .step-desc#stepDesc2
               span
-              .title Actividad y producto
-            .step-desc.active#stepDesc3
+              .title Confirma tus datos
+            .step-desc#stepDesc3
               span
-              .title Número de colaboradores
-            .step-desc.inactive#stepDesc4
+              .title Actividad y producto
+            .step-desc.active#stepDesc4
               span 
+              .title Número de colaboradores
+            .step-desc.inactive#stepDesc5
+              span
               .title Archivos
     .step-content.col-9
       .nav-btns-container
-        button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('1','2')"
+        button.btn.btn-default.nav-step-btn.btn-prev type="button" onclick="prevPageNew('2','3')"
           i.fa.fa-chevron-left
           | Regresar
-        button.btn.btn-default.nav-step-btn.btn-next type="button" id="buttonTwo" onclick="nextPageNew('3','2')"
+        button.btn.btn-default.nav-step-btn.btn-next type="button" id="buttonTwo" onclick="nextPageNew('4','3')"
           | Siguiente
           i.fa.fa-chevron-right
       .step-page.m-animate-fade-in-up

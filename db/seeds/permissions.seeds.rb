@@ -89,7 +89,8 @@ after :initialize_permissions do
                            {name: 'Validar o rechazar compañia', description: 'Permite validar o rechazar la compañia.', action: 'validate_company', controller: 'Companies'},
 
                            #20-Oct-2022
-                           {name: 'Confirmar y completar datos en solicitud', description: 'Permite actualizar y completar los datos en solicitud (primero paso)', action: 'update_complete_data', controller: 'Companies'}
+                           {name: 'Confirmar y completar datos en solicitud', description: 'Permite actualizar y completar los datos en solicitud (primero paso)', action: 'update_complete_data', controller: 'Companies'},
+                           {name: 'Mensaje confirmación para buró', description: 'Enviar mensaje de confirmación para consulta de buró', controller: 'Companies', action: 'send_buro_confirm_code'}
                        ])
   rescue StandardError => e
     p Permission.first

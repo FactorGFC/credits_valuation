@@ -81,6 +81,7 @@ after :permissions do
                             #20-OCT-2022
                             #Company
                             {role_id: Role.find_by_key('enterprise').id, permission_id: Permission.find_by_name('Confirmar y completar datos en solicitud').id},
+                            {role_id: Role.find_by_key('enterprise').id, permission_id: Permission.find_by_name('Mensaje confirmación para buró').id},
 
   ])
 end

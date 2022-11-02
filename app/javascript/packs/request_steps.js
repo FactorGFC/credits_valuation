@@ -1,4 +1,5 @@
-import $ from 'jquery';
+import $    from 'jquery';
+import swal from 'sweetalert';
 import I18n from 'i18n-js';
 import 'javascripts/i18n/translations';
 
@@ -83,11 +84,111 @@ $(document).on('turbolinks:load', function () {
     }
 
 
-
     $('#creditRequestForm').on('submit', function() {
 
-        console.log("ENTRE");
+        //console.log("ENTRE");
 
         return false;
+    });
+
+    $('#openAndSendCode').on('click', function(){
+        var phoneNum    = $('#phone_input').val();
+        var company_id  = $('#company_id').val();
+
+        $.ajax({
+            url: '/send_buro_confirm_code',
+            type: 'PUT',
+            dataType: 'json',
+            data: {
+                    phone:      phoneNum,
+                    company_id: company_id
+            },
+            success: function (data, textStatus, xhr) {
+                //console.log(data);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                if(xhr.status == 401){
+                    swal({
+                        title: "El codigo ya fue enviado",
+                        text: "Espera a recibir el código o intenta de nuevo mas tarde.",
+                        icon: 'warning',
+                        button: I18n.t('messages.ok')
+                    });
+                }else{
+                    swal({
+                        title: "!Ups!",
+                        text: "Hubo un error, por favor intenta mas tarde.",
+                        icon: 'warning',
+                        button: I18n.t('messages.ok')
+                    });
+                }
+                console.log('Error in Operation');
+            }
+        });
+
+        $('#m_phone_confirmation').modal();
+    });
+
+    $('#resendConfirmCode').on('click', function(){
+        var phoneNum    = $('#phone_input').val();
+        var company_id  = $('#company_id').val();
+
+        $.ajax({
+            url: '/send_buro_confirm_code',
+            type: 'PUT',
+            dataType: 'json',
+            data: {
+                    phone:      phoneNum,
+                    company_id: company_id
+            },
+            success: function (data, textStatus, xhr) {
+                //console.log(data);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                if(xhr.status == 401){
+                    swal({
+                        title: "El codigo ya fue enviado",
+                        text: "Espera a recibir el código o intenta de nuevo mas tarde.",
+                        icon: 'warning',
+                        button: I18n.t('messages.ok')
+                    });
+                }else{
+                    swal({
+                        title: "!Ups!",
+                        text: "Hubo un error, por favor intenta mas tarde.",
+                        icon: 'warning',
+                        button: I18n.t('messages.ok')
+                    });
+                }
+                console.log('Error in Operation');
+            }
+        });
+
+        $('#m_phone_confirmation').modal();
+    });
+
+    $('#confirm_data_form').on('ajax:success', function(event){
+        const [data, status, xhr] = event.detail
+        //console.log(xhr.responseText)
+        // or
+        //console.log(data.success)
+    }).on('ajax:error',function(event){
+        //console.log("Something went wrong")
+        swal({
+            title: "!Ups!",
+            text: "El código no coincide, intenta de nuevo.",
+            icon: 'warning',
+            button: I18n.t('messages.ok')
+        });
+    });
+
+    $('input#confirm_input_code').on('keyup',function(){
+        if($(this).val().length == 4){
+            $('#submit_complete_data').attr('disabled' , false);
+            $('#submit_complete_data').css({'cursor': 'pointer'});
+        }else{
+            $('#submit_complete_data').attr('disabled' , true);
+            $('#submit_complete_data').css({'cursor': 'not-allowed'});
+        }
     });
 });
