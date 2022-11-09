@@ -85,7 +85,6 @@
               span.info-text
                 strong
                   | Información obtenida del SAT
-                  =  @company.id
             .tab-content.col-xl-12.mb-30
               .form-group.m-form__group
                 .d-inline-flex.col-12.mb-3
@@ -136,29 +135,33 @@
     .modal-dialog role="document" style="margin-top: 0%;"
       .modal-content
         .modal-header
-          h5.modal-title
-            = "Autorización de consulta de Buró de credito"
+          h2.modal-title
+            strong
+              = "Autorización de consulta de Buró de credito"
           button.close aria-label="Close" data-dismiss="modal" type="button"
             span aria-hidden="true"
               | \&times;
-        .modal-body
+        .modal-body.p-5
           p
             | Por este conducto autorizo expresamente a
-            strong.ml-2 = 'Créditos Factor Global'
-            |, para que por conducto de sus funcionarios facultados lleve a cabo Investigaciones, sobre mi comportamiento crediticio o el de la Empresa que represento en Trans Union de México, S. A. SIC y/o Dun & Bradstreet, S.A. SIC
+            strong.ml-2 = 'FACTOR GFC LEASING S.A.P.I de C.V'
+            |, para que por conducto de sus funcionarios facultados lleve a cabo investigaciones, sobre mi comportamiento crediticio o el de la Empresa que represento.
             br
-            | Así mismo, declaro que conozco la naturaleza y alcance de la información que se solicitará, del uso que Moffin Software S.A.P.I. de C.V., hará de tal información y de que ésta podrá realizar consultas periódicas sobre mi historial o el de la empresa que represento, consintiendo que esta autorización se encuentre vigente por un período de 3 años contados a partir de su expedición y en todo caso durante el tiempo que se mantenga la relación jurídica.
+            br
+            | Así mismo, declaro que conozco la naturaleza y alcance de la información que se solicitará, del uso que Moffin Software S.A.P.I de C.V., hará que de tal información y de que ésta podrá realizar consultas periódicas sobre mi historial o el de la empresa que represento, consintiendo que esta autorización se encuentre vigente por un período de 3 años contados a partir de su expedición y en todo caso durante el tiempo que se mantenga la relación jurídica.
+            br
             br
             | En caso de que la solicitante sea una Persona Moral, declaro bajo protesta de decir verdad Ser Representante Legal de la empresa mencionada en esta autorización; manifestando que a la fecha de firma de la presente autorización los poderes no me han sido revocados, limitados, ni modificados en forma alguna.
           .form-group.m-form__group
-            .d-flex.col-md-12
-              .col-md-2
-                label.mr-2
+            .d-flex.justify-content-center.align-items-center.flex-column
+              label.text-center
+                h2
                   strong = 'Confirma tu código:'
-              .col-md-6
-                input.form-control.m-input.m-input--square name='confirmation_code' autofocus='autofocus' id="confirm_input_code" style="border-color: purple;"
-                button.btn.btn-link type='button' id='resendConfirmCode'
-                  | Reenviar
+                p = 'Te hemos enviado un código a tu correo'
+
+              input.form-control.m-input.m-input--square name='confirmation_code' autofocus='autofocus' id="confirm_input_code" style="border-color: purple; max-width: 200px;"
+              button.btn.btn-link type='button' id='resendConfirmCode'
+                | Reenviar
 
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"

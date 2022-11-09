@@ -1927,20 +1927,24 @@ class CompaniesController < ApplicationController
 
     begin
       code        = SecureRandom.random_number(10**4).to_s.rjust(4, '1')
-      code_sended = Company.send_buro_code(params[:phone], code)
+      ##code_sended = Company.send_buro_code(params[:phone], code)
+      #CreditRequestMailer.with(email: 'javiert7ro@gmail.com', code: code).confirmation_code.deliver_now
 
-      if code_sended
-        if company.forwarded_code == nil
-          company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now, forwarded_code: false)
-        elsif company.forwarded_code == false
-          company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now, forwarded_code: true)
-        elsif company.forwarded_code and company.bufo_confirmation_date.before?(1.day.ago)
-          company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now)
-        else
-          render json: { message: 'Something went wrong, try later' }, status: 401
-          return
-        end
+      #if code_sended
+      if company.forwarded_code == nil
+        CreditRequestMailer.with(email: 'javiert7ro@gmail.com', code: code).confirmation_code.deliver_now
+        company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now, forwarded_code: false)
+      elsif company.forwarded_code == false
+        CreditRequestMailer.with(email: 'javiert7ro@gmail.com', code: code).confirmation_code.deliver_now
+        company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now, forwarded_code: true)
+      elsif company.forwarded_code and company.bufo_confirmation_date.before?(1.day.ago)
+        CreditRequestMailer.with(email: 'javiert7ro@gmail.com', code: code).confirmation_code.deliver_now
+        company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now)
+      else
+        render json: { message: 'Something went wrong, try later' }, status: 401
+        return
       end
+      #end
 
       render json: {message: 'Code sended sucesfully'}, status: 200
     rescue => e
