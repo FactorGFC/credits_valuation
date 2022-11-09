@@ -84,6 +84,7 @@ Rails.application.routes.draw do
     get 'company_income_statement/:id'  => 'companies#company_income_statement', as: :company_income_statement
     get 'company_details/:id'  => 'companies#company_details', as: :company_details
     get 'dictamen_report/:id/:request_id'  => 'companies#dictamen_report', as: :dictamen_report
+    get 'bureau_report/:id'  => 'companies#bureau_report', as: :bureau_report
     get 'open_pdf/:id/:file'  => 'companies#open_pdf', as: :open_pdf
     get 'comments/:company_id/:assigned_to' => 'companies#comments'
     put 'save_comment' => 'companies#save_comment', as: :save_comment

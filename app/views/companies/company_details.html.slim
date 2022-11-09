@@ -306,7 +306,7 @@ javascript:
               .subtitle-icon.d-flex.justify-content-center.align-items-center
                 i.fa.fa-building.fa-lg.m--font-primary
               h5.h5.subtitle = 'Detalles de solicitud'
-              - if (current_user.god? or current_user.credit_management? or current_user.credit_area? or current_user.promotion_area?)
+              - if (current_user.god? or current_user.credit_area? or current_user.promotion_area?)
                 button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{nil}" data-companyid="#{@company.id}" data-process-status="#{nil}" data-analyst-id="#{nil}" data-factorcredit-id="#{nil}"
                   i.fa.fa-plus.left.mr-10
                   = "Nueva solicitud"
@@ -620,7 +620,7 @@ javascript:
                     .m-section.mb-0
                       .m-section__content.table-responsive.text-center
                         .tabs-actions
-                          = link_to company_details_path(@company.id, format: :pdf), class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                          = link_to bureau_report_path(@company.id, format: :pdf), class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                             .fa.fa-file-pdf.mx-2
                             = "Generar PDF"
                       - if !@credit_bureau.present?

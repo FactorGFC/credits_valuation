@@ -89,3 +89,5 @@ after :permissions do
 
   ])
 end
+
+PermissionsRole.where(role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Asignar detalles a solicitud').id)
