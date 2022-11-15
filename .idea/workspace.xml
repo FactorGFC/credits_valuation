@@ -5,36 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e965d6dd-6dc8-474a-b471-0fb4325c5a0e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/views/companies/_complete_data.html.slim" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/views/credit_request_mailer/confirmation_code.html.erb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db/migrate/20221026181013_add_fields_for_confirmation_to_company.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/assets/stylesheets/request_steps.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/assets/stylesheets/request_steps.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/companies_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/companies_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/home_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/home_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/javascript/packs/general.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/packs/general.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/javascript/packs/request_steps.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/packs/request_steps.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/mailers/credit_request_mailer.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/mailers/credit_request_mailer.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/company.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/company.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/companies/_company_files.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/_company_files.slim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/companies/_credentials.html.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/_credentials.html.slim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/companies/_inputs.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/_inputs.slim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/companies/_number_collaborators.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/_number_collaborators.slim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/companies/request_steps.html.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/request_steps.html.slim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/layouts/_header_menu.html.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/_header_menu.html.slim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/users/mailer/confirmation_instructions.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/users/mailer/confirmation_instructions.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/seeds/permissions.seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds/permissions.seeds.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/seeds/roles_permissions.seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds/roles_permissions.seeds.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/factories/companies.rb" beforeDir="false" afterPath="$PROJECT_DIR$/spec/factories/companies.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/factories/users.rb" beforeDir="false" afterPath="$PROJECT_DIR$/spec/factories/users.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/models/company_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/spec/models/company_spec.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec/models/user_spec.rb" beforeDir="false" afterPath="$PROJECT_DIR$/spec/models/user_spec.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +155,7 @@
       <workItem from="1666621167214" duration="13163000" />
       <workItem from="1667928280342" duration="4222000" />
       <workItem from="1668435887106" duration="730000" />
-      <workItem from="1668472096408" duration="405000" />
+      <workItem from="1668472096408" duration="956000" />
     </task>
     <servers />
   </component>

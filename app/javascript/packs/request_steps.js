@@ -92,6 +92,7 @@ $(document).on('turbolinks:load', function () {
     });
 
     $('#openAndSendCode').on('click', function(){
+        console.log("ENTRE");
         var phoneNum    = $('#phone_input').val();
         var company_id  = $('#company_id').val();
 
