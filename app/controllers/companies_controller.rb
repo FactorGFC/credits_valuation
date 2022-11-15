@@ -2013,6 +2013,7 @@ class CompaniesController < ApplicationController
   end
 
   def send_buro_confirm_code
+    user = current_user
     company   = current_user.company
     date_now  = DateTime.now
 
@@ -2023,13 +2024,13 @@ class CompaniesController < ApplicationController
 
       #if code_sended
       if company.forwarded_code == nil
-        CreditRequestMailer.with(email: 'javiert7ro@gmail.com', code: code).confirmation_code.deliver_now
+        CreditRequestMailer.with(email: user.try(:email), code: code).confirmation_code.deliver_now
         company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now, forwarded_code: false)
       elsif company.forwarded_code == false
-        CreditRequestMailer.with(email: 'javiert7ro@gmail.com', code: code).confirmation_code.deliver_now
+        CreditRequestMailer.with(email: user.try(:email), code: code).confirmation_code.deliver_now
         company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now, forwarded_code: true)
       elsif company.forwarded_code and company.bufo_confirmation_date.before?(1.day.ago)
-        CreditRequestMailer.with(email: 'javiert7ro@gmail.com', code: code).confirmation_code.deliver_now
+        CreditRequestMailer.with(email: user.try(:email), code: code).confirmation_code.deliver_now
         company.update(buro_confirmation_code: code, bufo_confirmation_date: date_now)
       else
         render json: { message: 'Something went wrong, try later' }, status: 401
