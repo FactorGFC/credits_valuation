@@ -502,7 +502,7 @@ class CompaniesController < ApplicationController
         tmp_analyst = request.analyst_id
         if request.update(analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
           if ProcessStatus.find_by_id(request_params[:process_status_id]).try(:key) == 'denied_validated_period'
-            CreditRequestMailer.with(request_data: {user: analyst_user, company: company}).denied_validated.deliver_now
+            CreditRequestMailer.with(request_data: {user:  company.user, company: company}).denied_validated.deliver_now
           end
           if request.analyst_id != tmp_analyst
             CreditRequestMailer.with(request_data: {user:  analyst_user, company: company}).request_analyst_assigned.deliver_now
