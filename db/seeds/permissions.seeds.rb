@@ -89,11 +89,14 @@ after :initialize_permissions do
                            {name: 'Validar o rechazar compañia', description: 'Permite validar o rechazar la compañia.', action: 'validate_company', controller: 'Companies'},
                            {name: 'Ver dictamen', description: 'Permite ver el reporte del dictamen.', action: 'dictamen_report', controller: 'Companies'},
 
+                           #20-Oct-2022
+                           {name: 'Confirmar y completar datos en solicitud', description: 'Permite actualizar y completar los datos en solicitud (primero paso)', action: 'update_complete_data', controller: 'Companies'},
+                           {name: 'Mensaje confirmación para buró', description: 'Enviar mensaje de confirmación para consulta de buró', controller: 'Companies', action: 'send_buro_confirm_code'}
                        ])
   rescue StandardError => e
     p Permission.first
     Permission.create(name: 'Finalizar captura', description: 'Permite finalizar captura', action: 'assign_calendar', controller: 'Companies')
-    
+
 
     p "Permission.last -----"
     p Permission.last

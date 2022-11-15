@@ -78,6 +78,10 @@ after :permissions do
                             {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver eventos').id},
                             {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver acuerdos en eventos').id},
 
+                            #20-OCT-2022
+                            #Company
+                            {role_id: Role.find_by_key('enterprise').id, permission_id: Permission.find_by_name('Confirmar y completar datos en solicitud').id},
+                            {role_id: Role.find_by_key('enterprise').id, permission_id: Permission.find_by_name('Mensaje confirmación para buró').id},
                             #26-10-2022
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Mostar vista de comentario de una solicitud de una solicitud').id},
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Añadir comentarios de solicitud').id},
@@ -85,9 +89,7 @@ after :permissions do
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Ver dictamen').id},
                             {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Ver dictamen').id}
 
-                            #10-10-2022
-
-  ])
+                          ])
 end
 
-PermissionsRole.where(role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Asignar detalles a solicitud').id)
+

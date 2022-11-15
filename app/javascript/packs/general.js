@@ -276,15 +276,6 @@ $(document).on('turbolinks:load', function () {
 
     };
 
-    if(document.getElementById("idStepOne")){
-        var stepOne = document.getElementById("idStepOne").value;
-        var stepTwo = document.getElementById("idStepTwo").value;
-        var stepThree = document.getElementById("idStepThree").value;
-        $('#filesBtn').attr('class', 'btn btn-primary col-xl-12 disabled');
-        $('#filesBtn').prop("disabled", true);
-
-    }
-
 
     function setNumberCollaboratorsValues(){
         if( $("#idOperative").val() === '') {
@@ -294,7 +285,7 @@ $(document).on('turbolinks:load', function () {
         if ($("#idAdministrativos").val() === '' ){
             $("#idAdministrativos").val(0);
         }
-        
+
         if ($("#idSales").val() === '' ){
             $("#idSales").val(0);
         }
@@ -309,25 +300,40 @@ $(document).on('turbolinks:load', function () {
         }
     };
 
+    if(document.getElementById("idStepOne")){
+        var stepOne = document.getElementById("idStepOne").value;
+        var stepTwo = document.getElementById("idStepTwo").value;
+        var stepThree = document.getElementById("idStepThree").value;
+        var stepFourth = document.getElementById("idStepFourth").value;
+        $('#filesBtn').attr('class', 'btn btn-primary col-xl-12 disabled');
+        $('#filesBtn').prop("disabled", true);
+    }
 
-    if (!stepOne) {
+
+    if (stepOne === 'false' || !stepOne) {
         $('#step-0').show();
         $("#buttonCero").hide();
     }
 
-    if (stepOne && !stepTwo) {
+    if (stepOne === 'true' && (!stepTwo || stepTwo == 'false')) {
         $('#step-1').show();
         $("#buttonOne").hide();
     }
 
-    if (stepTwo && !stepThree) {
+    if (stepTwo === 'true' && (!stepThree || stepThree == 'false')) {
         $('#step-2').show();
         $("#buttonTwo").hide();
         setNumberCollaboratorsValues();
     }
 
-    if (stepThree) {
+    if (stepThree === 'true' && (!stepFourth || stepFourth == 'false')) {
         $('#step-3').show();
+        $("#buttonTwo").hide();
+        setNumberCollaboratorsValues();
+    }
+
+    if (stepFourth) {
+        $('#step-4').show();
         $("#buttonThree").hide();
     }
 

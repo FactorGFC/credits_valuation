@@ -9,7 +9,8 @@
 input type="hidden" id="idStepOne" value="#{@step_one_value}"
 input type="hidden" id="idStepTwo" value="#{@step_two_value}"
 input type="hidden" id="idStepThree" value="#{@step_three_value}"
-input type="hidden" id="idStepFour" value="#{@step_four_value}"
+input type="hidden" id="idStepFourth" value="#{@step_four_value}"
+input type="hidden" id="idStepFive" value="#{@step_five_value}"
 
 div.loading-screen
 
@@ -27,10 +28,12 @@ div.loading-screen
 div.step-container#step-0 style="display: none"
   = render 'credentials'
 div.step-container#step-1 style="display: none"
-  = render 'inputs'
+  = render 'complete_data'
 div.step-container#step-2 style="display: none"
-  = render 'number_collaborators'
+  = render 'inputs'
 div.step-container#step-3 style="display: none"
+  = render 'number_collaborators'
+div.step-container#step-4 style="display: none"
   = render 'company_files'
 
 / - if @company.step_one.nil?
