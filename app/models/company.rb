@@ -107,7 +107,12 @@ class Company < ApplicationRecord
     CreditBureau.where( company_id: id ).delete_all
     FReasonsCompany.where( company_id: id ).delete_all
     CompanyFlow.where( company_id: id ).delete_all
-    Request.where(company_id: id).delete_all
+    Comment.where(company_id: id).delete_all
+    requests = Request.where(company_id: id)
+    requests.echa do |request|
+      RequestComment.where(request_id: request.id).delete_all
+    end
+    requests.delete_all
     company.delete
 
   end
