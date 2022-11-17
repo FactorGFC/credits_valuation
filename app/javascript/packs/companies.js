@@ -15,6 +15,7 @@ $(document).on('turbolinks:load', function () {
         var analystId       = $(this).data('analyst-id');
         var factorCreditId  = $(this).data('factorcredit-id');
 
+
         if(document.getElementById('input_credit_type')){
             if(requestId){
                 document.getElementById('input_credit_type').style.display = 'grid';
