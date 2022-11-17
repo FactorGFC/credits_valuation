@@ -144,11 +144,17 @@ $(document).on('turbolinks:load', function () {
             },
             success: function (data, textStatus, xhr) {
                 //console.log(data);
+                swal({
+                    title: "Código reenviado",
+                    text: "El código fue reenviado a ti correo electrónico",
+                    icon: 'success',
+                    button: I18n.t('messages.ok')
+                });
             },
             error: function (xhr, textStatus, errorThrown) {
                 if(xhr.status == 401){
                     swal({
-                        title: "El codigo ya fue enviado",
+                        title: "El código ya fue enviado",
                         text: "Espera a recibir el código o intenta de nuevo mas tarde.",
                         icon: 'warning',
                         button: I18n.t('messages.ok')
@@ -157,7 +163,7 @@ $(document).on('turbolinks:load', function () {
                     swal({
                         title: "!Ups!",
                         text: "Hubo un error, por favor intenta mas tarde.",
-                        icon: 'warning',
+                        icon: 'error',
                         button: I18n.t('messages.ok')
                     });
                 }
