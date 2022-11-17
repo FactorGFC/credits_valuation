@@ -726,7 +726,7 @@ javascript:
                                 h3.m-portlet__head-text
                                   | Resumen de Créditos (M.N.)
                                 - if @credit_bureau.bureau_report.present?
-                                  - if @report_result['response'].present?
+                                  - if @report_result['response'].present? && @report_result['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
                                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                       .m-section
                                         .m-section__content
@@ -790,7 +790,7 @@ javascript:
                                 h3.m-portlet__head-text
                                   | Domicilios registrados
                                 - if @credit_bureau.present?
-                                  - if @report_result['response'].present?
+                                  - if @report_result['response'].present? && @report_result['response']['return']['Personas']['Persona'][0]['Domicilios'].present?
                                     - @report_result['response']['return']['Personas']['Persona'][0]['Domicilios']['Domicilio'].each do |address|
                                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                         .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
@@ -849,7 +849,7 @@ javascript:
                                 h3.m-portlet__head-text
                                   | Domicilio(s) de empleo(s) registrado(s)
                                 - if @credit_bureau.present?
-                                  - if @report_result['response'].present?
+                                  - if @report_result['response'].present? && @report_result['response']['return']['Personas']['Persona'][0]['Empleos'].present?
                                     - @report_result['response']['return']['Personas']['Persona'][0]['Empleos']['Empleo'].each do |job|
                                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                         .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
@@ -910,7 +910,7 @@ javascript:
                                 h3.m-portlet__head-text
                                   | Cuentas
                                 - if @credit_bureau.present?
-                                  - if @report_result['response'].present?
+                                  - if @report_result['response'].present? && @report_result['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
                                     - @report_result['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
                                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                         .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
