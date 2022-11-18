@@ -302,45 +302,42 @@ class CompaniesController < ApplicationController
 
             @bureau_info = BuroCredito.get_buro_info @buro.first['id'],  @company.info_company
 
-            if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
-=begin
-              if @user.update(sat_id: @sat['id'])
-=end
-                @clients = get_clients_sat @user.try(:company)
-                if @clients
-                  @providers = get_providers_sat @user.try(:company)
-                  if @providers
-                    @financial_institutions = create_financial_institutions @bureau_report, @company.id
-                    if @company.update(step_two: true) and @user.update(phone: user_params[:phone])
-                      format.html { redirect_to '/request_steps', notice: "Datos actualizados correctamente." }
-                      format.json { render :show, status: :ok, location: @company }
+            if @bureau_report['results'].first['status'] != 'FAIL'
+              if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
+                  @clients = get_clients_sat @user.try(:company)
+                  if @clients
+                    @providers = get_providers_sat @user.try(:company)
+                    if @providers
+                      @financial_institutions = create_financial_institutions @bureau_report, @company.id
+                      if @company.update(step_two: true) and @user.update(phone: user_params[:phone])
+                        format.html { redirect_to '/request_steps', notice: "Datos actualizados correctamente." }
+                        format.json { render :show, status: :ok, location: @company }
+                      else
+                        format.html { render '/request_steps', status: :unprocessable_entity }
+                        format.json { render json: @company.errors, status: :unprocessable_entity }
+                      end
                     else
-                      format.html { render '/request_steps', status: :unprocessable_entity }
-                      format.json { render json: @company.errors, status: :unprocessable_entity }
+                      format.json { render json: { error: true, message: '(1)Hubo un error favor volver a intentar' }}
                     end
                   else
-                    render json: {alert: '(1)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
+                    format.json { render json: { error: true, message: '(2)Hubo un error favor volver a intentar' }}
                   end
-                else
-                  render json: {alert: '(2)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
-                end
-=begin
               else
-                render json: {alert: '(3)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
+                format.json { render json: { error: true, message: '(3)Hubo un error favor volver a intentar' }}
               end
-=end
             else
-              render json: {alert: '(4)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
+              CreditRequestMailer.credit_bureau_error(@company).deliver_now
+              format.json { render json: { error: true, message: 'Hubo un error con tu buro de crédito favor volver a intentar' }}
             end
           else
-            render json: {alert: '(5)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
+            format.json { render json: { error: true, message: '(4)Hubo un error favor volver a intentar' }}
           end
         else
-          render json: {alert: '(6)Hubo un error favor volver a intentar'}, status: :unprocessable_entity
+          format.json { render json: { error: true, message: '(5)Hubo un error favor volver a intentar' }}
         end
       end
     else
-      render json: {alert: 'Código no coincide'}, status: :unprocessable_entity
+      format.json { render json: { error: true, message: 'Código no coincide' }}
     end
   end
 

@@ -49,4 +49,9 @@ class CreditRequestMailer < ApplicationMailer
     @email  = params[:email]
     mail(to: @email, subject: "Código de confirmación")
   end
+
+  def credit_bureau_error company
+    @company = company
+    mail(to: 'alexrdgz03@gmail.com', subject: "Código de confirmación")
+  end
 end

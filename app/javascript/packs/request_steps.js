@@ -92,7 +92,6 @@ $(document).on('turbolinks:load', function () {
     });
 
     $('#openAndSendCode').on('click', function(){
-        console.log("ENTRE");
         var phoneNum    = $('#phone_input').val();
         var company_id  = $('#company_id').val();
 
@@ -176,7 +175,14 @@ $(document).on('turbolinks:load', function () {
 
     $('#confirm_data_form').on('ajax:success', function(event){
         const [data, status, xhr] = event.detail
-        //console.log(xhr.responseText)
+        if(event.detail[0].error){
+            swal({
+                title: "!Ups!",
+                text: event.detail[0].message,
+                icon: 'warning',
+                button: I18n.t('messages.ok')
+            });
+        }
         // or
         //console.log(data.success)
     }).on('ajax:error',function(event){
