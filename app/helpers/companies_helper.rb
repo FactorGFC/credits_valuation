@@ -1241,6 +1241,15 @@ module CompaniesHelper
     return result
   end
 
-  
+  def can_capture capture_finished, role_key
+    permited_roles = ['analyst']
+
+    if permited_roles.include?(role_key)
+      false
+    else
+      capture_finished
+    end
+
+  end
   
 end
