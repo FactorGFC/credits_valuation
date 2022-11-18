@@ -61,7 +61,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Caja / Inversiones'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 1, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -73,7 +73,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Clientes'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 2, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -85,7 +85,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Inventarios'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 3, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -97,7 +97,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Otros activos circulantes'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 4, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -115,7 +115,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Terrenos y Construcciones'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 5, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -127,7 +127,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Maquinaria y equipo'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 6, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -139,7 +139,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Depreciación acumulada'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 7, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -151,7 +151,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Otros activos fijos'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 8, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -163,7 +163,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Cargos y gastos diferidos'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 9, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -181,7 +181,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Proveedores'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 10, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -193,7 +193,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Contribuciones por pagar'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 11, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -205,7 +205,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Anticipo de clientes'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 12, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -217,7 +217,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Otros pasivos'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 13, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -235,7 +235,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Capital social'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 14, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -247,7 +247,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Utilidad/Perdida acumulada'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 15, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -259,7 +259,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Utilidad/Perdida ejercicio'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 16, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
@@ -271,7 +271,7 @@
                 td style="font-weight: 600"
                   span.text-left = 'Otras cuentas de capital'
                 - @calendar_periods.each do |y|
-                  -if y.capture_finished
+                  -if can_capture(y.capture_finished, current_user.role.key)
                     td class="full-input"
                       span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_key: 17, calendar_id: y.calendar_id, company_id: @company.id).try(:value)
                   - else
