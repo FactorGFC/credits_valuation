@@ -281,9 +281,13 @@
                       input type="number" step=0.001 name="b_sheet[#{y.id}.17][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_key: 17, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
             .d-flex.flex-column.justify-content-center.align-items-center.col-md-12
               .col-md-6
-                - if !@data_captured
-                  = button_tag type: 'submit', value: 'eraser', class: "btn btn-outline-info btn-large" do
-                    | Guardar Borrador
+                - if current_user.role.key == 'analyst'
+                  = button_tag type: 'submit', value: 'analyst_update', class: "btn btn-outline-info btn-large" do
+                    | Guardar
+                - else
+                  - if !@data_captured
+                    = button_tag type: 'submit', value: 'eraser', class: "btn btn-outline-info btn-large" do
+                      | Guardar Borrador
               - if @company.balance_calendar_details.present? and !@data_captured
                 .col-md-10
                   = button_tag type: 'submit', value: 'finalize', class: "btn btn-primary btn-large" do
