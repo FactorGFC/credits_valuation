@@ -239,7 +239,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               .page-breaker
                 h4.mt-5 = "2.1.4 Domicilios registrados"
                 - if @credit_bureau.present?
-                  - if @report_result['response'].present?
+                  - if @report_result['response'].present? && @report_result['response']['return']['Personas']['Persona'][0]['Domicilios'].present?
                     - @report_result['response']['return']['Personas']['Persona'][0]['Domicilios']['Domicilio'].each do |address|
                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                         .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
@@ -293,7 +293,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               .page-breaker
                 h4.mt-5 = "2.1.5 Domicilio(s) de empleo(s) registrado(s)"
                 - if @credit_bureau.present?
-                  - if @report_result['response'].present?
+                  - if @report_result['response'].present? && @report_result['response']['return']['Personas']['Persona'][0]['Empleos'].present?
                     - @report_result['response']['return']['Personas']['Persona'][0]['Empleos']['Empleo'].each do |job|
                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                         .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
