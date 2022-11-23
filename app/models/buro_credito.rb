@@ -60,14 +60,14 @@ class BuroCredito < ApplicationRecord
   end
 
 
-  def self.get_buro_report id , info_sat = nil
+  def self.get_buro_report id  , info_sat = nil
     # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/profiles/#{id}/query")
     # token = ENV['TOKEN_BURO_DEVELOP']
 
     uri = URI.parse("#{ENV['URL_BUREAU_PRODUCTION']}api/v1/profiles/#{id}/query")
     token = ENV['TOKEN_BURO_PRODUCTION']
 
-    account_type_pf_b = true
+    account_type_pf_b = false
     account_type_pm_b = false
 
     if info_sat['hydra:member'][0]['company'].present? 
@@ -98,6 +98,9 @@ class BuroCredito < ApplicationRecord
       http.request(request)
     end
 
+
+    p "response.body ---------------------------------------------------------------------------------"
+    p response.body
 
     return JSON.parse(response.body)
 

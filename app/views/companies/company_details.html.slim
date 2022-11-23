@@ -2714,8 +2714,7 @@ javascript:
         .modal-body
           input type="hidden" name="request_id" id="requestId" value=""
           input type="hidden" name="company_id" id="companyId" value=""
-          - unless current_user.god? or current_user.credit_management? or current_user.credit_area? or current_user.promotion_area?
-            input type="hidden" id="request_analyst_id" name="request[analyst_id]"  value=""
+          input type="hidden" id="request_analyst_id" name="request[analyst_id]"  value=""
           .col-xl-12 style="display: grid;"
             - unless @user.role.key == 'credit_management'
               p#textModal
