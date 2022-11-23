@@ -4,6 +4,7 @@ class EventMailer < ApplicationMailer
   def new_event_email event, user
     @event = event
     @user  = user
+    @requests = EventRequest.where(event_id: event.id).order(:id)
     mail(to: "#{@user[:email]}", subject: "¡Nueva reunión!")
   end
 
