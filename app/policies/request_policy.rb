@@ -11,10 +11,9 @@ class RequestPolicy < ApplicationPolicy
       elsif @user.analyst?
         scope.where(analyst_id: @user.id)
       elsif @user.credit_management?
-        scope.where(process_status_id: ProcessStatus.find_by(key: ['success_by_credit_area','success_validated_period']).try(:id))
+        scope.where(process_status_id: ProcessStatus.where(key: ['success_by_credit_area','success_validated_period']).pluck(:id))
       else
-        scope.where(process_status_id: ProcessStatus.find_by(key: ['success_by_credit_area','committee_pending']).try(:id))
-
+        scope.where(process_status_id: ProcessStatus.where(key: ['success_by_credit_area','committee_pending']).pluck(:id))
       end
     end
   end
