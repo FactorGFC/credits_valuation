@@ -69,7 +69,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                 h3.mt-5 = "Datos Generales"
                 .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                   - if @credit_bureau.present?
-                    - if @report_result['response'].present?
+                    - if @report_result['response'].present? && @report_result['response']['return']['Personas']['Persona'][0]['Nombre'].present?
                       .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                         strong
                           | Nombre
