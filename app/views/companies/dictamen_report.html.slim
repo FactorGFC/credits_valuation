@@ -178,7 +178,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               .page-breaker
                 h4.mt-5 = "2.1.3 Resumen de Créditos (M.N.)"
                 - if @credit_bureau.bureau_report.present?
-                  - if @report_result['response'].present?
+                  - if @report_result['response'].present? && @report_result['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                       .m-section
                         .m-section__content
@@ -348,7 +348,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               .page-breaker
                 h4.mt-5 = "2.1.6 Cuentas"
                 - if @credit_bureau.present?
-                  - if @report_result['response'].present?
+                  - if @report_result['response'].present? && @report_result['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
                     - @report_result['response']['return']['Personas']['Persona'][0]['Cuentas']['Cuenta'].each do |account|
                       .page-breaker
                         .m-stack.m-stack--ver.m-stack--general.m-stack--demo
