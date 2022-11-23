@@ -66,11 +66,7 @@
           h3.m-portlet__head-text = t('.attendants')
     .m-portlet__body
       .m-section.mb-0
-        - if true#@attendants.empty?
-          .m-section__content
-            .no-results
-              = t('helpers.not_created_yet', resource: t('.attendants').downcase)
-        - else
+        - if @attendants.present?
           .m-section__content.table-responsive
             table.table.m-table.m-table--head-separator-brand.table-custom
               thead
@@ -85,6 +81,10 @@
                     th scope="row" = user.full_name
                     td = user.email
                     td = user.role_name
+        - else
+          .m-section__content
+            .no-results
+              = t('helpers.not_created_yet', resource: t('.attendants').downcase)
     .m-portlet__foot
       .row.align-items-center.pagination-container
         /.col-lg-6.m--valign-middle
