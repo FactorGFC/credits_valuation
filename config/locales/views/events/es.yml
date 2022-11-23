@@ -24,6 +24,7 @@ es:
       rfc: RFC
       factor_credit: Tipo de Crédito
       opinion: Dictamen
+      files: Archivos
       status: Estatus
       comment: Comentario
       credit_requests: Solicitudes de crédito
