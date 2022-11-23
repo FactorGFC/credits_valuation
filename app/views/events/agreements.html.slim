@@ -113,6 +113,7 @@
                     th = t('.rfc')
                     th = t('.factor_credit')
                     th = t('.opinion')
+                    th = t('.files')
                     th = t('.estatus')
                     th = t('.comment')
                 /th.actions-4.text-center = t('helpers.actions')
@@ -122,8 +123,13 @@
                       th scope="row" = event_request.try(:request).try(:company).try(:rfc)
                       td = event_request.try(:request).try(:factor_credit).try(:name)
                       td
-                      / td = select_tag "requests[#{index}][process_status_id]", options_for_select(@process_status.collect{ |u| [u.name, u.id] }),
-                              { include_blank: t('helpers.select.prompt'), class: "form-control m-input" }
+                        a.btn.btn-block.btn-info target="_blank" href="#{dictamen_report_path(event_request.try(:request).company_id, event_request.id, format: :pdf)}"
+                          | Dictamen
+                      td
+                        a.btn.btn-danger.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action href="#{ENV['DOWNLOAD_FILES']}/#{event_request.try(:request).try(:file_id)}/#{event_request.try(:request).try(:file_name)}" target="_blank"
+                          span
+                            i.fa.fa-eye.mx-2
+                            span = "Ver"
                       td = select("requests[#{index}]", "process_status_id", @process_status.all.collect {|p| [ p.name, p.id ] },
                               { selected: event_request.try(:process_status_id) ,include_blank: 'seleccione una opción'}, {class: "form-control m-input"})
                       td = text_field_tag "requests[#{index}][comment]", event_request.comment, class: 'form-control m-input'
