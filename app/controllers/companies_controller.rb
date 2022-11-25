@@ -303,9 +303,15 @@ class CompaniesController < ApplicationController
             @bureau_info = BuroCredito.get_buro_info @buro.first['id'],  @company.info_company
 
             if @bureau_report['results'].present?
-              if @bureau_report['results'].first['status'] != 'FAIL'
+
+              p "@bureau_report['results'] ----------------------------------------------------------------------"
+              p @bureau_report['results']
+              if @bureau_report['results'].first['status'] == 'SUCCESS'
                 if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
                     @clients = get_clients_sat @user.try(:company)
+
+                    p "@clients ------------------------------------------------------------------------------------------------------"
+                    p @clients
                     if @clients
                       @providers = get_providers_sat @user.try(:company)
                       if @providers
@@ -2206,22 +2212,25 @@ class CompaniesController < ApplicationController
 
   def get_clients_sat company
 
-    response = false
+    # response = false
+    response = true
 
-    clients = SatW.get_customer_concentration company.try(:rfc)
+    # clients = SatW.get_customer_concentration company.try(:rfc)
 
-    if clients['data'].present?
-      clients['data'].each do |client|
-
-        if CompanyClient.create(company_id: company.try(:id), name: client['name'], sales: client['total'], credit: client['transactions'].count)
-          response = true
-        else
-          response = false
-        end
-      end
-    else
-      company.update(has_clients: false)
-    end
+    CompanyClient.create(company_id: company.try(:id), name: '', sales: 0, credit: 0)
+    #
+    # if clients['data'].present?
+    #   clients['data'].each do |client|
+    #
+    #     if CompanyClient.create(company_id: company.try(:id), name: client['name'], sales: client['total'], credit: client['transactions'].count)
+    #       response = true
+    #     else
+    #       response = false
+    #     end
+    #   end
+    # else
+    #   company.update(has_clients: false)
+    # end
 
     if response
       company.update(step_four: true, has_clients: true)
@@ -2233,28 +2242,29 @@ class CompaniesController < ApplicationController
 
   def get_providers_sat company
 
-    response = false
+    # response = false
+    response = true
 
-    providers = SatW.get_suppliers_concentration company.try(:rfc)
+    # providers = SatW.get_suppliers_concentration company.try(:rfc)
 
-    if providers['data'].present?
-      providers['data'].each do |provider|
-
-        if CompanyProvider.create(company_id: company.try(:id), name: provider['name'], purchase: provider['total'], credit: provider['transactions'].count)
-          response = true
-        else
-          response = false
-
-        end
-      end
-    else
-      company.update(has_providers: false)
-    end
+    CompanyProvider.create(company_id: company.try(:id), name: '', purchase: 0, credit: 0)
+    #
+    # if providers['data'].present?
+    #   providers['data'].each do |provider|
+    #
+    #     if CompanyProvider.create(company_id: company.try(:id), name: provider['name'], purchase: provider['total'], credit: provider['transactions'].count)
+    #       response = true
+    #     else
+    #       response = false
+    #
+    #     end
+    #   end
+    # else
+    #   company.update(has_providers: false)
+    # end
 
     if response
       company.update(step_five: true, has_providers: true)
-
-
     end
 
     return response

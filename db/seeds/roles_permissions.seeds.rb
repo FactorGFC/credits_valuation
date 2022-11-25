@@ -87,8 +87,14 @@ after :permissions do
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Añadir comentarios de solicitud').id},
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Ver dictamen').id},
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Ver dictamen').id},
-                            {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Ver dictamen').id}
+                            {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Ver dictamen').id},
+
+                            #Permisos 23-NOV-2022
+                            {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Ver dictamen').id},
+                            {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Actualizar acuerdos de  eventos').id}
 
                           ])
 end
+
+# PermissionsRole.create!([{role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Actualizar acuerdos de  eventos').id}])
 

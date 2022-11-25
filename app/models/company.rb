@@ -111,6 +111,7 @@ class Company < ApplicationRecord
     requests = Request.where(company_id: id)
     requests.each do |request|
       RequestComment.where(request_id: request.id).delete_all
+      EventRequest.where(request_id: request.id).delete_all
     end
     requests.delete_all
     company.delete
