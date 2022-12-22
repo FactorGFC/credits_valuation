@@ -73,7 +73,7 @@ after :permissions do
                             {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Ver vista de detalles de la compañia').id},
                             {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Ver vista de detalles de la compañia').id},
                             {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Validar o rechazar compañia').id},
-                            {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Validar o rechazar compañia').id},
+                            {role_id: Role.find_by_key('enterprise').id, permission_id: Permission.find_by_name('Validar o rechazar compañia').id},
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Ver vista de detalles de la compañia').id},
                             {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver eventos').id},
                             {role_id: Role.find_by_key('committee').id,    permission_id: Permission.find_by_name('Ver acuerdos en eventos').id},
@@ -91,10 +91,17 @@ after :permissions do
 
                             #Permisos 23-NOV-2022
                             {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Ver dictamen').id},
-                            {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Actualizar acuerdos de  eventos').id}
+                            {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Actualizar acuerdos de  eventos').id},
+
+
+                            #Permisos 16 de Diciembre
+                            {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Editar Un Usuario').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Editar Un Usuario').id},
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Editar Un Usuario').id},
+                            {role_id: Role.find_by_key('enterprise').id, permission_id: Permission.find_by_name('Editar Un Usuario').id},
+                            {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Editar Un Usuario').id},
+                            {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Editar Un Usuario').id}
+
 
                           ])
 end
-
-# PermissionsRole.create!([{role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Actualizar acuerdos de  eventos').id}])
-
