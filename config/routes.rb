@@ -108,7 +108,7 @@ Rails.application.routes.draw do
       match '/users', to: 'users/registrations#update', as: :update_profile, via: [:patch, :put]
 
       # Edit users.
-      get '/users/:id/edit', to: 'users/registrations#edit_user', as: :edit_user_
+      get '/users/:id/edit', to: 'users/registrations#edit_user', as: :edit_user
       match '/users/:id', to: 'users/registrations#update_user', as: :update_user, via: [:patch, :put]
 
       # Change password to a user
