@@ -100,8 +100,13 @@ after :permissions do
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Editar Un Usuario').id},
                             {role_id: Role.find_by_key('enterprise').id, permission_id: Permission.find_by_name('Editar Un Usuario').id},
                             {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Editar Un Usuario').id},
-                            {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Editar Un Usuario').id}
+                            {role_id: Role.find_by_key('promotion_area').id, permission_id: Permission.find_by_name('Editar Un Usuario').id},
 
+                            #Permisos 20 Diciembre
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Ver vista de comentarios').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Ver pdf de buro de credito').id},
+                            {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Ver vista de comentarios').id},
+                            {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Ver pdf de buro de credito').id}
 
                           ])
 end

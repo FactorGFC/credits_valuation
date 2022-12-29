@@ -91,15 +91,20 @@ after :initialize_permissions do
 
                            #20-Oct-2022
                            {name: 'Confirmar y completar datos en solicitud', description: 'Permite actualizar y completar los datos en solicitud (primero paso)', action: 'update_complete_data', controller: 'Companies'},
-                           {name: 'Mensaje confirmación para buró', description: 'Enviar mensaje de confirmación para consulta de buró', controller: 'Companies', action: 'send_buro_confirm_code'}
+                           {name: 'Mensaje confirmación para buró', description: 'Enviar mensaje de confirmación para consulta de buró', controller: 'Companies', action: 'send_buro_confirm_code'},
+
+                           #Permisos 20-Dic-2022
+                           {name: 'Ver pdf de buro de credito', description: 'Permite ver el pdf del Buro de credito', controller: 'bureau_report', action: 'send_buro_confirm_code', controller: 'Companies'}
                        ])
   rescue StandardError => e
     p Permission.first
-    Permission.create(name: 'Finalizar captura', description: 'Permite finalizar captura', action: 'assign_calendar', controller: 'Companies')
 
+
+    Permission.create!([{name: 'Ver pdf de buro de credito', description: 'Permite ver el pdf del Buro de credito', action: 'bureau_report', controller: 'Companies'}])
 
     p "Permission.last -----"
     p Permission.last
     p "Error: #{e}"
+
   end
 end
