@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e965d6dd-6dc8-474a-b471-0fb4325c5a0e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/views/layouts/_header.html.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/_header.html.slim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/seeds/permissions.seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds/permissions.seeds.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/seeds/roles_permissions.seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds/roles_permissions.seeds.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
