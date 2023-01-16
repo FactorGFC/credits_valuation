@@ -35,7 +35,7 @@ class HomeController < ApplicationController
           @company_name = @company.try(:name)
         end
         if @company.try(:info_company)['hydra:member'][0]['address'].present?
-          @company_address = @company.try(:info_company)['hydra:member'][0]['address']['streetName'] +
+          @company_address = @company.try(:info_company)['hydra:member'][0]['address']['streetName'] + ' ' +
               @company.try(:info_company)['hydra:member'][0]['address']['streetNumber'] + ', COL. ' + @company.try(:info_company)['hydra:member'][0]['address']['neighborhood']
           @company_state_municipality = @company.try(:info_company)['hydra:member'][0]['address']['state'] + ' / ' +
               @company.try(:info_company)['hydra:member'][0]['address']['municipality']
