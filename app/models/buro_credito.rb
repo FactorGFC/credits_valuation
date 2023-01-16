@@ -60,7 +60,7 @@ class BuroCredito < ApplicationRecord
   end
 
 
-  def self.get_buro_report id  , info_sat = nil
+  def self.get_buro_report id , info_sat = nil
     # uri = URI.parse("#{ENV['URL_BUREAU_DEVELOP']}api/v1/profiles/#{id}/query")
     # token = ENV['TOKEN_BURO_DEVELOP']
 
