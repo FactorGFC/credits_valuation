@@ -292,16 +292,16 @@ class CompaniesController < ApplicationController
     if @company.buro_confirmation_code.to_s === params[:confirmation_code].to_s
       respond_to do |format|
         @buro = create_buro @company.info_company, @user.try(:phone)
-        p "@buro ---------------------------------------------------------------------------------------------------"
-        p @buro
+        Rails.logger.info "@buro ---------------------------------------------------------------------------------------------------"
+        Rails.logger.info @buro
         if @buro
           if @company.update(buro_id: @buro.first['id'])
             if @user.try(:company).try(:rfc) == 'FGL190102DH6'
               @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
             else
               @bureau_report = BuroCredito.get_buro_report @buro.first['id'], @company.info_company
-              p "@bureau_report -----------------------------------------------------------------------------"
-              p @bureau_report
+              Rails.logger.info "@bureau_report -----------------------------------------------------------------------------"
+              Rails.logger.info @bureau_report
             end
 
             @bureau_info = BuroCredito.get_buro_info @buro.first['id'],  @company.info_company
