@@ -664,7 +664,7 @@ class CompaniesController < ApplicationController
     @step_two_value       = @company.step_two   && @company.step_one
     @step_three_value     = @company.step_three && @company.step_two    && @company.step_one  #  && !@company.has_clients
     @step_four_value      = @company.step_four  && @company.step_three  && @company.step_two    && @company.step_one# && !@company.has_providers
-    @step_five_value     = @company.step_five && @company.step_four   && @company.step_three  && @company.step_two && @company.step_one # && !@company.has_providers
+    @step_five_value      = @company.step_five && @company.step_four   && @company.step_three  && @company.step_two && @company.step_one # && !@company.has_providers
     @step_complete_value  = @company.complete
 
     if @company.complete

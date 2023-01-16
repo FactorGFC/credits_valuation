@@ -60,7 +60,7 @@ header#m_header.m-grid__item.m-header m-minimize-mobile-offset="200" m-minimize-
                           = image_tag current_user.avatar_thumb, class: 'm--img-rounded m--marginless'
                         .m-card-user__details
                           span.m-card-user__name.m--font-weight-500 = current_user.email
-                          a.m-card-user__email.m--font-weight-300.m-link href="" = current_user.email
+                          span.m-card-user__email.m--font-weight-300.m-link href="" = Role.find(current_user.role_id).name
                     .m-dropdown__body
                       .m-dropdown__content
                         ul.m-nav.m-nav--skin-light

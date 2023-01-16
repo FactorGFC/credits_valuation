@@ -39,12 +39,12 @@
                 a.btn-list-opt.status-completed.d-flex.justify-content-between.align-items-center.mx-2 href="/companies"
                   i.fa.fa-home
                   | Información SAT
-              /- if @company.company_calendar_details.where(assign_to: 'balance_sheet').present? and !@company.balance_sheet_finished
+              - if @company.company_calendar_details.where(assign_to: 'balance_sheet').present?# and !@company.balance_sheet_finished
                 /- if @company.balance_sheet_finished
               a.btn-list-opt.d-flex.justify-content-between.align-items-center.mx-2 href="/balance_sheet_request/#{@company.id}" class="#{@data_bs_captured ? 'status-completed' : ''}"
                 i.fa.fa-pencil-alt
                 | Captura de Balance Financiero
-              /- if @company.company_calendar_details.where(assign_to: 'income_statement').present? and !@company.income_statement_finished
+              - if @company.company_calendar_details.where(assign_to: 'income_statement').present?# and !@company.income_statement_finished
                 /- unless @company.income_statement_finished
               a.btn-list-opt.d-flex.justify-content-between.align-items-center.mx-2 href="/income_statement_capture/#{@company.id}" class="#{@data_is_captured ? 'status-completed' : ''}"
                 i.fa.fa-pencil-alt
