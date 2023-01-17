@@ -38,7 +38,7 @@
         .row.col-md-12.d-flex.justify-content-center.align-items-center
           .blog-comment
 
-            h3.text-black Comentarios
+            h3.text-black Comentarios de Solicitud
 
             - if @request
               .m-portlet__nav-item
@@ -61,6 +61,164 @@
                 strong.mx-2
                   | ¡UPS!
                 | Aún no has definido los detalles de la solicitud.
+
+
+
+  .m-portlet
+    .m-portlet__body
+      .m-section.mb-0
+        .row.col-md-12.d-flex.justify-content-center.align-items-center
+          .blog-comment
+            h3.text-black Comentarios de Balance Financiero
+
+            .m-portlet__nav-item
+              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/balance_sheet" target="_blank" style='position:absolute; right: 20px; top: 0;'
+                = 'Ver todos'
+            - if @bs_comments.length > 0
+              ul.comments
+                - @bs_comments.each do |comment|
+                  li.clearfix
+                    = image_tag current_user.avatar_thumb, class:'avatar'
+                    .post-comments
+                      p.meta
+                        a.user_name href="#" class="mx-2" #{User.where(id: comment.user_id).try(:first).full_name}
+                        = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p') + ':'
+                      p
+                        = comment.comment
+              a.btn.btn-block.btn-info
+                | IR A COMENTARIOS
+            - else
+              .alert.alert-info role="alert"
+                strong.mx-2
+                  | ¡Sin comentarios!
+                | Aún no capturado comentarios.
+
+
+
+
+
+  .m-portlet
+    .m-portlet__body
+      .m-section.mb-0
+        .row.col-md-12.d-flex.justify-content-center.align-items-center
+          .blog-comment
+            h3.text-black Comentarios de Estado De Resultados
+
+            .m-portlet__nav-item
+              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/balance_sheet" target="_blank" style='position:absolute; right: 20px; top: 0;'
+                = 'Ver todos'
+            - if @is_comments.length > 0
+              ul.comments
+                - @is_comments.each do |comment|
+                  li.clearfix
+                    = image_tag current_user.avatar_thumb, class:'avatar'
+                    .post-comments
+                      p.meta
+                        a.user_name href="#" class="mx-2" #{User.where(id: comment.user_id).try(:first).full_name}
+                        = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p') + ':'
+                      p
+                        = comment.comment
+              a.btn.btn-block.btn-info
+                | IR A COMENTARIOS
+            - else
+              .alert.alert-info role="alert"
+                strong.mx-2
+                  | ¡Sin comentarios!
+                | Aún no capturado comentarios.
+
+
+
+  .m-portlet
+    .m-portlet__body
+      .m-section.mb-0
+        .row.col-md-12.d-flex.justify-content-center.align-items-center
+          .blog-comment
+            h3.text-black Comentarios de Razones Financieras
+
+            .m-portlet__nav-item
+              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/balance_sheet" target="_blank" style='position:absolute; right: 20px; top: 0;'
+                = 'Ver todos'
+            - if @fr_comments.length > 0
+              ul.comments
+                - @fr_comments.each do |comment|
+                  li.clearfix
+                    = image_tag current_user.avatar_thumb, class:'avatar'
+                    .post-comments
+                      p.meta
+                        a.user_name href="#" class="mx-2" #{User.where(id: comment.user_id).try(:first).full_name}
+                        = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p') + ':'
+                      p
+                        = comment.comment
+              a.btn.btn-block.btn-info
+                | IR A COMENTARIOS
+            - else
+              .alert.alert-info role="alert"
+                strong.mx-2
+                  | ¡Sin comentarios!
+                | Aún no capturado comentarios.
+
+
+
+  .m-portlet
+    .m-portlet__body
+      .m-section.mb-0
+        .row.col-md-12.d-flex.justify-content-center.align-items-center
+          .blog-comment
+            h3.text-black Comentarios de Buró de Crédito
+
+            .m-portlet__nav-item
+              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/balance_sheet" target="_blank" style='position:absolute; right: 20px; top: 0;'
+                = 'Ver todos'
+            - if @cb_comments.length > 0
+              ul.comments
+                - @cb_comments.each do |comment|
+                  li.clearfix
+                    = image_tag current_user.avatar_thumb, class: 'avatar'
+                    .post-comments
+                      p.meta
+                        a.user_name href="#" class="mx-2" #{User.where(id: comment.user_id).try(:first).full_name}
+                        = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p') + ':'
+                      p
+                        = comment.comment
+              a.btn.btn-block.btn-info
+                | IR A COMENTARIOS
+            - else
+              .alert.alert-info role="alert"
+                strong.mx-2
+                  | ¡Sin comentarios!
+                | Aún no capturado comentarios.
+
+
+
+  .m-portlet
+    .m-portlet__body
+      .m-section.mb-0
+        .row.col-md-12.d-flex.justify-content-center.align-items-center
+          .blog-comment
+            h3.text-black Comentarios de Flujo de efectivo.
+
+            .m-portlet__nav-item
+              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/balance_sheet" target="_blank" style='position:absolute; right: 20px; top: 0;'
+                = 'Ver todos'
+            - if @cf_comments.length > 0
+              ul.comments
+                - @cf_comments.each do |comment|
+                  li.clearfix
+                    = image_tag current_user.avatar_thumb, class: 'avatar'
+                    .post-comments
+                      p.meta
+                        a.user_name href="#" class="mx-2" #{User.where(id: comment.user_id).try(:first).full_name}
+                        = comment.created_at.strftime('%d/%m/%Y,  %I:%M%p') + ':'
+                      p
+                        = comment.comment
+              a.btn.btn-block.btn-info
+                | IR A COMENTARIOS
+            - else
+              .alert.alert-info role="alert"
+                strong.mx-2
+                  | ¡Sin comentarios!
+                | Aún no capturado comentarios.
+
 
 #m_modal_comment.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"

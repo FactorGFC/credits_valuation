@@ -148,46 +148,48 @@
                   /th.actions-4.text-center = t('helpers.actions')
               tbody
                 - @companies.each do |company|
-                  tr.tr-custom
-                    td.text-center
-                      span = calculate_process_status(company)[1]
-                      br
-                      meter id="process#{company.id}" min="0" max="100" low="30" high="75" optimum="80" value="#{calculate_process_status(company)[0]}"
-                    td.text-center = company.rfc
-                    td.text-center = company.name
-                    td.text-center = company.try(:user).try(:full_name)
-                    td.text-center = company.address
-                    td.text-center = company.try(:status_company).present? ? company.try(:status_company).try(:name): 'PENDIENTE DE REVISIÓN X FACTOR'
-                    - if current_user.god? || current_user.credit_area? || current_user.promotion_area?
+                  - if can_generate_data and company.requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                    tr.tr-custom
                       td.text-center
-                        - if company.status_company_id.eql?(StatusCompany.where(key: 'aprobada').first.id)
-                          button.btn.btn-info.btn-block.open-modal1 data-target="#modal_validate_success" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="true"
-                            i.fa.fa-check
-                            = " Aprobada"
-                        - elsif company.status_company_id == StatusCompany.where(key: 'pendiente').first.id
-                          button.btn.btn-success.btn-block.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="true"
-                            i.fab.fa.fa-check-circle
-                            = " Aprobar"
-                          button.btn.btn-danger.btn-block.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="false"
-                            i.fab.fa.fa-times-circle
-                            = " Rechazar"
-                    td.text-center
-                      a.button.btn.btn-success href="/company_details/#{company.id}"
-                        i.fa.fa-eye
-                        = "Ver más"
+                        span = calculate_process_status(company)[1]
+                        br
+                        meter id="process#{company.id}" min="0" max="100" low="30" high="75" optimum="80" value="#{calculate_process_status(company)[0]}"
+                      td.text-center = company.rfc
+                      td.text-center = company.name
+                      td.text-center = company.try(:user).try(:full_name)
+                      td.text-center = company.address
+                      td.text-center = company.try(:status_company).present? ? company.try(:status_company).try(:name): 'PENDIENTE DE REVISIÓN X FACTOR'
+                      - if current_user.god? || current_user.credit_area? || current_user.promotion_area?
+                        td.text-center
+                          - if company.status_company_id.eql?(StatusCompany.where(key: 'aprobada').first.id)
+                            button.btn.btn-info.btn-block.open-modal1 data-target="#modal_validate_success" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="true"
+                              i.fa.fa-check
+                              = " Aprobada"
+                          - elsif company.status_company_id == StatusCompany.where(key: 'pendiente').first.id
+                            button.btn.btn-success.btn-block.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="true"
+                              i.fab.fa.fa-check-circle
+                              = " Aprobar"
+                            button.btn.btn-danger.btn-block.open-modal1 data-target="#m_modal_1" data-toggle="modal" type="button" data-name="#{company.name}" data-rfc="#{company.rfc}" data-id="#{company.id}" data-approved="false"
+                              i.fab.fa.fa-times-circle
+                              = " Rechazar"
+                      td.text-center
+                        a.button.btn.btn-success href="/company_details/#{company.id}"
+                          i.fa.fa-eye
+                          = "Ver más"
 
 
-                    /td.actions-4.text-center
-                      - if has_policy('Companies::index', %w(edit_company))
-                        = link_to edit_company_path(companies), data: {title: (t('helpers.show_and_edit')), placement: 'top',
-                                toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
-                          i.flaticon-edit-1
-                      - if has_policy('Companies::index', %w(destroy))
-                        = link_to 'javascript:;', class: 'btn btn-sm btn-pill btn-outline-danger btn-destroy', id: "companies-#{companies.id}",
-                                data: {title: t('helpers.destroy'), placement: 'bottom', toggle: 'm-tooltip', skin: "dark", resource: :companies,
-                                        'resource-id': companies.id,
-                                        'resource-message': t('questions.destroy', resource: t('.resource'), name: companies.name)} do
-                          i.flaticon-delete
+                      /td.actions-4.text-center
+                        - if has_policy('Companies::index', %w(edit_company))
+                          = link_to edit_company_path(companies), data: {title: (t('helpers.show_and_edit')), placement: 'top',
+                                  toggle: 'm-tooltip', 'skin': "dark"}, class: 'btn btn-sm btn-pill btn-outline-primary' do
+                            i.flaticon-edit-1
+                        - if has_policy('Companies::index', %w(destroy))
+                          = link_to 'javascript:;', class: 'btn btn-sm btn-pill btn-outline-danger btn-destroy', id: "companies-#{companies.id}",
+                                  data: {title: t('helpers.destroy'), placement: 'bottom', toggle: 'm-tooltip', skin: "dark", resource: :companies,
+                                          'resource-id': companies.id,
+                                          'resource-message': t('questions.destroy', resource: t('.resource'), name: companies.name)} do
+                            i.flaticon-delete
+
     .m-portlet__foot
       .row.align-items-center.pagination-container
         .col-lg-6.m--valign-middle

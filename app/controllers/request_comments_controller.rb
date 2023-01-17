@@ -8,9 +8,14 @@ class RequestCommentsController < ApplicationController
     #@request = Request.joins(:process_status).where(company_id: params[:company_id]).order('process_status.order DESC').first
     #@request_comments = RequestComment.where(request_id: @request.try(:id))
 
-    @request = Request.find(params[:request_id])
-    @company = @request.company
+    @request          = Request.find(params[:request_id])
+    @company          = @request.company
     @request_comments = RequestComment.where(request_id: @request.try(:id))
+    @bs_comments      = Comment.where(company_id: @company.id, assigned_to: 'balance_sheet').order(:created_at).limit(5)
+    @is_comments      = Comment.where(company_id: @company.id, assigned_to: 'income_statement').order(:created_at).limit(5)
+    @fr_comments      = Comment.where(company_id: @company.id, assigned_to: 'financial_reasons').order(:created_at).limit(5)
+    @cb_comments      = Comment.where(company_id: @company.id, assigned_to: 'credit_bureau').order(:created_at).limit(5)
+    @cf_comments      = Comment.where(company_id: @company.id, assigned_to: 'cash_flow').order(:created_at).limit(5)
   end
 
   # GET /request_comments/1 or /request_comments/1.json

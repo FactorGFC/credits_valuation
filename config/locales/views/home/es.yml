@@ -35,8 +35,8 @@ es:
       resource: la compañia
       email: Correo electrónico
       actions: Acciones
-      one: Usuario
-      other: Usuarios
+      one: Compañia
+      other: Compañias
       role: Rol
       first_name: Nombre
       last_name: Apellido paterno

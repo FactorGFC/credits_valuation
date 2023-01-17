@@ -422,123 +422,6 @@ table.table.table-bordered.input-focusable-table
         span.td-value0
           = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_total').try(:id)).first.try(:value)
 
-/#m_crecimiento_sost.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
-  .modal-dialog role="document" style="margin-top: 0%;"
-    .modal-content
-      .modal-header
-        h5.modal-title
-          = "Datos para Crecimiento Sostenible"
-        button.close aria-label="Close" data-dismiss="modal" type="button"
-          span aria-hidden="true"
-            | \&times;
-      = form_for current_user, url: save_extra_data_cs_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
-        input type="hidden" name="id" value="#{@company.id}"
-        .modal-body
-          = select('scale_select', 'value_scale', ['pesos', 'miles', 'millones'], {prompt: false, selected: @company.try(:company_conciliations).try(:first).try(:value_scale)}, {class: 'form-control m-input form-control-lg upcase-txt'})
-          table.table.table-bordered.input-focusable-table.mt-3
-            tr
-              th
-              - @calendar_fr.each do |y|
-                th = y.calendar.period_name
-            tr
-              td style="font-weight: 800"
-                span.text-left = 'Dividendos pagados en efectivo'
-              - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data[#{y.id}][concept_id]" value="#{ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id)}"
-                  input type="hidden" name="data[#{y.id}][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data[#{y.id}][value]" class="focusable-input" value="#{CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-
-        .modal-footer
-          button.btn.btn-secondary data-dismiss="modal" type="button"
-            | Cerrar
-          button#idBtn.btn.btn-success type="submit"
-            | Guardar
-
-
-/#m_cobertura_deuda.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
-  .modal-dialog role="document" style="margin-top: 0%;"
-    .modal-content
-      .modal-header
-        h5.modal-title
-          = "Datos para Deuda Financiera"
-        button.close aria-label="Close" data-dismiss="modal" type="button"
-          span aria-hidden="true"
-            | \&times;
-      = form_for current_user, url: save_data_cobertura_deuda_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
-        input type="hidden" name="id" value="#{@company.id}"
-        .modal-body
-          = select('scale_select', 'value_scale', ['pesos', 'miles', 'millones'], {prompt: false, selected: @company.try(:company_conciliations).try(:first).try(:value_scale)}, {class: 'form-control m-input form-control-lg upcase-txt'})
-          table.table.table-bordered.input-focusable-table.mt-3
-            tr
-              th
-              - @calendar_fr.each do |y|
-                th = y.calendar.period_name
-            tr
-              td style="font-weight: 800"
-                span.text-left = 'Pago de capital'
-              - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data[#{y.id}][concept_id]" value="#{BalanceConcept.find_by(key: 'pago_de_capital').try(:id)}"
-                  input type="hidden" name="data[#{y.id}][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data[#{y.id}][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'pago_de_capital').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-
-        .modal-footer
-          button.btn.btn-secondary data-dismiss="modal" type="button"
-            | Cerrar
-          button#idBtn.btn.btn-success type="submit"
-            | Guardar
-
-/#m_deuda_fn_lp.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
-  .modal-dialog role="document" style="margin-top: 0%;"
-    .modal-content
-      .modal-header
-        h5.modal-title
-          = "Datos para Deuda Financiera"
-        button.close aria-label="Close" data-dismiss="modal" type="button"
-          span aria-hidden="true"
-            | \&times;
-      = form_for current_user, url: save_data_deuda_fin_lp_path, method: 'PUT', class: 'class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed' do |f|
-        input type="hidden" name="id" value="#{@company.id}"
-        .modal-body
-          h4 = 'MILES'
-          table.table.table-bordered.input-focusable-table.mt-3
-            tr
-              th
-              - @calendar_fr.each do |y|
-                th = y.calendar.period_name
-            tr
-              td style="font-weight: 800"
-                span.text-left = 'Bancos corto plazo'
-              - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data_bs[#{y.id}.1][concept_id]" value="#{BalanceConcept.find_by(key: 'bancos_cp').try(:id)}"
-                  input type="hidden" name="data_bs[#{y.id}.1][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data_bs[#{y.id}.1][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_cp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-            tr
-              td style="font-weight: 800"
-                span.text-left = 'Bancos largo plazo'
-              - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data_bs[#{y.id}.2][concept_id]" value="#{BalanceConcept.find_by(key: 'bancos_lp').try(:id)}"
-                  input type="hidden" name="data_bs[#{y.id}.2][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data_bs[#{y.id}.2][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_lp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-            tr
-              td style="font-weight: 800"
-                span.text-left = 'Depreciación y amortización'
-              - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data_is[#{y.id}][concept_id]" value="#{IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id)}"
-                  input type="hidden" name="data_is[#{y.id}][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data_is[#{y.id}][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_id: IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id), income_statement_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-
-        .modal-footer
-          button.btn.btn-secondary data-dismiss="modal" type="button"
-            | Cerrar
-          button#idBtn.btn.btn-success type="submit"
-            | Guardar
-
-
 
 #m_extra_data.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"
@@ -576,10 +459,14 @@ table.table.table-bordered.input-focusable-table
               td style="font-weight: 800"
                 span.text-left = 'Dividendos pagados en efectivo'
               - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data_conc[#{y.id}][concept_id]" value="#{ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id)}"
-                  input type="hidden" name="data_conc[#{y.id}][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data_conc[#{y.id}][value]" class="focusable-input" value="#{CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                  td class="full-input-psm"
+                    input type="hidden" name="data_conc[#{y.id}][concept_id]" value="#{ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id)}"
+                    input type="hidden" name="data_conc[#{y.id}][period]" value="#{y.calendar_id}"
+                    input type="number" step=0.001 name="data_conc[#{y.id}][value]" class="focusable-input" value="#{CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
+                - else
+                  td class="full-input"
+                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
             tr.tr-title
               th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
                 = 'BALANCE FINANCIERO'
@@ -587,50 +474,74 @@ table.table.table-bordered.input-focusable-table
               td style="font-weight: 800"
                 span.text-left = 'Bancos corto plazo'
               - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data_bs[#{y.id}.1][concept_id]" value="#{BalanceConcept.find_by(key: 'bancos_cp').try(:id)}"
-                  input type="hidden" name="data_bs[#{y.id}.1][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data_bs[#{y.id}.1][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_cp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                  td class="full-input-psm"
+                    input type="hidden" name="data_bs[#{y.id}.1][concept_id]" value="#{BalanceConcept.find_by(key: 'bancos_cp').try(:id)}"
+                    input type="hidden" name="data_bs[#{y.id}.1][period]" value="#{y.calendar_id}"
+                    input type="number" step=0.001 name="data_bs[#{y.id}.1][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_cp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                - else
+                  td class="full-input"
+                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
             tr
               td style="font-weight: 800"
                 span.text-left = 'Otros pasivos fin. (C.P.)'
               - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data_bs[#{y.id}.2][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_fin_cp').try(:id)}"
-                  input type="hidden" name="data_bs[#{y.id}.2][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data_bs[#{y.id}.2][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_fin_cp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                  td class="full-input-psm"
+                    input type="hidden" name="data_bs[#{y.id}.2][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_fin_cp').try(:id)}"
+                    input type="hidden" name="data_bs[#{y.id}.2][period]" value="#{y.calendar_id}"
+                    input type="number" step=0.001 name="data_bs[#{y.id}.2][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_fin_cp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                - else
+                  td class="full-input"
+                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
             tr
               td style="font-weight: 800"
                 span.text-left = 'Pago de capital'
               - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data_bs[#{y.id}.3][concept_id]" value="#{BalanceConcept.find_by(key: 'pago_de_capital').try(:id)}"
-                  input type="hidden" name="data_bs[#{y.id}.3][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data_bs[#{y.id}.3][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'pago_de_capital').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                  td class="full-input-psm"
+                    input type="hidden" name="data_bs[#{y.id}.3][concept_id]" value="#{BalanceConcept.find_by(key: 'pago_de_capital').try(:id)}"
+                    input type="hidden" name="data_bs[#{y.id}.3][period]" value="#{y.calendar_id}"
+                    input type="number" step=0.001 name="data_bs[#{y.id}.3][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'pago_de_capital').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                - else
+                  td class="full-input"
+                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
             tr
               td style="font-weight: 800"
                 span.text-left = 'Otros pasivos (Circulante)'
               - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data_bs[#{y.id}.4][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_circulante').try(:id)}"
-                  input type="hidden" name="data_bs[#{y.id}.4][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data_bs[#{y.id}.4][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_circulante').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                  td class="full-input-psm"
+                    input type="hidden" name="data_bs[#{y.id}.4][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_circulante').try(:id)}"
+                    input type="hidden" name="data_bs[#{y.id}.4][period]" value="#{y.calendar_id}"
+                    input type="number" step=0.001 name="data_bs[#{y.id}.4][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_circulante').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                - else
+                  td class="full-input"
+                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
             tr
               td style="font-weight: 800"
                 span.text-left = 'Bancos largo plazo'
               - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data_bs[#{y.id}.5][concept_id]" value="#{BalanceConcept.find_by(key: 'bancos_lp').try(:id)}"
-                  input type="hidden" name="data_bs[#{y.id}.5][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data_bs[#{y.id}.5][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_lp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                  td class="full-input-psm"
+                    input type="hidden" name="data_bs[#{y.id}.5][concept_id]" value="#{BalanceConcept.find_by(key: 'bancos_lp').try(:id)}"
+                    input type="hidden" name="data_bs[#{y.id}.5][period]" value="#{y.calendar_id}"
+                    input type="number" step=0.001 name="data_bs[#{y.id}.5][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_lp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                - else
+                  td class="full-input"
+                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
             tr
               td style="font-weight: 800"
                 span.text-left = 'Otros pasivos (L.P.)'
               - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data_bs[#{y.id}.6][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_lp').try(:id)}"
-                  input type="hidden" name="data_bs[#{y.id}.6][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data_bs[#{y.id}.6][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_lp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                  td class="full-input-psm"
+                    input type="hidden" name="data_bs[#{y.id}.6][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_lp').try(:id)}"
+                    input type="hidden" name="data_bs[#{y.id}.6][period]" value="#{y.calendar_id}"
+                    input type="number" step=0.001 name="data_bs[#{y.id}.6][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_lp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                - else
+                  td class="full-input"
+                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
             tr.tr-title
               th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
                 = 'ESTADO DE RESULTADOS'
@@ -638,10 +549,14 @@ table.table.table-bordered.input-focusable-table
               td style="font-weight: 800"
                 span.text-left = 'Depreciación y amortización'
               - @calendar_fr.each do |y|
-                td class="full-input-psm"
-                  input type="hidden" name="data_is[#{y.id}][concept_id]" value="#{IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id)}"
-                  input type="hidden" name="data_is[#{y.id}][period]" value="#{y.calendar_id}"
-                  input type="number" step=0.001 name="data_is[#{y.id}][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_id: IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id), income_statement_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                  td class="full-input-psm"
+                    input type="hidden" name="data_is[#{y.id}][concept_id]" value="#{IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id)}"
+                    input type="hidden" name="data_is[#{y.id}][period]" value="#{y.calendar_id}"
+                    input type="number" step=0.001 name="data_is[#{y.id}][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_id: IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id), income_statement_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
+                - else
+                  td class="full-input"
+                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
 
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"

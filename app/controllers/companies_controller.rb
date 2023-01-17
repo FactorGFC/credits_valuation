@@ -369,6 +369,7 @@ class CompaniesController < ApplicationController
     @ins_scale           = IncomeCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
 
     @requests            = policy_scope(Request).where(company_id: params[:id]).distinct.select('on (analyst_id) *')
+
     @process_status      = policy_scope(ProcessStatus)
     @can_assign_period   = can_assign_periods(@company)
 

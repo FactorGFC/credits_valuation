@@ -1209,6 +1209,16 @@ module CompaniesHelper
     can_assign
   end
 
+  def can_generate_data
+    if current_user.analyst? or current_user.super_user?
+      can_assign = true
+    else
+      can_assign = false
+    end
+
+    can_assign
+  end
+
   def format_date date
 
     day = date.first(2)

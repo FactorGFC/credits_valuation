@@ -554,9 +554,10 @@ javascript:
                       .m-section__content.table-responsive.text-center
                         .tabs-actions
                           - if CompanyFlow.where(company_id: @company.id).present?
-                            a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.open-modal-cstatus href="/generate_financial_reasons/#{@company.id}"
-                              .fa.fa-sync.mx-2
-                              = "Generar razones financieras"
+                            - if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                              a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.open-modal-cstatus href="/generate_financial_reasons/#{@company.id}"
+                                .fa.fa-sync.mx-2
+                                = "Generar razones financieras"
                           - else
                             .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show.btn-block role="alert"
                               .m-alert__icon
@@ -2535,9 +2536,13 @@ javascript:
                       .m-section__content.table-responsive.text-center
                         - if BalanceCalendarDetail.where(company_id:  @company.id).present? and IncomeCalendarDetail.where(company_id:  @company.id).present?
                           .tabs-actions.mb-3
-                            a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.open-modal-cstatus href="/generate_cash_flow/#{@company.id}"
-                              .fa.fa-sync.mx-2
-                              = "Generar flujo de efectivo"
+                            - if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                              a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.open-modal-cstatus href="/generate_cash_flow/#{@company.id}"
+                                .fa.fa-sync.mx-2
+                                = "Generar flujo de efectivo"
+                            - else
+                              span style="height: 80px;"
+
                           - if CompanyFlow.where(company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_neto').try(:id)).present?
                             = render 'cash_flow_table'
                           - else
