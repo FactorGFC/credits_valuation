@@ -299,7 +299,8 @@ class CompaniesController < ApplicationController
             if @user.try(:company).try(:rfc) == 'FGL190102DH6'
               @bureau_report = BuroCredito.get_report_by_id 97831#4450 60368
             else
-              @bureau_report = BuroCredito.get_buro_report @buro.first['id'], @company.info_company
+              # @bureau_report = BuroCredito.get_buro_report @buro.first['id'], @company.info_company
+              @bureau_report = false
               Rails.logger.info "@bureau_report -----------------------------------------------------------------------------"
               Rails.logger.info @bureau_report
             end
@@ -308,7 +309,8 @@ class CompaniesController < ApplicationController
 
             if @bureau_report['results'].present?
 
-              if @bureau_report['results'].first['status'] == 'SUCCESS'
+              # if @bureau_report['results'].first['status'] == 'SUCCESS'
+              if @bureau_report
                 if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
                     @clients = get_clients_sat @user.try(:company)
 
