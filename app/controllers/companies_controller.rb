@@ -344,11 +344,11 @@ class CompaniesController < ApplicationController
                   format.json { render json: { error: true, message: '(3)Hubo un error favor volver a intentar' }}
                 end
               else
-                CreditRequestMailer.credit_bureau_error(@company).deliver_now
+                # CreditRequestMailer.credit_bureau_error(@company).deliver_now
                 format.json { render json: { error: true, message: '(1)Hubo un error con tu buro de crédito favor volver a intentar' }}
               end
             else
-              CreditRequestMailer.credit_bureau_error(@company).deliver_now
+              # CreditRequestMailer.credit_bureau_error(@company).deliver_now
               format.json { render json: { error: true, message: '(2)Hubo un error con tu buro de crédito favor volver a intentar' }}
             end
           else
