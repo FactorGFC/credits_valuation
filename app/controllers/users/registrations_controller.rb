@@ -78,9 +78,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update_user
     respond_to do |format|
       if @user.update(account_update_params)
-        format.html { redirect_to user_registrations_path, notice: t('notifications_masc.success.resource.updated',
-                                                                     resource: t('users.registrations.new_user.resource')) }
-        format.json { render :show, status: :created, location: @user }
+        if @user.god?
+          format.html { redirect_to user_registrations_path, notice: t('notifications_masc.success.resource.updated',
+                                                                       resource: t('users.registrations.new_user.resource')) }
+          format.json { render :show, status: :created, location: @user }
+        else
+          format.html { redirect_to '/login', notice: t('notifications_masc.success.resource.updated',
+                                                                       resource: t('users.registrations.new_user.resource')) }
+          format.json { render :show, status: :created, location: @user }
+        end
       else
         format.html { render :edit_user }
         format.json { render json: @user.errors, status: :unprocessable_entity }

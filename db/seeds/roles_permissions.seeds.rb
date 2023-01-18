@@ -106,7 +106,12 @@ after :permissions do
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Mostar vista de comentario de una solicitud de una solicitud').id},
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Ver pdf de buro de credito').id},
                             {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Mostar vista de comentario de una solicitud de una solicitud').id},
-                            {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Ver pdf de buro de credito').id}
+                            {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Ver pdf de buro de credito').id},
+                            {role_id: Role.find_by_key('credit_area').id, permission_id: Permission.find_by_name('Actualizar Usuario').id},
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Actualizar Usuario').id},
+                            {role_id: Role.find_by_key('approver').id, permission_id: Permission.find_by_name('Actualizar Usuario').id},
+                            {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Actualizar Usuario').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Actualizar Usuario').id}
 
                           ])
 end
