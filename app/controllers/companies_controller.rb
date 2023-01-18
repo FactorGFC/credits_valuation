@@ -289,6 +289,14 @@ class CompaniesController < ApplicationController
     @company    = current_user.company
     user_params = params[:user]
 
+
+    Rails.logger.info "CODIGO  ------–------–------–------–------–------–------–------–------–------–------–------–"
+    Rails.logger.info @company.buro_confirmation_code.to_s === params[:confirmation_code].to_s
+    Rails.logger.info @company.buro_confirmation_code.to_s
+    Rails.logger.info params[:confirmation_code].to_s
+
+
+
     if @company.buro_confirmation_code.to_s === params[:confirmation_code].to_s
       respond_to do |format|
         @buro = create_buro @company.info_company, @user.try(:phone)
@@ -307,7 +315,8 @@ class CompaniesController < ApplicationController
 
             @bureau_info = BuroCredito.get_buro_info @buro.first['id'],  @company.info_company
 
-            if @bureau_report['results'].present?
+            # if @bureau_report['results'].present?
+            if !@bureau_report
 
               # if @bureau_report['results'].first['status'] == 'SUCCESS'
               if @bureau_report
