@@ -94,13 +94,13 @@ after :initialize_permissions do
                            {name: 'Mensaje confirmación para buró', description: 'Enviar mensaje de confirmación para consulta de buró', controller: 'Companies', action: 'send_buro_confirm_code'},
 
                            #Permisos 20-Dic-2022
-                           {name: 'Ver pdf de buro de credito', description: 'Permite ver el pdf del Buro de credito', action: 'send_buro_confirm_code', controller: 'Companies'}
+                           {name: 'Ver pdf de buro de credito', description: 'Permite ver el pdf del Buro de credito', action: 'send_buro_confirm_code', controller: 'Companies'},
+
+
+                           {name: 'crear usuario de sat', description: 'Permite crear el usuario del sat', action: 'create_sat_user', controller: 'Home'}
                        ])
   rescue StandardError => e
     p Permission.first
-
-
-    Permission.create!([{name: 'Ver pdf de buro de credito', description: 'Permite ver el pdf del Buro de credito', action: 'bureau_report', controller: 'Companies'}])
 
     p "Permission.last -----"
     p Permission.last

@@ -111,7 +111,8 @@ after :permissions do
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Actualizar Usuario').id},
                             {role_id: Role.find_by_key('approver').id, permission_id: Permission.find_by_name('Actualizar Usuario').id},
                             {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Actualizar Usuario').id},
-                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Actualizar Usuario').id}
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Actualizar Usuario').id},
+                            {role_id: Role.find_by_key('enterprise').id, permission_id: Permission.find_by_name('crear usuario de sat').id}
 
                           ])
 end

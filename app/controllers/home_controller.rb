@@ -170,13 +170,13 @@ class HomeController < ApplicationController
                                   format.html { redirect_to companies_url, notice: t('notifications_masc.success.resource.updated',
                                                                                      resource: t('users.registrations.form.resource')) }
                                 else
-                                  format.html { redirect_to companies_url, alert: '(1)Hubo un error favor volver a intentar' }
+                                  format.html { redirect_to request_steps_path, alert: '(1)Hubo un error favor volver a intentar' }
                                 end
                               else
-                                format.html { redirect_to companies_url, alert: '(3)Hubo un error favor volver a intentar' }
+                                format.html { redirect_to request_steps_path, alert: '(3)Hubo un error favor volver a intentar' }
                               end
                             else
-                              format.html { redirect_to companies_url, alert: '(4)Hubo un error favor volver a intentar' }
+                              format.html { redirect_to request_steps_path, alert: '(4)Hubo un error favor volver a intentar' }
                             end
 =begin
                           else
@@ -187,28 +187,28 @@ class HomeController < ApplicationController
                         end
 =end
                       else
-                        format.html { redirect_to companies_url, alert: '(7)Hubo un error favor volver a intentar' }
+                        format.html { redirect_to request_steps_path, alert: '(7)Hubo un error favor volver a intentar' }
                       end
                     else
-                      format.html { redirect_to companies_url, alert: '(10)Hubo un error favor volver a intentar' }
+                      format.html { redirect_to request_steps_path, alert: '(10)Hubo un error favor volver a intentar' }
                     end
                   else
-                    format.html { redirect_to companies_url, alert: '(11)Hubo un error favor volver a intentar' }
+                    format.html { redirect_to request_steps_path, alert: '(11)Hubo un error favor volver a intentar' }
                   end
                 else
-                  format.html { redirect_to companies_url, alert: '(12)Hubo un error favor volver a intentar' }
+                  format.html { redirect_to request_steps_path, alert: '(12)Hubo un error favor volver a intentar' }
                 end
               #else
               #  format.html { redirect_to companies_url, alert: '(13)Hubo un error favor volver a intentar' }
               #end
             else
-              format.html { redirect_to companies_url, alert: '(14)Hubo un error favor volver a intentar' }
+              format.html { redirect_to request_steps_path, alert: '(14)Hubo un error favor volver a intentar' }
             end
           else
-            format.html { redirect_to companies_url, alert: 'El RFC o la contraseña no son validas.' }
+            format.html { redirect_to request_steps_path, alert: 'El RFC o la contraseña no son validas.' }
           end
         else
-          format.html { redirect_to companies_url, alert: 'El RFC debe ser el mismo que el de la compañia.' }
+          format.html { redirect_to request_steps_path, alert: 'El RFC debe ser el mismo que el de la compañia.' }
         end
       else
         if @sat['hydra:title'] != 'An error occurred'
