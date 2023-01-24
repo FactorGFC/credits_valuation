@@ -111,6 +111,8 @@ class HomeController < ApplicationController
               #if @buro
                 @credential = SatW.get_credential @sat['id']
 
+                Rails.logger.info "@credential ----------------------------------------------------------------------"
+                Rails.logger.info @credential
                 if @credential['@type'] != 'hydra:Error'
                   @income_statment = SatW.get_income_statment @user.try(:company).try(:rfc)
 
