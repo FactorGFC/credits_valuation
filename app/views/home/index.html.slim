@@ -148,7 +148,7 @@
                   /th.actions-4.text-center = t('helpers.actions')
               tbody
                 - @companies.each do |company|
-                  - if can_generate_data and company.requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                  - if can_generate_data #and company.requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
                     tr.tr-custom
                       td.text-center
                         span = calculate_process_status(company)[1]
