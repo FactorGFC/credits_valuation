@@ -92,6 +92,9 @@ class HomeController < ApplicationController
       if params_ciec
         if rfc_valid
 
+          Rails.logger.info "@@sat ----------------------------------------------------------------------"
+          Rails.logger.info @sat
+
           if @sat['hydra:title'] != 'An error occurred'
 
             @info = SatW.get_tax_status @user.try(:company).try(:rfc)
@@ -207,6 +210,7 @@ class HomeController < ApplicationController
               format.html { redirect_to request_steps_path, alert: '(14)Hubo un error favor volver a intentar' }
             end
           else
+            Rails.logger.info "ENtre a contraseña no valido"
             format.html { redirect_to request_steps_path, alert: 'El RFC o la contraseña no son validas.' }
           end
         else
