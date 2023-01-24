@@ -1,10 +1,10 @@
-/ - flash.each do |type, msg|
-/   - if type == 'error'
-/   .toast-top-right id="toast-container"
-/     .toast.toast-error
-/       .toast-message
-/         button.toast-close-button role="button" type="button"
-/         = msg
+- flash.each do |type, msg|
+  - if type == 'error' or type == 'alert'
+    .toast-top-right id="toast-container"
+      .toast.toast-error
+        .toast-message
+          button.toast-close-button role="button" type="button"
+          = msg
 
 input type="hidden" id="idStepOne" value="#{@step_one_value}"
 input type="hidden" id="idStepTwo" value="#{@step_two_value}"
