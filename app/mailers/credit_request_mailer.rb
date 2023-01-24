@@ -13,7 +13,7 @@ class CreditRequestMailer < ApplicationMailer
     @request_data = params[:request_data]
     @company      = params[:company]
 
-    mail(to: "#{@request_data[:user][:email]}", subject: "¡Tu solicitud de registro ha sido aprobada!")
+    mail(to: "#{@request_data[:user][:email]},factorglobal.mailer@gmail.com,mireya@gglobals.com.mx", subject: "¡Tu solicitud de registro ha sido aprobada!")
     @company.update(confirmation_message: true)
   end
 
