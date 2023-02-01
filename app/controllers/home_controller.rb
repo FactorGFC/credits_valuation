@@ -98,7 +98,7 @@ class HomeController < ApplicationController
           if @sat['hydra:title'] != 'An error occurred'
 
             @info = SatW.get_tax_status @user.try(:company).try(:rfc)
-            
+
             Rails.logger.info "@info ------------------------------------------------------------"
             Rails.logger.info @info
 
