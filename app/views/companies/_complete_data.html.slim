@@ -1,4 +1,4 @@
-= form_tag('/update_complete_data', id:'confirm_data_form', method: :put, remote: true)  do
+= form_tag('/update_complete_data', id: 'confirm_data_form', method: :put, remote: true)  do
   .multisteps-container.container-fluid
     .row
       .steps-container.col-3
@@ -58,20 +58,20 @@
                   .col-6
                     label.text-bold
                       | Nombre
-                    = text_field :user, :first_name, class: 'form-control m-input m-input--square', disabled:'disabled'
+                    = text_field :user, :first_name, class: 'form-control m-input m-input--square', disabled: 'disabled'
                   .col-6
                     label.text-bold
                       | Apellido(s)
-                    = text_field :user, :last_name, class: 'form-control m-input m-input--square', disabled:'disabled'
+                    = text_field :user, :last_name, class: 'form-control m-input m-input--square', disabled: 'disabled'
                 .d-inline-flex.col-12.mb-3
                   .col-6
                     label.text-bold
                       | Email
-                    = text_field :user, :email, class: 'form-control m-input m-input--square', disabled:'disabled'
+                    = text_field :user, :email, class: 'form-control m-input m-input--square', disabled: 'disabled'
                   .col-6
                     label.text-bold
                       | Télefono
-                    = text_field :user, :phone, class: 'form-control m-input m-input--square', id:'phone_input', type: "number", onkeyup: 'phoneValidate()'
+                    = text_field :user, :phone, class: 'form-control m-input m-input--square', id: 'phone_input', type: "number", onkeyup: 'phoneValidate()'
                     span.invalid_value id="validPhone" = 'Télefono invalido'
 
           .title
@@ -86,49 +86,48 @@
                 strong
                   | Información obtenida del SAT
             - if @company.try(:info_company).present?
-              - if @company.try(:info_company)['hydra:member'] != 'An error occurred'
-                .tab-content.col-xl-12.mb-30
-                  .form-group.m-form__group
-                    .d-inline-flex.col-12.mb-3
-                      .col-6
-                        label.text-bold
-                          | Nombre
-                        = text_field :company, :name, class: 'form-control m-input m-input--square',  disabled:'disabled'
-                      .col-6
-                        label.text-bold
-                          | RFC
-                        = text_field 'company_data', 'rfc', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['rfc'], disabled:'disabled'
-                    .d-inline-flex.col-12.mb-3
-                      .col-6
-                        label.text-bold
-                          | Calle
-                        = text_field 'company_data', 'street', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['buildingNumber'], disabled:'disabled'
-                      .col-3
-                        label.text-bold
-                          | Núm. Exterior
-                        = text_field 'company_data', 'interior_number', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['streetNumber'], disabled:'disabled'
-                      .col-3
-                        label.text-bold
-                          | Núm. Interior
-                        = text_field 'company_data', 'exterior_number', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['buildingNumber'], disabled:'disabled'
-                    .d-inline-flex.col-12.mb-3
-                      .col-6
-                        label.text-bold
-                          | Código Postal
-                        = text_field 'company_data', 'postal_code', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['postalCode'], disabled:'disabled'
-                      .col-6
-                        label.text-bold
-                          | Colonia
-                        = text_field 'company_data', 'neighborhood', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['neighborhood'], disabled:'disabled'
-                    .d-inline-flex.col-12.mb-3
-                      .col-6
-                        label.text-bold
-                          | Estado
-                        = text_field 'company_data', 'postal_code', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['state'], disabled:'disabled'
-                      .col-6
-                        label.text-bold
-                          | Delegación/Municipio
-                        = text_field 'company_data', 'neighborhood', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['municipality'], disabled:'disabled'
+              .tab-content.col-xl-12.mb-30
+                .form-group.m-form__group
+                  .d-inline-flex.col-12.mb-3
+                    .col-6
+                      label.text-bold
+                        | Nombre
+                      = text_field :company, :name, class: 'form-control m-input m-input--square', disabled: 'disabled'
+                    .col-6
+                      label.text-bold
+                        | RFC
+                      = text_field 'company_data', 'rfc', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['rfc'], disabled: 'disabled'
+                  .d-inline-flex.col-12.mb-3
+                    .col-6
+                      label.text-bold
+                        | Calle
+                      = text_field 'company_data', 'street', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['buildingNumber'], disabled: 'disabled'
+                    .col-3
+                      label.text-bold
+                        | Núm. Exterior
+                      = text_field 'company_data', 'interior_number', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['streetNumber'], disabled: 'disabled'
+                    .col-3
+                      label.text-bold
+                        | Núm. Interior
+                      = text_field 'company_data', 'exterior_number', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['buildingNumber'], disabled: 'disabled'
+                  .d-inline-flex.col-12.mb-3
+                    .col-6
+                      label.text-bold
+                        | Código Postal
+                      = text_field 'company_data', 'postal_code', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['postalCode'], disabled: 'disabled'
+                    .col-6
+                      label.text-bold
+                        | Colonia
+                      = text_field 'company_data', 'neighborhood', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['neighborhood'], disabled: 'disabled'
+                  .d-inline-flex.col-12.mb-3
+                    .col-6
+                      label.text-bold
+                        | Estado
+                      = text_field 'company_data', 'postal_code', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['state'], disabled: 'disabled'
+                    .col-6
+                      label.text-bold
+                        | Delegación/Municipio
+                      = text_field 'company_data', 'neighborhood', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['municipality'], disabled: 'disabled'
             .col-xl-12
               button.btn.btn-primary.col-xl-12 id="openAndSendCode" type='button'
                 = 'Enviar código de confirmación'
@@ -168,6 +167,6 @@
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar
-          = submit_tag 'Guardar', class: 'btn btn-success', id: 'submit_complete_data', disabled: true, style:'cursor: not-allowed;'
-            | Guardar
+          = submit_tag 'Guardar', class: 'btn btn-success', id: 'submit_complete_data', disabled: true, style: 'cursor: not-allowed;'
+          | Guardar
 
