@@ -459,7 +459,7 @@ table.table.table-bordered.input-focusable-table
               td style="font-weight: 800"
                 span.text-left = 'Dividendos pagados en efectivo'
               - @calendar_fr.each do |y|
-                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.where(key: ['analist','credit_validated']).pluck(:id)).present?
                   td class="full-input-psm"
                     input type="hidden" name="data_conc[#{y.id}][concept_id]" value="#{ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id)}"
                     input type="hidden" name="data_conc[#{y.id}][period]" value="#{y.calendar_id}"
@@ -474,7 +474,7 @@ table.table.table-bordered.input-focusable-table
               td style="font-weight: 800"
                 span.text-left = 'Bancos corto plazo'
               - @calendar_fr.each do |y|
-                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.where(key: ['analist','credit_validated']).pluck(:id)).present?
                   td class="full-input-psm"
                     input type="hidden" name="data_bs[#{y.id}.1][concept_id]" value="#{BalanceConcept.find_by(key: 'bancos_cp').try(:id)}"
                     input type="hidden" name="data_bs[#{y.id}.1][period]" value="#{y.calendar_id}"
@@ -486,7 +486,7 @@ table.table.table-bordered.input-focusable-table
               td style="font-weight: 800"
                 span.text-left = 'Otros pasivos fin. (C.P.)'
               - @calendar_fr.each do |y|
-                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.where(key: ['analist','credit_validated']).pluck(:id)).present?
                   td class="full-input-psm"
                     input type="hidden" name="data_bs[#{y.id}.2][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_fin_cp').try(:id)}"
                     input type="hidden" name="data_bs[#{y.id}.2][period]" value="#{y.calendar_id}"
@@ -498,7 +498,7 @@ table.table.table-bordered.input-focusable-table
               td style="font-weight: 800"
                 span.text-left = 'Pago de capital'
               - @calendar_fr.each do |y|
-                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.where(key: ['analist','credit_validated']).pluck(:id)).present?
                   td class="full-input-psm"
                     input type="hidden" name="data_bs[#{y.id}.3][concept_id]" value="#{BalanceConcept.find_by(key: 'pago_de_capital').try(:id)}"
                     input type="hidden" name="data_bs[#{y.id}.3][period]" value="#{y.calendar_id}"
@@ -510,7 +510,7 @@ table.table.table-bordered.input-focusable-table
               td style="font-weight: 800"
                 span.text-left = 'Otros pasivos (Circulante)'
               - @calendar_fr.each do |y|
-                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.where(key: ['analist','credit_validated']).pluck(:id)).present?
                   td class="full-input-psm"
                     input type="hidden" name="data_bs[#{y.id}.4][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_circulante').try(:id)}"
                     input type="hidden" name="data_bs[#{y.id}.4][period]" value="#{y.calendar_id}"
@@ -522,7 +522,7 @@ table.table.table-bordered.input-focusable-table
               td style="font-weight: 800"
                 span.text-left = 'Bancos largo plazo'
               - @calendar_fr.each do |y|
-                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.where(key: ['analist','credit_validated']).pluck(:id)).present?
                   td class="full-input-psm"
                     input type="hidden" name="data_bs[#{y.id}.5][concept_id]" value="#{BalanceConcept.find_by(key: 'bancos_lp').try(:id)}"
                     input type="hidden" name="data_bs[#{y.id}.5][period]" value="#{y.calendar_id}"
@@ -534,7 +534,7 @@ table.table.table-bordered.input-focusable-table
               td style="font-weight: 800"
                 span.text-left = 'Otros pasivos (L.P.)'
               - @calendar_fr.each do |y|
-                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.where(key: ['analist','credit_validated']).pluck(:id)).present?
                   td class="full-input-psm"
                     input type="hidden" name="data_bs[#{y.id}.6][concept_id]" value="#{BalanceConcept.find_by(key: 'otros_pasivos_lp').try(:id)}"
                     input type="hidden" name="data_bs[#{y.id}.6][period]" value="#{y.calendar_id}"
@@ -549,7 +549,7 @@ table.table.table-bordered.input-focusable-table
               td style="font-weight: 800"
                 span.text-left = 'Depreciación y amortización'
               - @calendar_fr.each do |y|
-                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                -if can_generate_data and @requests.where(process_status_id: ProcessStatus.where(key: ['analist','credit_validated']).pluck(:id)).present?
                   td class="full-input-psm"
                     input type="hidden" name="data_is[#{y.id}][concept_id]" value="#{IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id)}"
                     input type="hidden" name="data_is[#{y.id}][period]" value="#{y.calendar_id}"
