@@ -2535,7 +2535,7 @@ javascript:
                       .m-section__content.table-responsive.text-center
                         - if BalanceCalendarDetail.where(company_id:  @company.id).present? and IncomeCalendarDetail.where(company_id:  @company.id).present?
                           .tabs-actions.mb-3
-                            - if can_generate_data and @requests.where(process_status_id: ProcessStatus.find_by(key: 'analist')).present?
+                            - if can_generate_data and @requests.where(process_status_id: ProcessStatus.where(key: ['analist','credit_validated']).pluck(:id)).present?
                               a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.open-modal-cstatus href="/generate_cash_flow/#{@company.id}"
                                 .fa.fa-sync.mx-2
                                 = "Generar flujo de efectivo"
