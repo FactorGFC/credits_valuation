@@ -168,6 +168,8 @@
                                           <h4 ><strong><%= @company.try(:name) %></strong></h4>
                                           <h4>R.F.C de la compañia:</h4>
                                           <h4 ><strong><%= @company.try(:rfc) %></strong></h4>
+                                          <h4>Error:</h4>
+                                          <h4 ><strong><%= @error.to_json %></strong></h4>
                                         </td>
                                       </tr>
                                     </table>

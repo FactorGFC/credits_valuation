@@ -6,7 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="e965d6dd-6dc8-474a-b471-0fb4325c5a0e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/companies/_complete_data.html.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/_complete_data.html.slim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/companies_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/companies_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/helpers/companies_helper.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/helpers/companies_helper.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/javascript/packs/companies.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/packs/companies.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/javascript/packs/general.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/packs/general.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/mailers/credit_request_mailer.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/mailers/credit_request_mailer.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/policies/company_policy.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/policies/company_policy.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/companies/_inputs.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/_inputs.slim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/companies/company_details.html.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/company_details.html.slim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/companies/index.html.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/index.html.slim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/credit_request_mailer/credit_bureau_error.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/credit_request_mailer/credit_bureau_error.html.erb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,13 +34,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;ruby.rails.projectView.checked&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/dsi/Documents/develop/credits_valuation",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "ruby.rails.projectView.checked": "true",
+    "ts.external.directory.path": "/Users/dsi/Documents/develop/credits_valuation/node_modules/typescript/lib"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/views/companies" />
@@ -161,6 +177,12 @@
       <workItem from="1668714606768" duration="596000" />
       <workItem from="1669127597967" duration="10333000" />
       <workItem from="1671667374244" duration="290000" />
+      <workItem from="1678472989414" duration="468000" />
+      <workItem from="1681830122684" duration="322000" />
+      <workItem from="1682610358851" duration="549000" />
+      <workItem from="1683853595470" duration="1544000" />
+      <workItem from="1684172599173" duration="11002000" />
+      <workItem from="1684967313534" duration="2358000" />
     </task>
     <servers />
   </component>

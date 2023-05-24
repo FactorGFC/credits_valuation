@@ -149,6 +149,8 @@ javascript:
 
 
 .col-xl-12
+  input type="hidden" id="viewName" value="company_details"
+  input type="hidden" id="typeRoleUser" value="#{@user.try(:role).try(:key)}"
   .d-flex.align-items-center
     .mr-auto.d-flex.align-items-center
       a.m-nav__link.m-nav__link--icon.mx-2.pb-2 href="/login" style="font-size: 20px;"
@@ -2730,10 +2732,7 @@ javascript:
               p.mt-20#textModal
                 | Asignar Tipo de Crédito
               div style="display: grid;"
-                = select("request", "factor_credit_id", FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input"})
-                  /= select("request", "factor_credit_id", FactorCredit.where.not(id:@requests.pluck(:factor_credit_id)).collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input"})
-          /- if @request.try(:order).present?
-            - if @request.try(:order) >= 2
+                = select("request", "factor_credit_id", FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input", onchange: 'validate_type_credit()'})
           .col-xl-12 id="#{current_user.super_user? ? '' : 'input_status_process'}"
             p.mt-20#textModal
               | Asignar Status del Proceso
@@ -2742,7 +2741,7 @@ javascript:
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar
-          button#idBtn.btn.btn-success type="submit"
+          button#idBtnDetail.btn.btn-success type="submit"
             | Guardar
 
 #m_modal_file_request.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"

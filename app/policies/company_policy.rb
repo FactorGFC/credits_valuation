@@ -12,7 +12,7 @@ class CompanyPolicy < ApplicationPolicy
       elsif @user.role_key.eql? 'promotion_area'
         scope.all
       elsif @user.role_key.eql? 'analyst'
-        scope.joins(:requests).where('requests.analyst_id = ?', @user.id).distinct
+        scope.joins(:requests).where('requests.analyst_id = ? AND requests.process_status_id != ?', @user.id, ProcessStatus.where(key: 'success_validated_period').first.id).distinct
       elsif @user.role_key.eql? 'credit_management'
         scope.joins(:requests).where('requests.process_status_id =  ?', ProcessStatus.where(key: 'success_validated_period').first.id).distinct
       else

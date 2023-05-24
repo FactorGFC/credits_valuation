@@ -85,6 +85,8 @@
           = form_for @company, validate: true, html: {class: ''} do |f|
             .tab-content.col-xl-12.mb-30
               = f.hidden_field :step_three, value: true
+              = f.hidden_field :step_four, value: false
+              = f.hidden_field :step_five, value: false
               .form-group.m-form__group
                 label.text-bold
                   | Actividad preponderante y/o principal

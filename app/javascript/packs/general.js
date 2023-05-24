@@ -305,6 +305,7 @@ $(document).on('turbolinks:load', function () {
         var stepTwo = document.getElementById("idStepTwo").value;
         var stepThree = document.getElementById("idStepThree").value;
         var stepFourth = document.getElementById("idStepFourth").value;
+        console.log("stepFourth", stepFourth);
         $('#filesBtn').attr('class', 'btn btn-primary col-xl-12 disabled');
         $('#filesBtn').prop("disabled", true);
     }
@@ -333,6 +334,7 @@ $(document).on('turbolinks:load', function () {
     }
 
     if (stepFourth) {
+        console.log("ENTRE");
         $('#step-4').show();
         $("#buttonThree").hide();
     }

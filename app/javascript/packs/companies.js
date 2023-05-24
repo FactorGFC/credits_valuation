@@ -14,6 +14,14 @@ $(document).on('turbolinks:load', function () {
         var processStatus   = $(this).data('process-status');
         var analystId       = $(this).data('analyst-id');
         var factorCreditId  = $(this).data('factorcredit-id');
+        var viewName        = document.getElementById('viewName');
+        var typeRoleUser        = document.getElementById('typeRoleUser');
+        if(viewName ){
+            if(viewName.value === 'company_details' && typeRoleUser.value=== 'analyst' ){
+                document.getElementById('idBtnDetail').disabled = true;
+            }
+
+        };
 
 
         if(document.getElementById('input_credit_type')){
@@ -241,4 +249,20 @@ $(document).on('turbolinks:load', function () {
 
         }
     };
+
+
+
+    window.validate_type_credit = function(){
+        var selectValue = document.getElementById("request_factor_credit_id").value;
+        console.log("typeRoleUser.value");
+        console.log(typeRoleUser.value);
+        if((selectValue === '' || selectValue === null || selectValue === undefined) && typeRoleUser.value=== 'analyst'){
+            document.getElementById('idBtnDetail').disabled = true;
+
+        }else{
+            document.getElementById('idBtnDetail').disabled = false;
+        }
+        console.log("selectValue ------");
+        console.log(selectValue);
+    }
 });
