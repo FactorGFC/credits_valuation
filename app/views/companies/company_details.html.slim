@@ -362,21 +362,18 @@ javascript:
               .subtitle-icon.d-flex.justify-content-center.align-items-center
                 i.fa.fa-calendar.fa-lg.m--font-primary
               h5.h5.subtitle = "Asignación de periodos"
-              - if @company.status_company.key == 'aprobada' and @can_assign_period
+              - if @company.status_company.key == 'aprobada' and @can_assign_period and @company.try(:complete)
                 button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_periods" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
                   = "Asignar periodos"
               - else
                 span.text-center
                   | Es necesario validar la solicitud.
 
-            .btns-card.mt-30
-              .subtitle-icon.d-flex.justify-content-center.align-items-center
-                i.fa.fa-sync.fa-lg.m--font-primary
-              h5.h5.subtitle = 'Información faltante de compañía'
-              - if @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present? and company_have_credit_bureau(@credit_bureau)
-                span.text-center
-                  | Todo en orden.
-              - else
+            - unless @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present? and company_have_credit_bureau(@credit_bureau)
+              .btns-card.mt-30
+                .subtitle-icon.d-flex.justify-content-center.align-items-center
+                  i.fa.fa-sync.fa-lg.m--font-primary
+                h5.h5.subtitle = 'Información faltante de compañía'
                 - unless @company.try(:info_company).present?
                   = link_to sat_info_company_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                     = "Información del SAT"
@@ -390,9 +387,9 @@ javascript:
                 - unless @company.try(:credit_bureaus).last.try(:bureau_info).present?
                   = link_to credit_bureau_info_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
                     = "Info. Buró de crédito"
-                  - unless company_have_credit_bureau @credit_bureau
-                    = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
-                      = "Reporte del buró de crédito"
+                  / - unless company_have_credit_bureau @credit_bureau
+                  /   = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                  /     = "Reporte del buró de crédito"
 
   - if @company.income_calendar_details.present? or @company.balance_calendar_details.present? or current_user.god?
     .m-portlet
