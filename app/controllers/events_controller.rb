@@ -3,7 +3,7 @@ class EventsController < ApplicationController
 
   def index
     @users            = User.where(role_id: Role.where(key:['committee', 'credit_management', 'credit_area', 'promotion_area']).pluck(:id))
-    @requests         = policy_scope(Request)
+    @requests         = Request.where(process_status_id: ProcessStatus.where(key: 'success_by_credit_area').pluck(:id))
     @next_events      = Event.where('start_date >= ?', Date.today()).order(:start_date)
     @pending_events   = Event.where(event_finished: [false, nil]).order(:start_date)
     @finished_events  = Event.where(event_finished: true).order(:start_date)
