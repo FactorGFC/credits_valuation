@@ -2729,7 +2729,7 @@ javascript:
               p.mt-20#textModal
                 | Asignar Tipo de Crédito
               div style="display: grid;"
-                = select("request", "factor_credit_id", FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input", onchange: 'validate_type_credit()',disabled: (!@cash_flow.present? || !@company.f_reasons_company.present?)})
+                = select("request", "factor_credit_id", FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input", onchange: 'validate_type_credit()'})
           .col-xl-12 id="#{current_user.super_user? ? '' : 'input_status_process'}"
             p.mt-20#textModal
               | Asignar Status del Procesoo
