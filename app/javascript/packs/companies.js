@@ -48,6 +48,7 @@ $(document).on('turbolinks:load', function () {
         $(".modal-body #companyId").val(companyId);
         $(".modal-body #request_analyst_id").val(analystId).trigger('change');
         $(".modal-body #request_factor_credit_id").val(factorCreditId).trigger('change');
+        $(".modal-body #request_hidden_factor_credit_id").val(factorCreditId).trigger('change');
         $(".modal-body #request_process_status_id").val(processStatus['id']).trigger('change');
 
     });
