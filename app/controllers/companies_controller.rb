@@ -382,6 +382,11 @@ class CompaniesController < ApplicationController
       @cash_flow = []
     end
 
+    if @company.f_reasons_company.present?
+    else
+
+    end
+
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
         if @company.try(:info_company)['hydra:member'][0]['company'].present?

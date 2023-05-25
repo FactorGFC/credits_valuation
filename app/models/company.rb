@@ -71,6 +71,7 @@ class Company < ApplicationRecord
   has_many :requests
   has_one :company_file
   has_one :number_collaborator
+  has_many :f_reasons_company
   #belongs_to :company_balance_sheet, optional: true
   belongs_to :status_company, optional: true
 
