@@ -107,3 +107,4 @@ after :initialize_permissions do
     p "Error: #{e}"
   end
 end
+

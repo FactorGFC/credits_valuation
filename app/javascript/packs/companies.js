@@ -14,13 +14,19 @@ $(document).on('turbolinks:load', function () {
         var processStatus   = $(this).data('process-status');
         var analystId       = $(this).data('analyst-id');
         var factorCreditId  = $(this).data('factorcredit-id');
+        var requestFile  = $(this).data('request-file');
+
+
         var viewName        = document.getElementById('viewName');
         var typeRoleUser        = document.getElementById('typeRoleUser');
         if(viewName ){
-            if(viewName.value === 'company_details' && typeRoleUser.value=== 'analyst' ){
-                document.getElementById('idBtnDetail').disabled = true;
-            }
+            if(viewName.value === 'company_details' && typeRoleUser.value=== 'analyst' && requestFile === ''){
 
+                document.getElementById('idBtnDetail').disabled = true;
+            }else{
+                $(".modal-body #file_null_id").hide();
+                $(".modal-body #idBtnDetail").prop('disabled', false);
+            }
         };
 
 
@@ -49,13 +55,14 @@ $(document).on('turbolinks:load', function () {
         $(".modal-body #request_analyst_id").val(analystId).trigger('change');
         $(".modal-body #request_factor_credit_id").val(factorCreditId).trigger('change');
         $(".modal-body #request_hidden_factor_credit_id").val(factorCreditId);
+        $(".modal-body #request_hidden_file_id").val(requestFile);
         $(".modal-body #request_process_status_id").val(processStatus['id']).trigger('change');
+
 
     });
 
     $(document).on("click", ".open-modal-file-request", function () {
         var requestId       = $(this).data('id');
-
 
         $(".modal-body #requestIdFile").val(requestId);
 
@@ -255,15 +262,19 @@ $(document).on('turbolinks:load', function () {
 
     window.validate_type_credit = function(){
         var selectValue = document.getElementById("request_factor_credit_id").value;
-        console.log("typeRoleUser.value");
-        console.log(typeRoleUser.value);
-        if((selectValue === '' || selectValue === null || selectValue === undefined) && typeRoleUser.value=== 'analyst'){
+        var fileValue = document.getElementById("request_hidden_file_id");
+        if(fileValue.value === ''){
+            $('#file_null_id').show();
             document.getElementById('idBtnDetail').disabled = true;
-
         }else{
-            document.getElementById('idBtnDetail').disabled = false;
+            $('#file_null_id').hide();
+            if((selectValue === '' || selectValue === null || selectValue === undefined) && typeRoleUser.value=== 'analyst'){
+                document.getElementById('idBtnDetail').disabled = true;
+
+            }else{
+                document.getElementById('idBtnDetail').disabled = false;
+            }
         }
-        console.log("selectValue ------");
-        console.log(selectValue);
+
     }
 });

@@ -350,7 +350,7 @@ javascript:
                               button#dropdownMenuButton.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
                                 | Acciones
                               .dropdown-menu aria-labelledby="dropdownMenuButton"
-                                a.dropdown-item.open-modal-request href="#m_modal_request_details" data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
+                                a.dropdown-item.open-modal-request href="#m_modal_request_details" data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-request-file="#{request.file_id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
                                   | Detalles
                                 a.dropdown-item target="_blank" href="/request_comments/#{request.id}"
                                   | Comentarios
@@ -2718,6 +2718,7 @@ javascript:
           input type="hidden" name="request_id" id="requestId" value=""
           input type="hidden" name="company_id" id="companyId" value=""
           input type="hidden" id="request_analyst_id" name="request[analyst_id]"  value=""
+          input type="hidden" id="request_hidden_file_id"
           .col-xl-12 style="display: grid;"
             - unless @user.role.key == 'credit_management'
               p#textModal
@@ -2738,6 +2739,9 @@ javascript:
               | Asignar Status del Proceso #{(!@cash_flow.present? || !@company.f_reasons_company.present?) ? ' / Es necesario calcular el flujo de efectivo y Razones financieras' : '' }
             div style="display: grid;"
               = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona una opción'}, {class: "form-control m-input", disabled: (!@cash_flow.present? || !@company.f_reasons_company.present?)})
+          .col-xl-12#file_null_id style="display: none"
+            p.mt-20#textModal style="text-align: center; color: red"
+              | Falta subir archivo a este analista
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar

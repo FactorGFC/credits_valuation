@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e965d6dd-6dc8-474a-b471-0fb4325c5a0e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/companies_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/companies_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/javascript/packs/companies.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/packs/companies.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/companies/company_details.html.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/company_details.html.slim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/seeds/permissions.seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds/permissions.seeds.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/seeds/roles_permissions.seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds/roles_permissions.seeds.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,6 +178,7 @@
       <workItem from="1683853595470" duration="1544000" />
       <workItem from="1684172599173" duration="11002000" />
       <workItem from="1684967313534" duration="2750000" />
+      <workItem from="1685035689118" duration="22815000" />
     </task>
     <servers />
   </component>
@@ -189,5 +195,19 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="ruby-line">
+          <url>file://$PROJECT_DIR$/config/application.rb</url>
+          <line>6</line>
+          <properties myBlockOrdinal="-1">
+            <option name="block-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

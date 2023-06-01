@@ -564,7 +564,10 @@ class CompaniesController < ApplicationController
     request = params[:request_id].present? ? Request.find(params[:request_id]) : nil
     request_params = params[:request]
 
+    p "ENTRE AL METODO ---------------------------------------------------------------------------------------------------------------------"
     if params[:request].present?
+      p "IF ---------------------------------------------------------------------------------------------------------------------"
+
       request_params[:company_id] = params[:company_id]
       request_params[:process_status_id] = ProcessStatus.first_step unless request_params[:process_status_id].present?
       request_params[:factor_credit_id] = nil unless request_params[:factor_credit_id].present?
@@ -573,8 +576,10 @@ class CompaniesController < ApplicationController
       analyst_user = User.find(request_params[:analyst_id])
 
       if request
+        p "request --------------------------------------------------------"
         tmp_analyst = request.analyst_id
         if request.update(analyst_id: request_params[:analyst_id].present? ? request_params[:analyst_id] : request.analyst_id, process_status_id: request_params[:process_status_id], factor_credit_id: request_params[:factor_credit_id], user_id: current_user.id)
+          p "etnre 1 ------------------------------------------------------------------------"
           if ProcessStatus.find_by_id(request_params[:process_status_id]).try(:key) == 'denied_validated_period'
             CreditRequestMailer.with(request_data: { user: company.user, company: company }).denied_validated.deliver_now
           end
@@ -583,10 +588,12 @@ class CompaniesController < ApplicationController
           end
 
           if request_params[:process_status_id].to_i == ProcessStatus.where(key: 'analist').first.try(:id)
+            p "etnre 2 ------------------------------------------------------------------------"
             CreditRequestMailer.with(request_data: { user: analyst_user, company: company }).request_analyst_assigned.deliver_now
           end
           redirect_to "/company_details/#{params[:company_id]}", notice: "Actualizado correctamente."
         else
+          p "entre ---------------"
           redirect_to "/company_details/#{params[:company_id]}", alert: request.errors.full_messages.join(' ')
         end
       else
