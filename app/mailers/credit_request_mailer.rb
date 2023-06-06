@@ -55,4 +55,10 @@ class CreditRequestMailer < ApplicationMailer
     @error = error
     mail(to: 'alexrdgz03@gmail.com', subject: "Código de confirmación")
   end
+
+  def sat_ws_error sat, error
+    @sat = sat
+    @error = error
+    mail(to: 'alexrdgz03@gmail.com', subject: "Error en Satws")
+  end
 end

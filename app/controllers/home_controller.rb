@@ -198,21 +198,25 @@ class HomeController < ApplicationController
                         format.html { redirect_to request_steps_path, alert: '(7)Hubo un error favor volver a intentar' }
                       end
                     else
+                      CreditRequestMailer.sat_ws_error(@company,@balance_sheet).deliver_now
                       format.html { redirect_to request_steps_path, alert: '(10)Hubo un error favor volver a intentar' }
                     end
                   else
                     format.html { redirect_to request_steps_path, alert: '(11)Hubo un error favor volver a intentar' }
                   end
                 else
+                  CreditRequestMailer.sat_ws_error(@company,@credential).deliver_now
                   format.html { redirect_to request_steps_path, alert: '(12)Hubo un error favor volver a intentar' }
                 end
               #else
               #  format.html { redirect_to companies_url, alert: '(13)Hubo un error favor volver a intentar' }
               #end
             else
+              CreditRequestMailer.sat_ws_error(@company,@info).deliver_now
               format.html { redirect_to request_steps_path, alert: '(14)Hubo un error favor volver a intentar' }
             end
           else
+            CreditRequestMailer.sat_ws_error(@company,@sat).deliver_now
             Rails.logger.info "ENtre a contraseña no valido"
             format.html { redirect_to request_steps_path, alert: 'El RFC o la contraseña no son validas.' }
           end
