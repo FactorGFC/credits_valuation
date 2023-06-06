@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e965d6dd-6dc8-474a-b471-0fb4325c5a0e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/views/credit_request_mailer/sat_ws_error.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/companies_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/companies_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/javascript/packs/companies.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/packs/companies.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/home_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/home_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/mailers/credit_request_mailer.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/mailers/credit_request_mailer.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/companies/company_details.html.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/company_details.html.slim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/seeds/permissions.seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds/permissions.seeds.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/seeds/roles_permissions.seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds/roles_permissions.seeds.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,22 +28,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/dsi/Documents/develop/credits_valuation&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;ruby.rails.projectView.checked&quot;: &quot;true&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/dsi/Documents/develop/credits_valuation/node_modules/typescript/lib&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/dsi/Documents/develop/credits_valuation/app/views/credit_request_mailer",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "ruby.rails.projectView.checked": "true",
+    "ts.external.directory.path": "/Users/dsi/Documents/develop/credits_valuation/node_modules/typescript/lib"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/views/credit_request_mailer" />
       <recent name="$PROJECT_DIR$/app/views/companies" />
     </key>
   </component>
@@ -178,7 +178,7 @@
       <workItem from="1683853595470" duration="1544000" />
       <workItem from="1684172599173" duration="11002000" />
       <workItem from="1684967313534" duration="2750000" />
-      <workItem from="1685035689118" duration="22815000" />
+      <workItem from="1685035689118" duration="25326000" />
     </task>
     <servers />
   </component>
