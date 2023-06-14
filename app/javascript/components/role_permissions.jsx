@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { toastr } from 'packs/notifications';
+import { toastr } from 'components/notifications';
 import I18n from 'i18n-js';
 I18n.locale = I18n.locale;
 

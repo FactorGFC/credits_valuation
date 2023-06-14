@@ -26,7 +26,7 @@ require("@fortawesome/fontawesome-free/js/all");
 require("@nathanvda/cocoon");
 
 
-require("packs/request_steps");
+require("components/request_steps");
 
 // Components with react
 require("components/logbook_index");

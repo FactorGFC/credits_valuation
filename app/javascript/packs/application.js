@@ -25,16 +25,15 @@ require("@fortawesome/fontawesome-free/js/all");
 require("@nathanvda/cocoon");
 
 
-require("packs/general");
-require("packs/users");
-require("packs/permissions");
-require("packs/notifications");
-require("packs/home");
-require("packs/request_steps");
-require("packs/companies.js");
-require("packs/balance_concepts");
-require("packs/fullcalendar.min.js");
-require("packs/events");
+require("components/general");
+require("components/permissions");
+require("components/notifications");
+require("components/home");
+require("components/request_steps");
+require("components/companies.js");
+require("components/balance_concepts");
+require("components/fullcalendar.min.js");
+require("components/events");
 
 
 // Components with react

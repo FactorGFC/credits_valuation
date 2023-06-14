@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { cascadeSelects } from 'packs/general';
+import { cascadeSelects } from 'components/general';
 
 $(document).on('turbolinks:load', function () {
     let $permissionController = $('#permission_controller');
