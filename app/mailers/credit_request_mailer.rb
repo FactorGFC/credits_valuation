@@ -21,8 +21,8 @@ class CreditRequestMailer < ApplicationMailer
     # @request_data = params[:request_data]
     # @company      = params[:company]
 
-    @company = User.last
     @company = Company.last
+    @request_data = { user: User.last, company: @company }
 
     mail(to: ["alexrdgz03@gmail.com","vponce@uach.mx"], subject: "¡Tu solicitud de registro ha sido aprobada!")
     @company.update(confirmation_message: true)
