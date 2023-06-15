@@ -9,24 +9,14 @@ class CreditRequestMailer < ApplicationMailer
   end
 
 
-  # def credit_request_approved
-  #   @request_data = params[:request_data]
-  #   @company      = params[:company]
-  #
-  #   mail(to: ["#{@request_data[:user][:email]},factorglobal.mailer@gmail.com","alexrdgz03@gmail.com","vponce@uach.mx"], subject: "¡Tu solicitud de registro ha sido aprobada!")
-  #   @company.update(confirmation_message: true)
-  # end
-
   def credit_request_approved
-    # @request_data = params[:request_data]
-    # @company      = params[:company]
+    @request_data = params[:request_data]
+    @company      = params[:company]
 
-    @company = Company.last
-    @request_data = { user: User.last, company: @company }
-
-    mail(to: ["alexrdgz03@gmail.com","vponce@uach.mx"], subject: "¡Tu solicitud de registro ha sido aprobada!")
+    mail(to: ["#{@request_data[:user][:email]},factorglobal.mailer@gmail.com","alexrdgz03@gmail.com","vponce@uach.mx"], subject: "¡Tu solicitud de registro ha sido aprobada!")
     @company.update(confirmation_message: true)
   end
+
 
   def credit_request_refused
     @request_data = params[:request_data]
