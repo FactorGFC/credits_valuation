@@ -114,4 +114,4 @@ end
 #  - https://github.com/mina-deploy/mina/tree/master/docs
 #
 # #Forza el precompile de los assets
-# # mina production deploy force_asset_precompile=true
+# # mina staging deploy force_asset_precompile=true
