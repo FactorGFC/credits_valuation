@@ -306,9 +306,11 @@ class HomeController < ApplicationController
                     format.html { redirect_to companies_url, alert: '(8)Hubo un error favor volver a intentar' }
                   end
                 else
+                  CreditRequestMailer.sat_ws_error(@company,@balance_sheet).deliver_now
                   format.html { redirect_to companies_url, alert: '(10)Hubo un error favor volver a intentar' }
                 end
               else
+                CreditRequestMailer.sat_ws_error(@company,@credential).deliver_now
                 format.html { redirect_to companies_url, alert: '(11)Hubo un error favor volver a intentar' }
               end
 =begin
@@ -317,9 +319,11 @@ class HomeController < ApplicationController
             end
 =end
           else
+            CreditRequestMailer.sat_ws_error(@company,@info).deliver_now
             format.html { redirect_to companies_url, alert: '(13)Hubo un error favor volver a intentar' }
           end
         else
+          CreditRequestMailer.sat_ws_error(@company,@sat).deliver_now
           format.html { redirect_to companies_url, alert: '(14)Hubo un error favor volver a intentar' }
         end
       end
