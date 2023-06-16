@@ -45,16 +45,12 @@ class CreditRequestMailer < ApplicationMailer
     mail(to: "#{@request_data[:user][:email]}", subject: "¡La solicitud ha sido rechazada!")
   end
 
-  # def confirmation_code
-  #   @code   = params[:code]
-  #   @email  = params[:email]
-  #   mail(to: @email, subject: "Código de confirmación")
-  # end
   def confirmation_code
     @code   = params[:code]
     @email  = params[:email]
-    mail(to: 'alexrdgz03@gmail.com', subject: "Código de confirmación")
+    mail(to: @email, subject: "Código de confirmación")
   end
+  
   def credit_bureau_error company, error
     @company = company
     @error = error
