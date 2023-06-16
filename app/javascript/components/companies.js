@@ -263,16 +263,23 @@ $(document).on('turbolinks:load', function () {
     window.validate_type_credit = function(){
         var selectValue = document.getElementById("request_factor_credit_id").value;
         var fileValue = document.getElementById("request_hidden_file_id");
-        if(fileValue.value === ''){
-            $('#file_null_id').show();
-            document.getElementById('idBtnDetail').disabled = true;
+        var typeRoleUser        = document.getElementById('typeRoleUser');
+        console.log("typeRoleUser.value");
+        console.log(typeRoleUser.value);
+        if(typeRoleUser.value === 'credit_area'){
+            document.getElementById('idBtnDetail').disabled = false;
         }else{
-            $('#file_null_id').hide();
-            if((selectValue === '' || selectValue === null || selectValue === undefined) && typeRoleUser.value=== 'analyst'){
+            if(fileValue.value === ''){
+                $('#file_null_id').show();
                 document.getElementById('idBtnDetail').disabled = true;
-
             }else{
-                document.getElementById('idBtnDetail').disabled = false;
+                $('#file_null_id').hide();
+                if((selectValue === '' || selectValue === null || selectValue === undefined) && typeRoleUser.value=== 'analyst'){
+                    document.getElementById('idBtnDetail').disabled = true;
+
+                }else{
+                    document.getElementById('idBtnDetail').disabled = false;
+                }
             }
         }
 
