@@ -50,7 +50,7 @@ class CreditRequestMailer < ApplicationMailer
     @email  = params[:email]
     mail(to: @email, subject: "Código de confirmación")
   end
-  
+
   def credit_bureau_error company, error
     @company = company
     @error = error
