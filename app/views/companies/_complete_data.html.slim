@@ -101,7 +101,7 @@
                     .col-6
                       label.text-bold
                         | Calle
-                      = text_field 'company_data', 'street', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['buildingNumber'], disabled: 'disabled'
+                      = text_field 'company_data', 'street', class: 'form-control m-input m-input--square', value: @company.try(:info_company)['hydra:member'][0]['address']['streetName'], disabled: 'disabled'
                     .col-3
                       label.text-bold
                         | Núm. Exterior
