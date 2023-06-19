@@ -318,6 +318,8 @@ javascript:
                     thead.thead-default.thead-custom
                       tr style="text-align: center;"
                         th
+                          | Fecha
+                        th
                           | Analista
                         th
                           | Crédito
@@ -330,6 +332,8 @@ javascript:
                       tbody
                         - @requests.each do |request|
                           tr valign="middle"
+                            td.align-vm
+                              = request.try(:created_at).strftime('%d/%m/%Y')
                             td.align-vm
                               = request.analist.try(:full_name)
                             td.align-vm
@@ -2739,7 +2743,7 @@ javascript:
             p.mt-20#textModal
               | Asignar Status del Proceso #{(!@cash_flow.present? || !@company.f_reasons_company.present?) ? ' / Es necesario calcular el flujo de efectivo y Razones financieras' : '' }
             div style="display: grid;"
-              = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona una opción'}, {class: "form-control m-input", disabled: (!@cash_flow.present? || !@company.f_reasons_company.present?)})
+              = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona una opción'}, {class: "form-control m-input", onchange: 'validate_type_credit()',disabled: (!@cash_flow.present? || !@company.f_reasons_company.present?)})
           .col-xl-12#file_null_id style="display: none"
             p.mt-20#textModal style="text-align: center; color: red"
               | Falta subir archivo a este analista
