@@ -101,6 +101,10 @@ class User < ApplicationRecord
     role_key.in?(['god', 'credit_management', 'credit_area', 'promotion_area'])
   end
 
+  def user_asign_periods?
+    role_key.in?(['god', 'credit_area', 'promotion_area'])
+  end
+
   def has_total_scope?
     role_scope.eql?('total')
   end
