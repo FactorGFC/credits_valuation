@@ -273,13 +273,12 @@ $(document).on('turbolinks:load', function () {
             document.getElementById('idBtnDetail').disabled = false;
         }else{
             if(fileValue.value === ''){
-                if(selectStatus.value === '8'){
-                    $('#file_null_id').hide();
-                    document.getElementById('idBtnDetail').disabled = false;
-                }else{
-
+                if(selectStatus.value === '10'){
                     $('#file_null_id').show();
                     document.getElementById('idBtnDetail').disabled = true;
+                }else{
+                    $('#file_null_id').hide();
+                    document.getElementById('idBtnDetail').disabled = false;
                 }
             }else{
                 $('#file_null_id').hide();
