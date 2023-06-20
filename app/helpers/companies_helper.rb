@@ -1200,9 +1200,7 @@ module CompaniesHelper
   def can_assign_periods company
     if current_user.analyst?
       can_assign = company.requests.where(company_id: company.id, process_status_id: ProcessStatus.find_by(key: 'credit_validated').try(:id)).present?
-    elsif current_user.credit_management?
-      can_assign = false
-    elsif current_user.super_user? and company.status_company.key == 'aprobada'
+    elsif current_user.user_asign_periods? and company.status_company.key == 'aprobada'
       can_assign = true
     else
       can_assign = false
@@ -1245,7 +1243,9 @@ module CompaniesHelper
     if credit_bureau.present?
       if credit_bureau['bureau_report'].present?
         if credit_bureau['bureau_report']['results'].present?
-          result = true 
+          result = true
+        elsif credit_bureau['bureau_report']['query'].present?
+          result = true
         end
       end
     end
