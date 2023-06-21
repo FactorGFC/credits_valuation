@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e965d6dd-6dc8-474a-b471-0fb4325c5a0e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/helpers/companies_helper.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/helpers/companies_helper.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/companies/company_details.html.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/companies/company_details.html.slim" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
