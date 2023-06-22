@@ -363,16 +363,17 @@ javascript:
                                     a.dropdown-item target="_blank" href="#{dictamen_report_path(@company.id, request.id, format: :pdf)}"
                                       | Dictamen
             .col-md-4
-              .btns-card
-                .subtitle-icon.d-flex.justify-content-center.align-items-center
-                  i.fa.fa-calendar.fa-lg.m--font-primary
-                h5.h5.subtitle = "Asignación de periodos"
-                - if @company.status_company.key == 'aprobada' and @can_assign_period and @company.try(:complete)
-                  button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_periods" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
-                    = "Asignar periodos"
-                - else
-                  span.text-center
-                    | Es necesario validar la solicitud.
+              - if @can_assign_period
+                .btns-card
+                  .subtitle-icon.d-flex.justify-content-center.align-items-center
+                    i.fa.fa-calendar.fa-lg.m--font-primary
+                  h5.h5.subtitle = "Asignación de periodos"
+                  - if @company.status_company.key == 'aprobada' and @company.try(:complete)
+                    button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_periods" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
+                      = "Asignar periodos"
+                  - else
+                    span.text-center
+                      | Es necesario validar la solicitud.
 
               - unless @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present? and company_have_credit_bureau(@credit_bureau)
                 .btns-card.mt-30
