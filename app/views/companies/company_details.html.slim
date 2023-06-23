@@ -159,16 +159,16 @@ javascript:
         | Compañías
 
 .col-xl-12.mt-20
-  .portlet-profile.d-flex.justify-content-end
+  .portlet-profile.d-flex.justify-content-start.justify-content-sm-start.justify-content-md-end
     .info-profile-container
-      .icon-circle.d-flex.justify-content-end.align-items-center.px-5
+      .icon-circle.justify-content-end.align-items-center.px-5.d-none.d-sm-none.d-md-flex
         i.fa.fa-id-card.fa-4x style="position: relative;"
       .d-flex.flex-column.col-md-12.mb-2
         .col-md-12
           span.port-title = @company_name
           span = @company.rfc
-      .d-flex.col-md-12
-        .col-md-4
+      .d-flex.flex-column.flex-sm-column.flex-md-row.col-md-12
+        .col-12.col-sm-12.col-md-4
           span.port-subtitle = 'Estado / Municipio'
           span = @company_state_municipality
           span.port-subtitle = 'Dirección'
@@ -176,123 +176,125 @@ javascript:
           span.port-subtitle = 'Estatus'
           span.status-pill class="#{render_status_by_class(@company.try(:status_company).try(:key))}"
             = @company.try(:status_company).present? ? @company.try(:status_company).try(:name): 'PENDIENTE DE REVISIÓN X FACTOR'
-        .vl
-        .col-md-4
+        .col-12.col-sm-12.col-md-4
           span.port-subtitle = 'Nombre de contacto'
           span = @company.try(:user).try(:full_name)
           span.port-subtitle = 'Teléfono de contacto'
           span = @company.try(:user).try(:phone)
           span.port-subtitle = 'Correo de contacto'
           span = @company.try(:user).try(:email)
-        .col-md-4
+        .col-12.col-sm-12.col-md-4
           span.port-subtitle = 'Actividad Principal'
           span = @company.main_activity
           span.port-subtitle = 'Principales Productos/Servicios'
           - @company.main_product_list.each do |e|
             span.tag
               = "#{e}"
+
   - if @company.status_company.key == 'aprobada'
-    .portlet-profile.d-flex
-      .col-md-12.d-flex
-        .col-md-7
-          - unless @company.try(:client_type).eql?('PM')
-            span.port-subtitle = 'INSTITUCIONES FINANCIERAS'
-            button.btn.btn-primary.btn-block.my-2.open-modal1 data-target="#m_modal_financial_institutions" data-toggle="modal" type="button"
-              = "Ver instituciones financieras"
+    .portlet-profile.d-flex.flex-column.flex-sm-column.flex-md-row
+      /.col-md-12
+      .col-12.col-sm-12.col-md-7
+        - unless @company.try(:client_type).eql?('PM')
+          span.port-subtitle = 'INSTITUCIONES FINANCIERAS'
+          button.btn.btn-primary.btn-block.my-2.open-modal1 data-target="#m_modal_financial_institutions" data-toggle="modal" type="button"
+            = "Ver instituciones financieras"
 
-          span.port-subtitle.mt-4 = 'COLABORADORES'
-          ul.col-md-12.d-flex.justify-content-between.align-items-center.collab-list
-            li.d-flex.flex-column.align-items-center.col-md-2
-              span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:operative)
-              span.quantity-num
-                strong = 'OPERATIVOS'
-            li.d-flex.flex-column.align-items-center.col-md-2
-              span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:administrative)
-              span.quantity-num
-                strong = 'ADMINISTRATIVOS'
-            li.d-flex.flex-column.align-items-center.col-md-2
-              span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:sales)
-              span.quantity-num
-                strong = 'VENTAS'
-            li.d-flex.flex-column.align-items-center.col-md-2
-              span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:eventual)
-              span.quantity-num
-                strong = 'EVENTUAL'
-            li.d-flex.flex-column.align-items-center.col-md-2
-              span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:unionized)
-              span.quantity-num
-                strong = 'SINDICALIZADOS'
-          ul.d-flex.justify-content-center.collab-list
-            h3
-              strong = "TOTAL:  #{ @company.try(:number_collaborator).present? ? @company.try(:number_collaborator).try(:total).to_s(:delimited) : 0 }"
+        span.port-subtitle.mt-4 = 'COLABORADORES'
+        ul.d-flex.flex-wrap.justify-content-between.align-items-center.collab-list.col-sm-12
+          li.d-flex.flex-column.align-items-center.col-6.col-md-4.col-lg-2
+            span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:operative)
+            span.quantity-num
+              strong = 'OPERATIVOS'
+          li.d-flex.flex-column.align-items-center.col-6.col-md-4.col-lg-2
+            span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:administrative)
+            span.quantity-num
+              strong = 'ADMINISTRATIVOS'
+          li.d-flex.flex-column.align-items-center.col-6.col-md-4.col-lg-2
+            span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:sales)
+            span.quantity-num
+              strong = 'VENTAS'
+          li.d-flex.flex-column.align-items-center.col-6.col-md-4.col-lg-2
+            span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:eventual)
+            span.quantity-num
+              strong = 'EVENTUAL'
+          li.d-flex.flex-column.align-items-center.col-6.col-md-4.col-lg-2
+            span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:unionized)
+            span.quantity-num
+              strong = 'SINDICALIZADOS'
 
-        .col-md-5
-          span.port-subtitle = 'ARCHIVOS'
-          .d-flex.flex-column
-            - if @company.try(:company_file).present?
-              - if @company.try(:company_file).try(:invoice_id_file).present?
-                a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_id_file)}/#{@company.try(:company_file).try(:name_id_file)}" target="_blank"
-                  span.d-flex.justify-content-between.align-items-center
-                    span
-                      | Identificación oficial
-                    i.fa.fa-file
-              - else
-                a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
-                  span.d-flex.justify-content-between.align-items-center
-                    span
-                      | Identificación oficial
-                    i.fa.fa-file
-              - if @company.try(:company_file).try(:invoice_constancy).present?
-                a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_constancy)}/#{@company.try(:company_file).try(:name_constancy)}" target="_blank"
-                  span.d-flex.justify-content-between.align-items-center
-                    span
-                      | Constancia de Situacion fiscal
-                    i.fa.fa-file
-              - else
-                a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
-                  span.d-flex.justify-content-between.align-items-center
-                    span
-                      | Constancia de Situacion fiscal
-                    i.fa.fa-file
-              - if @company.try(:company_file).try(:invoice_financial_statements_one).present?
-                a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_one)}/#{@company.try(:company_file).try(:name_financial_statements_one)}" target="_blank"
-                  span.d-flex.justify-content-between.align-items-center
-                    span
-                      | Estados Financieros (Cierre anual 1)
-                    i.fa.fa-file
-              - else
-                a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
-                  span.d-flex.justify-content-between.align-items-center
-                    span
-                      | Estados Financieros (Cierre anual 1)
-                    i.fa.fa-file
-              - if @company.try(:company_file).try(:invoice_financial_statements_two).present?
-                a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_two)}/#{@company.try(:company_file).try(:name_financial_statements_two)}" target="_blank"
-                  span.d-flex.justify-content-between.align-items-center
-                    span
-                      | Estados Financieros (Cierre anual 2)
-                    i.fa.fa-file
-              - else
-                a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
-                  span.d-flex.justify-content-between.align-items-center
-                    span
-                      | Estados Financieros (Cierre anual 2)
-                    i.fa.fa-file
-              - if @company.try(:company_file).try(:invoice_financial_statements_parcial).present?
-                a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_parcial)}/#{@company.try(:company_file).try(:name_financial_statements_parcial)}" target="_blank"
-                  span.d-flex.justify-content-between.align-items-center
-                    span
-                      | Estados Financieros (Cierre parcial)
-                    i.fa.fa-file
-              - else
-                a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
-                  span.d-flex.justify-content-between.align-items-center
-                    span
-                      | Estados Financieros (Cierre parcial)
-                    i.fa.fa-file
+        ul.d-flex.justify-content-center.collab-list
+          h3
+            strong = "TOTAL:  #{ @company.try(:number_collaborator).present? ? @company.try(:number_collaborator).try(:total).to_s(:delimited) : 0 }"
 
+      .col-12.col-sm-12.col-md-5
+        span.port-subtitle = 'ARCHIVOS'
+        .d-flex.flex-column
+          - if @company.try(:company_file).present?
+            - if @company.try(:company_file).try(:invoice_id_file).present?
+              a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_id_file)}/#{@company.try(:company_file).try(:name_id_file)}" target="_blank"
+                span.d-flex.justify-content-between.align-items-center
+                  span
+                    | Identificación oficial
+                  i.fa.fa-file
             - else
-              h5 = 'Sin archivos por mostrar'
+              a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
+                span.d-flex.justify-content-between.align-items-center
+                  span
+                    | Identificación oficial
+                  i.fa.fa-file
+            - if @company.try(:company_file).try(:invoice_constancy).present?
+              a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_constancy)}/#{@company.try(:company_file).try(:name_constancy)}" target="_blank"
+                span.d-flex.justify-content-between.align-items-center
+                  span
+                    | Constancia de Situacion fiscal
+                  i.fa.fa-file
+            - else
+              a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
+                span.d-flex.justify-content-between.align-items-center
+                  span
+                    | Constancia de Situacion fiscal
+                  i.fa.fa-file
+            - if @company.try(:company_file).try(:invoice_financial_statements_one).present?
+              a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_one)}/#{@company.try(:company_file).try(:name_financial_statements_one)}" target="_blank"
+                span.d-flex.justify-content-between.align-items-center
+                  span
+                    | Estados Financieros (Cierre anual 1)
+                  i.fa.fa-file
+            - else
+              a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
+                span.d-flex.justify-content-between.align-items-center
+                  span
+                    | Estados Financieros (Cierre anual 1)
+                  i.fa.fa-file
+            - if @company.try(:company_file).try(:invoice_financial_statements_two).present?
+              a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_two)}/#{@company.try(:company_file).try(:name_financial_statements_two)}" target="_blank"
+                span.d-flex.justify-content-between.align-items-center
+                  span
+                    | Estados Financieros (Cierre anual 2)
+                  i.fa.fa-file
+            - else
+              a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
+                span.d-flex.justify-content-between.align-items-center
+                  span
+                    | Estados Financieros (Cierre anual 2)
+                  i.fa.fa-file
+            - if @company.try(:company_file).try(:invoice_financial_statements_parcial).present?
+              a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_parcial)}/#{@company.try(:company_file).try(:name_financial_statements_parcial)}" target="_blank"
+                span.d-flex.justify-content-between.align-items-center
+                  span
+                    | Estados Financieros (Cierre parcial)
+                  i.fa.fa-file
+            - else
+              a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
+                span.d-flex.justify-content-between.align-items-center
+                  span
+                    | Estados Financieros (Cierre parcial)
+                  i.fa.fa-file
+
+          - else
+            h5 = 'Sin archivos por mostrar'
+
     .m-portlet
       .m-portlet__head
         .m-portlet__head-caption
@@ -302,100 +304,99 @@ javascript:
                 | Configuraciones
 
       .m-portlet__body
-        .m-section.mb-0
-          .d-inline-flex.col-md-12
-            .col-md-8
-              .btns-card.full-h
-                .subtitle-icon.d-flex.justify-content-center.align-items-center
-                  i.fa.fa-building.fa-lg.m--font-primary
-                h5.h5.subtitle = 'Detalles de solicitud'
-                - if (current_user.god? or current_user.credit_area? or current_user.promotion_area?)
-                  button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{nil}" data-companyid="#{@company.id}" data-process-status="#{nil}" data-analyst-id="#{nil}" data-factorcredit-id="#{nil}"
-                    i.fa.fa-plus.left.mr-10
-                    = "Nueva solicitud"
-                .m-section__content.table-responsive.max-h-card
-                  table.table.m-table.m-table--head-separator-brand.table-custom
-                    thead.thead-default.thead-custom
-                      tr style="text-align: center;"
-                        th
-                          | Fecha
-                        th
-                          | Analista
-                        th
-                          | Crédito
-                        th
-                          | Estatus de Proceso
-                        th
-                          | Archivos
-                        th
-                          | Acciones
-                      tbody
-                        - @requests.each do |request|
-                          tr valign="middle"
-                            td.align-vm
-                              = request.try(:created_at).strftime('%d/%m/%Y')
-                            td.align-vm
-                              = request.analist.try(:full_name)
-                            td.align-vm
-                              = request.factor_credit.try(:name).present? ? request.factor_credit.try(:name) : 'Sin asignar'
-                            td.align-vm
-                              = request.process_status.try(:name)
-                            td style="vertical-align:middle;"
-                              button.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action.mb-1.open-modal-file-request data-target="#m_modal_file_request" data-toggle="modal" type="button" data-id="#{request.id}"
+        /.m-section.mb-0
+        .d-flex.flex-column.flex-sm-column.flex-md-row.col-md-12
+          .col-md-8
+            .btns-card.full-h
+              .subtitle-icon.d-flex.justify-content-center.align-items-center
+                i.fa.fa-building.fa-lg.m--font-primary
+              h5.h5.subtitle = 'Detalles de solicitud'
+              - if (current_user.god? or current_user.credit_area? or current_user.promotion_area?)
+                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{nil}" data-companyid="#{@company.id}" data-process-status="#{nil}" data-analyst-id="#{nil}" data-factorcredit-id="#{nil}"
+                  i.fa.fa-plus.left.mr-10
+                  = "Nueva solicitud"
+              .m-section__content.table-responsive.max-h-card
+                table.table.m-table.m-table--head-separator-brand.table-custom
+                  thead.thead-default.thead-custom
+                    tr style="text-align: center;"
+                      th
+                        | Fecha
+                      th
+                        | Analista
+                      th
+                        | Crédito
+                      th
+                        | Estatus de Proceso
+                      th
+                        | Archivos
+                      th
+                        | Acciones
+                    tbody
+                      - @requests.each do |request|
+                        tr valign="middle"
+                          td.align-vm
+                            = request.try(:created_at).strftime('%d/%m/%Y')
+                          td.align-vm
+                            = request.analist.try(:full_name)
+                          td.align-vm
+                            = request.factor_credit.try(:name).present? ? request.factor_credit.try(:name) : 'Sin asignar'
+                          td.align-vm
+                            = request.process_status.try(:name)
+                          td style="vertical-align:middle;"
+                            button.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action.mb-1.open-modal-file-request data-target="#m_modal_file_request" data-toggle="modal" type="button" data-id="#{request.id}"
+                              span
+                                i.fa.fa-file-pdf.mx-2
+                                span = "Subir"
+                            - if request.try(:file_id).present?
+                              a.btn.btn-danger.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action href="#{ENV['DOWNLOAD_FILES']}/#{request.try(:file_id)}/#{request.try(:file_name)}" target="_blank"
                                 span
-                                  i.fa.fa-file-pdf.mx-2
-                                  span = "Subir"
-                              - if request.try(:file_id).present?
-                                a.btn.btn-danger.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action href="#{ENV['DOWNLOAD_FILES']}/#{request.try(:file_id)}/#{request.try(:file_name)}" target="_blank"
-                                  span
-                                    i.fa.fa-eye.mx-2
-                                    span = "Ver"
-                            td
-                              .dropdown
-                                button#dropdownMenuButton.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
-                                  | Acciones
-                                .dropdown-menu aria-labelledby="dropdownMenuButton"
-                                  a.dropdown-item.open-modal-request href="#m_modal_request_details" data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-request-file="#{request.file_id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
-                                    | Detalles
-                                  a.dropdown-item target="_blank" href="/request_comments/#{request.id}"
-                                    | Comentarios
-                                  - if @company.income_calendar_details.present? or @company.balance_calendar_details.present?
-                                    a.dropdown-item target="_blank" href="#{dictamen_report_path(@company.id, request.id, format: :pdf)}"
-                                      | Dictamen
-            .col-md-4
-              - if @can_assign_period
-                .btns-card
-                  .subtitle-icon.d-flex.justify-content-center.align-items-center
-                    i.fa.fa-calendar.fa-lg.m--font-primary
-                  h5.h5.subtitle = "Asignación de periodos"
-                  - if @company.status_company.key == 'aprobada' and @company.try(:complete)
-                    button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_periods" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
-                      = "Asignar periodos"
-                  - else
-                    span.text-center
-                      | Es necesario validar la solicitud.
+                                  i.fa.fa-eye.mx-2
+                                  span = "Ver"
+                          td
+                            .dropdown
+                              button#dropdownMenuButton.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+                                | Acciones
+                              .dropdown-menu aria-labelledby="dropdownMenuButton"
+                                a.dropdown-item.open-modal-request href="#m_modal_request_details" data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-request-file="#{request.file_id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
+                                  | Detalles
+                                a.dropdown-item target="_blank" href="/request_comments/#{request.id}"
+                                  | Comentarios
+                                - if @company.income_calendar_details.present? or @company.balance_calendar_details.present?
+                                  a.dropdown-item target="_blank" href="#{dictamen_report_path(@company.id, request.id, format: :pdf)}"
+                                    | Dictamen
 
-              - unless @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present? and company_have_credit_bureau(@credit_bureau)
-                .btns-card.mt-30
-                  .subtitle-icon.d-flex.justify-content-center.align-items-center
-                    i.fa.fa-sync.fa-lg.m--font-primary
-                  h5.h5.subtitle = 'Información faltante de compañía'
-                  - unless @company.try(:info_company).present?
-                    = link_to sat_info_company_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
-                      = "Información del SAT"
-                  - unless @company.try(:income_statment).present?
-                    = link_to sat_income_statement_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
-                      = "Estado de resultados"
 
-                  - unless @company.try(:balance_sheet).present?
-                    = link_to sat_balance_sheet_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
-                      = "Hoja de balance"
-                  - unless @company.try(:credit_bureaus).last.try(:bureau_info).present?
-                    = link_to credit_bureau_info_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
-                      = "Info. Buró de crédito"
-                    / - unless company_have_credit_bureau @credit_bureau
-                    /   = link_to credit_bureau_report_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
-                    /     = "Reporte del buró de crédito"
+          .col-md-4
+            - if @can_assign_period
+              .btns-card.mt-5.mt-md-0
+                .subtitle-icon.d-flex.justify-content-center.align-items-center
+                  i.fa.fa-calendar.fa-lg.m--font-primary
+                h5.h5.subtitle = "Asignación de periodos"
+                - if @company.status_company.key == 'aprobada' and @company.try(:complete)
+                  button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_periods" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
+                    = "Asignar periodos"
+                - else
+                  span.text-center
+                    | Es necesario validar la solicitud.
+
+            - unless @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present? and company_have_credit_bureau(@credit_bureau)
+              .btns-card.mt-30
+                .subtitle-icon.d-flex.justify-content-center.align-items-center
+                  i.fa.fa-sync.fa-lg.m--font-primary
+                h5.h5.subtitle = 'Información faltante de compañía'
+                - unless @company.try(:info_company).present?
+                  = link_to sat_info_company_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                    = "Información del SAT"
+                - unless @company.try(:income_statment).present?
+                  = link_to sat_income_statement_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                    = "Estado de resultados"
+
+                - unless @company.try(:balance_sheet).present?
+                  = link_to sat_balance_sheet_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                    = "Hoja de balance"
+                - unless @company.try(:credit_bureaus).last.try(:bureau_info).present?
+                  = link_to credit_bureau_info_path(@company.id), method: :put, class: 'btn btn-outline-primary m-btn m-btn--outline-2x btn-block my-2' do
+                    = "Info. Buró de crédito"
 
     - if @company.income_calendar_details.present? or @company.balance_calendar_details.present? or current_user.god?
       .m-portlet
@@ -405,7 +406,7 @@ javascript:
               h3.m-portlet__head-text
                 | Tablas de información
         .m-portlet__body
-          .m-section.mb-0
+          .m-section.mb-0 style="min-width: 1050px; overflow: scroll;"
             .col-xl-12.my-4
               ul.nav.select_form_switch role="tablist"
                 li.nav-item.active
