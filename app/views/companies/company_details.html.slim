@@ -341,7 +341,7 @@ javascript:
                             td.align-vm
                               = request.process_status.try(:name)
                             td style="vertical-align:middle;"
-                              button.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action.mb-1.open-modal-file-request data-target="#m_modal_file_request" data-toggle="modal" type="button" data-id="#{request.id}"
+                              button.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action.mb-1.open-modal-file-request data-target="#m_modal_file_request" data-toggle="modal" type="button" data-id="#{request.id}" data-file="#{request.file_id}"
                                 span
                                   i.fa.fa-file-pdf.mx-2
                                   span = "Subir"
@@ -2770,10 +2770,16 @@ javascript:
             = f.file_field :file_name, class: "custom-file-input", required: true, accept: "application/pdf"
             label.custom-file-label Elige un archivo...
             span.custom-file-control
+
+          .col-xl-12#have_file_id style="display: none"
+            p.mt-20#textModal style="text-align: center; color: red"
+              | ADVERTENCIA
+            p.mt-20#textModal style="text-align: center; color: red"
+              | El sistema solo permite guardar un archivo, si se había subido uno antes, este será reemplazado.
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar
-          button.btn.btn-success type="submit"
+          button.btn.btn-success type="submit" id="submit_file_id"
             | Guardar
 
 #m_modal_financial_institutions.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
