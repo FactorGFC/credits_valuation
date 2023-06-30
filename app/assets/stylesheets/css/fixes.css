@@ -195,7 +195,7 @@ table{
 }
 
 .btn-list-opt{
-    width: 40%;
+    margin: 10px;
     padding: 25px;
     background-color: aliceblue;
     color: gray;
