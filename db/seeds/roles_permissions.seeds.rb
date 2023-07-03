@@ -112,7 +112,10 @@ after :permissions do
                             {role_id: Role.find_by_key('approver').id, permission_id: Permission.find_by_name('Actualizar Usuario').id},
                             {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Actualizar Usuario').id},
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Actualizar Usuario').id},
-                            {role_id: Role.find_by_key('enterprise').id, permission_id: Permission.find_by_name('crear usuario de sat').id}
+                            {role_id: Role.find_by_key('enterprise').id, permission_id: Permission.find_by_name('crear usuario de sat').id},
+
+                            #Permisos 22 Junio
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Subir documento a request en detalles de solicitud').id},
 
                           ])
 end

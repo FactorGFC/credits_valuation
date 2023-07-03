@@ -2,6 +2,7 @@ import $ from 'jquery';
 import I18n from 'i18n-js';
 import 'javascripts/i18n/translations';
 I18n.locale = I18n.locale;
+import Rails from '@rails/ujs';
 
 const emailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 const phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
@@ -63,6 +64,11 @@ $(document).on('turbolinks:load', function () {
 
     $(document).on("click", ".open-modal-file-request", function () {
         var requestId       = $(this).data('id');
+        var fileId       = $(this).data('file');
+
+        if(fileId !== null && fileId !== undefined && fileId !== ''){
+            document.getElementById('have_file_id').style.display = 'block';
+        }
 
         $(".modal-body #requestIdFile").val(requestId);
 
@@ -261,13 +267,11 @@ $(document).on('turbolinks:load', function () {
 
 
     window.validate_type_credit = function(){
-        var selectValue = document.getElementById("request_factor_credit_id").value;
+        var selectValue = document.getElementById("request_factor_credit_id");
         var fileValue = document.getElementById("request_hidden_file_id");
         var typeRoleUser        = document.getElementById('typeRoleUser');
         var selectStatus        = document.getElementById('request_process_status_id');
 
-        console.log("fileValue");
-        console.log(fileValue.value);
 
         if(typeRoleUser.value === 'credit_area'){
             document.getElementById('idBtnDetail').disabled = false;
@@ -282,7 +286,7 @@ $(document).on('turbolinks:load', function () {
                 }
             }else{
                 $('#file_null_id').hide();
-                if((selectValue === '' || selectValue === null || selectValue === undefined) && typeRoleUser.value=== 'analyst'){
+                if((selectValue.value === '' || selectValue.value === null || selectValue.value === undefined) && typeRoleUser.value=== 'analyst'){
                     document.getElementById('idBtnDetail').disabled = true;
 
                 }else{
@@ -291,5 +295,6 @@ $(document).on('turbolinks:load', function () {
             }
         }
 
-    }
+    };
+
 });
