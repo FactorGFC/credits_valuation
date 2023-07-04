@@ -66,6 +66,9 @@ $(document).on('turbolinks:load', function () {
         var requestId       = $(this).data('id');
         var fileId       = $(this).data('file');
 
+        console.log("file id");
+        console.log(fileId);
+
         if(fileId !== null && fileId !== undefined && fileId !== ''){
             document.getElementById('have_file_id').style.display = 'block';
         }
