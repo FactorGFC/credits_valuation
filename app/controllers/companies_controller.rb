@@ -1979,7 +1979,11 @@ class CompaniesController < ApplicationController
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
         if @company.try(:info_company)['hydra:member'][0]['company'].present?
-          @company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+          if @company.try(:info_company)['hydra:member'][0]['company']['tradeName'].present?
+            @company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+          else
+            @company_name = @company.try(:info_company)['hydra:member'][0]['company']['legalName']
+          end
         else
           @company_name = @company.try(:name)
         end
