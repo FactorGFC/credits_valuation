@@ -390,7 +390,12 @@ class CompaniesController < ApplicationController
     if @company.try(:info_company).present?
       if @company.try(:info_company)['hydra:member'].present?
         if @company.try(:info_company)['hydra:member'][0]['company'].present?
-          @company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+          #@company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+          if @company.try(:info_company)['hydra:member'][0]['company']['tradeName'].present?
+            @company_name = @company.try(:info_company)['hydra:member'][0]['company']['tradeName']
+          else
+            @company_name = @company.try(:info_company)['hydra:member'][0]['company']['legalName']
+          end
         else
           @company_name = @company.try(:name)
         end
@@ -1691,7 +1696,7 @@ class CompaniesController < ApplicationController
 
   end
 
-  def save_comment
+  def save_commentcompany_details
     comment_params = params[:comment]
     comment = Comment.new(comment: comment_params[:comment], user_id: current_user.id, assigned_to: comment_params[:assigned_to], company_id: comment_params[:company_id])
 
