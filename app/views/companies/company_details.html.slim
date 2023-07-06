@@ -304,78 +304,77 @@ javascript:
                 | Configuraciones
 
       .m-portlet__body
-        .m-section.mb-0
-          .d-inline-flex.col-md-12
-            .col-md-8
-              .btns-card.full-h
-                .subtitle-icon.d-flex.justify-content-center.align-items-center
-                  i.fa.fa-building.fa-lg.m--font-primary
-                h5.h5.subtitle = 'Detalles de solicitud'
-                - if (current_user.god? or current_user.credit_area? or current_user.promotion_area?)
-                  button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{nil}" data-companyid="#{@company.id}" data-process-status="#{nil}" data-analyst-id="#{nil}" data-factorcredit-id="#{nil}"
-                    i.fa.fa-plus.left.mr-10
-                    = "Nueva solicitud"
-                .m-section__content.table-responsive.max-h-card
-                  table.table.m-table.m-table--head-separator-brand.table-custom
-                    thead.thead-default.thead-custom
-                      tr style="text-align: center;"
-                        th
-                          | Fecha
-                        th
-                          | Analista
-                        th
-                          | Crédito
-                        th
-                          | Estatus de Proceso
-                        th
-                          | Archivos
-                        th
-                          | Acciones
-                      tbody
-                        - @requests.each do |request|
-                          tr valign="middle"
-                            td.align-vm
-                              = request.try(:created_at).strftime('%d/%m/%Y')
-                            td.align-vm
-                              = request.analist.try(:full_name)
-                            td.align-vm
-                              = request.factor_credit.try(:name).present? ? request.factor_credit.try(:name) : 'Sin asignar'
-                            td.align-vm
-                              = request.process_status.try(:name)
-                            td style="vertical-align:middle;"
-                              button.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action.mb-1.open-modal-file-request data-target="#m_modal_file_request" data-toggle="modal" type="button" data-id="#{request.id}" data-file="#{request.file_id}"
+        .m-section.d-flex.flex-wrap.flex-sm-row.flex-column.mb-0
+          .col-md-8.mb-30
+            .btns-card.full-h
+              .subtitle-icon.d-flex.justify-content-center.align-items-center
+                i.fa.fa-building.fa-lg.m--font-primary
+              h5.h5.subtitle = 'Detalles de solicitud'
+              - if (current_user.god? or current_user.credit_area? or current_user.promotion_area?)
+                button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal-request data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{nil}" data-companyid="#{@company.id}" data-process-status="#{nil}" data-analyst-id="#{nil}" data-factorcredit-id="#{nil}"
+                  i.fa.fa-plus.left.mr-10
+                  = "Nueva solicitud"
+              .m-section__content.table-responsive.max-h-card
+                table.table.m-table.m-table--head-separator-brand.table-custom
+                  thead.thead-default.thead-custom
+                    tr style="text-align: center;"
+                      th
+                        | Fecha
+                      th
+                        | Analista
+                      th
+                        | Crédito
+                      th
+                        | Estatus de Proceso
+                      th
+                        | Archivos
+                      th
+                        | Acciones
+                    tbody
+                      - @requests.each do |request|
+                        tr valign="middle"
+                          td.align-vm
+                            = request.try(:created_at).strftime('%d/%m/%Y')
+                          td.align-vm
+                            = request.analist.try(:full_name)
+                          td.align-vm
+                            = request.factor_credit.try(:name).present? ? request.factor_credit.try(:name) : 'Sin asignar'
+                          td.align-vm
+                            = request.process_status.try(:name)
+                          td style="vertical-align:middle;"
+                            button.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action.mb-1.open-modal-file-request data-target="#m_modal_file_request" data-toggle="modal" type="button" data-id="#{request.id}" data-file="#{request.file_id}"
+                              span
+                                i.fa.fa-file-pdf.mx-2
+                                span = "Subir"
+                            - if request.try(:file_id).present?
+                              a.btn.btn-danger.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action href="#{ENV['DOWNLOAD_FILES']}/#{request.try(:file_id)}/#{request.try(:file_name)}" target="_blank"
                                 span
-                                  i.fa.fa-file-pdf.mx-2
-                                  span = "Subir"
-                              - if request.try(:file_id).present?
-                                a.btn.btn-danger.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action href="#{ENV['DOWNLOAD_FILES']}/#{request.try(:file_id)}/#{request.try(:file_name)}" target="_blank"
-                                  span
-                                    i.fa.fa-eye.mx-2
-                                    span = "Ver"
-                            td
-                              .dropdown
-                                button#dropdownMenuButton.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
-                                  | Acciones
-                                .dropdown-menu aria-labelledby="dropdownMenuButton"
-                                  a.dropdown-item.open-modal-request href="#m_modal_request_details" data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-request-file="#{request.file_id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
-                                    | Detalles
-                                  a.dropdown-item target="_blank" href="/request_comments/#{request.id}"
-                                    | Comentarios
-                                  - if @company.income_calendar_details.present? or @company.balance_calendar_details.present?
-                                    a.dropdown-item target="_blank" href="#{dictamen_report_path(@company.id, request.id, format: :pdf)}"
-                                      | Dictamen
-            .col-md-4
-              - if @can_assign_period
-                .btns-card
-                  .subtitle-icon.d-flex.justify-content-center.align-items-center
-                    i.fa.fa-calendar.fa-lg.m--font-primary
-                  h5.h5.subtitle = "Asignación de periodos"
-                  - if @company.status_company.key == 'aprobada' and @company.try(:complete)
-                    button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_periods" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
-                      = "Asignar periodos"
-                  - else
-                    span.text-center
-                      | Es necesario validar la solicitud.
+                                  i.fa.fa-eye.mx-2
+                                  span = "Ver"
+                          td
+                            .dropdown
+                              button#dropdownMenuButton.btn.btn-primary.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+                                | Acciones
+                              .dropdown-menu aria-labelledby="dropdownMenuButton"
+                                a.dropdown-item.open-modal-request href="#m_modal_request_details" data-target="#m_modal_request_details" data-toggle="modal" type="button" data-id="#{request.id}" data-companyid="#{@company.id}" data-request-file="#{request.file_id}" data-process-status="#{request.process_status.to_json}" data-analyst-id="#{request.analyst_id}" data-factorcredit-id="#{request.factor_credit_id}"
+                                  | Detalles
+                                a.dropdown-item target="_blank" href="/request_comments/#{request.id}"
+                                  | Comentarios
+                                - if @company.income_calendar_details.present? or @company.balance_calendar_details.present?
+                                  a.dropdown-item target="_blank" href="#{dictamen_report_path(@company.id, request.id, format: :pdf)}"
+                                    | Dictamen
+          .col-md-4.mb-30
+            - if @can_assign_period
+              .btns-card
+                .subtitle-icon.d-flex.justify-content-center.align-items-center
+                  i.fa.fa-calendar.fa-lg.m--font-primary
+                h5.h5.subtitle = "Asignación de periodos"
+                - if @company.status_company.key == 'aprobada' and @company.try(:complete)
+                  button.btn.btn-outline-primary.m-btn.m-btn--outline-2x.btn-block.my-2.open-modal1 data-target="#m_modal_periods" data-toggle="modal" type="button" data-id="#{@company.id}" data-calendars="#{@company.company_calendar_details.where(assign_to: 'balance_sheet').pluck(:calendar_id)}" data-approved="true"
+                    = "Asignar periodos"
+                - else
+                  span.text-center
+                    | Es necesario validar la solicitud.
 
             - unless @company.try(:info_company).present? and @company.try(:income_statment).present? and @company.try(:balance_sheet).present? and @company.try(:credit_bureaus).last.try(:bureau_info).present? and @company.try(:credit_bureaus).last.try(:bureau_report).present? and company_have_credit_bureau(@credit_bureau)
               .btns-card.mt-30
@@ -403,7 +402,7 @@ javascript:
             .m-portlet__head-title
               h3.m-portlet__head-text
                 | Tablas de información
-        .m-portlet__body
+        .m-portlet__body style="overflow: scroll;"
           .m-section.mb-0 style="min-width: 1050px; overflow: scroll;"
             .col-xl-12.my-4
               ul.nav.select_form_switch role="tablist"
