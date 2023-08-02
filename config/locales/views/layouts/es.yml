@@ -32,6 +32,7 @@ es:
     top_bar:
       account: Cuenta
       profile: Perfil
+      manual: Manual de usuario
       change_password: Cambiar contraseña
       log_out: Salir
     header:
