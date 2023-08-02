@@ -123,7 +123,7 @@
                       th scope="row" = event_request.try(:request).try(:company).try(:rfc)
                       td = event_request.try(:request).try(:factor_credit).try(:name)
                       td
-                        a.btn.btn-block.btn-info target="_blank" href="#{dictamen_report_path(event_request.try(:request).company_id, event_request.id, format: :pdf)}"
+                        a.btn.btn-block.btn-info target="_blank" href="#{dictamen_report_path(event_request.try(:request).company_id, event_request.request.id, format: :pdf)}"
                           | Dictamen
                       td
                         a.btn.btn-danger.m-btn.btn-sm.m-btn.m-btn--icon.btn-block.btn-action href="#{ENV['DOWNLOAD_FILES']}/#{event_request.try(:request).try(:file_id)}/#{event_request.try(:request).try(:file_name)}" target="_blank"
