@@ -72,6 +72,19 @@ header#m_header.m-grid__item.m-header m-minimize-mobile-offset="200" m-minimize-
                               span.m-nav__link-title
                                 span.m-nav__link-wrap
                                   span.m-nav__link-text = t('.profile')
+                          li.m-nav__item#manual
+                            - if @user.enterprise?
+                              = link_to '/Manual_de_Usuario_FG_compañia_Autorizada.pdf',target: '_blank', class: 'm-nav__link' do
+                                i.m-nav__link-icon.flaticon-book
+                                span.m-nav__link-title
+                                  span.m-nav__link-wrap
+                                    span.m-nav__link-text = t('.manual')
+                            - else
+                              = link_to '/Manual_de_Usuario_FG_Admin.pdf', target: '_blank', class: 'm-nav__link' do
+                                i.m-nav__link-icon.flaticon-book
+                                span.m-nav__link-title
+                                  span.m-nav__link-wrap
+                                    span.m-nav__link-text = t('.manual')
                           / li.m-nav__item
                             = link_to change_password_path, class: 'm-nav__link' do
                               i.m-nav__link-icon.flaticon-lock
