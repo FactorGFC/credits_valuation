@@ -439,6 +439,7 @@ class CompaniesController < ApplicationController
 
       if @company.try(:client_type) == 'PF'
 
+
 =begin
         if @report_result&.dig('response', 'return', 'Personas','Persona')
           @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
@@ -447,8 +448,13 @@ class CompaniesController < ApplicationController
         end
 =end
 
-        if @report_result['response'].present?
-          if @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito'].present?
+        #if @report_result && @report_result['response'] && @report_result['response']['return'] && @report_result['response']['return']['Personas']
+
+
+          #if @report_result['response'].present?
+        if @report_result && @report_result['response'] && @report_result['response']['return'] && @report_result['response']['return']['Personas']
+
+            if @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito'].present?
             @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
           else
             @score = 0
