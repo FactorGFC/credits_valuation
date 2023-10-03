@@ -298,9 +298,9 @@ class CompaniesController < ApplicationController
               @bureau_report = BuroCredito.get_report_by_id 540288 #4450 60368
             else
               @bureau_report = BuroCredito.get_buro_report(@buro.first['id'], @company.info_company)['results'].try(:first)
-              Rails.logger.info "@bureau_report -----------------------------------------------------------------------------"
-              Rails.logger.info @bureau_report
             end
+            Rails.logger.info "@bureau_report -----------------------------------------------------------------------------"
+            Rails.logger.info @bureau_report
 
             if @bureau_report.present?
               if @bureau_report['status'] != 'SUCCESS'
