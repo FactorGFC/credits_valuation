@@ -684,7 +684,6 @@ javascript:
                                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                     - if @credit_bureau.present?
                                       - if @report_result['response'].present?
-                                        = @report_result
                                         - if @report_result && @report_result['response'] && @report_result['response']['return'] && @report_result['response']['return']['Personas']['Persona'][0]['Nombre'].present?
                                           .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
                                             strong
