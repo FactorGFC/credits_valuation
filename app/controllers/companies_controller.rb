@@ -284,8 +284,9 @@ class CompaniesController < ApplicationController
     user_params = params[:user]
     @error = false
 
-    respond_to do |format|
-      if @company.buro_confirmation_code.to_s === params[:confirmation_code].to_s
+
+    if @company.buro_confirmation_code.to_s === params[:confirmation_code].to_s
+      respond_to do |format|
         @error = true
         @buro = create_buro @company.info_company, @user.try(:phone)
         Rails.logger.info "@buro ---------------------------------------------------------------------------------------------------"
@@ -350,8 +351,10 @@ class CompaniesController < ApplicationController
         else
           format.json { render json: { error: true, message: '(5)Hubo un error favor volver a intentar' } }
         end
-      else
-        format.json { render json: { error: true, message: 'Error de moffin - 9' } }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: { error: true, message: 'Error de moffin - 100' } }
       end
     end
   end
