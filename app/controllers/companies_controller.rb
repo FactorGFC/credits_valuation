@@ -298,7 +298,6 @@ class CompaniesController < ApplicationController
             elsif @user.try(:company).try(:rfc) == 'POMV850113GYA'
               @bureau_report = BuroCredito.get_report_by_id 540288 #4450 60368
             else
-
               @bureau_report = BuroCredito.get_buro_report(@buro.first['id'], @company.info_company)['results'].try(:first)
             end
             Rails.logger.info "@bureau_report -----------------------------------------------------------------------------"
@@ -311,33 +310,6 @@ class CompaniesController < ApplicationController
                 CreditRequestMailer.credit_bureau_error(@company, @bureau_report).deliver_now
                 @error = true
                 format.json { render json: { error: true, message: '(Error de moffin status: )' + @bureau_report['status'] } }
-              else
-                Rails.logger.info "else de success -----------------------------------------------------------------------------"
-                Rails.logger.info @bureau_report['status']
-                @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @company.info_company
-                if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
-                  @clients = get_clients_sat @user.try(:company)
-
-                  if @clients
-                    @providers = get_providers_sat @user.try(:company)
-                    if @providers
-                      @financial_institutions = create_financial_institutions @bureau_report, @company.id
-                      if @company.update(step_two: true) and @user.update(phone: user_params[:phone])
-                        format.html { redirect_to '/request_steps', notice: "Datos actualizados correctamente." }
-                        format.json { render :show, status: :ok, location: @company }
-                      else
-                        format.html { render '/request_steps', status: :unprocessable_entity }
-                        format.json { render json: @company.errors, status: :unprocessable_entity }
-                      end
-                    else
-                      format.json { render json: { error: true, message: '(1)Hubo un error favor volver a intentar' } }
-                    end
-                  else
-                    format.json { render json: { error: true, message: '(2)Hubo un error favor volver a intentar' } }
-                  end
-                else
-                  format.json { render json: { error: true, message: '(3)Hubo un error favor volver a intentar' } }
-                end
               end
             else
               Rails.logger.info "@ no present -----------------------------------------------------------------------------"
@@ -347,6 +319,32 @@ class CompaniesController < ApplicationController
               format.json { render json: { error: true, message: '(Error de buro - moffin 2)Hubo un error favor volver a intentar' } }
             end
 
+            unless @error
+              @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @company.info_company
+              if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
+                @clients = get_clients_sat @user.try(:company)
+
+                if @clients
+                  @providers = get_providers_sat @user.try(:company)
+                  if @providers
+                    @financial_institutions = create_financial_institutions @bureau_report, @company.id
+                    if @company.update(step_two: true) and @user.update(phone: user_params[:phone])
+                      format.html { redirect_to '/request_steps', notice: "Datos actualizados correctamente." }
+                      format.json { render :show, status: :ok, location: @company }
+                    else
+                      format.html { render '/request_steps', status: :unprocessable_entity }
+                      format.json { render json: @company.errors, status: :unprocessable_entity }
+                    end
+                  else
+                    format.json { render json: { error: true, message: '(1)Hubo un error favor volver a intentar' } }
+                  end
+                else
+                  format.json { render json: { error: true, message: '(2)Hubo un error favor volver a intentar' } }
+                end
+              else
+                format.json { render json: { error: true, message: '(3)Hubo un error favor volver a intentar' } }
+              end
+            end
           else
             format.json { render json: { error: true, message: '(4)Hubo un error favor volver a intentar' } }
           end
@@ -441,21 +439,20 @@ class CompaniesController < ApplicationController
 
       if @company.try(:client_type) == 'PF'
 
+=begin
         if @report_result&.dig('response', 'return', 'Personas','Persona')
           @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
         else
           @score = 0
         end
+=end
 
-
-=begin
         if @report_result['response'].present?
           if @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito'].present?
             @score = @report_result['response']['return']['Personas']['Persona'][0]['ScoreBuroCredito']['ScoreBC'][0]['ValorScore'].to_i
           else
             @score = 0
           end
-=end
         else
           @score = 0
         end
