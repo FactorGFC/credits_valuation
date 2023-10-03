@@ -730,7 +730,7 @@ javascript:
                                   h3.m-portlet__head-text
                                     | Resumen de Créditos (M.N.)
                                   - if @credit_bureau.bureau_report.present?
-                                    - if @report_result['response'].present? && @report_result['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
+                                    - if @report_result['response'].present? && @report_result['response']['return'] && @report_result['response']['return']['Personas']['Persona'][0]['Cuentas'].present?
                                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                                         .m-section
                                           .m-section__content
