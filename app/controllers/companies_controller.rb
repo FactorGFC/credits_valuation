@@ -284,8 +284,8 @@ class CompaniesController < ApplicationController
     user_params = params[:user]
     @error = false
 
-    if @company.buro_confirmation_code.to_s === params[:confirmation_code].to_s
-      respond_to do |format|
+    respond_to do |format|
+      if @company.buro_confirmation_code.to_s === params[:confirmation_code].to_s
         @error = true
         @buro = create_buro @company.info_company, @user.try(:phone)
         Rails.logger.info "@buro ---------------------------------------------------------------------------------------------------"
@@ -297,7 +297,7 @@ class CompaniesController < ApplicationController
             elsif @user.try(:company).try(:rfc) == 'POMV850113GYA'
               @bureau_report = BuroCredito.get_report_by_id 540288 #4450 60368
             else
-              @bureau_report = BuroCredito.get_buro_report( @buro.first['id'], @company.info_company)['results'].try(:first)
+              @bureau_report = BuroCredito.get_buro_report(@buro.first['id'], @company.info_company)['results'].try(:first)
               Rails.logger.info "@bureau_report -----------------------------------------------------------------------------"
               Rails.logger.info @bureau_report
             end
@@ -306,14 +306,14 @@ class CompaniesController < ApplicationController
               if @bureau_report['status'] != 'SUCCESS'
                 Rails.logger.info "@status -----------------------------------------------------------------------------"
                 Rails.logger.info @bureau_report
-                CreditRequestMailer.credit_bureau_error(@company,@bureau_report).deliver_now
+                CreditRequestMailer.credit_bureau_error(@company, @bureau_report).deliver_now
                 @error = true
                 format.json { render json: { error: true, message: '(Error de moffin status: )' + @bureau_report['status'] } }
               end
             else
               Rails.logger.info "@ no present -----------------------------------------------------------------------------"
               Rails.logger.info @bureau_report
-              CreditRequestMailer.credit_bureau_error(@company,@bureau_report).deliver_now
+              CreditRequestMailer.credit_bureau_error(@company, @bureau_report).deliver_now
               @error = true
               format.json { render json: { error: true, message: '(Error de buro - moffin 2)Hubo un error favor volver a intentar' } }
             end
@@ -350,9 +350,9 @@ class CompaniesController < ApplicationController
         else
           format.json { render json: { error: true, message: '(5)Hubo un error favor volver a intentar' } }
         end
+      else
+        format.json { render json: { error: true, message: 'Error de moffin - 9' } }
       end
-    else
-      format.json { render json: { error: true, message: 'Código no coincide moffin - 9' } }
     end
   end
 
