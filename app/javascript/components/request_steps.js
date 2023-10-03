@@ -191,7 +191,7 @@ $(document).on('turbolinks:load', function () {
         //console.log("Something went wrong")
         swal({
             title: "!Ups!",
-            text: "El código no coincide, intenta de nuevo.",
+            text: "Error de moffin, intenta de nuevo.",
             icon: 'warning',
             button: I18n.t('messages.ok')
         });
