@@ -294,23 +294,28 @@ class CompaniesController < ApplicationController
           if @company.update(buro_id: @buro.first['id'])
             if @user.try(:company).try(:rfc) == 'FGL190102DH6'
               @bureau_report = BuroCredito.get_report_by_id 97831 #4450 60368
+            elsif @user.try(:company).try(:rfc) == 'POMV850113GYA'
+              @bureau_report = BuroCredito.get_report_by_id 54298 #4450 60368
             else
-              @bureau_report = BuroCredito.get_buro_report @buro.first['id'], @company.info_company
+              @bureau_report = BuroCredito.get_buro_report( @buro.first['id'], @company.info_company)['results'].try(:first)
               Rails.logger.info "@bureau_report -----------------------------------------------------------------------------"
               Rails.logger.info @bureau_report
             end
 
-            if @bureau_report['results'].present?
-              if @bureau_report['results'].first['status'] != 'SUCCESS'
+            if @bureau_report.present?
+              if @bureau_report['status'] != 'SUCCESS'
+                Rails.logger.info "@status -----------------------------------------------------------------------------"
+                Rails.logger.info @bureau_report
                 CreditRequestMailer.credit_bureau_error(@company,@bureau_report).deliver_now
                 @error = true
-                format.json { render json: { error: true, message: '(Error de buro 1)Hubo un error favor volver a intentar' } }
-                break
+                format.json { render json: { error: true, message: '(Error de moffin status: )' + @bureau_report['results'].first['status'] } }
               end
             else
+              Rails.logger.info "@ no present -----------------------------------------------------------------------------"
+              Rails.logger.info @bureau_report
               CreditRequestMailer.credit_bureau_error(@company,@bureau_report).deliver_now
               @error = true
-              format.json { render json: { error: true, message: '(Error de buro 2)Hubo un error favor volver a intentar' } }
+              format.json { render json: { error: true, message: '(Error de buro - moffin 2)Hubo un error favor volver a intentar' } }
             end
 
             unless @error
