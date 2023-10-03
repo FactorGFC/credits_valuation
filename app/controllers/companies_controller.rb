@@ -2159,7 +2159,7 @@ class CompaniesController < ApplicationController
 
     if info_sat['hydra:member'][0]['company'].present?
       account_type = "PM"
-      trade_name = info_sat['hydra:member'][0]['company']['tradeName']
+      trade_name = info_sat['hydra:member'][0]['company']['legalName']
       basic_rfc = rfc.first(9)
 
       data = [accountType: account_type, tradeName: trade_name, rfc: rfc, basicRFC: basic_rfc, address: address,
