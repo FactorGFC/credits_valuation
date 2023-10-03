@@ -295,7 +295,7 @@ class CompaniesController < ApplicationController
             if @user.try(:company).try(:rfc) == 'FGL190102DH6'
               @bureau_report = BuroCredito.get_report_by_id 97831 #4450 60368
             elsif @user.try(:company).try(:rfc) == 'POMV850113GYA'
-              @bureau_report = BuroCredito.get_report_by_id 54298 #4450 60368
+              @bureau_report = BuroCredito.get_report_by_id 540288 #4450 60368
             else
               @bureau_report = BuroCredito.get_buro_report( @buro.first['id'], @company.info_company)['results'].try(:first)
               Rails.logger.info "@bureau_report -----------------------------------------------------------------------------"
@@ -308,7 +308,7 @@ class CompaniesController < ApplicationController
                 Rails.logger.info @bureau_report
                 CreditRequestMailer.credit_bureau_error(@company,@bureau_report).deliver_now
                 @error = true
-                format.json { render json: { error: true, message: '(Error de moffin status: )' + @bureau_report['results'].first['status'] } }
+                format.json { render json: { error: true, message: '(Error de moffin status: )' + @bureau_report['status'] } }
               end
             else
               Rails.logger.info "@ no present -----------------------------------------------------------------------------"
@@ -352,7 +352,7 @@ class CompaniesController < ApplicationController
         end
       end
     else
-      format.json { render json: { error: true, message: 'Código no coincide' } }
+      format.json { render json: { error: true, message: 'Código no coincide moffin - 9' } }
     end
   end
 
