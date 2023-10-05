@@ -48,7 +48,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               - @company.main_product_list.each do |e|
                 span.tag
                   = "#{e}"
-            -else
+            - else
               span = "- "
           .col-md-12.d-inline-flex
             .d-flex.flex-column
@@ -529,7 +529,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               .page-breaker
                 h4.mt-5 = "2.1.8 Información de HAWK"
                 - if @credit_bureau.bureau_report.present?
-                  - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD'].present?
+                  - if @credit_bureau['bureau_report']['response']['return']['Personas']['Persona'][0]['HawkAlertBD'].present?
                     .page-breaker
                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo.mt-2
                         .m-stack__item.header-info-company.m-stack__item--left.m-stack__item--middle
@@ -551,7 +551,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                                     | Mensaje
 
                               tbody
-                                - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk|
+                                - @credit_bureau['bureau_report']['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk|
                                   - if hawk['CodigoClave'] == '010'
                                     tr
                                       td
@@ -583,7 +583,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                                   th
                                     | Mensaje
                               tbody
-                                - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk|
+                                - @credit_bureau['bureau_report']['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk|
                                   - if hawk['CodigoClave'] == '850' || hawk['CodigoClave'] == '860'
                                     tr
                                       td
@@ -615,8 +615,8 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                                   th
                                     | Mensaje
                               tbody
-                                - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD'].present?
-                                  - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk|
+                                - if @credit_bureau['bureau_report']['response']['return']['Personas']['Persona'][0]['HawkAlertBD'].present?
+                                  - @credit_bureau['bureau_report']['response']['return']['Personas']['Persona'][0]['HawkAlertBD']['HawkAlertBD'].each_with_index do |hawk|
                                     - if hawk['CodigoClave'] == '990'
                                       tr
                                         td
@@ -627,8 +627,8 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                                           = hawk['TipoInstitucion']
                                         td
                                           = hawk['Mensaje']
-                                - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertConsulta'].present?
-                                  - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['HawkAlertConsulta']['HawkAlertC'].each_with_index do |hawk|
+                                - if @credit_bureau['bureau_report']['response']['return']['Personas']['Persona'][0]['HawkAlertConsulta'].present?
+                                  - @credit_bureau['bureau_report']['response']['return']['Personas']['Persona'][0]['HawkAlertConsulta']['HawkAlertC'].each_with_index do |hawk|
                                     - if hawk['CodigoClave'] == '990'
                                       tr
                                         td
@@ -660,7 +660,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               .page-breaker
                 h4.mt-5 = "2.1.9 Detalle de las consultas"
                 - if @credit_bureau.bureau_report.present?
-                  - if @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['ConsultasEfectuadas'].present?
+                  - if @credit_bureau['bureau_report']['response']['return']['Personas']['Persona'][0]['ConsultasEfectuadas'].present?
                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                       .m-section
                         .m-section__content
@@ -679,7 +679,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                                   | Importe
 
                             tbody
-                              - @credit_bureau['bureau_report']['results'][0]['response']['return']['Personas']['Persona'][0]['ConsultasEfectuadas']['ConsultaEfectuada'].each_with_index do |consulta|
+                              - @credit_bureau['bureau_report']['response']['return']['Personas']['Persona'][0]['ConsultasEfectuadas']['ConsultaEfectuada'].each_with_index do |consulta|
                                 tr
                                   td
                                     = consulta['NombreOtorgante']
@@ -1023,7 +1023,8 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               .page-breaker
                 h4.mt-5 = "2.1.6 Consultas"
                 - if false
-                - else
+                -
+                else
                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                     .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
                       .m-alert__icon
@@ -1065,14 +1066,14 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                             tbody
                               tr
                                 th
-                                  = format_date @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['hawkHr']['fechaMensajeHawk']
+                                  = format_date @credit_bureau['bureau_report']['response']['respuesta']['hawkHr']['fechaMensajeHawk']
                                 th
-                                  = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['hawkHr']['codigoHawk']
-                                th
-                                th
+                                  = @credit_bureau['bureau_report']['response']['respuesta']['hawkHr']['codigoHawk']
                                 th
                                 th
-                                  = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['hawkHr']['descripcionPrevencionHawk']
+                                th
+                                th
+                                  = @credit_bureau['bureau_report']['response']['respuesta']['hawkHr']['descripcionPrevencionHawk']
                                 th
                                   | COINCIDENCIA POR EXPEDIENTE
                   - else
@@ -1111,12 +1112,11 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                             tbody
                               tr
                                 th
-                                  = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['rfc']
+                                  = @credit_bureau['bureau_report']['response']['respuesta']['accionista']['rfc']
                                 th
-                                  = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['nombreAccionista'] + ' ' + @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['segundoNombre'] + ' ' + @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['apellidoPaterno'] + ' ' + @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['apellidoMaterno']
+                                  = @credit_bureau['bureau_report']['response']['respuesta']['accionista']['nombreAccionista'] + ' ' + @credit_bureau['bureau_report']['response']['respuesta']['accionista']['segundoNombre'] + ' ' + @credit_bureau['bureau_report']['response']['respuesta']['accionista']['apellidoPaterno'] + ' ' + @credit_bureau['bureau_report']['response']['respuesta']['accionista']['apellidoMaterno']
                                 th
-                                  = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['porcentaje'] + '%'
-
+                                  = @credit_bureau['bureau_report']['response']['respuesta']['accionista']['porcentaje'] + '%'
 
                   - else
                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
@@ -1138,107 +1138,100 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               .page-breaker
                 h4.mt-5 = "2.1.9 Créditos activos"
                 - if @credit_bureau.bureau_report.present?
-                  - if @credit_bureau['bureau_report']['results'].present?
-                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                      .m-section
-                        .m-section__content
-                          table.table style="display: block;overflow-x: auto;"
-                            thead.thead-default
-                              tr
-                                th
-                                  | Contrato
-                                th
-                                  | Tipo de Otorgante
-                                th
-                                  | Tipo de Crédito
-                                th
-                                  | Moneda
-                                th
-                                  | Otorgado en
-                                th
-                                  | Plazo
-                                th
-                                  | Original
-                                th
-                                  | Vigente
-                                th
-                                  | 1-29 días
-                                th
-                                  | 30-59 días
-                                th
-                                  | 60-89 días
-                                th
-                                  | 90-119 días
-                                th
-                                  | 120-179 días
-                                th
-                                  | 180+ días
-                                th
-                                  | Días de atraso
-                                th
-                                  | Historico de Pagos Claves de Observación
-                                th
-                                  | Actualizado en
 
-                            tbody
-                              - @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['creditoFinanciero'].each do |creditos|
-                                - unless creditos['fechaCierre'].present?
-                                  tr
-                                    th
-                                      = creditos['numeroCuenta']
-                                    th
-                                      = creditos['tipoUsuario']
-                                    th
-                                      = I18n.t("credits_type.#{creditos['tipoCredito']}")
-                                    th
-                                      = I18n.t("moneda.#{creditos['moneda']}") + '$' + creditos['tipoCambio']
-                                    th
-                                      = creditos['apertura']
-                                    th
-                                      = creditos['plazo']
-                                    th
-                                      = creditos['saldoInicial']
-                                    th
-                                      = creditos['saldoVigente']
-                                    th
-                                      = creditos['saldoVencidoDe1a29Dias']
-                                    th
-                                      = creditos['saldoVencidoDe30a59Dias']
-                                    th
-                                      = creditos['saldoVencidoDe60a89Dias']
-                                    th
-                                      = creditos['saldoVencidoDe90a119Dias']
-                                    th
-                                      = creditos['saldoVencidoDe120a179Dias']
-                                    th
-                                      = creditos['saldoVencidoDe180DiasOMas']
-                                    th
-                                      = creditos['atrasoMayor']
-                                    th
-                                      = creditos['historicoPagos']
-                                    th
-                                      = format_date_updated_at creditos['ultimoPeriodoActualizado']
-
-                  - else
                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                    .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
-                      .m-alert__icon
-                        = wicked_pdf_image_tag asset_url('icons/exclamation.png'), size: "30x30"
-                      .m-alert__text
-                        strong
-                          | Aún no se encuentran créditos activos.
+                    .m-section
+                      .m-section__content
+                        table.table style="display: block;overflow-x: auto;"
+                          thead.thead-default
+                            tr
+                              th
+                                | Contrato
+                              th
+                                | Tipo de Otorgante
+                              th
+                                | Tipo de Crédito
+                              th
+                                | Moneda
+                              th
+                                | Otorgado en
+                              th
+                                | Plazo
+                              th
+                                | Original
+                              th
+                                | Vigente
+                              th
+                                | 1-29 días
+                              th
+                                | 30-59 días
+                              th
+                                | 60-89 días
+                              th
+                                | 90-119 días
+                              th
+                                | 120-179 días
+                              th
+                                | 180+ días
+                              th
+                                | Días de atraso
+                              th
+                                | Historico de Pagos Claves de Observación
+                              th
+                                | Actualizado en
+
+                          tbody
+                            - @credit_bureau['bureau_report']['response']['respuesta']['creditoFinanciero'].each do |creditos|
+                              - unless creditos['fechaCierre'].present?
+                                tr
+                                  th
+                                    = creditos['numeroCuenta']
+                                  th
+                                    = creditos['tipoUsuario']
+                                  th
+                                    = I18n.t("credits_type.#{creditos['tipoCredito']}")
+                                  th
+                                    = I18n.t("moneda.#{creditos['moneda']}") + '$' + creditos['tipoCambio']
+                                  th
+                                    = creditos['apertura']
+                                  th
+                                    = creditos['plazo']
+                                  th
+                                    = creditos['saldoInicial']
+                                  th
+                                    = creditos['saldoVigente']
+                                  th
+                                    = creditos['saldoVencidoDe1a29Dias']
+                                  th
+                                    = creditos['saldoVencidoDe30a59Dias']
+                                  th
+                                    = creditos['saldoVencidoDe60a89Dias']
+                                  th
+                                    = creditos['saldoVencidoDe90a119Dias']
+                                  th
+                                    = creditos['saldoVencidoDe120a179Dias']
+                                  th
+                                    = creditos['saldoVencidoDe180DiasOMas']
+                                  th
+                                    = creditos['atrasoMayor']
+                                  th
+                                    = creditos['historicoPagos']
+                                  th
+                                    = format_date_updated_at creditos['ultimoPeriodoActualizado']
+
+
                 - else
-                  .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                    .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
-                      .m-alert__icon
-                        = wicked_pdf_image_tag asset_url('icons/exclamation.png'), size: "30x30"
-                      .m-alert__text
-                        strong
-                          | Aún no se créditos activos
+                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                  .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                    .m-alert__icon
+                      = wicked_pdf_image_tag asset_url('icons/exclamation.png'), size: "30x30"
+                    .m-alert__text
+                      strong
+                        | Aún no se créditos activos
               .page-breaker
                 h4.mt-5 = "2.1.10 Créditos liquidados"
                 - if @credit_bureau.bureau_report.present?
-                  - if @credit_bureau['bureau_report']['results'].present?
+                  - if @credit_bureau['bureau_report'].present?
                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                       .m-section
                         .m-section__content
@@ -1277,7 +1270,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                                   | Actualizado en
 
                             tbody
-                              - @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['creditoFinanciero'].each do |creditos|
+                              - @credit_bureau['bureau_report']['response']['respuesta']['creditoFinanciero'].each do |creditos|
                                 - if creditos['fechaCierre'].present?
                                   tr
                                     th
@@ -2577,7 +2570,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                           = number_to_currency(cash_flow[1].try(:first)['amount'].present? ? cash_flow[1].try(:first)['amount'] : 0)
                         td
                           - if cash_flow[1].count > 1
-                            =  number_to_currency(cash_flow[1].try(:last)['amount'].present? ? cash_flow[1].try(:last)['amount'] : 0)
+                            = number_to_currency(cash_flow[1].try(:last)['amount'].present? ? cash_flow[1].try(:last)['amount'] : 0)
                           - else
                             = number_to_currency 0
                         td

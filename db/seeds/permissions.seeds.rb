@@ -97,7 +97,11 @@ after :initialize_permissions do
                            {name: 'Ver pdf de buro de credito', description: 'Permite ver el pdf del Buro de credito', action: 'send_buro_confirm_code', controller: 'Companies'},
 
 
-                           {name: 'crear usuario de sat', description: 'Permite crear el usuario del sat', action: 'create_sat_user', controller: 'Home'}
+                           {name: 'crear usuario de sat', description: 'Permite crear el usuario del sat', action: 'create_sat_user', controller: 'Home'},
+
+                           #4-OCtubre-2023
+                           {name: "Ver pdf de buro de credito", description: "Permite ver el pdf del Buro de credito", action: "bureau_report", controller: "Companies"}
+
                        ])
   rescue StandardError => e
     p Permission.first
@@ -107,4 +111,3 @@ after :initialize_permissions do
     p "Error: #{e}"
   end
 end
-

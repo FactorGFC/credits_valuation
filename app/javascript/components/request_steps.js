@@ -175,8 +175,6 @@ $(document).on('turbolinks:load', function () {
 
     $('#confirm_data_form').on('ajax:success', function(event){
         const [data, status, xhr] = event.detail
-        console.log("event.detail-------------");
-        console.log(event.detail);
         if(event.detail[0].error){
             swal({
                 title: "!Ups!",

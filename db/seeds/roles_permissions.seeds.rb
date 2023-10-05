@@ -117,5 +117,7 @@ after :permissions do
                             #Permisos 22 Junio
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Subir documento a request en detalles de solicitud').id},
 
+                            #Permisos 4 Oct 2023
+                            {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Ver pdf de buro de credito').id},
                           ])
 end

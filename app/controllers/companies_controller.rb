@@ -1719,7 +1719,7 @@ class CompaniesController < ApplicationController
 
   end
 
-  def save_commentcompany_details
+  def save_comment
     comment_params = params[:comment]
     comment = Comment.new(comment: comment_params[:comment], user_id: current_user.id, assigned_to: comment_params[:assigned_to], company_id: comment_params[:company_id])
 

@@ -4,7 +4,7 @@ class CreditRequestMailer < ApplicationMailer
   def new_credit_request_email
     @request_data = params[:request_data]
     @company      = params[:company]
-    mail(to: ["#{@request_data[:user][:email]}","alexrdgz03@gmail.com","vponce@uach.mx"], subject: "¡Recibimos tu solicitud de registro!")
+    mail(to: ["#{@request_data[:user][:email]}","alexrdgz03@gmail.com","vponce@uach.mx", "bequie.guzman.r@gmail.com"], subject: "¡Recibimos tu solicitud de registro!")
     @company.update(welcome_message: true)
   end
 
