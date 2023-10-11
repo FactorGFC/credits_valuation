@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import I18n from 'i18n-js';
+import swal from 'sweetalert';
 import 'javascripts/i18n/translations';
 I18n.locale = I18n.locale;
 import Rails from '@rails/ujs';
@@ -229,7 +230,7 @@ $(document).on('turbolinks:load', function () {
         const otros_gastos_ing_val  = $(`[name="${otros_gastos_ing}"]`).val();
         const utilidad_antes_imp    = $(`[name="${utilidad_ai}"]`);
 
-        utilidad_antes_imp.val(parseFloat(utilidad_op_val) - parseFloat(resultado_fin_val) - parseFloat(otros_gastos_ing_val)).change();
+        utilidad_antes_imp.val(parseFloat(utilidad_op_val) + parseFloat(resultado_fin_val) + parseFloat(otros_gastos_ing_val)).change();
     };
 
     window.calculateNetIncome = function(utilidad_ai, isr, ptu, participacion_sub, utilidad_neta){
@@ -241,7 +242,37 @@ $(document).on('turbolinks:load', function () {
 
         ut_neta.val(parseFloat(utilidad_ai_val) - parseFloat(isr_val) - parseFloat(ptu_val) - parseFloat(participacion_sub_val)).change();
     };
-    
+
+
+    window.calculateTotalActivo = function(caja, clientes, inventarios, otros_activos_circ, terrenos, maquinaria, dep_acumulada, otros_act_fijos, cargos_dif, total_act){
+        const caja_val                  = $(`[name="${caja}"]`).val();
+        const clientes_val              = $(`[name="${clientes}"]`).val();
+        const inventarios_val           = $(`[name="${inventarios}"]`).val();
+        const otros_activos_circ_val    = $(`[name="${otros_activos_circ}"]`).val();
+        const terrenos_val              = $(`[name="${terrenos}"]`).val();
+        const maquinaria_val            = $(`[name="${maquinaria}"]`).val();
+        const dep_acumulada_val         = $(`[name="${dep_acumulada}"]`).val();
+        const otros_act_fijos_val       = $(`[name="${otros_act_fijos}"]`).val();
+        const cargos_dif_val            = $(`[name="${cargos_dif}"]`).val();
+        const total_act_field           = $(`[name="${total_act}"]`);
+
+        total_act_field.val(parseFloat(caja_val) + parseFloat(clientes_val) + parseFloat(inventarios_val) + parseFloat(otros_activos_circ_val) + parseFloat(terrenos_val) + parseFloat(maquinaria_val) + parseFloat(dep_acumulada_val) + parseFloat(otros_act_fijos_val) + parseFloat(cargos_dif_val)).change();
+    };
+
+    window.calculateTotalPasivo = function(proveedores, contribuciones_pp, anticipo, otros_pas, capital_soc, utilidad_pa, utilidad_pe, otras_cuentas, total_pas){
+        const proveedores_val       = $(`[name="${proveedores}"]`).val();
+        const contribuciones_pp_val = $(`[name="${contribuciones_pp}"]`).val();
+        const anticipo_val          = $(`[name="${anticipo}"]`).val();
+        const otros_pas_val         = $(`[name="${otros_pas}"]`).val();
+        const capital_soc_val       = $(`[name="${capital_soc}"]`).val();
+        const utilidad_pa_val       = $(`[name="${utilidad_pa}"]`).val();
+        const utilidad_pe_val       = $(`[name="${utilidad_pe}"]`).val();
+        const otras_cuentas_val     = $(`[name="${otras_cuentas}"]`).val();
+        const total_pas_field       = $(`[name="${total_pas}"]`);
+
+        total_pas_field.val(parseFloat(proveedores_val) + parseFloat(contribuciones_pp_val) + parseFloat(anticipo_val) + parseFloat(otros_pas_val) + parseFloat(capital_soc_val) + parseFloat(utilidad_pa_val) + parseFloat(utilidad_pe_val) + parseFloat(otras_cuentas_val)).change();
+    };
+
 
     window.validateDataCompany = function(){
         var name_id = document.getElementById('name_id');
@@ -299,5 +330,249 @@ $(document).on('turbolinks:load', function () {
         }
 
     };
+
+    window.validate_totals = function(utilidad_ai, isr, ptu, participacion_sub, utilidad_neta){
+        const utilidad_ai_val       = $(`[name="${utilidad_ai}"]`).val();
+        const isr_val               = $(`[name="${isr}"]`).val();
+        const ptu_val               = $(`[name="${ptu}"]`).val();
+        const participacion_sub_val = $(`[name="${participacion_sub}"]`).val();
+        const ut_neta               = $(`[name="${utilidad_neta}"]`);
+
+        var totalAct = 0;
+        var totalPas = 0;
+        var rEquals = false;
+
+        ut_neta.val(parseFloat(utilidad_ai_val) - parseFloat(isr_val) - parseFloat(ptu_val) - parseFloat(participacion_sub_val)).change();
+    };
+
+
+    $('#bs_request_submit').click(function(e){
+        validateAndSubmitBS(e);
+    });
+
+    $('#bs_request_submit_final').click(function(e){
+        validateAndSubmitBS(e);
+    });
+
+    var validateAndSubmitBS = function(e){
+
+        var rEquals = true;
+
+        //  Validate form
+        if(!e.detail || e.detail == 1){
+            var formBS = $('form#bs-request-form');
+
+            // Bind a function to the submit event
+            formBS.submit(function(event) {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+
+                var formData = new FormData(formBS[0]);
+
+                var row_ids = formBS.find('input[id="q_periods"]').val();
+
+                JSON.parse(row_ids).forEach(function(value){
+                    var total_activos = formBS.find('input[name="pasivos_total['+value+']"]').val();
+                    var total_pasivos = formBS.find('input[name="activos_total['+value+']"]').val();
+                    if(total_activos !== total_pasivos){
+                        rEquals = false;
+                    }
+                });
+
+                if(rEquals){
+                    $.ajax({
+                        url: formBS.attr('action'),
+                        type: formBS.attr('method'),
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        beforeSend: function() {
+                            // This code will execute before the AJAX request is sent
+                            // Show a loading indicator to indicate that the form submission is being processed
+                            swal({
+                                title: "Guardando...",
+                                text: "Espere un momento por favor",
+                                icon: 'info',
+                                buttons: false,
+                                closeOnClickOutside: false,
+                                closeOnEsc: false,
+                                allowOutsideClick: false,
+                                allowEnterKey: false,
+                                closeModal: false
+                            });
+                        },
+                        success: function(response) {
+                            swal({
+                                title: "GUARDADO",
+                                icon: 'success',
+                                button: I18n.t('messages.ok')
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            var msj_error = '';
+                            if(xhr.responseText !== undefined || xhr.responseText !== '')
+                            {
+                                $.each(xhr.responseJSON, function(index, value) {
+                                    msj_error += '' + index + ': ' + value + '\n'
+                                });
+                            }
+
+                            swal({
+                                title: "ERROR AL GUARDAR",
+                                text: msj_error,
+                                icon: 'success',
+                                button: I18n.t('messages.ok')
+                            });
+                        },
+                        complete: function() {
+                            // This code will execute after the AJAX request is completed, regardless of success or error
+                            // Close the loading indicator
+                            swal.close();
+                        }
+                    });
+                }else{
+                    swal({
+                        title: "No es posible guardar",
+                        text: "Los totales entre activos y pasivos de sus respectivos ciclos no coinciden.",
+                        icon: 'warning',
+                        button: I18n.t('messages.ok')
+                    });
+                }
+            });
+
+            formBS.submit();
+
+
+
+            /*if(isFormValid){
+                swal({
+                    title: 'CONFIRMAR GUARDADO',
+                    icon: 'info',
+                    text: 'Al confirmar se enviarán los datos ingresados sobre el donativo realizado.',
+                    buttons: {
+                        cancel: I18n.t('messages.cancel'),
+                        confirm: I18n.t('messages.confirm')
+                    }
+                }).then((isConfirmed) => {
+                    if (isConfirmed) {
+                        // Select the form element
+                        var formPayment = $('form#payment-form');
+
+                        // Bind a function to the submit event
+                        formPayment.submit(function(event) {
+                            // Prevent the default form submission behavior
+                            event.preventDefault();
+
+                            // APPEND FILES FOR AJAX SUBMIT FORM
+                            var formData = new FormData(formPayment[0]);
+                            var fileInput = $('#file-required')[0];
+
+                            if (fileInput.files.length > 0) {
+                                formData.append('payment_file', fileInput.files[0]);
+                            }
+
+                            // Send an AJAX request to submit the form data
+                            var ajaxRequest = $.ajax({
+                                url: formPayment.attr('action'),
+                                type: formPayment.attr('method'),
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                beforeSend: function() {
+                                    // This code will execute before the AJAX request is sent
+                                    // Show a loading indicator to indicate that the form submission is being processed
+                                    swal({
+                                        title: "Procesando...",
+                                        text: "Espere un momento por favor",
+                                        icon: 'info',
+                                        buttons: false,
+                                        closeOnClickOutside: false,
+                                        closeOnEsc: false,
+                                        allowOutsideClick: false,
+                                        allowEnterKey: false,
+                                        closeModal: false
+                                    });
+                                },
+                                success: function(response) {
+                                    var countdown = 7;
+
+                                    swal({
+                                        title: "¡COMPLETADO!",
+                                        text: "Ha guardado su comprobante; en un lapso no mayor a 2 días hábiles le llegará un correo informando la validación de su donativo y su pase de ingreso. ("+ countdown +")",
+                                        icon: 'success',
+                                        timer: 7000,
+                                        buttons: false,
+                                        showConfirmButton: false
+                                    });
+
+                                    var countdownTimer = setInterval(function() {
+                                        countdown--;
+                                        swal({
+                                            title: "¡COMPLETADO!",
+                                            text: "Ha guardado su comprobante; en un lapso no mayor a 2 días hábiles le llegará un correo informando la validación de su donativo y su pase de ingreso. ("+ countdown +")",
+                                            icon: 'success',
+                                            timer: 1000,
+                                            buttons: false,
+                                            showConfirmButton: false
+                                        });
+
+                                        if (countdown <= 0) {
+                                            clearInterval(countdownTimer);
+                                            swal.close();
+                                            // Perform any actions after the countdown completes
+                                            window.location = "/informacion_donaciones";
+                                        }
+                                    }, 1000);
+                                },
+                                error: function(xhr, status, error) {
+                                    let msj_error = '';
+                                    if(xhr.responseText !== undefined || xhr.responseText !== '')
+                                    {
+                                        $.each(xhr.responseJSON, function(index, value) {
+                                            msj_error += '' + index + ': ' + value + '\n'
+                                        });
+                                    }
+                                    swal({
+                                        title: "Hubo un error al guardar, intenta de nuevo...\n ",
+                                        text: `${msj_error}`,
+                                        icon: 'error',
+                                        confirm: {
+                                            text: "Aceptar",
+                                            value: true,
+                                            visible: true,
+                                            className: "",
+                                            closeModal: true
+                                        }
+                                    });
+                                },
+                                complete: function() {
+                                    // This code will execute after the AJAX request is completed, regardless of success or error
+                                    // Close the loading indicator
+                                    swal.close();
+                                }
+                            });
+                        });
+
+                        formPayment.submit();
+                    }
+                }).catch(e.preventDefault());
+            }else{
+                swal({
+                    title: "¡UPS!",
+                    text: "Parece que aún hay campos por llenar, verifica tu información e intenta de nuevo.",
+                    icon: 'warning',
+                    confirm: {
+                        text: "Aceptar",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true
+                    }
+                });
+            }*/
+        }
+    }
+
+    $("input.focusable-input").trigger('change');
 
 });

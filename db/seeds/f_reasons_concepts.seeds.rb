@@ -41,5 +41,5 @@ FReasonsConcept.create!([
      { name: 'FLUJO NETO / TOTAL PASIVO FINANCIERO', key: 'flujo_total_pas_fin', formula: '', description: '' },
      { name: 'FLUJO NETO / PASIVO TOTAL', key: 'flujo_total_pas_total', formula: '', description: '' },
      { name: 'DEUDA FINANCIERA LP / UAFIRDAA', key: 'deuda_financiera_lp', formula: '', description: '' },
-     { name: 'DEUDA FINANCIERA TOTAL / UAFIRDA', key: ' vvv', formula: '', description: '' },
+     { name: 'DEUDA FINANCIERA TOTAL / UAFIRDA', key: ' deuda_financiera_total', formula: '', description: '' },
 ])
