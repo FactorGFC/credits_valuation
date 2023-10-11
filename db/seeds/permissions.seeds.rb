@@ -100,7 +100,10 @@ after :initialize_permissions do
                            {name: 'crear usuario de sat', description: 'Permite crear el usuario del sat', action: 'create_sat_user', controller: 'Home'},
 
                            #4-OCtubre-2023
-                           {name: "Ver pdf de buro de credito", description: "Permite ver el pdf del Buro de credito", action: "bureau_report", controller: "Companies"}
+                           {name: "Ver pdf de buro de credito", description: "Permite ver el pdf del Buro de credito", action: "bureau_report", controller: "Companies"},
+                           {name: "Actualizar los asistentes", description: "Permite actualizar los asistentes", action: "update_attendants", controller: "Events"},
+                           {name: "Imprimir acuerdo", description: "Permite imprimir pdf de acuerdo", action: "print_agreement", controller: "Events"},
+                           {name: "Eventos finalizados", description: "Permite ver los eventos finalizados", action: "events_finished", controller: "Events"}
 
                        ])
   rescue StandardError => e
@@ -111,3 +114,5 @@ after :initialize_permissions do
     p "Error: #{e}"
   end
 end
+
+Permission.create!([{name: "Eventos finalizados", description: "Permite ver los eventos finalizados", action: "events_finished", controller: "Events"}])

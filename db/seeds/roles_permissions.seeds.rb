@@ -119,5 +119,12 @@ after :permissions do
 
                             #Permisos 4 Oct 2023
                             {role_id: Role.find_by_key('analyst').id, permission_id: Permission.find_by_name('Ver pdf de buro de credito').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Actualizar los asistentes').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Actualizar los asistentes').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Eventos finalizados').id},
+                            {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Eventos finalizados').id}
                           ])
 end
+
+PermissionsRole.create!([{role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Eventos finalizados').id},
+                         {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Eventos finalizados').id}])

@@ -29,5 +29,17 @@ es:
       comment: Comentario
       credit_requests: Solicitudes de crédito
       not_assigned_yet: No se han asignado aún
+      assisted: Asistió
+
+    events_finished:
+      event_name: Nombre del Evento
+      description: Descripción
+      event_date: Fecha del Evento
+      location: Lugar
+      status_event: Estatus del Evento
+      end_date: Fecha de Término
+      count_table:
+        one: 1 Evento
+        other: '%{count} Eventos'
   breadcrumbs:
     requests: Eventos

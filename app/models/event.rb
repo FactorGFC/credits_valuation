@@ -17,4 +17,6 @@
 #
 class Event < ApplicationRecord
   validates_presence_of :title
+
+  has_one :event_detail
 end

@@ -1,0 +1,144 @@
+doctype 5
+html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-active.wf-roboto-n7-active.wf-poppins-n3-active.wf-poppins-n4-active.wf-poppins-n5-active.wf-poppins-n6-active.wf-poppins-n7-active.wf-active
+  head
+    meta charset='utf-8' /
+    meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' /
+    meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" /
+    link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"
+    = csrf_meta_tags
+    = csp_meta_tag
+    = wicked_pdf_stylesheet_link_tag 'application'
+    = stylesheet_link_tag "http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css", media: "all", "data-turbolinks-track" => true
+
+  body.d-flex.flex-column
+
+    .m-content
+      .m-portlet__body
+        .col-md-12.d-flex.justify-content-between.align-items-center
+          h1
+            strong = 'Minuta'
+          = wicked_pdf_image_tag asset_url('logo.png'), size: "133x73"
+        hr style="border: 1px solid #0164ac;"
+          .col-md-12.d-inline-flex.mt-3
+            .d-flex.flex-column.mx-3
+              h1
+                strong = "Evento"
+              / span = DateTime.now.strftime("%d/%m/%Y")
+          .col-md-12.page-breaker
+            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+              .m-section
+                .m-section__content
+                  table.table.table-bordered.table-fix style="display: table; overflow-x: auto; font-size: 12px;"
+                    thead.thead-default
+                      tr
+                        th
+                          | Nombre del Evento
+                        th
+                          | Descripción
+                        th
+                          | Fecha del Evento
+                        th
+                          | Tipo de Evento
+                        th
+                          | Lugar
+                        th
+                          | Estatus Evento
+                        th
+                          | Fecha de Término
+                        th
+                          | Acuerdos
+
+                    tbody
+                      tr
+                        th
+                          = @event.try(:title)
+                        th
+                          = @event.try(:description)
+                        th
+                          = @event.try(:start_date).strftime("%d/%m/%Y")
+                        th
+                          = @event.try(:event_type)
+                        th
+                          = @event.try(:event_type).eql?('PRESENCIAL') ? @event.location : @event.url
+                        th
+                          = @event.try(:event_finished).present? ? 'TERMINADO':'PENDIENTE'
+                        th
+                          = @event.try(:end_date).present? ? @event.try(:end_date).strftime('%d/%m/%Y') : 'N/A'
+                        th
+                          = @event.try(:agreements)
+          .col-md-12.d-inline-flex.mt-3
+            .d-flex.flex-column.mx-3
+              h1
+                strong = "Participantes"
+          .col-md-12.page-breaker
+            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+              .m-section
+                .m-section__content
+                  table.table.table-bordered.table-fix style="display: table; overflow-x: auto; font-size: 12px;"
+                    thead.thead-default
+                      tr
+                        th
+                          | Nombre
+                        th
+                          | Email
+                        th
+                          | Rol
+                        th
+                          | Asisitió
+                    tbody
+                      - @attendants.each do |attendant|
+                        tr
+                          th
+                            = attendant.try(:user).try(:full_name)
+                          th
+                            = attendant.try(:user).try(:email)
+                          th
+                            = attendant.try(:user).try(:role_name)
+                          th
+                            = attendant.try(:attended) ? 'Asisitió' : 'No Asistió'
+          .col-md-12.d-inline-flex.mt-3
+            .d-flex.flex-column.mx-3
+              h1
+                strong = "Solicitudes de Crédito"
+          .col-md-12.page-breaker
+            .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+              .m-section
+                .m-section__content
+                  table.table.table-bordered.table-fix style="display: table; overflow-x: auto; font-size: 12px;"
+                    thead.thead-default
+                      tr
+                        th
+                          | Nombre de la Compañia
+                        th
+                          | RFC
+                        th
+                          | Nombre del contacto
+                        th
+                          | Teléfono del contacto
+                        th
+                          | Correo del contacto
+                        th
+                          | Tipo de Crédito
+                        th
+                          | Estatus
+                        th
+                          | Comentario
+                    tbody
+                      - @requests.each do |event_request|
+                        tr
+                          th
+                            = event_request.try(:request).try(:company).try(:name)
+                          th
+                            = event_request.try(:request).try(:company).try(:rfc)
+                          th
+                            = event_request.try(:request).try(:company).try(:user).try(:full_name)
+                          th
+                            = event_request.try(:request).try(:company).try(:user).try(:phone)
+                          th
+                            = event_request.try(:request).try(:company).try(:user).try(:email)
+                          th
+                            = event_request.try(:request).try(:factor_credit).try(:name)
+                          th
+                            = event_request.try(:process_status).present? ? event_request.try(:process_status).try(:name) : ''
+                          th
+                            = event_request.try(:comment)

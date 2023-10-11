@@ -25,7 +25,7 @@
         .tab-pane.active id="next_events"
           .m-portlet
             .m-demo data-code-html="true" data-code-js="false" data-code-preview="true"
-              .m-demo__preview
+              .m-demo__preview style="padding: 15px !important"
                 .m-list-timeline
                   h4 = 'Proximas Reuniones'
                   .m-list-timeline__items
@@ -40,10 +40,13 @@
                               strong = 'HOY'
                             - else
                               = event.start_date.strftime('%d/%m/%Y %I:%M%p')
-                        span.m-list-timeline__time.ml-3
-                          a.btn.btn-outline-primary.btn-sm.open-modal-agreement data-target="#m_modal_agreement" data-toggle="modal" data-id="#{event.id}" data-agreements="#{event.agreements}"
+                        span.m-list-timeline__time.d-flex
+                          a.btn.btn-outline-primary.btn-sm.open-modal-agreement.mx-1 data-target="#m_modal_agreement" data-toggle="modal" data-id="#{event.id}" data-agreements="#{event.agreements}"
                             span
                               i.fa.fa-archive
+                          a.btn.btn-outline-primary.btn-sm href="agreements/#{event.id}"
+                            span
+                              i.fa.fa-eye
 
         .tab-pane id="finished_events"
           .m-portlet

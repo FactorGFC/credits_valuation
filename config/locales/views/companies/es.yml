@@ -211,6 +211,22 @@ es:
       title: Compañía
       resource: compañía
       back_resource: compañías
+    companies_finished:
+      one: Compañia
+      other: Compañias
+      first_name: Nombre
+      last_name: Apellido paterno
+      maiden_name: Apellido materno
+      username: Nombre de usuario
+      name: Nombre Compañia
+      address: Dirección
+      unit_review: Unidad Revisora
+      check_company: Revisar compañía
+      company_details: Ver a detalle
+      status: Estatus
+      rfc: R.F.C
+      process: Proceso
+      captured_periods: Periodos capturados
   breadcrumbs:
     users: Usuarios
     change_password: Cambiar contraseña

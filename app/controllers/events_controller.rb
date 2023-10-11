@@ -151,11 +151,13 @@ class EventsController < ApplicationController
 
 
   def agreements
+
+    p "current_user ------------------------------------------------"
+    p current_user
     @event = Event.where(id: params[:id])
     @process_status = ProcessStatus.where(key:['committee_approved','committee_rejected','committee_pending','release'])
 
-    attendants_ids = EventDetail.where(event_id: params[:id]).pluck(:user_id)
-    @attendants = User.where(id: attendants_ids)
+    @attendants = EventDetail.where(event_id: params[:id])
 
     @requests = EventRequest.where(event_id: params[:id]).order(:id)
     # @requests = Request.where(id: request_ids)
@@ -180,6 +182,51 @@ class EventsController < ApplicationController
     end
 
     redirect_to "/events", notice: "Evento actualizado correctamente."
+  end
+
+  def update_attendants
+    attendants = params['attendants']
+
+    attendants.each do |attendant|
+
+      if(attendant.second['attended'])
+        att = EventDetail.find(attendant.second['id'].to_i)
+        att.update(attended: true)
+      else
+        att = EventDetail.find(attendant.second['id'].to_i)
+        att.update(attended: false)
+      end
+
+      redirect_to "/agreements/" + params[:agreements_id], notice: "Evento actualizado correctamente."
+    end
+
+  end
+
+  def print_agreement
+
+    @event = Event.find(params[:id])
+    @process_status = ProcessStatus.where(key:['committee_approved','committee_rejected','committee_pending','release'])
+
+    @attendants = EventDetail.where(event_id: params[:id])
+
+    @requests = EventRequest.where(event_id: params[:id]).order(:id)
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "Minuta",
+               template: "events/print_agreement.html.slim",
+               type: "application/pdf",
+               disposition: "inline",
+               encoding: 'UTF-8',
+               dpi: '300'
+      end
+    end
+  end
+
+  def events_finished
+    @search_events = Event.where(event_finished: true).ransack(params[:q])
+    @events = @search_events.result.order(created_at: :desc).paginate(page: params[:page], per_page: get_pagination)
   end
 
 end

@@ -36,4 +36,5 @@ class Request < ApplicationRecord
   belongs_to :user
   belongs_to :analist, :class_name => 'User', foreign_key: 'analyst_id'
   has_many :request_comments
+  has_one :event_request
 end

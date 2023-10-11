@@ -3,6 +3,7 @@
 # Table name: event_details
 #
 #  id         :bigint           not null, primary key
+#  attended   :boolean
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  event_id   :bigint           not null
@@ -19,4 +20,5 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class EventDetail < ApplicationRecord
+  belongs_to :user
 end
