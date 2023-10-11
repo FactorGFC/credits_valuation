@@ -216,21 +216,24 @@ $(document).on('turbolinks:load', function () {
         utilidad_op.val(parseFloat(utilidad_br_val) - parseFloat(gastos_val)).change();
     };
 
-    window.calculateFinancingResult = function(gasto_fin, utilidad_perdida, resultado_fin){
-        const gasto_val     = $(`[name="${gasto_fin}"]`).val();
-        const utilidad_val  = $(`[name="${utilidad_perdida}"]`).val();
-        const res_int_fin   = $(`[name="${resultado_fin}"]`);
+    window.calculateFinancingResult = function(gasto_fin, utilidad_perdida, otros_gastos_ingresos, resultado_fin){
+        const gasto_val                 = $(`[name="${gasto_fin}"]`).val();
+        const utilidad_val              = $(`[name="${utilidad_perdida}"]`).val();
+        const otros_gastos_ingresos_val = $(`[name="${otros_gastos_ingresos}"]`).val();
+        const res_int_fin               = $(`[name="${resultado_fin}"]`);
 
-        res_int_fin.val(parseFloat(gasto_val) + parseFloat(utilidad_val)).change();
+        res_int_fin.val(parseFloat(gasto_val) + parseFloat(utilidad_val) + parseFloat(otros_gastos_ingresos_val)).change();
     };
 
-    window.calculateIncomeBeforeTaxes = function(utilidad_operacion, resultado_fin, otros_gastos_ing, utilidad_ai){
+    window.calculateIncomeBeforeTaxes = function(utilidad_operacion, resultado_fin, utilidad_ai){
         const utilidad_op_val       = $(`[name="${utilidad_operacion}"]`).val();
         const resultado_fin_val     = $(`[name="${resultado_fin}"]`).val();
-        const otros_gastos_ing_val  = $(`[name="${otros_gastos_ing}"]`).val();
         const utilidad_antes_imp    = $(`[name="${utilidad_ai}"]`);
 
-        utilidad_antes_imp.val(parseFloat(utilidad_op_val) + parseFloat(resultado_fin_val) + parseFloat(otros_gastos_ing_val)).change();
+        console.log(utilidad_op_val)
+        console.log(resultado_fin_val)
+
+        utilidad_antes_imp.val(parseFloat(utilidad_op_val) - parseFloat(resultado_fin_val)).change();
     };
 
     window.calculateNetIncome = function(utilidad_ai, isr, ptu, participacion_sub, utilidad_neta){
