@@ -1,7 +1,10 @@
 .col-xl-12
   .d-flex.align-items-center
     .mr-auto.d-flex.align-items-center
-      - back_url = "/home_company"
+      - if current_user.role.key == 'enterprise'
+        - back_url = "/home_company"
+      - else
+        - back_url = "/company_details/#{@company.id}"
       a.m-nav__link.m-nav__link--icon.mx-2.pb-2 href="#{back_url}" style="font-size: 20px;"
         i.fa.fa-chevron-circle-left
       h3.m-subheader__title.m-subheader__title--separator
