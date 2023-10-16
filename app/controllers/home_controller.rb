@@ -21,6 +21,7 @@ class HomeController < ApplicationController
   def home_company
     @user           = current_user
     @company        = current_user.company
+    @enableBtn      = true
 
     cc_details_bs = @company.company_calendar_details.where(assign_to: 'balance_sheet')
     cc_details_is = @company.company_calendar_details.where(assign_to: 'income_statement')
@@ -48,6 +49,14 @@ class HomeController < ApplicationController
     else
       @company_name = @company.try(:name)
     end
+
+
+    @company.company_calendar_details.where(assign_to: 'income_statement').each do |cc_detail|
+      unless IncomeCalendarDetail.where(company_id: @company.id, calendar_id: cc_detail.calendar_id).present?
+        @enableBtn = false
+      end
+    end
+
     unless @user.try(:company).try(:complete)
       redirect_to '/request_steps'
     end
