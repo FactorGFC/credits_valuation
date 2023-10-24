@@ -320,7 +320,6 @@ class CompaniesController < ApplicationController
               format.json { render json: { error: true, message: '(Error de buro - moffin 2)Hubo un error favor volver a intentar' } }
             end
 
-            byebug
             unless @error
 
               @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @company.info_company
