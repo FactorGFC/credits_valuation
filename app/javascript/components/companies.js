@@ -350,14 +350,14 @@ $(document).on('turbolinks:load', function () {
 
 
     $('#bs_request_submit').click(function(e){
-        validateAndSubmitBS(e);
+        validateAndSubmitBS(e, 'eraser');
     });
 
     $('#bs_request_submit_final').click(function(e){
-        validateAndSubmitBS(e);
+        validateAndSubmitBS(e, 'finalize');
     });
 
-    var validateAndSubmitBS = function(e){
+    var validateAndSubmitBS = function(e, submit_type){
 
         var rEquals = true;
 
@@ -371,6 +371,10 @@ $(document).on('turbolinks:load', function () {
                 event.preventDefault();
 
                 var formData = new FormData(formBS[0]);
+
+                if(submit_type === 'finalize'){
+                    formData.append("button", "finalize");
+                }
 
                 var row_ids = formBS.find('input[id="q_periods"]').val();
 
@@ -445,136 +449,8 @@ $(document).on('turbolinks:load', function () {
 
             formBS.submit();
 
-
-
-            /*if(isFormValid){
-                swal({
-                    title: 'CONFIRMAR GUARDADO',
-                    icon: 'info',
-                    text: 'Al confirmar se enviarán los datos ingresados sobre el donativo realizado.',
-                    buttons: {
-                        cancel: I18n.t('messages.cancel'),
-                        confirm: I18n.t('messages.confirm')
-                    }
-                }).then((isConfirmed) => {
-                    if (isConfirmed) {
-                        // Select the form element
-                        var formPayment = $('form#payment-form');
-
-                        // Bind a function to the submit event
-                        formPayment.submit(function(event) {
-                            // Prevent the default form submission behavior
-                            event.preventDefault();
-
-                            // APPEND FILES FOR AJAX SUBMIT FORM
-                            var formData = new FormData(formPayment[0]);
-                            var fileInput = $('#file-required')[0];
-
-                            if (fileInput.files.length > 0) {
-                                formData.append('payment_file', fileInput.files[0]);
-                            }
-
-                            // Send an AJAX request to submit the form data
-                            var ajaxRequest = $.ajax({
-                                url: formPayment.attr('action'),
-                                type: formPayment.attr('method'),
-                                data: formData,
-                                processData: false,
-                                contentType: false,
-                                beforeSend: function() {
-                                    // This code will execute before the AJAX request is sent
-                                    // Show a loading indicator to indicate that the form submission is being processed
-                                    swal({
-                                        title: "Procesando...",
-                                        text: "Espere un momento por favor",
-                                        icon: 'info',
-                                        buttons: false,
-                                        closeOnClickOutside: false,
-                                        closeOnEsc: false,
-                                        allowOutsideClick: false,
-                                        allowEnterKey: false,
-                                        closeModal: false
-                                    });
-                                },
-                                success: function(response) {
-                                    var countdown = 7;
-
-                                    swal({
-                                        title: "¡COMPLETADO!",
-                                        text: "Ha guardado su comprobante; en un lapso no mayor a 2 días hábiles le llegará un correo informando la validación de su donativo y su pase de ingreso. ("+ countdown +")",
-                                        icon: 'success',
-                                        timer: 7000,
-                                        buttons: false,
-                                        showConfirmButton: false
-                                    });
-
-                                    var countdownTimer = setInterval(function() {
-                                        countdown--;
-                                        swal({
-                                            title: "¡COMPLETADO!",
-                                            text: "Ha guardado su comprobante; en un lapso no mayor a 2 días hábiles le llegará un correo informando la validación de su donativo y su pase de ingreso. ("+ countdown +")",
-                                            icon: 'success',
-                                            timer: 1000,
-                                            buttons: false,
-                                            showConfirmButton: false
-                                        });
-
-                                        if (countdown <= 0) {
-                                            clearInterval(countdownTimer);
-                                            swal.close();
-                                            // Perform any actions after the countdown completes
-                                            window.location = "/informacion_donaciones";
-                                        }
-                                    }, 1000);
-                                },
-                                error: function(xhr, status, error) {
-                                    let msj_error = '';
-                                    if(xhr.responseText !== undefined || xhr.responseText !== '')
-                                    {
-                                        $.each(xhr.responseJSON, function(index, value) {
-                                            msj_error += '' + index + ': ' + value + '\n'
-                                        });
-                                    }
-                                    swal({
-                                        title: "Hubo un error al guardar, intenta de nuevo...\n ",
-                                        text: `${msj_error}`,
-                                        icon: 'error',
-                                        confirm: {
-                                            text: "Aceptar",
-                                            value: true,
-                                            visible: true,
-                                            className: "",
-                                            closeModal: true
-                                        }
-                                    });
-                                },
-                                complete: function() {
-                                    // This code will execute after the AJAX request is completed, regardless of success or error
-                                    // Close the loading indicator
-                                    swal.close();
-                                }
-                            });
-                        });
-
-                        formPayment.submit();
-                    }
-                }).catch(e.preventDefault());
-            }else{
-                swal({
-                    title: "¡UPS!",
-                    text: "Parece que aún hay campos por llenar, verifica tu información e intenta de nuevo.",
-                    icon: 'warning',
-                    confirm: {
-                        text: "Aceptar",
-                        value: true,
-                        visible: true,
-                        className: "",
-                        closeModal: true
-                    }
-                });
-            }*/
         }
-    }
+    };
 
     $("input.focusable-input").trigger('change');
 
