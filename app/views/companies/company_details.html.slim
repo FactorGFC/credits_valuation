@@ -429,8 +429,7 @@ javascript:
                     | FLUJO DE EFECTIVO
                 li.slide
             .tab-content.col-xl-12.mb-30
-
-              .tab-pane id="income_statement"
+              .tab-pane.active id="income_statement"
                 .col-xl-12
                   .m-portlet
                     .m-portlet__body
@@ -490,7 +489,7 @@ javascript:
                               a.btn.btn-block.btn-info href="/comments/#{@company.id}/income_statement" target="_blank"
                                 | IR A COMENTARIOS
 
-              .tab-pane.active id="balance_sheet"
+              .tab-pane id="balance_sheet"
                 .col-xl-12
                   .m-portlet
                     .m-portlet__body
@@ -547,7 +546,6 @@ javascript:
                                           | Aún no hay comentarios.
                               a.btn.btn-block.btn-info href="/comments/#{@company.id}/balance_sheet" target="_blank"
                                 | IR A COMENTARIOS
-
 
 
               .tab-pane id="financial_reasons"
