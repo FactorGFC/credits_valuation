@@ -102,7 +102,7 @@ class User < ApplicationRecord
   end
 
   def user_asign_periods?
-    role_key.in?(['god', 'credit_area', 'promotion_area'])
+    role_key.in?(['god', 'promotion_area'])
   end
 
   def has_total_scope?
