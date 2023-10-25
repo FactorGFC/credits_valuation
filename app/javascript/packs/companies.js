@@ -350,14 +350,14 @@ $(document).on('turbolinks:load', function () {
 
 
     $('#bs_request_submit').click(function(e){
-        validateAndSubmitBS(e);
+        validateAndSubmitBS(e, 'eraser');
     });
 
     $('#bs_request_submit_final').click(function(e){
-        validateAndSubmitBS(e);
+        validateAndSubmitBS(e, 'finalize');
     });
 
-    var validateAndSubmitBS = function(e){
+    var validateAndSubmitBS = function(e, submit_type){
 
         var rEquals = true;
 
@@ -371,6 +371,10 @@ $(document).on('turbolinks:load', function () {
                 event.preventDefault();
 
                 var formData = new FormData(formBS[0]);
+
+                if(submit_type === 'finalize'){
+                    formData.append("button", "finalize");
+                }
 
                 var row_ids = formBS.find('input[id="q_periods"]').val();
 
