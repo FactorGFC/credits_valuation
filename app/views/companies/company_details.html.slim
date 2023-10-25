@@ -2742,7 +2742,10 @@ javascript:
             p.mt-20#textModal
               | Asignar Status del Proceso #{(!@cash_flow.present? || !@company.f_reasons_company.present?) ? ' / Es necesario calcular el flujo de efectivo y Razones financieras' : '' }
             div style="display: grid;"
-              = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona una opción'}, {class: "form-control m-input", onchange: 'validate_type_credit()',disabled: (!@cash_flow.present? || !@company.f_reasons_company.present?)})
+              - if current_user.credit_area?
+                = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona una opción'}, {class: "form-control m-input", onchange: 'validate_type_credit()',disabled: true})
+              - else
+                = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona una opción'}, {class: "form-control m-input", onchange: 'validate_type_credit()'})
           .col-xl-12#file_null_id style="display: none"
             p.mt-20#textModal style="text-align: center; color: red"
               | Falta subir archivo a este analista
