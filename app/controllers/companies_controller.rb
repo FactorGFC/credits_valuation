@@ -287,7 +287,7 @@ class CompaniesController < ApplicationController
 
     if @company.buro_confirmation_code.to_s === params[:confirmation_code].to_s
       respond_to do |format|
-        @error = true
+        @error = false
         @buro = create_buro @company.info_company, @user.try(:phone)
         Rails.logger.info "@buro ---------------------------------------------------------------------------------------------------"
         Rails.logger.info @buro
@@ -302,6 +302,7 @@ class CompaniesController < ApplicationController
             end
             Rails.logger.info "@bureau_report -----------------------------------------------------------------------------"
             Rails.logger.info @bureau_report
+
 
             if @bureau_report.present?
               if @bureau_report['status'] != 'SUCCESS'
@@ -320,7 +321,10 @@ class CompaniesController < ApplicationController
             end
 
             unless @error
+
               @bureau_info = BuroCredito.get_buro_info @buro.first['id'], @company.info_company
+
+
               if CreditBureau.create(company_id: @company.id, bureau_report: @bureau_report, bureau_id: @buro.first['id'], bureau_info: @bureau_info)
                 @clients = get_clients_sat @user.try(:company)
 
@@ -344,6 +348,8 @@ class CompaniesController < ApplicationController
               else
                 format.json { render json: { error: true, message: '(3)Hubo un error favor volver a intentar' } }
               end
+            else
+              format.json { render json: { error: true, message: '(4)Hubo un error favor volver a intentar' } }
             end
           else
             format.json { render json: { error: true, message: '(4)Hubo un error favor volver a intentar' } }
