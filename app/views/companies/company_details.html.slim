@@ -2738,17 +2738,18 @@ javascript:
                 = select("request", "factor_credit_id", FactorCredit.all.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona tipo de crédito'}, {class: "form-control m-input", onchange: 'validate_type_credit()'})
           - else
             input type="hidden" name="request[factor_credit_id]" id="request_hidden_factor_credit_id"
-          .col-xl-12 id="#{current_user.super_user? ? '' : 'input_status_process'}"
-            p.mt-20#textModal
-              | Asignar Status del Proceso #{(!@cash_flow.present? || !@company.f_reasons_company.present?) ? ' / Es necesario calcular el flujo de efectivo y Razones financieras' : '' }
-            div style="display: grid;"
-              - if current_user.credit_area?
-                = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona una opción'}, {class: "form-control m-input", onchange: 'validate_type_credit()',disabled: true})
-              - else
-                = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, {include_blank: 'Selecciona una opción'}, {class: "form-control m-input", onchange: 'validate_type_credit()'})
-          .col-xl-12#file_null_id style="display: none"
-            p.mt-20#textModal style="text-align: center; color: red"
-              | Falta subir archivo a este analista
+          - if @company.requests.present?
+            .col-xl-12 id="#{current_user.super_user? ? '' : 'input_status_process'}"
+              p.mt-20#textModal
+                | Asignar Status del Proceso #{(!@cash_flow.present? || !@company.f_reasons_company.present?) ? ' / Es necesario calcular el flujo de efectivo y Razones financieras' : '' }
+              div style="display: grid;"
+                - if current_user.credit_area?
+                  = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, { include_blank: 'Selecciona una opción' }, { class: "form-control m-input", onchange: 'validate_type_credit()', disabled: true })
+                - else
+                  = select("request", "process_status_id", @process_status.collect { |p| [p.name, p.id] }, { include_blank: 'Selecciona una opción' }, { class: "form-control m-input", onchange: 'validate_type_credit()' })
+            .col-xl-12#file_null_id style="display: none"
+              p.mt-20#textModal style="text-align: center; color: red"
+                | Falta subir archivo a este analista
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"
             | Cerrar

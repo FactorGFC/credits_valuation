@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5887df7b-7f62-426b-a9e7-f6d8eb61c53a" name="Changes" comment="" />
+    <list default="true" id="5887df7b-7f62-426b-a9e7-f6d8eb61c53a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/users/sessions/new.html.slim" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/users/sessions/new.html.slim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/seeds/permissions.seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds/permissions.seeds.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/seeds/roles_permissions.seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds/roles_permissions.seeds.rb" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,11 +19,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "node.js.selected.package.tslint": "(autodetect)"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
   }
-}]]></component>
+}</component>
   <component name="SpringUtil" SPRING_PRE_LOADER_OPTION="false" RAKE_SPRING_PRE_LOADER_OPTION="false" RAILS_SPRING_PRE_LOADER_OPTION="false" />
   <component name="TaskManager">
     <servers />

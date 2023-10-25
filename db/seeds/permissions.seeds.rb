@@ -114,5 +114,3 @@ after :initialize_permissions do
     p "Error: #{e}"
   end
 end
-
-Permission.create!([{name: "Eventos finalizados", description: "Permite ver los eventos finalizados", action: "events_finished", controller: "Events"}])
