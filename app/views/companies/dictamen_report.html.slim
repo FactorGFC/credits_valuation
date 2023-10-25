@@ -96,6 +96,9 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                 ul.d-flex.justify-content-center.collab-list
                   span.h4
                     strong = "TOTAL:  #{ @company.try(:number_collaborator).present? ? @company.try(:number_collaborator).try(:total).to_s(:delimited) : 0 }"
+
+
+        .col-md-12.page-breaker
           .mt-30.page-breaker
             .btns-card-pdf.full-h
               .d-flex.flex-column.justify-content-between
