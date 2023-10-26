@@ -152,10 +152,8 @@ class EventsController < ApplicationController
 
   def agreements
 
-    p "current_user ------------------------------------------------"
-    p current_user
     @event = Event.where(id: params[:id])
-    @process_status = ProcessStatus.where(key:['committee_approved','committee_rejected','committee_pending','release'])
+    @process_status = ProcessStatus.where(key:['committee_approved','committee_rejected','committee_pending'])
 
     @attendants = EventDetail.where(event_id: params[:id])
 
