@@ -55,8 +55,8 @@ document.addEventListener('turbolinks:load', function() {
         swal({
             title: '¿Desea eliminar este evento?',
             buttons: {
-                cancel: I18n.t('messages.cancel'),
-                confirm: I18n.t('messages.delete')
+                cancel: 'Cancelar',
+                confirm: 'Confirmar'
             }
         }).then((isConfirmed) => {
             if (isConfirmed) {
@@ -67,8 +67,8 @@ document.addEventListener('turbolinks:load', function() {
                     dataType: 'json',
                     success: function (data) {
                         swal({
-                            title: I18n.t('messages.done'),
-                            text: I18n.t('messages.deleted'),
+                            title: 'Listo',
+                            text: 'Se ha finalizado correctamente',
                             type: 'success'
                         });
                         window.location.href = 'events';
@@ -89,7 +89,7 @@ document.addEventListener('turbolinks:load', function() {
     window.finishEvent = function(event) {
         let authenticityToken = $('[name="csrf-token"]')[0] && $('[name="csrf-token"]')[0].content;
         swal({
-            title: '¿Desea FINALIZAR este evento?',
+            title: '¿Desea finalizar este evento?',
             buttons: {
                 cancel: I18n.t('messages.cancel'),
                 confirm: I18n.t('messages.confirm')
