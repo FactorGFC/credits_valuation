@@ -1,3 +1,15 @@
+css:
+  table.report-container {
+  page-break-after:always;
+  }
+  thead.report-header {
+    display:table-header-group;
+  }
+  tfoot.report-footer {
+    display:table-footer-group;
+  }
+
+
 doctype 5
 html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-active.wf-roboto-n7-active.wf-poppins-n3-active.wf-poppins-n4-active.wf-poppins-n5-active.wf-poppins-n6-active.wf-poppins-n7-active.wf-active
   head
@@ -84,7 +96,10 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                 ul.d-flex.justify-content-center.collab-list
                   span.h4
                     strong = "TOTAL:  #{ @company.try(:number_collaborator).present? ? @company.try(:number_collaborator).try(:total).to_s(:delimited) : 0 }"
-          .mt-30
+
+
+        .col-md-12.page-breaker
+          .mt-30.page-breaker
             .btns-card-pdf.full-h
               .d-flex.flex-column.justify-content-between
                 span.h5.subtitle = 'Comentarios del Analista'
@@ -1138,7 +1153,6 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               .page-breaker
                 h4.mt-5 = "2.1.9 Créditos activos"
                 - if @credit_bureau.bureau_report.present?
-
                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                     .m-section
                       .m-section__content
@@ -1220,14 +1234,16 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                                     = format_date_updated_at creditos['ultimoPeriodoActualizado']
 
 
+
+
                 - else
-                .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                  .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
-                    .m-alert__icon
-                      = wicked_pdf_image_tag asset_url('icons/exclamation.png'), size: "30x30"
-                    .m-alert__text
-                      strong
-                        | Aún no se créditos activos
+                  .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                    .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                      .m-alert__icon
+                        = wicked_pdf_image_tag asset_url('icons/exclamation.png'), size: "30x30"
+                      .m-alert__text
+                        strong
+                          | Aún no se encuentran créditos activos
               .page-breaker
                 h4.mt-5 = "2.1.10 Créditos liquidados"
                 - if @credit_bureau.bureau_report.present?
@@ -1235,11 +1251,11 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                       .m-section
                         .m-section__content
-                          table.table style="display: block;overflow-x: auto;"
-                            thead.thead-default
+                          table.table.table-bordered.table-fix.report-container style="display: block;overflow-x: auto;"
+                            thead.thead-default.report-header
                               tr
                                 th
-                                  | Contrtato
+                                  | Contrato
                                 th
                                   | Tipo de Otorgante
                                 th
@@ -1312,6 +1328,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                         .m-alert__text
                           strong
                             | Aún no se encuentran créditos liquidados.
+
                 - else
                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                     .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"

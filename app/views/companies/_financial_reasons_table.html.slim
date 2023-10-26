@@ -1,7 +1,7 @@
 
 .tabs-actions
   - if @company.company_calendar_details.where(assign_to: 'income_statement').present? and FReasonsCompany.where(company_id: @company.id).length > 0
-    a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.btn-block data-target="#m_extra_data" data-toggle="modal" href="#m_extra_data"
+    a.btn.btn-outline-primary.m-btn.m-btn--outline-2x.my-2.btn-block data-target="#m_extra_data_1" data-toggle="modal" href="#m_extra_data_1"
       i.fa.fa-pencil-alt.mx-2
       = 'DATOS EXTRAS'
 
@@ -423,7 +423,7 @@ table.table.table-bordered.input-focusable-table
           = FReasonsCompany.where(calendar_id: calendar.calendar.id, capture_type: 2, company_id: @company.id, f_reasons_concept_id: FReasonsConcept.find_by(key: 'deuda_financiera_total').try(:id)).first.try(:value)
 
 
-#m_extra_data.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
+#m_extra_data_1.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document" style="margin-top: 0%;"
     .modal-content
       .modal-header
