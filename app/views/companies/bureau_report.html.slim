@@ -1,3 +1,14 @@
+css:
+    table.report-container {
+        page-break-after:always;
+    }
+    thead.report-header {
+        display:table-header-group;
+    }
+    tfoot.report-footer {
+        display:table-footer-group;
+    }
+
 doctype 5
 html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-active.wf-roboto-n7-active.wf-poppins-n3-active.wf-poppins-n4-active.wf-poppins-n5-active.wf-poppins-n6-active.wf-poppins-n7-active.wf-active
   head
@@ -100,8 +111,8 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                       .m-section
                         .m-section__content
-                          table.table.table-bordered.table-fix
-                            thead.thead-default
+                          table.table.table-bordered.table-fix.report-container
+                            thead.thead-default.report-header
                               tr
                                 th
                                   | MOP
@@ -456,8 +467,8 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                         .m-section
                           .m-section__content
-                            table.table.table-bordered.table-fix style="display: table;overflow-x: auto;"
-                              thead.thead-default
+                            table.table.table-bordered.table-fix.report-container style="display: table;overflow-x: auto;"
+                              thead.thead-default.report-header
                                 tr
                                   th
                                     | Fecha de
@@ -489,8 +500,8 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                         .m-section
                           .m-section__content
-                            table.table.table-bordered.table-fix style="display: table;overflow-x: auto;"
-                              thead.thead-default
+                            table.table.table-bordered.table-fix.report-container style="display: table;overflow-x: auto;"
+                              thead.thead-default.report-header
                                 tr
                                   th
                                     | Fecha de
@@ -521,8 +532,8 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                       .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                         .m-section
                           .m-section__content
-                            table.table.table-bordered.table-fix style="display: table;overflow-x: auto;"
-                              thead.thead-default
+                            table.table.table-bordered.table-fix.report-container style="display: table;overflow-x: auto;"
+                              thead.thead-default.report-header
                                 tr
                                   th
                                     | Fecha de
@@ -582,8 +593,8 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                       .m-section
                         .m-section__content
-                          table.table.table-bordered.table-fix style="display: table;overflow-x: auto;"
-                            thead.thead-default
+                          table.table.table-bordered.table-fix.report-container style="display: table;overflow-x: auto;"
+                            thead.thead-default.report-header
                               tr
                                 th
                                   | Otorgante
@@ -1012,30 +1023,46 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
 
               .page-breaker
                 h3.mt-5 = "Accionistas"
-                - if @credit_bureau.bureau_report.present?
-                  - if @credit_bureau['bureau_report']['results'].present?
-                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                      .m-section
-                        .m-section__content
-                          table.table style="display: block;overflow-x: auto;"
-                            thead.thead-default
-                              tr
-                                th
-                                  | RFC
-                                th
-                                  | Nombre Accionista
-                                th
-                                  | Porcentaje
-                            tbody
-                              tr
-                                th
-                                  = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['rfc']
-                                th
-                                  = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['nombreAccionista'] + ' ' + @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['segundoNombre'] + ' ' + @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['apellidoPaterno'] + ' ' + @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['apellidoMaterno']
-                                th
-                                  = @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['accionista']['porcentaje'] + '%'
-
-
+                - if @report_result.present?
+                  - if @report_result['response'].present?
+                    - if @report_result['response']['respuesta'].present?
+                      - if @report_result['response']['respuesta']['accionista'].present?
+                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                          .m-section
+                            .m-section__content
+                              table.table style="display: block;overflow-x: auto;"
+                                thead.thead-default
+                                  tr
+                                    th
+                                      | RFC
+                                    th
+                                      | Nombre Accionista
+                                    th
+                                      | Porcentaje
+                                tbody
+                                  tr
+                                    th
+                                      = @report_result['response']['respuesta']['accionista']['rfc']
+                                    th
+                                      = @report_result['response']['respuesta']['accionista']['nombreAccionista'] + ' ' + @report_result['response']['respuesta']['accionista']['segundoNombre'] + ' ' + @report_result['response']['respuesta']['accionista']['apellidoPaterno'] + ' ' + @report_result['response']['respuesta']['accionista']['apellidoMaterno']
+                                    th
+                                      = @report_result['response']['respuesta']['accionista']['porcentaje'] + '%'
+                      - else
+                        .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                          .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                            .m-alert__icon
+                              = wicked_pdf_image_tag asset_url('icons/exclamation.png'), size: "30x30"
+                            .m-alert__text
+                              strong
+                                | Aún no se encuentran accionistas.
+                    - else
+                      .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                        .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                          .m-alert__icon
+                            = wicked_pdf_image_tag asset_url('icons/exclamation.png'), size: "30x30"
+                          .m-alert__text
+                            strong
+                              | Aún no se encuentran accionistas.
                   - else
                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                       .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
@@ -1056,7 +1083,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               .page-breaker
                 h3.mt-5 = "Créditos activos"
                 - if @credit_bureau.bureau_report.present?
-                  - if @credit_bureau['bureau_report']['results'].present?
+                  - if @credit_bureau['bureau_report']['response']['respuesta']['creditoFinanciero'].present?
                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                       .m-section
                         .m-section__content
@@ -1099,7 +1126,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                                   | Actualizado en
 
                             tbody
-                              - @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['creditoFinanciero'].each do |creditos|
+                              - @credit_bureau['bureau_report']['response']['respuesta']['creditoFinanciero'].each do |creditos|
                                 - unless creditos['fechaCierre'].present?
                                   tr
                                     th
@@ -1136,15 +1163,14 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                                       = creditos['historicoPagos']
                                     th
                                       = format_date_updated_at creditos['ultimoPeriodoActualizado']
-
                   - else
-                  .m-stack.m-stack--ver.m-stack--general.m-stack--demo
-                    .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
-                      .m-alert__icon
-                        = wicked_pdf_image_tag asset_url('icons/exclamation.png'), size: "30x30"
-                      .m-alert__text
-                        strong
-                          | Aún no se encuentran créditos activos.
+                    .m-stack.m-stack--ver.m-stack--general.m-stack--demo
+                      .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
+                        .m-alert__icon
+                          = wicked_pdf_image_tag asset_url('icons/exclamation.png'), size: "30x30"
+                        .m-alert__text
+                          strong
+                            | Aún no se encuentran créditos activos.
                 - else
                   .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                     .m-alert.m-alert--icon.m-alert--icon-solid.m-alert--outline.alert.alert-brand.alert-dismissible.fade.show role="alert"
@@ -1156,7 +1182,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
               .page-breaker
                 h3.mt-5 = "Créditos liquidados"
                 - if @credit_bureau.bureau_report.present?
-                  - if @credit_bureau['bureau_report']['results'].present?
+                  - if @credit_bureau['bureau_report']['response']['respuesta']['creditoFinanciero'].present?
                     .m-stack.m-stack--ver.m-stack--general.m-stack--demo
                       .m-section
                         .m-section__content
@@ -1195,7 +1221,7 @@ html.wf-roboto-n3-active.wf-roboto-n4-active.wf-roboto-n5-active.wf-roboto-n6-ac
                                   | Actualizado en
 
                             tbody
-                              - @credit_bureau['bureau_report']['results'][0]['response']['respuesta']['creditoFinanciero'].each do |creditos|
+                              - @credit_bureau['bureau_report']['response']['respuesta']['creditoFinanciero'].each do |creditos|
                                 - if creditos['fechaCierre'].present?
                                   tr
                                     th

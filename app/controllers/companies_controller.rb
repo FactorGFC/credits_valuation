@@ -294,7 +294,7 @@ class CompaniesController < ApplicationController
         if @buro
           if @company.update(buro_id: @buro.first['id'])
             if @user.try(:company).try(:rfc) == 'FGL190102DH6'
-              @bureau_report = BuroCredito.get_report_by_id 97831 #4450 60368
+              @bureau_report = BuroCredito.get_report_by_id 108752#97831 #4450 60368
             elsif @user.try(:company).try(:rfc) == 'POMV850113GYA'
               @bureau_report = BuroCredito.get_report_by_id 540288 #4450 60368
             else
