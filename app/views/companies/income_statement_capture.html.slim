@@ -247,7 +247,7 @@
                   - if !@data_captured
                     = button_tag type: 'submit', value: 'eraser', class: "btn btn-outline-info btn-large" do
                       | Guardar Borrador
-              - if @company.balance_calendar_details.present? and !@data_captured
+              - if @company.income_calendar_details.present? and !@data_captured
                 .col-md-10
                   = button_tag type: 'submit', value: 'finalize', class: "btn btn-primary btn-large" do
                     | Finalizar y enviar
