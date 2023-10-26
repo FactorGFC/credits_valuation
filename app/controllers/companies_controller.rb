@@ -279,13 +279,17 @@ class CompaniesController < ApplicationController
 
   # Completar datos de compañia, usuario
   def update_complete_data
+
     @user = current_user
     @company = current_user.company
     user_params = params[:user]
     @error = false
 
 
+
     if @company.buro_confirmation_code.to_s === params[:confirmation_code].to_s
+
+
       respond_to do |format|
         @error = false
         @buro = create_buro @company.info_company, @user.try(:phone)
@@ -310,7 +314,18 @@ class CompaniesController < ApplicationController
                 Rails.logger.info @bureau_report
                 CreditRequestMailer.credit_bureau_error(@company, @bureau_report).deliver_now
                 @error = true
-                format.json { render json: { error: true, message: '(Error de moffin status: )' + @bureau_report['status'] } }
+                msj_buro = 'Sin historial crediticio'
+                if @bureau_report['response'] && @bureau_report['response']['respuesta'] && @bureau_report['response']['respuesta']['msjError']
+                  msj_buro = @bureau_report['response']['respuesta']['msjError']
+                  #format.json { render json: { error: true, message: 'Error de Moffin status: ' + msj_buro } }
+                end
+                if @company.update(step_two: true) and @user.update(phone: user_params[:phone])
+                  format.html { redirect_to '/request_steps', notice: msj_buro }
+                  format.json { render :show, status: :ok, location: @company }
+                else
+                  format.html { render '/request_steps', status: :unprocessable_entity }
+                  format.json { render json: @company.errors, status: :unprocessable_entity }
+                end
               end
             else
               Rails.logger.info "@ no present -----------------------------------------------------------------------------"
