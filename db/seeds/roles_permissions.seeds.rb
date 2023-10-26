@@ -123,6 +123,7 @@ after :permissions do
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Imprimir acuerdo').id},
                             {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Imprimir acuerdo').id},
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Eventos finalizados').id},
-                            {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Eventos finalizados').id}
+                            {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Eventos finalizados').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Crear comentarios para tabs').id}
                           ])
 end
