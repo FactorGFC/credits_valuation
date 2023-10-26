@@ -103,7 +103,7 @@
             h3.text-black Comentarios de Estado De Resultados
 
             .m-portlet__nav-item
-              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/balance_sheet" target="_blank" style='position:absolute; right: 20px; top: 0;'
+              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/income_statement" target="_blank" style='position:absolute; right: 20px; top: 0;'
                 = 'Ver todos'
             - if @is_comments.length > 0
               ul.comments
@@ -132,7 +132,7 @@
             h3.text-black Comentarios de Razones Financieras
 
             .m-portlet__nav-item
-              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/balance_sheet" target="_blank" style='position:absolute; right: 20px; top: 0;'
+              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/financial_reasons" target="_blank" style='position:absolute; right: 20px; top: 0;'
                 = 'Ver todos'
             - if @fr_comments.length > 0
               ul.comments
@@ -161,7 +161,7 @@
             h3.text-black Comentarios de Buró de Crédito
 
             .m-portlet__nav-item
-              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/balance_sheet" target="_blank" style='position:absolute; right: 20px; top: 0;'
+              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/credit_bureau" target="_blank" style='position:absolute; right: 20px; top: 0;'
                 = 'Ver todos'
             - if @cb_comments.length > 0
               ul.comments
@@ -190,7 +190,7 @@
             h3.text-black Comentarios de Flujo de efectivo.
 
             .m-portlet__nav-item
-              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/balance_sheet" target="_blank" style='position:absolute; right: 20px; top: 0;'
+              a.m-portlet__nav-link.btn.btn-success.m-btn--pill.btn-brand href="/comments/#{@company.id}/cash_flow" target="_blank" style='position:absolute; right: 20px; top: 0;'
                 = 'Ver todos'
             - if @cf_comments.length > 0
               ul.comments
