@@ -197,8 +197,9 @@ class EventsController < ApplicationController
         att.update(attended: false)
       end
 
-      redirect_to "/agreements/" + params[:agreements_id], notice: "Evento actualizado correctamente."
     end
+
+    redirect_to "/agreements/" + params[:agreements_id], notice: "Evento actualizado correctamente."
 
   end
 
