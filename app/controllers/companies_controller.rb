@@ -1871,14 +1871,24 @@ class CompaniesController < ApplicationController
   def credit_bureau_info
     @company = Company.find(params[:id])
 
-    @bureau_info = BuroCredito.get_buro_info @company.try(:credit_bureaus).last.try(:bureau_id)
+    bureau_id = @company.try(:credit_bureaus).last.try(:bureau_id)
+
 
     respond_to do |format|
-      if @company.try(:credit_bureaus).last.update(bureau_info: @bureau_info)
-        format.html { redirect_to company_details_path, notice: 'La compañia se ha actualizado correctamente' }
+      if bureau_id.present?
+
+        @bureau_info = BuroCredito.get_buro_info bureau_id
+
+        if @company.try(:credit_bureaus).last.update(bureau_info: @bureau_info)
+          format.html { redirect_to company_details_path, notice: 'La compañia se ha actualizado correctamente' }
+        else
+          format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+        end
       else
-        format.html { redirect_to companies_url, alert: 'Hubo un error favor volver a intentar' }
+        #flash[:warning] = 'Something went wrong.'
+        format.html { redirect_to company_details_path, notice: 'Sin información en buro de crédito.' }
       end
+
     end
   end
 

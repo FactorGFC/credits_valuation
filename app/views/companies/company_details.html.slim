@@ -159,6 +159,11 @@ javascript:
         | Compañías
 
 .col-xl-12.mt-20
+  - flash.each do |key, value|
+    .div.alert.alert-warning
+      = value
+
+.col-xl-12.mt-20
   .portlet-profile.d-flex.justify-content-start.justify-content-sm-start.justify-content-md-end
     .info-profile-container
       .icon-circle.justify-content-end.align-items-center.px-5.d-none.d-sm-none.d-md-flex
