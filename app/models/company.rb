@@ -109,6 +109,7 @@ class Company < ApplicationRecord
     FReasonsCompany.where( company_id: id ).delete_all
     CompanyFlow.where( company_id: id ).delete_all
     Comment.where(company_id: id).delete_all
+    CompanyConciliation.where(company_id: id).delete_all
     requests = Request.where(company_id: id)
     requests.each do |request|
       RequestComment.where(request_id: request.id).delete_all
