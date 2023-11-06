@@ -494,7 +494,8 @@ class CompaniesController < ApplicationController
         render pdf: "Reporte Buró de Crédito",
                template: "companies/credit_bureau.html.slim",
                type: "application/pdf",
-               disposition: "inline"
+               disposition: "inline",
+               orientation: 'Landscape'
       end
     end
 
@@ -1922,7 +1923,8 @@ class CompaniesController < ApplicationController
         render pdf: "Reporte Buró de Crédito",
                template: "companies/credit_bureau.html.slim",
                type: "application/pdf",
-               disposition: "inline"
+               disposition: "inline",
+               orientation: 'Landscape'
       end
     end
   end
@@ -2007,7 +2009,8 @@ class CompaniesController < ApplicationController
                type: "application/pdf",
                disposition: "inline",
                encoding: 'UTF-8',
-               dpi: '300'
+               dpi: '300',
+               orientation: 'Landscape'
       end
     end
 
@@ -2024,6 +2027,9 @@ class CompaniesController < ApplicationController
     @is_comments = Comment.where(company_id: @company.id, assigned_to: 'income_statement').order(:created_at)
     @fr_comments = Comment.where(company_id: @company.id, assigned_to: 'financial_reasons').order(:created_at)
     @cb_comments = Comment.where(company_id: @company.id, assigned_to: 'credit_bureau').order(:created_at)
+
+    p "@cb_comments -------------------------------------------------------------------------------------------"
+    p @cb_comments
     @cf_comments = Comment.where(company_id: @company.id, assigned_to: 'cash_flow').order(:created_at)
     @financial_inst = @company.financial_institutions
     @bs_scale = BalanceCalendarDetail.find_by(company_id: @company.id).try(:value_scale)
@@ -2095,7 +2101,8 @@ class CompaniesController < ApplicationController
                type: "application/pdf",
                disposition: "inline",
                encoding: 'UTF-8',
-               dpi: '300'
+               dpi: '300',
+               orientation: 'Landscape'
       end
     end
 

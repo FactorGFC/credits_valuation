@@ -218,7 +218,8 @@ class EventsController < ApplicationController
                type: "application/pdf",
                disposition: "inline",
                encoding: 'UTF-8',
-               dpi: '300'
+               dpi: '300',
+               orientation: 'Landscape'
       end
     end
   end
