@@ -24,7 +24,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'CRECIMIENTO NOM. VENTAS'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -42,7 +42,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'CRECIMIENTO REAL VENTAS'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -67,7 +67,7 @@ table.table.table-bordered.input-focusable-table
         a.tb-action-btn.missing-data-btn data-target="#m_crecimiento_sost" data-toggle="modal" href="#m_crecimiento_sost"
           i.fa.fa-exclamation
       span.text-left = 'CRECIMIENTO SOSTENIBLE'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -89,7 +89,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'ROTACIÓN DE ACTIVOS'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -106,7 +106,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'MARGEN OPERATIVO'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -123,7 +123,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'RENTABILIDAD BASE CAPITAL (ROE)'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -140,7 +140,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'MARGEN NETO'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -160,7 +160,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'RAZÓN CIRCULANTE'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -177,7 +177,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'PRUEBA DEL ACIDO'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -194,7 +194,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'PASIVO TOTAL / CAPITAL CONTABLE'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -211,7 +211,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'TOTAL PASIVO FINANCIERO'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -231,7 +231,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'DÍAS CLIENTES'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -248,7 +248,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'DÍAS INVENTARIO'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -265,7 +265,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'DÍAS PROVEEDORES'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -282,7 +282,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'CICLO FINANCIERO'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -299,7 +299,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'INVERSIÓN EN TRABAJO'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -319,7 +319,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'COBERTURA DE INTERESES (DEP)'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -336,7 +336,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px; position: relative;" rowspan="2"
       span.text-left = 'COBERTURA DE DEUDA'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -353,7 +353,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px; position: relative;" rowspan="2"
       span.text-left = 'FLUJO NETO / TOTAL PASIVO FINANCIERO'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -370,7 +370,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px; position: relative;" rowspan="2"
       span.text-left = 'FLUJO NETO / PASIVO TOTAL'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -390,7 +390,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px; position: relative;" rowspan="2"
       span.text-left = 'DEUDA FINANCIERA LP / UAFIRDA'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -407,7 +407,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'DEUDA FINANCIERA TOTAL / UAFIRDA'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    /- @calendar_fr.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -481,7 +481,7 @@ table.table.table-bordered.input-focusable-table
                     input type="number" step=0.001 name="data_bs[#{y.id}.1][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_cp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
                 - else
                   td class="full-input"
-                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
+                    span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_cp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)
             tr
               td style="font-weight: 800"
                 span.text-left = 'Otros pasivos fin. (C.P.)'
@@ -493,7 +493,7 @@ table.table.table-bordered.input-focusable-table
                     input type="number" step=0.001 name="data_bs[#{y.id}.2][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_fin_cp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
                 - else
                   td class="full-input"
-                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
+                    span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_fin_cp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)
             tr
               td style="font-weight: 800"
                 span.text-left = 'Pago de capital'
@@ -505,7 +505,7 @@ table.table.table-bordered.input-focusable-table
                     input type="number" step=0.001 name="data_bs[#{y.id}.3][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'pago_de_capital').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
                 - else
                   td class="full-input"
-                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
+                    span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'pago_de_capital').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)
             tr
               td style="font-weight: 800"
                 span.text-left = 'Otros pasivos (Circulante)'
@@ -517,7 +517,7 @@ table.table.table-bordered.input-focusable-table
                     input type="number" step=0.001 name="data_bs[#{y.id}.4][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_circulante').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
                 - else
                   td class="full-input"
-                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
+                    span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_circulante').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)
             tr
               td style="font-weight: 800"
                 span.text-left = 'Bancos largo plazo'
@@ -529,7 +529,7 @@ table.table.table-bordered.input-focusable-table
                     input type="number" step=0.001 name="data_bs[#{y.id}.5][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_lp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
                 - else
                   td class="full-input"
-                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
+                    span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'bancos_lp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)
             tr
               td style="font-weight: 800"
                 span.text-left = 'Otros pasivos (L.P.)'
@@ -541,7 +541,7 @@ table.table.table-bordered.input-focusable-table
                     input type="number" step=0.001 name="data_bs[#{y.id}.6][value]" class="focusable-input" value="#{BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_lp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
                 - else
                   td class="full-input"
-                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
+                    span class="focusable-input" = BalanceCalendarDetail.find_by(balance_concept_id: BalanceConcept.find_by(key: 'otros_pasivos_lp').try(:id), balance_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)
             tr.tr-title
               th.sub-th.th-title colspan="#{@calendar_fr.length+ 1}"
                 = 'ESTADO DE RESULTADOS'
@@ -556,7 +556,7 @@ table.table.table-bordered.input-focusable-table
                     input type="number" step=0.001 name="data_is[#{y.id}][value]" class="focusable-input" value="#{IncomeCalendarDetail.find_by(income_statement_concept_id: IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id), income_statement_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)}"
                 - else
                   td class="full-input"
-                    span class="focusable-input" = CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
+                    span class="focusable-input" = IncomeCalendarDetail.find_by(income_statement_concept_id: IncomeStatementConcept.find_by(key: 'dep_and_amort').try(:id), income_statement_concept_key: nil, calendar_id: y.calendar_id, company_id: @company.id, extra_data: true).try(:value)
 
         .modal-footer
           button.btn.btn-secondary data-dismiss="modal" type="button"

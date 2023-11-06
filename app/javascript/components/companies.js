@@ -222,7 +222,8 @@ $(document).on('turbolinks:load', function () {
         const otros_gastos_ingresos_val = $(`[name="${otros_gastos_ingresos}"]`).val();
         const res_int_fin               = $(`[name="${resultado_fin}"]`);
 
-        res_int_fin.val(parseFloat(gasto_val) + parseFloat(utilidad_val) + parseFloat(otros_gastos_ingresos_val)).change();
+        //res_int_fin.val(parseFloat(gasto_val) + parseFloat(utilidad_val) + parseFloat(otros_gastos_ingresos_val)).change();
+        res_int_fin.val(parseFloat(gasto_val) + parseFloat(utilidad_val)).change();
     };
 
     window.calculateIncomeBeforeTaxes = function(utilidad_operacion, resultado_fin, utilidad_ai){
@@ -259,7 +260,7 @@ $(document).on('turbolinks:load', function () {
         const cargos_dif_val            = $(`[name="${cargos_dif}"]`).val();
         const total_act_field           = $(`[name="${total_act}"]`);
 
-        total_act_field.val(parseFloat(caja_val) + parseFloat(clientes_val) + parseFloat(inventarios_val) + parseFloat(otros_activos_circ_val) + parseFloat(terrenos_val) + parseFloat(maquinaria_val) + parseFloat(dep_acumulada_val) + parseFloat(otros_act_fijos_val) + parseFloat(cargos_dif_val)).change();
+        total_act_field.val(parseFloat(caja_val) + parseFloat(clientes_val) + parseFloat(inventarios_val) + parseFloat(otros_activos_circ_val) + parseFloat(terrenos_val) + parseFloat(maquinaria_val) - parseFloat(dep_acumulada_val) + parseFloat(otros_act_fijos_val) + parseFloat(cargos_dif_val)).change();
     };
 
     window.calculateTotalPasivo = function(proveedores, contribuciones_pp, anticipo, otros_pas, capital_soc, utilidad_pa, utilidad_pe, otras_cuentas, total_pas){

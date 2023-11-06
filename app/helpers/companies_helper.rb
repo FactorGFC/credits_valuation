@@ -62,6 +62,16 @@ module CompaniesHelper
     end
   end
 
+  def financial_reason_detail_value(company_id, calendar, number_key, value_scale)
+    CompanyConciliation.find_by(conciliation_concept_id: ConciliationConcept.find_by(key: 'dividendos_pagados_efectivo').try(:id), calendar_id: y.calendar_id, company_id: @company.id).try(:value)
+    fin_reason_cs = IncomeCalendarDetail.where(company_id: company_id, calendar_id:  calendar.id, income_statement_concept_key: number_key).try(:first).try(:value)
+    if income_cs.present?
+      return income_cs.round(2)
+    else
+      return 0
+    end
+  end
+
   #Calculo de porcentaje de diferencia entre valores y render de badge
   def calculate_percentage(type, company_id, calendar, number_key, value_scale)
     if type === 'balance_sheet'

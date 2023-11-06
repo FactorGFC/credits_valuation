@@ -522,6 +522,7 @@ class Company < ApplicationRecord
   end
 
   def self.calculate_razon_circulante activo_circulante, providers, contributions_payable, advance_customers, banks_st, other_pas_cp, principal_payment, other_pas_circ
+
     pasivo_circulante = providers + contributions_payable + advance_customers + banks_st + other_pas_cp + principal_payment + other_pas_circ
 
     if pasivo_circulante != 0
@@ -544,22 +545,6 @@ class Company < ApplicationRecord
     else
       value = 0.0
     end
-    p '=============='
-    p '=========='
-    p '======'
-    p '=============='
-    p '=========='
-    p '======'
-    p activo_circulante
-    p inventarios
-    p pasivo_circulante
-    p value
-    p '======'
-    p '=========='
-    p '=============='
-    p '======'
-    p '=========='
-    p '=============='
     return value
   end
 
@@ -688,6 +673,12 @@ class Company < ApplicationRecord
   end
 
   ###===Funciones para flujo de efectivo
+  def self.calculate_gross_flow clients_year1, clients_year0
+    value = -(clients_year1 - clients_year0)
+
+    return value.round(2)
+  end
+
   def self.calculate_customer_variation clients_year1, clients_year0
     value = -(clients_year1 - clients_year0)
 
@@ -730,8 +721,8 @@ class Company < ApplicationRecord
     return value.round(2)
   end
 
-  def self.calculate_variation_fixed_assets land_buildings_1, machinery_equipment_1, other_fixed_assets_1, land_buildings_0, machinery_equipment_0, other_fixed_assets_0, accumulated_depreciation
-    value = -((land_buildings_1 + machinery_equipment_1 + other_fixed_assets_1) - ((land_buildings_0 + machinery_equipment_0 + other_fixed_assets_0) - accumulated_depreciation))
+  def self.calculate_variation_fixed_assets land_buildings_1, machinery_equipment_1, other_fixed_assets_1, land_buildings_0, machinery_equipment_0, other_fixed_assets_0
+    value = -((land_buildings_1 + machinery_equipment_1 + other_fixed_assets_1) - ((land_buildings_0 + machinery_equipment_0 + other_fixed_assets_0)))
 
     return value.round(2)
   end

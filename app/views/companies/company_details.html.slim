@@ -1,9 +1,10 @@
 
 javascript:
-
+    window.onload = function () {
+        calculate_comparative('comparative_table_is');
+    };
 
     function calculate_comparative(table_id) {
-        //$("table#comparative_table").hide();
         var colMax = 0;
         var all_col = document.getElementsByClassName('col-comp');
         var titles = [];
@@ -16,6 +17,7 @@ javascript:
             for (var i = 0; i < all_col.length; i++) {
                 all_col[i].style.display = "none";
             }
+
             document.getElementById("col-comp_head_" + table_id).style.display = "none";
         } else {
             $("table#" + table_id + " tr.tr-title").children('th.th-title').filter(function () {
@@ -72,16 +74,11 @@ javascript:
                     }
 
                 }
-            }
-            ;
+            };
 
             // CALCULO DE VARIACIÓN DE PORCENTAJES
-            max_num = Math.max(...percent_values_array
-        )
-            ;
-            min_num = Math.min(...percent_values_array
-        )
-            ;
+            max_num = Math.max(...percent_values_array);
+            min_num = Math.min(...percent_values_array);
             percent_value = ((max_num - min_num) / min_num) * 100;
 
             if (Number.isFinite(percent_value) || percent_value) {
