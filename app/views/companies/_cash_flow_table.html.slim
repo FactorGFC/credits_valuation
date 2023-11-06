@@ -6,14 +6,14 @@ table.table.table-bordered.input-focusable-table
       br
       span.th-scale
         = 'MILES'
-    - @calendar_fr.each do |y|
+    - @calendar_cf.each do |y|
       th.th-title
         = y.calendar.period_name
 
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'FLUJO BRUTO'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -22,7 +22,7 @@ table.table.table-bordered.input-focusable-table
             = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_bruto').try(:id)).first.try(:value)
 
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -31,7 +31,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'VARIACIÓN CLIENTES'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -39,7 +39,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
             = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_clientes').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -50,7 +50,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px; position: relative;" rowspan="2"
       span.text-left = 'VARIACIÓN INVENTARIOS'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -58,7 +58,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
             = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_inventarios').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -68,7 +68,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'VARIACIÓN PROVEEDORES'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -76,7 +76,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
             = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_proveedores').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -85,7 +85,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'VARIACIÓN ANTICIPO CLIENTES'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -93,7 +93,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
             = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_anticipo_clientes').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -102,7 +102,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'FLUJO DE OPERACIÓN'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -110,7 +110,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
             = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_operacion').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -119,7 +119,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'IMPUESTOS PAGADOS Y PTU'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept  = 'SAT'
@@ -127,7 +127,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
             = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'impuestos_pagados_ptu').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -137,7 +137,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'GASTOS FINANCIEROS'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -145,7 +145,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
             = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'gastos_financieros').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -154,7 +154,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'FLUJO NETO'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -162,7 +162,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
             = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'flujo_neto').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -171,7 +171,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'VARIACIÓN EN ACTIVO FIJO'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -179,7 +179,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
             = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_activo_fijo').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -188,7 +188,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'VARIACIÓN OTROS ACTIVOS'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -196,7 +196,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
           = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_activos').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -206,7 +206,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'VARIACIÓN OTROS PASIVOS'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -214,7 +214,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
           = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'variacion_otros_pasivos').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
@@ -224,7 +224,7 @@ table.table.table-bordered.input-focusable-table
   tr.tr-rdata
     td style=" font-weight: 800; font-size: 18px" rowspan="2"
       span.text-left = 'AUMENTO DISMINUCIÓN EN CAJA'
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input.sat_value class="full-input col-#{calendar.id}"
         - if calendar.calendar.period_type == 'anual'
           span.text-table-concept = 'SAT'
@@ -232,7 +232,7 @@ table.table.table-bordered.input-focusable-table
           span.td-value0
             = CompanyFlow.where(calendar_id: calendar.calendar.id, capture_type: 1, company_id: @company.id, flow_concept_id: FlowConcept.find_by(key: 'aumento_disminucion_caja').try(:id)).first.try(:value)
   tr.tr-rdata
-    - @calendar_fr.each_with_index do |calendar, calendar_index|
+    - @calendar_cf.each_with_index do |calendar, calendar_index|
       td.sum_input class="full-input col-#{calendar.id}"
         span.text-table-concept = 'CAPTURA'
         br
