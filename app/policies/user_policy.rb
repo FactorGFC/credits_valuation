@@ -1,7 +1,7 @@
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if @user.god?
+      if @user.god? || @user.credit_management?
         scope.all
       elsif @user.role_key.eql? 'admin' or @user.role_key.eql? 'enterprise'
         scope.where(role_id: @user.role_id)

@@ -78,7 +78,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update_user
     respond_to do |format|
       if @user.update(account_update_params)
-        if @user.god?
+        if current_user.god? || current_user.credit_management?
           format.html { redirect_to user_registrations_path, notice: t('notifications_masc.success.resource.updated',
                                                                        resource: t('users.registrations.new_user.resource')) }
           format.json { render :show, status: :created, location: @user }
@@ -161,7 +161,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def account_update_params
     params.require(:user).permit(:email, :first_name, :last_name, :role_id, :password, :password_confirmation, :avatar,
-                                 :registry, :audit, :reviewer, :unit_id, :unit_pres_id)
+                                 :registry, :audit, :reviewer, :unit_id, :unit_pres_id, :phone)
   end
 
   def profile_update_params

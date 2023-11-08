@@ -124,6 +124,27 @@ after :permissions do
                             {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Imprimir acuerdo').id},
                             {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Eventos finalizados').id},
                             {role_id: Role.find_by_key('committee').id, permission_id: Permission.find_by_name('Eventos finalizados').id},
-                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Crear comentarios para tabs').id}
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Crear comentarios para tabs').id},
+
+                            #permisos para el perfil gerencia de credito de los catalogos
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Mostrar Listado De Usuarios').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Nuevo Usuario').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Crear Usuario').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Eliminar Usuario').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Cambiar Contraseña De Un Usuario').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Guardar Contraseña De Un Usuario').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Actualizar Perfil De Usuario').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Cambiar Contraseña Propia').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Editar Perfil De Usuario').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Guardar Contraseña Propia').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Mostrar Perfil de Usuario').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Mostrar Listado De Roles').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Actualizar Rol').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Asignar O Desasignar Permisos A Un Rol').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Crear Rol').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Destruir Rol').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Editar Rol').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Mostrar Permisos Asignados A Un Rol').id},
+                            {role_id: Role.find_by_key('credit_management').id, permission_id: Permission.find_by_name('Nuevo Rol').id}
                           ])
 end
