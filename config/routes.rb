@@ -54,7 +54,7 @@ Rails.application.routes.draw do
     put     'finish_event/:id'      => 'events#finish_event'
     delete  'delete_event/:id'      => 'events#delete'
     get 'agreements/:id'  => 'events#agreements'
-    put '/update_attendants' => 'events#update_attendants', as: :update_attendants
+    put 'update_attendants/:id/:agreement_checkbox' => 'events#update_attendants', as: :update_attendants
     get 'print_agreement/:id'  => 'events#print_agreement', as: :print_agreement, defaults: {format: :pdf}
     get 'events_finished' => 'events#events_finished', as: :events_finished
 

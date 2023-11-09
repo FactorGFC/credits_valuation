@@ -155,7 +155,7 @@ class EventsController < ApplicationController
     @event = Event.where(id: params[:id])
     @process_status = ProcessStatus.where(key:['committee_approved','committee_rejected','committee_pending'])
 
-    @attendants = EventDetail.where(event_id: params[:id])
+    @attendants = EventDetail.where(event_id: params[:id]).order(:id)
 
     @requests = EventRequest.where(event_id: params[:id]).order(:id)
     # @requests = Request.where(id: request_ids)
@@ -183,21 +183,16 @@ class EventsController < ApplicationController
   end
 
   def update_attendants
-    attendants = params['attendants']
+    attendant_id = params['id']
+    attendant = EventDetail.find(attendant_id.to_i)
 
-    attendants.each do |attendant|
-
-      if(attendant.second['attended'])
-        att = EventDetail.find(attendant.second['id'].to_i)
-        att.update(attended: true)
+    respond_to do |format|
+      if attendant.update(attended: params['agreement_checkbox'])
+        format.json { render json: {attendant: true} }
       else
-        att = EventDetail.find(attendant.second['id'].to_i)
-        att.update(attended: false)
+        format.json { render json: {attendant: false} }
       end
-
     end
-
-    redirect_to "/agreements/" + params[:agreements_id], notice: "Evento actualizado correctamente."
 
   end
 

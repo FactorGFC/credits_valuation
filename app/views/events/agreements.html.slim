@@ -84,17 +84,17 @@
                     th = t('.assisted')
                 /th.actions-4.text-center = t('helpers.actions')
                 tbody
-                  input type="hidden" value="#{params[:id]}" name="agreements_id"
                   - @attendants.each_with_index do |attendant, index|
                     tr.tr-custom
                       th scope="row" = attendant.user.full_name
                       td = attendant.user.email
                       td = attendant.user.role_name
-                      td = check_box_tag 'attendants[attended]',true,attendant.try(:attended) , name: "attendants[#{index}][attended]", class: "form-control"
-                      input type="hidden" value="#{attendant.id}" name="attendants[#{index}][id]"
+                      td = check_box_tag 'attendants[attended]',true,attendant.try(:attended), id: "agreements_checkbox_id#{attendant.id}" , name: "attendants[#{index}][attended]", class: "form-control", onclick: "updateAttendant(agreements_id#{attendant.id}, agreements_checkbox_id#{attendant.id})"
+                      / td
+                      /   input type="checkbox" onclick="updateAttendant(agreements_id,agreements_checkbox_id)" id="agreements_checkbox_id" value="#{attendant.try(:attended)}"
+                      input type="hidden" value="#{attendant.id}" name="attendants[#{index}][id]" id="agreements_id#{attendant.id}"
                 tfoot
-                  button.btn.btn-success type="submit"
-                    | Guardar
+
         - else
           .m-section__content
             .no-results

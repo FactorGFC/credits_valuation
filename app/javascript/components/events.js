@@ -125,6 +125,23 @@ document.addEventListener('turbolinks:load', function() {
         validateData();
     };
 
+    window.updateAttendant = function(agreements, agreements_checkbox) {
+        $.ajax({
+            url: '/update_attendants/'+ agreements.value + '/' + agreements_checkbox.checked,
+            type: 'PUT',
+            dataType: 'json',
+            success: function (data) {
+
+                if(!data.attendant){
+                    swal('Ocurrio un error', '', 'error');
+                }
+            },
+            error: function (error) {
+                swal('Ocurrio un error', '', 'error');
+            }
+        });
+    }
+
 });
 
 
