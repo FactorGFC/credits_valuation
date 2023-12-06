@@ -24,6 +24,110 @@
             span.tag
               = "#{e}"
 
+  .portlet-profile.d-flex.flex-column.flex-sm-column.flex-md-row
+    /.col-md-12
+    .col-12.col-sm-12.col-md-7
+      - unless @company.try(:client_type).eql?('PM')
+        span.port-subtitle = 'INSTITUCIONES FINANCIERAS'
+        button.btn.btn-primary.btn-block.my-2.open-modal1 data-target="#m_modal_financial_institutions" data-toggle="modal" type="button"
+          = "Ver instituciones financieras"
+
+      span.port-subtitle.mt-4 = 'COLABORADORES'
+      ul.d-flex.flex-wrap.justify-content-between.align-items-center.collab-list.col-sm-12
+        li.d-flex.flex-column.align-items-center.col-6.col-md-4.col-lg-2
+          span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:operative)
+          span.quantity-num
+            strong = 'OPERATIVOS'
+        li.d-flex.flex-column.align-items-center.col-6.col-md-4.col-lg-2
+          span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:administrative)
+          span.quantity-num
+            strong = 'ADMINISTRATIVOS'
+        li.d-flex.flex-column.align-items-center.col-6.col-md-4.col-lg-2
+          span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:sales)
+          span.quantity-num
+            strong = 'VENTAS'
+        li.d-flex.flex-column.align-items-center.col-6.col-md-4.col-lg-2
+          span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:eventual)
+          span.quantity-num
+            strong = 'EVENTUAL'
+        li.d-flex.flex-column.align-items-center.col-6.col-md-4.col-lg-2
+          span.d-flex.justify-content-center.align-items-center.quantity-circle = render_quantity_h @company.try(:number_collaborator).try(:unionized)
+          span.quantity-num
+            strong = 'SINDICALIZADOS'
+
+      ul.d-flex.justify-content-center.collab-list
+        h3
+          strong = "TOTAL:  #{ @company.try(:number_collaborator).present? ? @company.try(:number_collaborator).try(:total).to_s(:delimited) : 0 }"
+
+    .col-12.col-sm-12.col-md-5
+      span.port-subtitle = 'ARCHIVOS'
+      .d-flex.flex-column
+        - if @company.try(:company_file).present?
+          - if @company.try(:company_file).try(:invoice_id_file).present?
+            a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_id_file)}/#{@company.try(:company_file).try(:name_id_file)}" target="_blank"
+              span.d-flex.justify-content-between.align-items-center
+                span
+                  | Identificación oficial
+                i.fa.fa-file
+          - else
+            a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
+              span.d-flex.justify-content-between.align-items-center
+                span
+                  | Identificación oficial
+                i.fa.fa-file
+          - if @company.try(:company_file).try(:invoice_constancy).present?
+            a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_constancy)}/#{@company.try(:company_file).try(:name_constancy)}" target="_blank"
+              span.d-flex.justify-content-between.align-items-center
+                span
+                  | Constancia de Situacion fiscal
+                i.fa.fa-file
+          - else
+            a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
+              span.d-flex.justify-content-between.align-items-center
+                span
+                  | Constancia de Situacion fiscal
+                i.fa.fa-file
+          - if @company.try(:company_file).try(:invoice_financial_statements_one).present?
+            a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_one)}/#{@company.try(:company_file).try(:name_financial_statements_one)}" target="_blank"
+              span.d-flex.justify-content-between.align-items-center
+                span
+                  | Estados Financieros (Cierre anual 1)
+                i.fa.fa-file
+          - else
+            a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
+              span.d-flex.justify-content-between.align-items-center
+                span
+                  | Estados Financieros (Cierre anual 1)
+                i.fa.fa-file
+          - if @company.try(:company_file).try(:invoice_financial_statements_two).present?
+            a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_two)}/#{@company.try(:company_file).try(:name_financial_statements_two)}" target="_blank"
+              span.d-flex.justify-content-between.align-items-center
+                span
+                  | Estados Financieros (Cierre anual 2)
+                i.fa.fa-file
+          - else
+            a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
+              span.d-flex.justify-content-between.align-items-center
+                span
+                  | Estados Financieros (Cierre anual 2)
+                i.fa.fa-file
+          - if @company.try(:company_file).try(:invoice_financial_statements_parcial).present?
+            a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1 href="#{ENV['DOWNLOAD_FILES']}/#{@company.try(:company_file).try(:invoice_financial_statements_parcial)}/#{@company.try(:company_file).try(:name_financial_statements_parcial)}" target="_blank"
+              span.d-flex.justify-content-between.align-items-center
+                span
+                  | Estados Financieros (Cierre parcial)
+                i.fa.fa-file
+          - else
+            a.btn.btn-outline-accent.m-btn.m-btn--icon.m-btn--outline-2x.my-1.disabled href="#" target="_blank"
+              span.d-flex.justify-content-between.align-items-center
+                span
+                  | Estados Financieros (Cierre parcial)
+                i.fa.fa-file
+
+        - else
+        h5 = 'Sin archivos por mostrar'
+
+
   .m-portlet
     .m-portlet__body
       .m-section.mb-0
