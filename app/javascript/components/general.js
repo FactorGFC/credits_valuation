@@ -454,6 +454,9 @@ $(document).on('turbolinks:load', function () {
     });
 
     //Tabla comparativa
+    if(document.getElementById("comparative_table_is")){
+        calculate_comparative('comparative_table_is');
+    }
     if(document.getElementById("comparative_table_bs")){
         calculate_comparative('comparative_table_bs');
     }
@@ -462,7 +465,7 @@ $(document).on('turbolinks:load', function () {
 
         var dollarUSLocale = new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'USD',
+            currency: 'USD'
         });
 
         var years = [];
@@ -807,7 +810,6 @@ function calculate_comparative(table_id){
         }
 
         if(rowTotal !== null){
-
             $('span.total_p'+index).text(rowTotal.toLocaleString());
             $('span.percent_t'+index).show();
             $('span.scale'+index).show();

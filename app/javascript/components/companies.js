@@ -201,50 +201,63 @@ $(document).on('turbolinks:load', function () {
     };
 
     window.calculateGrossProfit = function(ingresos, costo_ventas, utilidad_bruta){
-        const ingreso_val   = $(`[name="${ingresos}"]`).val();
-        const costo_val     = $(`[name="${costo_ventas}"]`).val();
+        const ingreso_val   = parseFloat($(`[name="${ingresos}"]`).val().replace(/,/g, ''));
+        const costo_val     = parseFloat($(`[name="${costo_ventas}"]`).val().replace(/,/g, ''));
         const gross_profit  = $(`[name="${utilidad_bruta}"]`);
 
-        gross_profit.val(parseFloat(ingreso_val) - parseFloat(costo_val)).change();
+        var gross_profit_value = ingreso_val - costo_val;
+        var formatted_gross_profit = gross_profit_value.toLocaleString('en-US');
+        gross_profit.val(formatted_gross_profit).change();
     };
 
     window.calculateUtilityOperation = function(utilidad_bruta, gastos_op, utilidad_operacion){
-        const utilidad_br_val   = $(`[name="${utilidad_bruta}"]`).val();
-        const gastos_val        = $(`[name="${gastos_op}"]`).val();
+        const utilidad_br_val   = parseFloat($(`[name="${utilidad_bruta}"]`).val().replace(/,/g, ''));
+        const gastos_val        = parseFloat($(`[name="${gastos_op}"]`).val().replace(/,/g, ''));
         const utilidad_op       = $(`[name="${utilidad_operacion}"]`);
 
-        utilidad_op.val(parseFloat(utilidad_br_val) - parseFloat(gastos_val)).change();
+        var utilidad_op_value = utilidad_br_val - gastos_val;
+        var formatted_utilidad_op = utilidad_op_value.toLocaleString('en-US');
+        utilidad_op.val(formatted_utilidad_op).change();
+    };
+
+    window.otherExpIncChange = function(gasto_fin, utilidad_perdida, otros_gastos_ingresos, resultado_fin, utilidad_operacion, utilidad_ai){
+        //calculateFinancingResult(gasto_fin, utilidad_perdida, otros_gastos_ingresos, resultado_fin);
+        //calculateIncomeBeforeTaxes(utilidad_operacion, resultado_fin, utilidad_operacion, utilidad_ai);
     };
 
     window.calculateFinancingResult = function(gasto_fin, utilidad_perdida, otros_gastos_ingresos, resultado_fin){
-        const gasto_val                 = $(`[name="${gasto_fin}"]`).val();
-        const utilidad_val              = $(`[name="${utilidad_perdida}"]`).val();
-        const otros_gastos_ingresos_val = $(`[name="${otros_gastos_ingresos}"]`).val();
+        const gasto_val                 = parseFloat($(`[name="${gasto_fin}"]`).val().replace(/,/g, ''));
+        const utilidad_val              = parseFloat($(`[name="${utilidad_perdida}"]`).val().replace(/,/g, ''));
+        //const otros_gastos_ingresos_val = $(`[name="${otros_gastos_ingresos}"]`).val();
         const res_int_fin               = $(`[name="${resultado_fin}"]`);
 
         //res_int_fin.val(parseFloat(gasto_val) + parseFloat(utilidad_val) + parseFloat(otros_gastos_ingresos_val)).change();
-        res_int_fin.val(parseFloat(gasto_val) + parseFloat(utilidad_val)).change();
+        var res_int_fin_value = gasto_val + utilidad_val;
+        var formatted_res_int_fin = res_int_fin_value.toLocaleString('en-US');
+        res_int_fin.val(formatted_res_int_fin).change();
     };
 
-    window.calculateIncomeBeforeTaxes = function(utilidad_operacion, resultado_fin, utilidad_ai){
-        const utilidad_op_val       = $(`[name="${utilidad_operacion}"]`).val();
-        const resultado_fin_val     = $(`[name="${resultado_fin}"]`).val();
+    window.calculateIncomeBeforeTaxes = function(utilidad_operacion, resultado_fin, otros_gtos, utilidad_ai){
+        const utilidad_op_val       = parseFloat($(`[name="${utilidad_operacion}"]`).val().replace(/,/g, ''));
+        const resultado_fin_val     = parseFloat($(`[name="${resultado_fin}"]`).val().replace(/,/g, ''));
+        const otros_gtos_val        = parseFloat($(`[name="${otros_gtos}"]`).val().replace(/,/g, ''));
         const utilidad_antes_imp    = $(`[name="${utilidad_ai}"]`);
 
-        console.log(utilidad_op_val)
-        console.log(resultado_fin_val)
-
-        utilidad_antes_imp.val(parseFloat(utilidad_op_val) - parseFloat(resultado_fin_val)).change();
+        var utilidad_ai_value = utilidad_op_val - resultado_fin_val - otros_gtos_val;
+        var formatted_utilidad_ai_value = utilidad_ai_value.toLocaleString('en-US');
+        utilidad_antes_imp.val(formatted_utilidad_ai_value).change();
     };
 
     window.calculateNetIncome = function(utilidad_ai, isr, ptu, participacion_sub, utilidad_neta){
-        const utilidad_ai_val       = $(`[name="${utilidad_ai}"]`).val();
-        const isr_val               = $(`[name="${isr}"]`).val();
-        const ptu_val               = $(`[name="${ptu}"]`).val();
-        const participacion_sub_val = $(`[name="${participacion_sub}"]`).val();
+        const utilidad_ai_val       = parseFloat($(`[name="${utilidad_ai}"]`).val().replace(/,/g, ''));
+        const isr_val               = parseFloat($(`[name="${isr}"]`).val().replace(/,/g, ''));
+        const ptu_val               = parseFloat($(`[name="${ptu}"]`).val().replace(/,/g, ''));
+        const participacion_sub_val = parseFloat($(`[name="${participacion_sub}"]`).val().replace(/,/g, ''));
         const ut_neta               = $(`[name="${utilidad_neta}"]`);
 
-        ut_neta.val(parseFloat(utilidad_ai_val) - parseFloat(isr_val) - parseFloat(ptu_val) - parseFloat(participacion_sub_val)).change();
+        var ut_neta_value = utilidad_ai_val - isr_val - ptu_val - participacion_sub_val;
+        var formatted_ut_neta_value = ut_neta_value.toLocaleString('en-US');
+        ut_neta.val(formatted_ut_neta_value).change();
     };
 
 

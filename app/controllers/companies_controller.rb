@@ -863,7 +863,7 @@ class CompaniesController < ApplicationController
         params[:b_sheet].each do |e|
           ic_detail = IncomeCalendarDetail.find_by(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], company_id: @company.id)
           if ic_detail.present?
-            raise ActiveRecord::Rollback unless ic_detail.update(value: e[1][:value].present? ? e[1][:value] : 0, value_scale: value_scale)
+            raise ActiveRecord::Rollback unless ic_detail.update(value: e[1][:value].present? ? e[1][:value].gsub(",", "").to_i : 0, value_scale: value_scale)
           else
             raise ActiveRecord::Rollback unless IncomeCalendarDetail.new(income_statement_concept_key: e[1][:concept], calendar_id: e[1][:period], value: e[1][:value].present? ? e[1][:value] : 0, company_id: @company.id, value_scale: value_scale).save
           end
