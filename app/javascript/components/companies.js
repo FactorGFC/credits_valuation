@@ -129,6 +129,25 @@ $(document).on('turbolinks:load', function () {
         moreInfoPF.style.display = "none";
     }
 
+    // Get all elements with the class "format-number"
+    var numberInputs = document.querySelectorAll('.format-number');
+
+    if(numberInputs){
+        numberInputs.forEach(function(input) {
+            input.addEventListener('input', function() {
+                // Remove any non-digit characters from the input value
+                var numericValue = parseFloat(this.value.replace(/[^\d.]/g, ''));
+
+                // Check if the numeric value is valid
+                if (!isNaN(numericValue)) {
+                    // Format the numeric value using toLocaleString and update the input value
+                    this.value = numericValue.toLocaleString('en-US');
+                }
+            });
+        });
+    }
+
+
     window.showMoreInfo = function () {
         var moreInfo = document.getElementById("moreInfo");
         var btnShow = document.getElementById("btn-show-info");
@@ -204,9 +223,14 @@ $(document).on('turbolinks:load', function () {
         const ingreso_val   = parseFloat($(`[name="${ingresos}"]`).val().replace(/,/g, ''));
         const costo_val     = parseFloat($(`[name="${costo_ventas}"]`).val().replace(/,/g, ''));
         const gross_profit  = $(`[name="${utilidad_bruta}"]`);
+        var formatted_gross_profit;
 
         var gross_profit_value = ingreso_val - costo_val;
-        var formatted_gross_profit = gross_profit_value.toLocaleString('en-US');
+        if (!isNaN(gross_profit_value)) {
+            formatted_gross_profit = gross_profit_value.toLocaleString('en-US');
+        } else {
+            formatted_gross_profit = ''; // or any default value you prefer
+        }
         gross_profit.val(formatted_gross_profit).change();
     };
 
@@ -214,27 +238,46 @@ $(document).on('turbolinks:load', function () {
         const utilidad_br_val   = parseFloat($(`[name="${utilidad_bruta}"]`).val().replace(/,/g, ''));
         const gastos_val        = parseFloat($(`[name="${gastos_op}"]`).val().replace(/,/g, ''));
         const utilidad_op       = $(`[name="${utilidad_operacion}"]`);
+        var formatted_utilidad_op;
 
         var utilidad_op_value = utilidad_br_val - gastos_val;
-        var formatted_utilidad_op = utilidad_op_value.toLocaleString('en-US');
+
+        if (!isNaN(utilidad_op_value)) {
+            formatted_utilidad_op = utilidad_op_value.toLocaleString('en-US');
+        } else {
+            formatted_utilidad_op = '';
+        }
         utilidad_op.val(formatted_utilidad_op).change();
     };
 
     window.otherExpIncChange = function(gasto_fin, utilidad_perdida, otros_gastos_ingresos, resultado_fin, utilidad_operacion, utilidad_ai){
-        //calculateFinancingResult(gasto_fin, utilidad_perdida, otros_gastos_ingresos, resultado_fin);
-        //calculateIncomeBeforeTaxes(utilidad_operacion, resultado_fin, utilidad_operacion, utilidad_ai);
+        calculateFinancingResult(gasto_fin, utilidad_perdida, otros_gastos_ingresos, resultado_fin, function() {
+            calculateIncomeBeforeTaxes(utilidad_operacion, resultado_fin, utilidad_operacion, utilidad_ai);
+        });
     };
 
     window.calculateFinancingResult = function(gasto_fin, utilidad_perdida, otros_gastos_ingresos, resultado_fin){
+
         const gasto_val                 = parseFloat($(`[name="${gasto_fin}"]`).val().replace(/,/g, ''));
         const utilidad_val              = parseFloat($(`[name="${utilidad_perdida}"]`).val().replace(/,/g, ''));
         //const otros_gastos_ingresos_val = $(`[name="${otros_gastos_ingresos}"]`).val();
         const res_int_fin               = $(`[name="${resultado_fin}"]`);
+        var formatted_res_int_fin;
 
         //res_int_fin.val(parseFloat(gasto_val) + parseFloat(utilidad_val) + parseFloat(otros_gastos_ingresos_val)).change();
         var res_int_fin_value = gasto_val + utilidad_val;
-        var formatted_res_int_fin = res_int_fin_value.toLocaleString('en-US');
+
+        if (!isNaN(res_int_fin_value)) {
+            formatted_res_int_fin = res_int_fin_value.toLocaleString('en-US');
+        } else {
+            formatted_res_int_fin = '';
+        }
+
         res_int_fin.val(formatted_res_int_fin).change();
+        // Invoke the callback function
+        if (typeof callback === 'function') {
+            callback();
+        }
     };
 
     window.calculateIncomeBeforeTaxes = function(utilidad_operacion, resultado_fin, otros_gtos, utilidad_ai){
@@ -242,9 +285,16 @@ $(document).on('turbolinks:load', function () {
         const resultado_fin_val     = parseFloat($(`[name="${resultado_fin}"]`).val().replace(/,/g, ''));
         const otros_gtos_val        = parseFloat($(`[name="${otros_gtos}"]`).val().replace(/,/g, ''));
         const utilidad_antes_imp    = $(`[name="${utilidad_ai}"]`);
+        var formatted_utilidad_ai_value;
 
         var utilidad_ai_value = utilidad_op_val - resultado_fin_val - otros_gtos_val;
-        var formatted_utilidad_ai_value = utilidad_ai_value.toLocaleString('en-US');
+
+        if (!isNaN(utilidad_ai_value)) {
+            formatted_utilidad_ai_value = utilidad_ai_value.toLocaleString('en-US');
+        } else {
+            formatted_utilidad_ai_value = '';
+        }
+
         utilidad_antes_imp.val(formatted_utilidad_ai_value).change();
     };
 
@@ -254,9 +304,15 @@ $(document).on('turbolinks:load', function () {
         const ptu_val               = parseFloat($(`[name="${ptu}"]`).val().replace(/,/g, ''));
         const participacion_sub_val = parseFloat($(`[name="${participacion_sub}"]`).val().replace(/,/g, ''));
         const ut_neta               = $(`[name="${utilidad_neta}"]`);
+        var formatted_ut_neta_value;
 
         var ut_neta_value = utilidad_ai_val - isr_val - ptu_val - participacion_sub_val;
-        var formatted_ut_neta_value = ut_neta_value.toLocaleString('en-US');
+
+        if (!isNaN(ut_neta_value)) {
+            formatted_ut_neta_value = ut_neta_value.toLocaleString('en-US');
+        } else {
+            formatted_ut_neta_value = '';
+        }
         ut_neta.val(formatted_ut_neta_value).change();
     };
 

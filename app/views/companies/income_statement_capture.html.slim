@@ -77,7 +77,7 @@
                           input type="hidden" name="b_sheet[#{y.id}.1][concept]" value="1"
                           input type="hidden" name="b_sheet[#{y.id}.1][period]" value="#{y.calendar_id}"
                           /input type="number" step=0.001 name="b_sheet[#{y.id}.1][value]" class="focusable-input" onchange="calculateGrossProfit('b_sheet[#{y.id}.1][value]', 'b_sheet[#{y.id}.2][value]', 'b_sheet[#{y.id}.3][value]')" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 1, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-                          input type="text" name="b_sheet[#{y.id}.1][value]" class="focusable-input" onchange="calculateGrossProfit('b_sheet[#{y.id}.1][value]', 'b_sheet[#{y.id}.2][value]', 'b_sheet[#{y.id}.3][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 1, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
+                          input type="text" name="b_sheet[#{y.id}.1][value]" class="focusable-input format-number" onchange="calculateGrossProfit('b_sheet[#{y.id}.1][value]', 'b_sheet[#{y.id}.2][value]', 'b_sheet[#{y.id}.3][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 1, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
                   tr
                     td style="font-weight: 800"
                       span.text-left = 'Costo de ventas'
@@ -90,7 +90,7 @@
                           input type="hidden" name="b_sheet[#{y.id}.2][concept]" value="2"
                           input type="hidden" name="b_sheet[#{y.id}.2][period]" value="#{y.calendar_id}"
                           /input type="number" step=0.001 name="b_sheet[#{y.id}.2][value]" class="focusable-input" onchange="calculateGrossProfit('b_sheet[#{y.id}.1][value]', 'b_sheet[#{y.id}.2][value]', 'b_sheet[#{y.id}.3][value]')" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 2, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-                          input type="text" name="b_sheet[#{y.id}.2][value]" class="focusable-input" onchange="calculateGrossProfit('b_sheet[#{y.id}.1][value]', 'b_sheet[#{y.id}.2][value]', 'b_sheet[#{y.id}.3][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 2, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
+                          input type="text" name="b_sheet[#{y.id}.2][value]" class="focusable-input format-number" onchange="calculateGrossProfit('b_sheet[#{y.id}.1][value]', 'b_sheet[#{y.id}.2][value]', 'b_sheet[#{y.id}.3][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 2, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
                   tr.disabled-row
                     td style="font-weight: 800"
                       span.text-left = 'Utilidad Bruta'
@@ -117,7 +117,7 @@
                           input type="hidden" name="b_sheet[#{y.id}.4][concept]" value="4"
                           input type="hidden" name="b_sheet[#{y.id}.4][period]" value="#{y.calendar_id}"
                           /input type="number" step=0.001 name="b_sheet[#{y.id}.4][value]" class="focusable-input" onchange="calculateUtilityOperation('b_sheet[#{y.id}.3][value]', 'b_sheet[#{y.id}.4][value]', 'b_sheet[#{y.id}.5][value]')" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 4, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-                          input type="text" name="b_sheet[#{y.id}.4][value]" class="focusable-input" onchange="calculateUtilityOperation('b_sheet[#{y.id}.3][value]', 'b_sheet[#{y.id}.4][value]', 'b_sheet[#{y.id}.5][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 4, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
+                          input type="text" name="b_sheet[#{y.id}.4][value]" class="focusable-input  format-number" onchange="calculateUtilityOperation('b_sheet[#{y.id}.3][value]', 'b_sheet[#{y.id}.4][value]', 'b_sheet[#{y.id}.5][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 4, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
                   tr.disabled-row
                     td style="font-weight: 800"
                       span.text-left = 'Utilidad de operación'
@@ -158,7 +158,7 @@
                           input type="hidden" name="b_sheet[#{y.id}.7][concept]" value="7"
                           input type="hidden" name="b_sheet[#{y.id}.7][period]" value="#{y.calendar_id}"
                           //input type="number" step=0.001 name="b_sheet[#{y.id}.7][value]" class="focusable-input" onchange="calculateFinancingResult('b_sheet[#{y.id}.7][value]', 'b_sheet[#{y.id}.8][value]', 'b_sheet[#{y.id}.9][value]', 'b_sheet[#{y.id}.6][value]')" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 7, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-                          input type="text" name="b_sheet[#{y.id}.7][value]" class="focusable-input" onchange="calculateFinancingResult('b_sheet[#{y.id}.7][value]', 'b_sheet[#{y.id}.8][value]', 'b_sheet[#{y.id}.9][value]', 'b_sheet[#{y.id}.6][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 7, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
+                          input type="text" name="b_sheet[#{y.id}.7][value]" class="focusable-input format-number" onchange="calculateFinancingResult('b_sheet[#{y.id}.7][value]', 'b_sheet[#{y.id}.8][value]', 'b_sheet[#{y.id}.9][value]', 'b_sheet[#{y.id}.6][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 7, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
                   tr
                     td style="font-weight: 800"
                       span.text-left = 'Utilidad o perdida cambiaria'
@@ -171,7 +171,7 @@
                           input type="hidden" name="b_sheet[#{y.id}.8][concept]" value="8"
                           input type="hidden" name="b_sheet[#{y.id}.8][period]" value="#{y.calendar_id}"
                           /input type="number" step=0.001 name="b_sheet[#{y.id}.8][value]" class="focusable-input" onchange="calculateFinancingResult('b_sheet[#{y.id}.7][value]', 'b_sheet[#{y.id}.8][value]', 'b_sheet[#{y.id}.9][value]', 'b_sheet[#{y.id}.6][value]')" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 8, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-                          input type="text" name="b_sheet[#{y.id}.8][value]" class="focusable-input" onchange="calculateFinancingResult('b_sheet[#{y.id}.7][value]', 'b_sheet[#{y.id}.8][value]', 'b_sheet[#{y.id}.9][value]', 'b_sheet[#{y.id}.6][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 8, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
+                          input type="text" name="b_sheet[#{y.id}.8][value]" class="focusable-input format-number" onchange="calculateFinancingResult('b_sheet[#{y.id}.7][value]', 'b_sheet[#{y.id}.8][value]', 'b_sheet[#{y.id}.9][value]', 'b_sheet[#{y.id}.6][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 8, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
                   tr
                     td style="font-weight: 800"
                       span.text-left = 'Otros gastos/ingresos'
@@ -184,7 +184,7 @@
                           input type="hidden" name="b_sheet[#{y.id}.9][concept]" value="9"
                           input type="hidden" name="b_sheet[#{y.id}.9][period]" value="#{y.calendar_id}"
                           /input type="number" step=0.001 name="b_sheet[#{y.id}.9][value]" class="focusable-input"  onchange="calculateFinancingResult('b_sheet[#{y.id}.7][value]', 'b_sheet[#{y.id}.8][value]', 'b_sheet[#{y.id}.9][value]', 'b_sheet[#{y.id}.6][value]')" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 9, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-                          input type="text" name="b_sheet[#{y.id}.9][value]" class="focusable-input"  onchange="otherExpIncChange('b_sheet[#{y.id}.7][value]', 'b_sheet[#{y.id}.8][value]', 'b_sheet[#{y.id}.9][value]', 'b_sheet[#{y.id}.6][value]', 'b_sheet[#{y.id}.5][value]', 'b_sheet[#{y.id}.10][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 9, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
+                          input type="text" name="b_sheet[#{y.id}.9][value]" class="focusable-input format-number"  onchange="otherExpIncChange('b_sheet[#{y.id}.7][value]', 'b_sheet[#{y.id}.8][value]', 'b_sheet[#{y.id}.9][value]', 'b_sheet[#{y.id}.6][value]', 'b_sheet[#{y.id}.5][value]', 'b_sheet[#{y.id}.10][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 9, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
                   tr.disabled-row
                     td style="font-weight: 800"
                       span.text-left = 'Utilidad antes de impuestos'
@@ -211,7 +211,7 @@
                           input type="hidden" name="b_sheet[#{y.id}.11][concept]" value="11"
                           input type="hidden" name="b_sheet[#{y.id}.11][period]" value="#{y.calendar_id}"
                           //input type="number" step=0.001 name="b_sheet[#{y.id}.11][value]" class="focusable-input" onchange="calculateNetIncome('b_sheet[#{y.id}.10][value]', 'b_sheet[#{y.id}.11][value]', 'b_sheet[#{y.id}.12][value]', 'b_sheet[#{y.id}.13][value]', 'b_sheet[#{y.id}.14][value]')" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 11, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-                          input type="text" name="b_sheet[#{y.id}.11][value]" class="focusable-input" onchange="calculateNetIncome('b_sheet[#{y.id}.10][value]', 'b_sheet[#{y.id}.11][value]', 'b_sheet[#{y.id}.12][value]', 'b_sheet[#{y.id}.13][value]', 'b_sheet[#{y.id}.14][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 11, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
+                          input type="text" name="b_sheet[#{y.id}.11][value]" class="focusable-input format-number" onchange="calculateNetIncome('b_sheet[#{y.id}.10][value]', 'b_sheet[#{y.id}.11][value]', 'b_sheet[#{y.id}.12][value]', 'b_sheet[#{y.id}.13][value]', 'b_sheet[#{y.id}.14][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 11, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
                   tr
                     td style="font-weight: 800"
                       span.text-left = 'PTU'
@@ -224,7 +224,7 @@
                           input type="hidden" name="b_sheet[#{y.id}.12][concept]" value="12"
                           input type="hidden" name="b_sheet[#{y.id}.12][period]" value="#{y.calendar_id}"
                           /input type="number" step=0.001 name="b_sheet[#{y.id}.12][value]" class="focusable-input" onchange="calculateNetIncome('b_sheet[#{y.id}.10][value]', 'b_sheet[#{y.id}.11][value]', 'b_sheet[#{y.id}.12][value]', 'b_sheet[#{y.id}.13][value]', 'b_sheet[#{y.id}.14][value]')" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 12, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-                          input type="text" name="b_sheet[#{y.id}.12][value]" class="focusable-input" onchange="calculateNetIncome('b_sheet[#{y.id}.10][value]', 'b_sheet[#{y.id}.11][value]', 'b_sheet[#{y.id}.12][value]', 'b_sheet[#{y.id}.13][value]', 'b_sheet[#{y.id}.14][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 12, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
+                          input type="text" name="b_sheet[#{y.id}.12][value]" class="focusable-input format-number" onchange="calculateNetIncome('b_sheet[#{y.id}.10][value]', 'b_sheet[#{y.id}.11][value]', 'b_sheet[#{y.id}.12][value]', 'b_sheet[#{y.id}.13][value]', 'b_sheet[#{y.id}.14][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 12, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
                   tr
                     td style="font-weight: 800"
                       span.text-left = 'Participacion subsidiarios'
@@ -237,7 +237,7 @@
                           input type="hidden" name="b_sheet[#{y.id}.13][concept]" value="13"
                           input type="hidden" name="b_sheet[#{y.id}.13][period]" value="#{y.calendar_id}"
                           /input type="number" step=0.001 name="b_sheet[#{y.id}.13][value]" class="focusable-input" onchange="calculateNetIncome('b_sheet[#{y.id}.10][value]', 'b_sheet[#{y.id}.11][value]', 'b_sheet[#{y.id}.12][value]', 'b_sheet[#{y.id}.13][value]', 'b_sheet[#{y.id}.14][value]')" value="#{IncomeCalendarDetail.find_by(income_statement_concept_key: 13, calendar_id: y.calendar_id, company_id: @company.id).try(:value)}"
-                          input type="text" name="b_sheet[#{y.id}.13][value]" class="focusable-input" onchange="calculateNetIncome('b_sheet[#{y.id}.10][value]', 'b_sheet[#{y.id}.11][value]', 'b_sheet[#{y.id}.12][value]', 'b_sheet[#{y.id}.13][value]', 'b_sheet[#{y.id}.14][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 13, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
+                          input type="text" name="b_sheet[#{y.id}.13][value]" class="focusable-input format-number" onchange="calculateNetIncome('b_sheet[#{y.id}.10][value]', 'b_sheet[#{y.id}.11][value]', 'b_sheet[#{y.id}.12][value]', 'b_sheet[#{y.id}.13][value]', 'b_sheet[#{y.id}.14][value]')" value="#{number_to_currency(IncomeCalendarDetail.find_by(income_statement_concept_key: 13, calendar_id: y.calendar_id, company_id: @company.id).try(:value), delimiter: ',', precision: 0, unit: '')}"
                   tr.disabled-row
                     td style="font-weight: 800"
                       span.text-left = 'Utilidad neta'
