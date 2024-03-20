@@ -135,13 +135,16 @@ $(document).on('turbolinks:load', function () {
     if(numberInputs){
         numberInputs.forEach(function(input) {
             input.addEventListener('input', function() {
-                // Remove any non-digit characters from the input value
-                var numericValue = parseFloat(this.value.replace(/[^\d.]/g, ''));
+                if(this.value !== '-'){
+                    var numericValue = parseFloat(this.value.replace(/[^\d.-]/g, ''));
 
-                // Check if the numeric value is valid
-                if (!isNaN(numericValue)) {
-                    // Format the numeric value using toLocaleString and update the input value
-                    this.value = numericValue.toLocaleString('en-US');
+                    // Check if the numeric value is valid
+                    if (!isNaN(numericValue)) {
+                        // Format the numeric value using toLocaleString and update the input value
+                        this.value = numericValue.toLocaleString('en-US');
+                    }else{
+                        this.value = '';
+                    }
                 }
             });
         });
